@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+
+  <script src='../bin/Microsoft.WinJS.3.0/js/base.js'></script>
+  <script src='../bin/Microsoft.WinJS.3.0/js/ui.js'></script>
+  <link rel='stylesheet' type='text/css' href='../bin/Microsoft.WinJS.3.0/css/ui-dark.css' />
+  <script>
+    window.onload = function ()
+    {
+      WinJS.Navigation.history.backStack = [{}];
+      WinJS.UI.processAll();
+    }
+  </script>
+</head>
+<body>
+
+  <script>
+    var array = [
+      { type: 'item', title: 'Cat 1', picture: 'http://www.old-radio.info/wp-content/uploads/2014/09/cute-cat-1024x576.jpg' },
+      { type: 'item', title: 'Cat 2', picture: 'http://www.old-radio.info/wp-content/uploads/2014/09/majestic-cat-1024x768.jpg' }
+    ];
+    var bindingList = new WinJS.Binding.List(array);
+
+    WinJS.Namespace.define('DefaultData', {
+      bindingList: bindingList,
+      array: array
+    });
+  </script>
+
+  <style>
+
+  </style>
+
+  <div class='simple_ItemTemplate' data-win-control='WinJS.Binding.Template' style='display: none'>
+    <div class='itemTemplate'>
+      <img class='image' data-win-bind='src: picture; alt: title' />
+    </div>
+  </div>
+
+  <div class='flipView' data-win-control='WinJS.UI.FlipView'
+  data-win-options='{itemDataSource: DefaultData.bindingList.dataSource,itemTemplate: select(".simple_ItemTemplate")}'></div>
+
+</body>
+</html>

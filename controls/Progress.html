@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+
+  <script src='../bin/Microsoft.WinJS.3.0/js/base.js'></script>
+  <script src='../bin/Microsoft.WinJS.3.0/js/ui.js'></script>
+  <link rel='stylesheet' type='text/css' href='../bin/Microsoft.WinJS.3.0/css/ui-dark.css' />
+  <script>
+    window.onload = function ()
+    {
+      WinJS.Navigation.history.backStack = [{}];
+      WinJS.UI.processAll().then(function ()
+      {
+      });
+    }
+  </script>
+</head>
+<body>
+
+  <script>
+  </script>
+
+  <style>
+  </style>
+
+  <h2>Determinate</h2>
+  <progress value='0.5'></progress>
+
+  <h2>Determinate medium</h2>
+  <progress value='0.5' class='win-medium'></progress>
+
+  <h2>Determinate large</h2>
+  <progress value='0.5' class='win-large'></progress>
+
+  <h2>Indeterminate</h2>
+  <progress></progress>
+
+  <h2>Indeterminate medium</h2>
+  <progress class='win-medium'></progress>
+
+  <h2>Indeterminate large</h2>
+  <progress class='win-large'></progress>
+
+  <h2>Ring</h2>
+  <progress class='win-ring'></progress>
+
+  <h2>Ring medium</h2>
+  <progress class='win-ring win-medium'></progress>
+
+  <h2>Ring large</h2>
+  <progress class='win-ring win-large'></progress>
+
+
+</body>
+</html>

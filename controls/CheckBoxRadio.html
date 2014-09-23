@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+
+  <script src='../bin/Microsoft.WinJS.3.0/js/base.js'></script>
+  <script src='../bin/Microsoft.WinJS.3.0/js/ui.js'></script>
+  <link rel='stylesheet' type='text/css' href='../bin/Microsoft.WinJS.3.0/css/ui-dark.css' />
+  <script>
+    window.onload = function ()
+    {
+      WinJS.Navigation.history.backStack = [{}];
+      WinJS.UI.processAll();
+    }
+  </script>
+</head>
+<body>
+
+  <script>
+  </script>
+
+  <style>
+  </style>
+
+  <div>
+    <input type='checkbox' id='checkbox1' />
+    <label for='checkbox1'>checkbox rest state</label>
+    <input type='checkbox' id='checkbox2' checked />
+    <label for='checkbox2'>checkbox checked state</label>
+  </div>
+
+  <div>
+    <input type='radio' name='radiogroup' id='radio1' />
+    <label for='radio1'>radio rest state</label>
+    <input type='radio' name='radiogroup' id='radio2' checked />
+    <label for='radio2'>radio checked state</label>
+  </div>
+
+</body>
+</html>
