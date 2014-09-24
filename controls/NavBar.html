@@ -4,27 +4,14 @@
   <title>WinJS Stylesheet</title>
   <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
 
-  <script src='../bin/Microsoft.WinJS.3.0/js/base.js'></script>
-  <script src='../bin/Microsoft.WinJS.3.0/js/ui.js'></script>
-  <link rel='stylesheet' type='text/css' href='../bin/Microsoft.WinJS.3.0/css/ui-dark.css' />
   <script>
-    window.onload = function ()
+    function initialize()
     {
-      WinJS.Navigation.history.backStack = [{}];
-      WinJS.UI.processAll().then(function ()
-      {
-        document.getElementById('navbar').winControl.show();
-      });
+      document.getElementById('navbar').winControl.show();
     }
   </script>
 </head>
 <body>
-
-  <script>
-  </script>
-
-  <style>
-  </style>
 
   <div id="navbar" data-win-control="WinJS.UI.NavBar">
     <div data-win-control="WinJS.UI.NavBarContainer">

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+</head>
+<body>
+
+  <style>
+    body
+    {
+      overflow-y: auto;
+    }
+
+    .section
+    {
+      margin: 20px 5px;
+    }
+
+    .section-header
+    {
+      font-size: 40px;
+      line-height: 40px;
+      margin-bottom: 15px;
+    }
+  </style>
+
+  <!--
+    Button
+  -->
+  <div class='section'>
+    <div class='section-header'>Button</div>
+
+    <button>Push button</button>
+    <input type='button' value='Push button'/>
+    <input type='submit' value='Submit button'/>
+    <input type='reset' value='Reset button'/>
+  </div>
+
+  <!--
+    Checkbox / Radio
+  -->
+  <div class='section'>
+    <div class='section-header'>Checkbox / Radio</div>
+
+    <div>
+      <input type='checkbox' id='checkbox1' />
+      <label for='checkbox1'>checkbox rest state</label>
+      <input type='checkbox' id='checkbox2' checked />
+      <label for='checkbox2'>checkbox checked state</label>
+    </div>
+
+    <div>
+      <input type='radio' name='radiogroup' id='radio1' />
+      <label for='radio1'>radio rest state</label>
+      <input type='radio' name='radiogroup' id='radio2' checked />
+      <label for='radio2'>radio checked state</label>
+    </div>
+  </div>
+
+  <!--
+    Text Box
+  -->
+  <div class='section'>
+    <div class='section-header'>Text Box</div>
+
+    <h3>text box</h3>
+    <input type='text' placeholder='Sample text' />
+
+    <h3>password box</h3>
+    <input type='password' />
+
+    <h3>text area</h3>
+    <textarea></textarea>
+  </div>
+
+  <!--
+    Range
+  -->
+  <div class='section'>
+    <div class='section-header'>Range</div>
+
+    <input type='range' />
+    <input type='range' class='win-vertical' />
+  </div>
+
+  <!--
+    Progress
+  -->
+  <div class='section'>
+    <div class='section-header'>Progress</div>
+
+    <h3>Determinate</h3>
+    <progress value='0.5'></progress>
+
+    <h3>Determinate medium</h3>
+    <progress value='0.5' class='win-medium'></progress>
+
+    <h3>Determinate large</h3>
+    <progress value='0.5' class='win-large'></progress>
+
+    <h3>Indeterminate</h3>
+    <progress></progress>
+
+    <h3>Indeterminate medium</h3>
+    <progress class='win-medium'></progress>
+
+    <h3>Indeterminate large</h3>
+    <progress class='win-large'></progress>
+
+    <h3>Ring</h3>
+    <progress class='win-ring'></progress>
+
+    <h3>Ring medium</h3>
+    <progress class='win-ring win-medium'></progress>
+
+    <h3>Ring large</h3>
+    <progress class='win-ring win-large'></progress>
+  </div>
+
+  <!--
+    Headers
+  -->
+  <div class='section'>
+    <div class='section-header'>Headers</div>
+
+    <h1>h1</h1>
+    <h2>h2</h2>
+    <h3>h3</h3>
+    <h4>h4</h4>
+    <h5>h5</h5>
+    <h6>h6</h6>
+  </div>
+
+</body>
+</html>
