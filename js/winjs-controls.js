@@ -5,6 +5,29 @@ window.addEventListener('load', function()
   var selectControlRight = document.querySelector('.version-select.right');
 
   //
+  // Version paths
+  //
+  var versions =
+  {
+    '2.0': '../winjs/2.0/',
+    '2.1': '../winjs/2.1/',
+    '3.0(CDN)': '//cdnjs.cloudflare.com/ajax/libs/winjs/3.0.0/',
+    'unreleased': '../winjs/unreleased/'
+  };
+
+  //
+  // Populate select dropdowns
+  //
+  var selectHTML = '';
+  for (var i in versions)
+  {
+    selectHTML += '<option>' + i + ' dark' + '</option>';
+    selectHTML += '<option>' + i + ' light' + '</option>';
+  }
+  selectControlLeft.innerHTML = selectHTML;
+  selectControlRight.innerHTML = selectHTML;
+
+  //
   // Update the control display
   //
   function update(path, version, theme, index)
@@ -23,15 +46,15 @@ window.addEventListener('load', function()
           // Add stylesheet
           var style = document.createElement('link');
           style.rel = 'stylesheet';
-          style.href = '../winjs/' + version + '/css/ui-' + theme + '.css';
+          style.href = versions[version] + 'css/ui-' + theme + '.css';
           style.id = 'winjs-stylesheet';
           iframe.contentDocument.head.appendChild(style);
 
           // Add javascript
           var base = document.createElement('script');
           var ui = document.createElement('script');
-          base.src = '../winjs/' + version + '/js/base.js';
-          ui.src = '../winjs/' + version + '/js/ui.js';
+          base.src = versions[version] + 'js/base.js';
+          ui.src = versions[version] + 'js/ui.js';
           base.async = false;
           ui.async = false;
           iframe.contentDocument.head.appendChild(base);
