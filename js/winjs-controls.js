@@ -44,15 +44,15 @@ window.addEventListener('load', function()
         iframe.onload = function()
         {
           // Add stylesheet
-          var style = document.createElement('link');
+          var style = iframe.contentDocument.createElement('link');
           style.rel = 'stylesheet';
           style.href = versions[version] + 'css/ui-' + theme + '.css';
           style.id = 'winjs-stylesheet';
           iframe.contentDocument.head.appendChild(style);
 
           // Add javascript
-          var base = document.createElement('script');
-          var ui = document.createElement('script');
+          var base = iframe.contentDocument.createElement('script');
+          var ui = iframe.contentDocument.createElement('script');
           base.src = versions[version] + 'js/base.js';
           ui.src = versions[version] + 'js/ui.js';
           base.async = false;
