@@ -57,23 +57,12 @@ window.addEventListener('load', function()
           ui.src = versions[version] + 'js/ui.js';
           base.async = false;
           ui.async = false;
-          iframe.contentDocument.head.appendChild(base);
-          iframe.contentDocument.head.appendChild(ui);
 
           // Run WinJS
-          var tries = 10;
-          var tryRunWinJS = function()
+          ui.onload = function()
           {
-            if (!iframe.contentWindow.WinJS || !iframe.contentWindow.WinJS.UI || !iframe.contentWindow.WinJS.UI.ToggleSwitch)
+            if (!iframe.contentWindow.WinJS)
             {
-              if (tries > 0)
-              {
-                console.log('WinJS failed to load, trying', tries, 'more times...');
-                --tries;
-                setTimeout(tryRunWinJS, 100);
-                return;
-              }
-
               console.warn('WinJS failed to load, skipping initialization', '(' + version + ')')
               return;
             }
@@ -86,7 +75,8 @@ window.addEventListener('load', function()
             }
           };
 
-          tryRunWinJS();
+          iframe.contentDocument.head.appendChild(base);
+          iframe.contentDocument.head.appendChild(ui);
         };
       })(iframe);
     }
