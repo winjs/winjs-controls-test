@@ -9,10 +9,10 @@ window.addEventListener('load', function()
   //
   var versions =
   {
-    '2.0': '../winjs/2.0/',
-    '2.1': '../winjs/2.1/',
+    'unreleased': '../winjs/unreleased/',
     '3.0(CDN)': '//cdnjs.cloudflare.com/ajax/libs/winjs/3.0.0/',
-    'unreleased': '../winjs/unreleased/'
+    '2.1': '../winjs/2.1/',
+    '2.0': '../winjs/2.0/',
   };
 
   //
@@ -55,12 +55,25 @@ window.addEventListener('load', function()
           var ui = document.createElement('script');
           base.src = versions[version] + 'js/base.js';
           ui.src = versions[version] + 'js/ui.js';
+          base.async = false;
+          ui.async = false;
+          iframe.contentDocument.head.appendChild(base);
+          iframe.contentDocument.head.appendChild(ui);
 
           // Run WinJS
-          ui.onload = function()
+          var tries = 10;
+          var tryRunWinJS = function()
           {
-            if (!iframe.contentWindow.WinJS)
+            if (!iframe.contentWindow.WinJS || !iframe.contentWindow.WinJS.UI || !iframe.contentWindow.WinJS.UI.ToggleSwitch)
             {
+              if (tries > 0)
+              {
+                console.log('WinJS failed to load, trying', tries, 'more times...');
+                --tries;
+                setTimeout(tryRunWinJS, 100);
+                return;
+              }
+
               console.warn('WinJS failed to load, skipping initialization', '(' + version + ')')
               return;
             }
@@ -73,8 +86,7 @@ window.addEventListener('load', function()
             }
           };
 
-          iframe.contentDocument.head.appendChild(base);
-          iframe.contentDocument.head.appendChild(ui);
+          tryRunWinJS();
         };
       })(iframe);
     }
