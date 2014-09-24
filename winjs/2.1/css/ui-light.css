@@ -1,0 +1,2881 @@
+﻿/*!
+  © Microsoft. All rights reserved.
+
+  This library is supported for use in Windows Store apps only.
+
+  Build: 1.0.9651.40228.winbluephone_rtm.140228-1914
+
+  Version: Microsoft.Phone.WinJS.2.1
+*/
+
+/* 
+Modifications for top-level elements html, body and iframe.
+*/
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    -ms-user-select: none;
+    cursor: default;
+    -ms-scroll-translation: vertical-to-horizontal;
+}
+html {
+    overflow: hidden;
+}
+body {
+    -ms-content-zooming: none;
+}
+iframe {
+    border: 0;
+}
+html:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm) {
+    direction: rtl;
+}
+
+/*
+Explicitly define a Segoe UI font-family so that we can assign Segoe UI 
+Semilight to an appropriate font-weight.
+*/
+@font-face {
+    font-family: "Segoe";
+    font-weight: 300;
+    src:  local("Segoe WP");
+}
+@font-face {
+    font-family: "Segoe";
+    font-weight: 600;
+    src:  local("Segoe WP Semibold");
+}
+@font-face {
+    font-family: "Segoe";
+    font-weight: 500;
+    src:  local("Segoe WP");
+}
+@font-face {
+    font-family: "Segoe";
+    font-weight: 400;
+    src:  local("Segoe WP Semilight");
+}
+@font-face {
+    font-family: "Segoe";
+    font-weight: 700;
+    src:  local("Segoe WP");
+}
+/* 
+I couldn't find an italic version of Segoe WP, I guess it just won't get 
+used?
+*/
+@font-face {
+    font-family: "Segoe";
+    font-style: italic;
+    font-weight: 500;
+    src: local("Segoe UI Italic");
+}
+@font-face {
+    font-family: "Segoe";
+    font-style: italic;
+    font-weight: 700;
+    src: local("Segoe UI Bold Italic");
+}
+
+/*
+Explicitly define font-families for Microsoft Yahei UI and Microsoft JhengHei UI so that we can fallback requests for, 
+    Microsoft Yahei UI Semilight and Microsoft JhengHei UI Semilight, to Regular instead of Light fonts.
+*/
+@font-face {
+    font-family: "Microsoft Yahei UI";
+    font-weight: 200;
+    src: local("Microsoft Yahei UI Light");
+}
+@font-face {
+    font-family: "Microsoft Yahei UI";
+    font-weight: 300;
+    src: local("Microsoft Yahei UI");
+}
+@font-face {
+    font-family: "Microsoft Yahei UI";
+    font-weight: 500;
+    src: local("Microsoft Yahei UI");
+}
+@font-face {
+    font-family: "Microsoft Yahei UI";
+    font-weight: 600;
+    src: local("Microsoft Yahei UI Bold");
+}
+
+@font-face {
+    font-family: "Microsoft JhengHei UI";
+    font-weight: 200;
+    src: local("Microsoft JhengHei UI Light");
+}
+@font-face {
+    font-family: "Microsoft JhengHei UI";
+    font-weight: 300;
+    src: local("Microsoft JhengHei UI");
+}
+@font-face {
+    font-family: "Microsoft JhengHei UI";
+    font-weight: 500;
+    src: local("Microsoft JhengHei UI");
+}
+@font-face {
+    font-family: "Microsoft JhengHei UI";
+    font-weight: 600;
+    src: local("Microsoft JhengHei UI Bold");
+}
+
+/*
+Weight and size definitions for typographic classes and elements.
+*/
+h1, .win-type-xx-large {
+    font-size: 28pt;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.1429; /* 64px when font-size is 42pt */
+}
+h2, .win-type-x-large {
+    font-size: 24pt;
+    font-weight: 300;
+    line-height: 1.2; /* 32px when font-size is 20pt */
+}
+h3, .win-type-large {
+    font-size: 17pt;
+    font-weight: 400;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+h4, .win-type-medium, code, pre, samp {
+    font-size: 15pt;
+    font-weight: 500;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+body, h5, .win-type-small, legend {
+    font-size: 10pt;
+    font-weight: 600;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+.win-type-x-small {
+    font-size: 10pt;
+    font-weight: 600;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+h6, caption, figcaption, small, .win-type-xx-small {
+    font-size: 10pt;
+    font-weight: 600;
+    line-height: 1.6667; /* 20px when font-size is 9pt */
+}
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.win-type-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+h1.win-type-ellipsis, .win-type-xx-large.win-type-ellipsis {
+    line-height: 1.4286; /* 80px when font-size is 42pt */
+}
+h2.win-type-ellipsis, .win-type-x-large.win-type-ellipsis {
+    line-height: 1.5; /* 40px when font-size is 20pt */
+}
+dt, th {
+    font-size: 11pt;
+    font-weight: 700;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+abbr, acronym, address, blockquote, cite, dl, dd, li, ol, p, q, td, tr {
+    font-weight: 300;
+}
+b, strong {
+    font-weight: 700;
+}
+em {
+    font-style: italic;
+}
+
+/*
+Fixed font-family rules.
+*/
+code, pre, samp {
+    font-family: "Consolas";
+}
+
+/*
+Shared control styles
+*/
+
+/*
+Text input controls.
+*/
+
+input[type=text], input[type=password], input[type=email], input[type=number],
+input[type=tel], input[type=url], input[type=search], textarea, .win-textarea {
+    -ms-user-select: element;
+    min-height:  38px; /* Total phone size is 48px with border */
+    border-width:  3px;
+    border-style: solid;
+}
+
+input::-ms-value {
+    /* Margins are needed for all platforms here to put text in proper place */
+    margin-top:  -11px;
+    margin-bottom:  -5px;
+    margin-left:  4px;
+    margin-right: 8px;
+}
+
+textarea, .win-textarea {
+    min-width:  100%;
+    min-height:  53px;
+    overflow-y: scroll;
+    word-wrap: break-word;
+    padding: 4px 8px;
+    /* Leave space for autohiding scrollbar on elements that enable text selection. */
+    padding-right: 17px;
+}
+textarea:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm), .win-textarea:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm) {
+    /* Flip sides for autohiding scrollbar padding on RTL layouts. */
+    padding-right: 8px;
+    padding-left: 17px;
+}
+
+/*
+Button control.
+*/
+button, input[type=button], input[type=reset], input[type=submit] {
+    min-height:  39px; /* content (20px) + padding + border */
+    min-width:  108px;
+    padding:  0px 6px;
+    border-width:  2.25px;
+    border-style: solid;
+    background-clip: padding-box;
+}
+
+/*
+File upload control.
+*/
+input[type=file] {
+    border: none;
+    min-width: 100px;
+    min-height: 20px;
+    width: 340px;
+    height: 32px;
+    padding: 0;
+    margin: 7px 8px 21px 8px;
+    background-clip: padding-box;
+}
+input[type=file]::-ms-value {
+    margin: 0;
+    border-width: 2px;
+    border-style: solid;
+    border-right-style: none;
+    border-radius: 0;
+    background-clip: padding-box;
+    font-size: 15pt;
+    font-weight: 500;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+input[type=file]:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::-ms-value {
+    border-left-style: none;
+    border-right-style: solid;
+}
+input[type=file]::-ms-browse {
+    margin: 0;
+    padding: 0 18px;
+    border-width: 2px;
+    border-style: solid;
+    background-clip: padding-box;
+    font-size: 17pt;
+    font-weight: 400;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+
+/*
+No underline or special cursor on links.
+*/
+a {
+    text-decoration:  underline;
+}
+
+/*
+No border on images when in a link.
+*/
+img {
+    border-style: none;
+}
+
+/*
+Select control.
+*/
+select {
+    min-height:  38px;
+    border-width:  2.25px;
+    border-style: solid;
+}
+select::-ms-value {
+    padding:  0px 8px;
+    margin: 0;
+}
+select::-ms-expand {
+    border: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: transparent;
+}
+
+/*
+Radio button and checkbox shared styles.
+*/
+input::-ms-check {
+    border-style: solid;
+    display: inline-block;
+    border-width:  2.25px;
+}
+
+/*
+Radio button.
+*/
+input[type=radio] {
+    width:  26px;
+    height:  26px;
+}
+
+/*
+Checkbox.
+*/
+input[type=checkbox] {
+    width:  26px;
+    height:  26px;
+}
+
+/*
+Range control.
+*/
+input[type=range] {
+    width:  100%;
+    height:  19px;
+    padding: 17px 0 32px 0;
+}
+input[type=range]::-ms-track {
+    padding: 0;
+    width: auto;
+    height:  10px;
+    border-style: none;
+    color: transparent;  /* ticks hidden by default */
+}
+input[type=range]::-ms-thumb {
+    width: 11px;
+    height:  18px;
+    border-style: none;
+}
+input[type=range]::-ms-ticks-before, input[type=range]::-ms-ticks-after {
+    width: 100%;
+    height: 5px;
+    display: none;
+}
+input[type=range]:disabled::-ms-fill-lower {
+    margin-right: 5px;
+}
+input[type=range]:disabled::-ms-fill-upper {
+    margin-left: 6px;
+}
+input[type=range]:disabled:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::-ms-fill-lower {
+    margin-right: 0;
+    margin-left: 5px;
+}
+input[type=range]:disabled:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::-ms-fill-upper {
+    margin-left: 0;
+    margin-right: 6px;
+}
+
+/*
+Vertical range control.
+*/
+input[type=range].win-vertical {
+    width:  26px;
+    height:  272px;
+    padding: 0 17px;
+    writing-mode: bt-lr; 
+}
+input[type=range].win-vertical:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm) {
+    writing-mode: bt-rl;
+}
+input[type=range].win-vertical::-ms-thumb {
+    width:  24px;
+    height:  12px;
+}
+input[type=range].win-vertical::-ms-track {
+    width:  12px;
+    height: auto;
+}
+input[type=range].win-vertical:disabled::-ms-fill-lower {
+    margin-right: 0;
+    margin-top: 6px;
+}
+input[type=range].win-vertical:disabled::-ms-fill-upper {
+    margin-left: 0;
+    margin-bottom: 5px;
+}
+input[type=range].win-vertical:disabled:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::-ms-fill-lower {
+    margin-left: 0;
+}
+input[type=range].win-vertical:disabled:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::-ms-fill-upper {
+    margin-right: 0;
+}
+
+input[type=range].win-vertical::-ms-ticks-before,
+input[type=range].win-vertical::-ms-ticks-after {
+    width: 5px;
+    height: 100%;
+    display: none;
+}
+
+/*
+Progress control.
+*/
+progress {
+    width:  207px;
+    height: 6px;
+    border-style: none;
+}
+progress.win-medium {
+    width:  207px;
+}
+progress.win-large {
+    width: 100%;
+}
+progress::-ms-fill {
+    border-style: none;
+}
+progress:indeterminate {
+    height: 4px;
+    padding: 1px 0; /* Indeterminate dots should be 4px tall, but overall control stays 6px. */
+}
+@keyframes win-progress-fade-out {
+    from {
+        opacity: 1.0;
+    }
+    to {
+        opacity: 0.5;
+    }
+}
+progress.win-paused:not(:indeterminate) {
+    animation-name: win-progress-fade-out;
+    animation-duration: 3s;
+    animation-timing-function: cubic-bezier(0.03, 0.76, 0.31, 1.0);
+    opacity: 0.5;
+}
+progress.win-error::-ms-fill {
+    opacity: 0;
+}
+progress.win-ring:indeterminate::-ms-fill {
+    animation-name: -ms-ring;
+}
+progress.win-ring {
+    width: 20px;
+    height: 20px;
+}
+progress.win-medium.win-ring {
+    width: 40px;
+    height: 40px;
+}
+progress.win-large.win-ring {
+    width: 60px;
+    height: 60px;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+legend {
+    margin: 0 0 10px 0;
+    padding: 0;
+    color: inherit;
+}
+
+/*
+    Phone specific control styles
+*/
+
+/*
+Text input controls.
+*/
+input[type=text], input[type=password], input[type=email], input[type=number],
+input[type=tel], input[type=url], input[type=search], textarea, .win-textarea {
+    box-sizing: border-box; /* Prevent padding and border from pushing box outside of margins */
+    width: 100%;
+    font-size: 16pt;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 12px 0;
+    font-weight: 500;
+}
+
+textarea, .win-textarea {
+    padding-top: 4px;
+    padding-bottom: 10px;
+    font-weight: 500;
+}
+
+/*
+Button control.
+html is needed before button in order to beat the specificity of typography-fonts.css 
+*/
+button, input[type=button], input[type=reset], input[type=submit] {
+    max-width: 100%;
+    margin: 12px 0;
+    font-size: 14pt;
+    font-weight: 600;
+}
+
+/*
+Radio and checkbox Control
+*/
+input[type=radio], input[type=checkbox] {
+    margin: 16px 0px 20px 0px;
+    vertical-align: middle;
+}
+
+input[type=checkbox]::-ms-check {
+    padding: 1px;
+}
+
+input[type=radio]::-ms-check {
+    padding: 2px;
+}
+
+/*
+Select control.
+*/
+select {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 15pt;
+    margin: 12px 0;
+    padding-top: 3px;
+    padding-bottom: 4px;
+    font-weight: 500;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+/*
+Anchor control
+*/
+
+a:hover:active {
+    transform: scale(0.9, 0.9);
+}
+
+/*
+Interactive text
+*/
+.win-type-interactive:hover:active {
+    transform: scale(0.9, 0.9);
+}
+
+/*
+Clear and reveal button styles.
+*/
+input::-ms-clear, input::-ms-reveal {
+    display: none;
+}
+
+/*
+Range control
+*/
+input[type=range] {
+    margin: 16px 0;
+}
+
+/*
+Progress control
+*/
+progress {
+    margin: 12px 0;
+}
+
+@font-face {
+    font-family: "Segoe UI Command";
+    src: local("Segoe UI Symbol");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*
+ScrollView control.
+*/
+.win-scrollview {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 400px;
+    width: 100%;
+}
+
+/*
+SemanticZoom control.
+*/
+.win-semanticzoom {
+    height: 400px;
+}
+
+/*
+Toggle control.
+*/
+.win-toggleswitch {
+    padding: 0;
+    background-color: transparent;
+    vertical-align: top;
+    margin: 0;
+    display: block;
+    padding-bottom: 20px;
+}
+.win-toggleswitch .win-switch {
+    display: inline-block;
+    height:  36px;
+    width:  75px;
+    padding: 5px;
+    margin: 0;
+    background-color: transparent;
+    -ms-grid-column: 2;
+}
+.win-toggleswitch .win-switch::-ms-tooltip {
+    display: none;
+}
+.win-toggleswitch .win-switch::-ms-ticks-before,
+.win-toggleswitch .win-switch::-ms-ticks-after {
+    display: none;
+}
+.win-toggleswitch .win-switch::-ms-track {
+    height:  22px; /* height - borders */
+    width:  69px;
+    padding: 0;
+    margin: 0;
+    border-width:  2.25px;
+    border-style: solid;
+}
+.win-toggleswitch .win-switch::-ms-fill-lower,
+.win-toggleswitch .win-switch::-ms-fill-upper {
+    height:  16px; /* height - borders - margins */
+    padding: 0;
+}
+.win-toggleswitch .win-switch::-ms-fill-lower {
+    margin-left:  3px;
+}
+.win-toggleswitch .win-switch:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::-ms-fill-lower {
+    margin-left: 0;
+    margin-right: 1px;
+}
+.win-toggleswitch .win-switch::-ms-fill-upper {
+    margin-right:  3px;
+}
+.win-toggleswitch .win-switch:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::-ms-fill-upper {
+    margin-right: 0;
+    margin-left: 1px;
+}
+.win-toggleswitch .win-switch::-ms-thumb {
+    height:  31px;
+    width:  16px;
+}
+.win-toggleswitch .win-title {
+    display: block;
+    vertical-align: top;
+    max-width:470px;
+    font-size: 10pt;
+    font-weight: 600;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+.win-toggleswitch .win-label {
+    display: inline-block;
+    vertical-align: top;
+    padding: 5px 20px 5px 0px;
+    min-width: 65px; 
+    direction: inherit;
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+    font-size: 17pt;
+    font-weight: 400;
+    line-height: 1.3636; /* 20px when font-size is 11pt */
+}
+.win-toggleswitch .win-label:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm) {
+    padding: 5px 0px 5px 20px;
+}
+.win-toggleswitch .win-label.win-hidden {
+    visibility: hidden;
+}
+.win-focus-hide {
+    outline: none;
+}
+
+/*
+Viewbox control.
+*/
+.win-viewbox {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 
+    AppBar control.
+*/
+.win-appbar {
+    /* Not part of the UI in phone,
+        display:none to avoid causing layouts.*/
+    display: none;
+}
+
+/* 
+    AppBarCommand.
+*/
+.win-command {
+    /* Not part of the UI in phone,
+        display:none to avoid causing layouts.*/
+    display: none;
+}
+
+/*
+    Pivot
+*/
+.win-pivot {
+    display: -ms-grid;
+    -ms-grid-rows: auto auto 1fr;
+    -ms-grid-columns: 1fr;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    -ms-scroll-limit-x-max: 0px;
+}
+
+    .win-pivot .win-pivot-title {
+        -ms-grid-column: 1;
+        -ms-grid-row: 1;
+        font-size: 14pt;
+        font-family: 'Segoe';
+        font-weight: 600;
+        white-space: nowrap;
+        margin: 12px 0 -8px 18px;
+    }
+
+.win-pivot .win-pivot-title:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm) {
+    margin: 12px 18px -8px 0;
+}
+
+.win-pivot > .win-pivot-item {
+    /* 
+    Hide the pivot items defined declaratively until we reparent them to ensure correct
+    measuring and to avoid showing unprocessed content in the wrong location.
+    */
+    display: none;
+}
+
+.win-pivot .win-pivot-headers {
+    -ms-grid-column: 1;
+    -ms-grid-row: 2;
+    white-space: nowrap;
+}
+
+.win-pivot .win-pivot-header {
+    display: inline-block;
+    height: 72px;
+    transition: opacity linear 167ms;
+}
+
+.win-pivot button.win-pivot-header,
+.win-pivot button.win-pivot-header:hover,
+.win-pivot button.win-pivot-header:hover:active {
+    background-color: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0px 9px;
+    letter-spacing: 0px;
+    min-height: 0;
+    overflow: visible;
+    max-width: none;
+    min-width: 0;
+    font-size: 45pt;
+    font-weight: 400;
+    font-family: "Segoe";
+}
+
+.win-ui-dark .win-pivot .win-pivot-header {
+    opacity: 0.4;
+}
+
+.win-pivot .win-pivot-header {
+    opacity: 0.2;
+}
+
+.win-pivot.win-pivot-locked .win-pivot-header {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.win-pivot .win-pivot-header-selected,
+.win-pivot.win-pivot-locked .win-pivot-header-selected {
+    opacity: 1.0;
+    visibility: inherit;
+}
+
+.win-pivot .win-pivot-viewport {
+    /* Overlap the headers but not the title */
+    -ms-grid-column: 1;
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 2;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -ms-scroll-snap-type: mandatory;
+    -ms-overflow-style: none;
+    /* Avoid overlapping the headers with content. */
+    padding-top: 78px;
+    /* Adding position relative so that the viewport is drawn on top of the headers with 0.4 opacity (Trident bug). */
+    position: relative;
+}
+
+.win-pivot.win-pivot-locked .win-pivot-viewport {
+    overflow: hidden;
+}
+
+.win-pivot .win-pivot-surface {
+    /* 49 before, 1 current, 50 after */
+    width: 10000%;
+    height: 100%;
+    position: relative;
+}
+
+/*
+    PivotItem
+*/
+.win-pivot-item {
+    position: absolute;
+    top: 28px;
+    bottom: 0;
+    width: 1%;
+}
+
+.win-pivot-column4 .win-pivot-item {
+    -ms-grid-column: 4;
+}
+
+.win-pivot-item .win-pivot-item-content {
+    height: 100%;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    width: calc(100% - 28px);
+    padding: 0px 19px;
+}
+
+/*
+Semantic Zoom
+*/
+.win-semanticzoom .win-listview.win-semanticzoom-zoomedoutview .win-viewport.win-horizontal {
+    touch-action: pan-x;
+}
+
+.win-semanticzoom .win-listview.win-semanticzoom-zoomedoutview .win-viewport.win-vertical {
+    touch-action: pan-y;
+}
+
+/*
+Toggle switch
+*/
+.win-toggleswitch .win-switch::-ms-thumb {
+    border-width: 2.25px;
+    border-style: solid;
+}
+
+/*
+ListView control.
+*/
+.win-listview {
+    overflow: hidden;
+    height: 400px;
+}
+.win-listview .win-surface {
+    overflow: visible;
+}
+.win-listview > .win-viewport.win-horizontal .win-surface {
+    height: 100%;
+}
+.win-listview > .win-viewport.win-vertical .win-surface {
+    width: 100%;
+}
+.win-listview > .win-viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+.win-listview > .win-viewport.win-horizontal {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.win-listview > .win-viewport.win-vertical {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.win-listview .win-itemscontainer {
+    overflow:hidden;
+}
+.win-listview .win-itemscontainer-padder {
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+}
+.win-listview > .win-horizontal .win-container {
+    margin: 10px 5px 0px 5px;
+}
+.win-listview > .win-vertical .win-container {
+    margin:  10px 7px 0px 7px;
+}
+.win-listview.win-rtl > .win-vertical .win-container {
+    margin:  10px 7px 0px 7px;
+}
+.win-listview .win-container, .win-listview .win-itembox,
+.win-itemcontainer.win-container, .win-itemcontainer .win-itembox {
+    cursor: default;
+    z-index: 0;
+}
+.win-listview .win-container  {
+    touch-action:pan-x pan-y pinch-zoom;
+}
+.win-listview.win-swipeable .win-horizontal .win-container,
+.win-listview.win-swipeable .win-horizontal .win-itembox.win-nonswipeable  {
+    touch-action:pan-x pinch-zoom;
+}
+.win-listview.win-swipeable .win-vertical .win-container,
+.win-listview.win-swipeable .win-vertical .win-itembox.win-nonswipeable  {
+    touch-action:pan-y pinch-zoom;
+}
+.win-listview.win-swipeable .win-horizontal .win-itembox  {
+    touch-action:pan-x pinch-zoom double-tap-zoom cross-slide-y;
+}
+.win-listview.win-swipeable .win-vertical .win-itembox  {
+    touch-action:pan-y pinch-zoom double-tap-zoom cross-slide-x;
+}
+.win-semanticzoom  .win-listview > .win-viewport * {
+    touch-action: auto;
+}
+.win-semanticzoom .win-listview > .win-viewport.win-zooming-x {
+    overflow-x: visible;
+}
+.win-semanticzoom .win-listview > .win-viewport.win-zooming-y {
+    overflow-y: visible;
+}
+.win-listview .win-itembox,
+.win-itemcontainer .win-itembox {
+    width:100%;
+    height:100%;
+}
+.win-listview .win-item,
+.win-itemcontainer .win-item {
+    /* Used to place above .win-selectionbackground in ListView */
+    z-index: 1;
+}
+.win-listview .win-item,
+.win-itemcontainer .win-item {
+    overflow: hidden;
+    position: relative;
+}
+.win-listview > .win-vertical .win-item
+{
+    /* Allow flex box to fill win-item in list layout */
+    width: 100%; 
+}
+.win-listview .win-item:focus,
+.win-itemcontainer .win-item:focus {
+    outline-style: none;
+}
+.win-listview .win-focusedoutline,
+.win-itemcontainer .win-focusedoutline {
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    left: -2px;
+    top: -2px;
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+}
+.win-container.win-selected .win-selectionborder {
+    border-width: 4px;
+    border-style: solid;
+}
+.win-container.win-selected:hover .win-selectionborder {
+    border-width: 4px;
+    border-style: solid;
+}
+.win-listview .win-groupheader {
+    padding: 10px 10px 10px 2px;
+    overflow: hidden;
+    outline-width: 0.01px;
+    outline-style: none;
+    /* Causes the focus outline to tightly wrap the header content */
+    float: left;
+    font-size: 24pt;
+    font-weight: 300;
+    line-height: 1.2; /* 32px when font-size is 20pt */
+}
+.win-listview .win-groupheadercontainer {
+    z-index: 1;
+    touch-action:pan-x pan-y pinch-zoom;
+    overflow: hidden;
+}
+.win-listview .win-groupheader.win-focused {
+    outline-style:  none;
+}
+.win-listview.win-rtl .win-groupheader {
+    padding-left: 10px;
+    padding-right: 2px;
+    float: right;
+}
+.win-listview.win-groups .win-horizontal .win-groupleader {
+    margin-left: 70px;
+}
+.win-listview.win-groups.win-rtl .win-horizontal .win-groupleader {
+    margin-left: 0;
+    margin-right: 70px;
+}
+.win-listview.win-groups .win-vertical .win-listlayout .win-groupleader, 
+.win-listview.win-groups .win-vertical .win-gridlayout .win-groupleader {
+    margin-top: 70px;
+}
+.win-listview.win-groups > .win-vertical .win-surface.win-listlayout,
+.win-listview.win-groups > .win-vertical .win-surface.win-gridlayout {
+    margin-top: -65px;
+}
+.win-listview.win-groups > .win-horizontal .win-surface {
+    margin-left: -70px;
+}
+.win-listview.win-groups.win-rtl > .win-horizontal .win-surface {
+    margin-left: 0;
+    margin-right: -70px;
+}
+.win-surface ._win-proxy {
+    /* Position relative + overflow hidden are applied to this element to stop margin collapsing of a margin-top on a header + the margin-top on the surface in list layout */
+    position: relative;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+    touch-action: none;
+}
+.win-selectionborder {
+    position: absolute;
+    opacity: inherit;
+    z-index: 2;
+    pointer-events: none;
+}
+.win-container.win-selected .win-selectionborder {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.win-selectionbackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Used to place behind .win-item in the ListView/ItemContainer */
+    z-index: 0;
+}
+.win-selectioncheckmarkbackground {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border-width: 20px;
+    border-style: solid;
+    z-index: 3;
+}
+.win-listview.win-rtl .win-selectioncheckmarkbackground,
+.win-itemcontainer.win-rtl .win-selectioncheckmarkbackground {
+    left: 0;
+    right: auto;
+}
+.win-selectioncheckmark {
+    position: absolute;
+    margin: 0;
+    padding: 2px;
+    right: 0;
+    top: 0;
+    font-family: Segoe UI Symbol;
+    font-size: 11pt;
+    z-index: 4;
+}
+.win-listview.win-rtl .win-selectioncheckmark,
+.win-itemcontainer.win-rtl .win-selectioncheckmark {
+    left: 0;
+    right: auto;
+}
+.win-selectionhint {
+    position: absolute;
+    margin: 0;
+    padding: 2px;
+    right: 0;
+    font-family: Segoe UI Symbol;
+    font-size: 11pt;
+    opacity: 0.5;
+}
+.win-selectionhint.win-revealed {
+    opacity: 1;
+}
+.win-listview.win-rtl .win-selectionhint,
+.win-itemcontainer.win-rtl .win-selectionhint {
+    left: 0;
+    right: auto;
+}
+.win-listview .win-progress {
+    left: 50%;
+    top: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: -30px;
+    margin-top: -30px;
+    z-index: 1;
+    position: absolute;
+}
+.win-listview .win-progress::-ms-fill {
+    animation-name: -ms-ring;
+}
+
+.win-listview .win-itemsblock {
+    overflow: hidden;
+}
+/*
+ListLayout
+*/
+.win-listview.win-groups .win-vertical .win-listlayout.win-headerpositionleft .win-itemscontainer,
+.win-listview.win-groups .win-vertical .win-listlayout.win-headerpositionleft .win-groupheadercontainer,
+.win-listview.win-groups .win-horizontal .win-listlayout .win-itemscontainer,
+.win-listview.win-groups .win-horizontal .win-listlayout .win-groupheadercontainer {
+    display: none;
+}
+.win-listview.win-groups .win-vertical .win-listlayout.win-headerpositionleft .win-itemscontainer.win-laidout,
+.win-listview.win-groups .win-vertical .win-listlayout.win-headerpositionleft .win-groupheadercontainer.win-laidout, 
+.win-listview.win-groups .win-horizontal .win-listlayout .win-groupheadercontainer.win-laidout {
+    display: block;
+}
+.win-listview .win-listlayout .win-itemscontainer {
+    overflow: visible;
+}
+.win-listview .win-listlayout .win-itemsblock {
+    /* Avoid clipping of the focus and hover visuals */
+    padding-bottom: 4px;
+    margin-bottom: -4px;
+}
+/*
+ListLayout - Vertical
+*/
+/* Vertical grouped list layout needs to remove float from group headers when headers are above so that static positioning gets applied properly */
+.win-listview > .win-vertical .win-listlayout.win-headerpositiontop .win-groupheader {
+    float: none;
+}
+.win-listview > .win-vertical .win-surface.win-listlayout {
+    margin-bottom: 5px;
+}
+
+.win-listview .win-vertical .win-listlayout.win-headerpositionleft.win-surface {
+    display: -ms-inline-grid;
+    -ms-grid-columns: auto 1fr;
+    -ms-grid-rows: auto;
+}
+.win-listview .win-vertical .win-listlayout.win-headerpositionleft .win-groupheadercontainer {
+    -ms-grid-column: 1;
+}
+.win-listview .win-vertical .win-listlayout.win-headerpositionleft .win-itemscontainer {
+    -ms-grid-column: 2;
+}
+/*
+ListLayout - Horizontal
+*/
+.win-listview > .win-horizontal .win-surface.win-listlayout {
+    display: -ms-inline-grid;
+    -ms-grid-columns: auto;
+    -ms-grid-rows: auto;
+    /* Use vertical-align:top when using display:-ms-inline-grid to avoid extra spacing around itself */
+    vertical-align:top;
+}
+.win-listview .win-horizontal .win-listlayout .win-itemsblock {
+    height: 100%;
+}
+.win-listview .win-horizontal .win-listlayout .win-itemscontainer {
+    /* leave room for the scrollbar */
+    margin-bottom:  10px;
+}
+.win-listview .win-horizontal .win-listlayout .win-container {
+    height: calc(100% - 10px);
+}
+/* Headers above */
+.win-listview > .win-horizontal .win-surface.win-listlayout.win-headerpositiontop {
+    -ms-grid-rows: auto 1fr;
+}
+.win-listview .win-horizontal .win-listlayout.win-headerpositiontop .win-groupheadercontainer {
+    -ms-grid-row: 1;
+}
+.win-listview .win-horizontal .win-listlayout.win-headerpositiontop .win-itemscontainer {
+    -ms-grid-row: 2;
+}
+/*
+GridLayout
+*/
+.win-listview .win-gridlayout.win-surface {
+    /* Use a grid even in non-grouped layouts so that there is consistent margin
+       collapsing behavior between the surface and itemsContainer in all grid layouts */
+    display: -ms-inline-grid;
+    /* Use vertical-align:top when using display:-ms-inline-grid to avoid extra spacing around itself */
+    vertical-align:top;
+}
+.win-listview .win-gridlayout .win-container {
+    margin: 5px;
+}
+
+/* Headers */
+.win-listview .win-vertical .win-gridlayout.win-headerpositionleft .win-groupheadercontainer,
+.win-listview .win-vertical .win-gridlayout.win-headerpositiontop .win-groupheadercontainer {
+    -ms-grid-column: 1;
+}
+.win-listview.win-groups .win-gridlayout .win-itemscontainer,
+.win-listview.win-groups .win-gridlayout .win-groupheadercontainer {
+    display: none;
+}
+.win-listview.win-groups .win-gridlayout .win-groupheadercontainer.win-laidout {
+    display: block;
+}
+/* Horizontal - Headers above */
+.win-listview .win-horizontal .win-gridlayout.win-headerpositiontop.win-surface {
+    -ms-grid-columns: auto;
+    -ms-grid-rows: auto 1fr;
+}
+.win-listview .win-horizontal .win-gridlayout.win-headerpositiontop .win-groupheadercontainer {
+    -ms-grid-row: 1;
+}       
+.win-listview .win-horizontal .win-gridlayout.win-headerpositiontop .win-itemscontainer {
+    -ms-grid-row: 2;
+}       
+/* Horizontal - Headers on the left */
+.win-listview .win-horizontal .win-gridlayout.win-headerpositionleft.win-surface {
+    -ms-grid-columns: auto;
+    -ms-grid-rows: auto;
+}
+.win-listview .win-horizontal .win-gridlayout.win-headerpositionleft .win-groupheadercontainer {
+    -ms-grid-row: 1;
+}
+.win-listview .win-horizontal .win-gridlayout.win-headerpositionleft .win-itemscontainer {
+    -ms-grid-row: 1;
+}
+/* Vertical - headers above */
+.win-listview .win-vertical .win-gridlayout.win-headerpositiontop.win-surface {
+    -ms-grid-columns: auto;
+    -ms-grid-rows: auto;
+}  
+.win-listview .win-vertical .win-gridlayout.win-headerpositiontop .win-itemscontainer {
+    -ms-grid-column: 1;
+}
+/* Vertical - headers on the left */
+.win-listview .win-vertical .win-gridlayout.win-headerpositionleft.win-surface {
+    -ms-grid-columns: auto 1fr;
+    -ms-grid-rows: auto;
+}
+.win-listview .win-vertical .win-gridlayout.win-headerpositionleft .win-itemscontainer {
+    -ms-grid-column: 2;
+}
+/* Uniform and cell spanning groups */
+.win-listview .win-gridlayout.win-structuralnodes .win-uniformgridlayout.win-itemscontainer.win-laidout {
+    display: flex;
+    flex-flow: row;
+}
+.win-listview .win-horizontal .win-listlayout .win-itemscontainer,
+.win-listview.win-groups .win-horizontal .win-listlayout .win-itemscontainer.win-laidout,
+.win-listview .win-horizontal .win-listlayout .win-itemsblock,
+.win-listview .win-horizontal .win-gridlayout .win-uniformgridlayout.win-itemscontainer.win-laidout,
+.win-listview .win-horizontal .win-gridlayout .win-uniformgridlayout .win-itemsblock {
+    display: flex;
+    flex-flow: column wrap;
+    align-content: flex-start;
+}
+.win-listview .win-horizontal .win-itemscontainer-padder {
+    height: 100%;
+}
+.win-listview .win-horizontal .win-gridlayout .win-uniformgridlayout .win-itemsblock {
+    height: 100%;
+}
+.win-listview .win-horizontal .win-gridlayout .win-cellspanninggridlayout.win-itemscontainer.win-laidout {
+    display: -ms-grid;
+}
+/* Vertical - uniform group */
+.win-listview .win-vertical .win-gridlayout.win-structuralnodes .win-uniformgridlayout.win-itemscontainer.win-laidout {
+    display: flex;
+    flex-flow: column;
+}
+.win-listview .win-vertical .win-gridlayout .win-uniformgridlayout.win-itemscontainer.win-laidout,
+.win-listview .win-vertical .win-gridlayout .win-uniformgridlayout .win-itemsblock {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+}
+.win-listview .win-vertical .win-gridlayout .win-uniformgridlayout .win-itemsblock {
+    width: 100%;
+}
+/* Cell spanning */
+.win-listview .win-cellspanninggridlayout .win-container.win-laidout {
+    display: block;
+}
+.win-listview .win-cellspanninggridlayout .win-container {
+    display: none;
+}
+.win-listview .win-itembox {
+    position: relative;
+}
+.win-listview.win-dragover .win-itembox {
+    transform: scale(0.86);
+}
+.win-listview .win-itembox.win-dragsource,
+.win-itemcontainer .win-itembox.win-dragsource {
+    opacity: 0.5;
+    transition: opacity cubic-bezier(0.1, 0.9, 0.2, 1) 167ms, transform cubic-bezier(0.1, 0.9, 0.2, 1) 220ms;
+}
+.win-listview.win-dragover .win-itembox.win-dragsource {
+    opacity: 0;
+    transition: none;
+}
+.win-listview.win-dragover .win-container:hover {
+    outline: none;
+}
+.win-listview .win-container.win-swipe, .win-listview .win-container.win-swipe .win-itembox,
+.win-itemcontainer.win-container.win-swipe, .win-itemcontainer.win-container.win-swipe .win-itembox {
+    position: relative;
+    z-index: 1;
+}
+/*
+FlipView control.
+*/
+.win-flipview {
+    overflow: hidden;
+    height: 400px;
+}
+
+.win-flipview .win-surface {
+    -ms-scroll-chaining: none;
+}
+
+.win-flipview .win-navleft {
+    left: 0%;
+    top: 50%;
+    margin-top: -19px;
+}
+.win-flipview .win-navright {
+    left: 100%;
+    top: 50%;
+    margin-left: -69px;
+    margin-top: -19px;
+}
+.win-flipview .win-navtop {
+    left: 50%;
+    top: 0%;
+    margin-left: -35px;
+}
+.win-flipview .win-navbottom {
+    left: 50%;
+    top: 100%;
+    margin-left: -35px;
+    margin-top: -39px;
+}
+.win-flipview .win-navbutton {
+    border: none;
+    width: 69px;
+    height: 39px;
+    z-index: 1;
+    position: absolute;
+    font-family: "Segoe UI Symbol";
+    font-size: 16pt;
+    padding: 0;
+    min-width: 0;
+}
+.win-flipview .win-item, .win-flipview .win-item > .win-template {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+/*
+ItemContainer control.
+*/
+.win-itemcontainer .win-itembox,
+.win-itemcontainer.win-container {
+    position:relative;
+}
+.win-itemcontainer {
+    touch-action:pan-x pan-y pinch-zoom;
+}
+.win-itemcontainer.win-swipeable.win-horizontal .win-itembox {
+    touch-action:pan-y pinch-zoom cross-slide-x;
+}
+.win-itemcontainer.win-swipeable.win-vertical .win-itembox {
+    touch-action:pan-x pinch-zoom cross-slide-y;
+}
+
+/*
+    Phone only CSS rules for uicollections
+*/
+
+.win-listview .win-vertical .win-surface.win-listlayout .win-selected.win-container .win-selectionborder,
+.win-listview .win-vertical .win-surface.win-listlayout .win-selected.win-container .win-selectioncheckmarkbackground,
+.win-listview .win-vertical .win-surface.win-listlayout .win-selected.win-container .win-selectioncheckmark,
+.win-listview .win-surface:not(.win-selectionmode) .win-selected.win-container .win-selectionborder,
+.win-listview .win-surface:not(.win-selectionmode) .win-selected.win-container .win-selectioncheckmarkbackground,
+.win-listview .win-surface:not(.win-selectionmode) .win-selected.win-container .win-selectioncheckmark,
+.win-itemcontainer.win-selected.win-container .win-selectionborder,
+.win-itemcontainer.win-selected.win-container .win-selectioncheckmarkbackground,
+.win-itemcontainer.win-selected.win-container .win-selectioncheckmark {
+    display: none;
+}
+
+.win-selectionmode .win-itemcontainer.win-selected.win-container .win-selectionborder,
+.win-selectionmode .win-itemcontainer.win-selected.win-container .win-selectioncheckmarkbackground,
+.win-selectionmode .win-itemcontainer.win-selected.win-container .win-selectioncheckmark,
+.win-itemcontainer.win-selected.win-container.win-selectionmode .win-selectionborder,
+.win-itemcontainer.win-selected.win-container.win-selectionmode .win-selectioncheckmarkbackground,
+.win-itemcontainer.win-selected.win-container.win-selectionmode .win-selectioncheckmark
+{
+    display: block;
+}
+
+.win-listview .win-vertical .win-surface.win-listlayout .win-itemscontainer {
+    transition: transform cubic-bezier(0.17,0.79,0.215,1.0025) 250ms;
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-itemscontainer {
+    transform: translateX(41px);
+}
+.win-listview.win-rtl .win-vertical .win-surface.win-selectionmode.win-listlayout .win-itemscontainer {
+    transform: translateX(-41px);
+}
+
+.win-listview .win-vertical .win-surface.win-listlayout .win-itemsblock {
+    padding-left: 41px;
+    margin-left: -41px;
+}
+.win-listview.win-rtl .win-vertical .win-surface.win-listlayout .win-itemsblock {
+    padding-left: 0;
+    margin-left: 0;
+    padding-right: 41px;
+    margin-right: -41px;
+}
+
+.win-listview .win-vertical .win-surface.win-listlayout .win-container {
+    position: relative;
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container::before {
+    content: "";
+    font-family: 'Segoe UI Symbol';
+    font-size: 18px;
+    display: block;
+    margin-top: 12px;
+    height: 21px;
+    width: 21px;
+    padding: 0;
+    border-width:2.5px;
+    border-style:solid;
+    z-index: 5;
+    line-height: 1;
+    text-indent: -2px;
+    position: absolute;
+    left: -26px;
+    top: 0;
+}
+.win-listview.win-rtl .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container::before {
+    left: auto;
+    right: -26px;
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container:active::before {
+    transform: scale(0.95);
+    transition: transform 0.2s;
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container.win-selected::before {
+    content: "\E081";
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container.win-selected:active::before {
+    content: "\E081";
+}
+
+.win-selectionmode .win-itemcontainer.win-container .win-itembox::after,
+.win-itemcontainer.win-selectionmode.win-container .win-itembox::after,
+.win-listview .win-horizontal .win-surface.win-listlayout.win-selectionmode .win-itembox:not(.win-nonselectable)::after,
+.win-listview .win-surface.win-selectionmode:not(.win-listlayout) .win-itembox:not(.win-nonselectable)::after {
+    content: "";
+    position: absolute;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    pointer-events: none;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+    border-width:4px;
+    border-style:solid;
+}
+
+/*
+Shared color styles
+*/
+
+/*
+Typographic color definitions.
+*/
+
+body {
+    color:  rgba(0, 0, 0, 0.87);
+    background-color: rgb(255, 255, 255);
+}
+
+/*
+    Style for link class
+*/
+.win-ui-dark .win-type-interactive:hover:active {
+    color: rgba(255, 255, 255, 0.4);
+}
+.win-type-interactive:hover:active {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+/*
+These classes reverse the colors on the subtree to which they are applied.
+*/
+
+.win-ui-light {
+    color:  rgba(0, 0, 0, 0.87);
+    background-color: rgb(255, 255, 255);
+}
+.win-ui-dark {
+    color:  rgba(255, 255, 255, 1.0);
+    background-color:  rgb(0, 0, 0);
+}
+
+/*
+Text selection color
+*/
+::selection {
+    background-color:  Highlight;
+    color: rgb(255, 255, 255);
+}
+
+/*
+Text input, checkbox, radio, and select control colors.
+*/
+.win-ui-dark select {
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color:  rgb(255, 255, 255);
+    color:  rgba(255, 255, 255, 1.0);
+}
+
+.win-ui-dark select:focus, .win-ui-dark select:active {
+    background-clip: border-box;
+    background-color: rgb(255, 255, 255);
+    border-color:  Highlight;
+    color:  rgba(0, 0, 0, 0.87);
+}
+.win-ui-dark input[type=text], .win-ui-dark input[type=password],
+.win-ui-dark input[type=email], .win-ui-dark input[type=number],
+.win-ui-dark input[type=tel], .win-ui-dark input[type=url],
+.win-ui-dark input[type=search], .win-ui-dark textarea, .win-ui-dark .win-textarea {
+    background-clip: border-box;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: transparent;
+    color:  rgba(0, 0, 0, 0.87);
+}
+.win-ui-dark input::-ms-check {
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color:  rgb(255, 255, 255);
+    color:  rgb(255, 255, 255);
+}
+
+.win-ui-dark input:hover:active::-ms-check { /* only checkbox and radio have press state */
+    border-color:  rgb(255, 255, 255);
+    background-color:  Highlight;
+}
+
+.win-ui-dark input[type=text]:focus, .win-ui-dark input[type=text]:active,
+.win-ui-dark input[type=password]:focus, .win-ui-dark input[type=password]:active,
+.win-ui-dark input[type=email]:focus, .win-ui-dark input[type=email]:active,
+.win-ui-dark input[type=number]:focus, .win-ui-dark input[type=number]:active,
+.win-ui-dark input[type=tel]:focus, .win-ui-dark input[type=tel]:active,
+.win-ui-dark input[type=url]:focus, .win-ui-dark input[type=url]:active,
+.win-ui-dark input[type=search]:focus, .win-ui-dark input[type=search]:active,
+.win-ui-dark textarea:focus, .win-ui-dark textarea:active,
+.win-ui-dark .win-textarea:focus, .win-ui-dark .win-textarea:active {
+    background-clip: border-box;
+    background-color: rgb(255, 255, 255);
+    border-color:  Highlight;
+    color:  rgba(0, 0, 0, 0.87);
+}
+.win-ui-dark input[type=text]:disabled, .win-ui-dark input[type=password]:disabled,
+.win-ui-dark input[type=email]:disabled, .win-ui-dark input[type=number]:disabled,
+.win-ui-dark input[type=tel]:disabled, .win-ui-dark input[type=url]:disabled, 
+.win-ui-dark input[type=search]:disabled, .win-ui-dark input[type=file]::-ms-value,
+.win-ui-dark textarea:disabled, .win-ui-dark .win-textarea:disabled, .win-ui-dark select:disabled {
+    background-clip: border-box;
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.4);
+    color:  rgba(255, 255, 255, 0.3);
+}
+.win-ui-dark input:disabled::-ms-check, .win-ui-dark input:disabled:active::-ms-check { /* checkbox and radio have filled disabled state in dark */
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color:  rgba(255, 255, 255, 0.4);
+    color:  rgba(255, 255, 255, 0.4);
+}
+select {
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color:  rgb(0, 0, 0);
+    color:  rgba(0, 0, 0, 0.87);
+}
+select:focus, select:active {
+    background-clip: border-box;
+    background-color: rgb(255, 255, 255);
+    border-color:  Highlight;
+    color:  rgba(0, 0, 0, 0.87);
+}
+input[type=text], input[type=password],
+input[type=email], input[type=number],
+input[type=tel], input[type=url],
+input[type=search], textarea,
+.win-textarea {
+    background-clip: border-box;
+    background-color:  rgba(0, 0, 0, 0.2);
+    border-color:  transparent;
+    color:  rgba(0, 0, 0, 0.87);
+}
+input::-ms-check {
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color:  rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+}
+input[type=text]:focus, input[type=text]:active,
+input[type=password]:focus, input[type=password]:active,
+input[type=email]:focus, input[type=email]:active,
+input[type=number]:focus, input[type=number]:active,
+input[type=tel]:focus, input[type=tel]:active,
+input[type=url]:focus, input[type=url]:active,
+input[type=search]:focus, input[type=search]:active,
+textarea:focus, textarea:active,
+.win-textarea:focus, .win-textarea:active {
+    background-color: rgb(255, 255, 255);
+    border-color:  Highlight;
+    color:  rgba(0, 0, 0, 0.87);
+}
+input:hover:active::-ms-check { /* only checkbox and radio have press state */
+    background-clip: border-box;
+    background-color:  Highlight;
+    border-color:  rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+input[type=text]:disabled, input[type=password]:disabled,
+input[type=email]:disabled, input[type=number]:disabled,
+input[type=tel]:disabled, input[type=url]:disabled, 
+input[type=search]:disabled, input[type=file]::-ms-value,
+textarea:disabled, .win-textarea:disabled, select:disabled,
+input:disabled::-ms-check, input:disabled:active::-ms-check {
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color: rgba(0, 0, 0, 0.15);
+    color:  rgba(0, 0, 0, 0.3);
+}
+
+/*
+Placeholder text style.
+*/
+.win-ui-dark input[type]:-ms-input-placeholder, input[type]:-ms-input-placeholder,
+.win-ui-dark textarea:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color:  rgba(0, 0, 0, 0.25); /* same in dark and light */
+}
+.win-ui-dark input[type]:disabled:-ms-input-placeholder, .win-ui-dark textarea:disabled:-ms-input-placeholder {
+    color:  rgba(255, 255, 255, 0.3);
+}
+input[type]:disabled:-ms-input-placeholder, textarea:disabled:-ms-input-placeholder {
+    color:  rgba(0, 0, 0, 0.3);
+}
+
+/*
+Invalid style.
+*/
+input[type]:invalid {
+    outline-color: rgb(255, 128, 51);
+    outline-width: 2px;
+}
+
+/*
+Option for select control (all colors are same for both light and dark).
+*/
+option:hover {
+    
+    background-color:  transparent;
+}
+select:focus option:hover {
+    
+    background-color:  transparent;
+}
+option:checked:hover, select:focus option:checked:hover {
+    
+    background-color:  transparent;
+}
+option:checked, select:focus::-ms-value {
+    color:  Highlight;
+    background-color:  transparent;
+}
+option:hover:active, select:focus option:hover:active{
+    
+    background-color:  rgb(255, 255, 255);
+}
+.win-ui-dark option:checked:disabled, .win-ui-dark option:checked:disabled:active,
+.win-ui-dark optgroup:disabled option:checked, .win-ui-dark optgroup:disabled option:checked:active,
+.win-ui-dark select:disabled option:checked, .win-ui-dark select:disabled option:checked:active,
+.win-ui-dark select:disabled:focus::-ms-value {
+    background-color: rgba(255, 255, 255, 0.4);
+    color:  rgba(0, 0, 0, 0.3);
+}
+option:checked:disabled, option:checked:disabled:active,
+optgroup:disabled option:checked, optgroup:disabled option:checked:active,
+select:disabled option:checked, select:disabled option:checked:active,
+select:disabled:focus::-ms-value {
+    background-color: rgba(0, 0, 0, 0.55);
+    color:  rgba(0, 0, 0, 0.3);
+}
+
+/*
+Button control colors.
+*/
+.win-ui-dark button, .win-ui-dark input[type=button], .win-ui-dark input[type=submit],
+.win-ui-dark input[type=reset], .win-ui-dark input[type=file]::-ms-browse {
+    background-color: transparent;
+    border-color: rgb(255, 255, 255);
+    color:  rgba(255, 255, 255, 1.0);
+}
+.win-ui-dark button[type=submit], .win-ui-dark input[type=submit] {
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color:  rgb(255, 255, 255);
+}
+
+.win-ui-dark button:hover:active, .win-ui-dark button[type=submit]:hover:active,
+.win-ui-dark input[type=button]:hover:active, .win-ui-dark input[type=reset]:hover:active,
+.win-ui-dark input[type=submit]:hover:active, .win-ui-dark input[type=file]::-ms-browse:hover:active {
+    background-clip: border-box;
+    background-color:  Highlight;
+    border-color:  rgb(255, 255, 255);
+    color:  rgba(255, 255, 255, 1.0);
+}
+.win-ui-dark button:disabled, .win-ui-dark button[type=submit]:disabled,
+.win-ui-dark input[type=button]:disabled, .win-ui-dark input[type=reset]:disabled,
+.win-ui-dark input[type=submit]:disabled, .win-ui-dark input[type=file]:disabled::-ms-browse,
+.win-ui-dark button:disabled:active, .win-ui-dark button[type=submit]:disabled:active,
+.win-ui-dark input[type=button]:disabled:active, .win-ui-dark input[type=reset]:disabled:active,
+.win-ui-dark input[type=submit]:disabled:active, .win-ui-dark input[type=file]:disabled::-ms-browse:active {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.4);
+    color:  rgba(255, 255, 255, 0.3);
+}
+button, input[type=button], input[type=submit],
+input[type=reset], input[type=file]::-ms-browse {
+    background-color:  transparent;
+    border-color:  rgb(0, 0, 0);
+    color:  rgba(0, 0, 0, 0.87);
+}
+button[type=submit], input[type=submit]{
+    background-clip: border-box;
+    background-color:  transparent;
+    border-color:  rgb(0, 0, 0);
+    color:  rgba(0, 0, 0, 0.87);
+}
+
+button:hover:active, button[type=submit]:hover:active,
+input[type=button]:hover:active, input[type=reset]:hover:active,
+input[type=submit]:hover:active, input[type=file]::-ms-browse:hover:active {
+    background-clip: border-box;
+    background-color:  Highlight;
+    border-color:  rgb(0, 0, 0);
+    color:  rgba(255, 255, 255, 1.0);
+}
+button:disabled, button[type=submit]:disabled,
+input[type=button]:disabled, input[type=reset]:disabled,
+input[type=submit]:disabled, input[type=file]:disabled::-ms-browse,
+button:disabled:active, button[type=submit]:disabled:active,
+input[type=button]:disabled:active, input[type=reset]:disabled:active,
+input[type=submit]:disabled:active, input[type=file]:disabled::-ms-browse:active {
+    background-color:  transparent;
+    border-color:  rgba(0, 0, 0, 0.4);
+    color:  rgba(0, 0, 0, 0.3);
+}
+input[type=file]:disabled::-ms-browse, input[type=file]:disabled::-ms-browse:active {
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+/*
+File upload control colors.
+*/
+input[type=file] {
+    background-color: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+/*
+Link colors.
+*/
+.win-ui-dark a {
+    color:  Highlight;
+}
+.win-ui-dark a:hover:active {
+    color:  Highlight;
+}
+.win-ui-dark a:hover {
+    color:  Highlight;
+}
+.win-ui-dark a[disabled], .win-ui-dark a[disabled]:active { /* :disabled pseudo-class doesn't apply to a, even though disabled attribute stops navigation */
+    color: rgba(255, 255, 255, 0.4);
+}
+a {
+    color:  Highlight;
+}
+a:hover:active {
+    color:  Highlight;
+}
+a:hover {
+    color:  Highlight;
+}
+a[disabled], a[disabled]:active { /* :disabled pseudo-class doesn't apply to a, even though disabled attribute stops navigation */
+    color: rgba(0, 0, 0, 0.4);
+}
+
+/*
+Range control colors.
+*/
+input[type=range], input[type=range]::-ms-track {
+    background-color: transparent;
+}
+
+.win-ui-dark input[type=range]::-ms-fill-lower {
+    background-color:  Highlight;
+}
+.win-ui-dark input[type=range]:disabled::-ms-fill-lower {
+    background-color: rgba(255, 255, 255, 0.23);
+}
+input[type=range]::-ms-fill-lower {
+    background-color:  Highlight;
+}
+input[type=range]:disabled::-ms-fill-lower {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.win-ui-dark input[type=range]::-ms-fill-upper {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+.win-ui-dark input[type=range]:disabled::-ms-fill-upper {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+input[type=range]::-ms-fill-upper {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+input[type=range]:disabled::-ms-fill-upper {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.win-ui-dark input[type=range]::-ms-thumb {
+    background-color: rgb(255, 255, 255);
+}
+.win-ui-dark input[type=range]:disabled::-ms-thumb {
+    background-color: rgb(126, 126, 126);
+}
+input[type=range]::-ms-thumb {
+    background-color: rgb(0, 0, 0);
+}
+input[type=range]:disabled::-ms-thumb {
+    background-color: rgb(146, 146, 146);
+}
+
+.win-ui-dark input[type=range]::-ms-ticks-before,
+.win-ui-dark input[type=range]::-ms-ticks-after {
+    color: rgba(255, 255, 255, 0.5);
+}
+input[type=range]::-ms-ticks-before,
+input[type=range]::-ms-ticks-after {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/*
+Progress control colors.
+*/
+.win-ui-dark progress {
+    background-color:  rgba(255, 255, 255, 0.1);
+    color:  Highlight;
+}
+progress {
+    background-color:  rgba(0, 0, 0, 0.095);
+    color:  Highlight;
+}
+.win-ui-dark progress:indeterminate {
+    color:  Highlight;
+}
+progress:indeterminate {
+    color:  Highlight;
+}
+progress::-ms-fill {
+    background-color: currentColor;
+}
+/* 
+Explicitly define indeterminate background transparent for dark and light 
+because ".win-ui-light progress" has higher specificity than "progress:indeterminate".
+*/
+.win-ui-dark progress:indeterminate, progress:indeterminate {
+    background-color: transparent;
+}
+
+/*
+ListView control colors.
+*/
+.win-ui-dark .win-listview .win-itembox,
+.win-ui-dark .win-itemcontainer .win-itembox {
+    background-color:  rgb(0, 0, 0);
+}
+.win-listview .win-itembox,
+.win-itemcontainer .win-itembox {
+    background-color: rgb(255, 255, 255);
+}
+.win-ui-dark .win-listview .win-container.win-backdrop {
+    background-color: rgba(155,155,155,0.23);
+}
+.win-listview .win-container.win-backdrop {
+    background-color: rgba(155,155,155,0.23);
+}
+.win-selectioncheckmark {
+    color: rgb(255, 255, 255);
+}
+.win-ui-dark .win-selectionhint {
+    color: rgb(255, 255, 255);
+}
+.win-selectionhint {
+    color: rgb(70, 23, 180);
+}
+
+/*
+Toggleswitch control colors.
+*/
+
+.win-ui-dark .win-toggleswitch .win-title {
+    color: rgb(255, 255, 255);
+}
+.win-ui-dark .win-toggleswitch .win-title.win-disabled {
+    color: rgba(255, 255, 255, 0.4);
+}
+.win-toggleswitch .win-title {
+    color: rgb(0, 0, 0);
+}
+.win-toggleswitch .win-title.win-disabled {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.win-ui-dark .win-toggleswitch .win-label {
+    color: rgb(255, 255, 255);
+}
+.win-ui-dark .win-toggleswitch .win-label.win-disabled {
+    color: rgba(255, 255, 255, 0.4);
+}
+.win-toggleswitch .win-label {
+    color: rgb(0, 0, 0);
+}
+.win-toggleswitch .win-label.win-disabled {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.win-toggleswitch .win-switch::-ms-track {
+    background-color: transparent;
+}
+.win-ui-dark .win-toggleswitch .win-switch::-ms-track {
+    border-color:  rgb(255, 255, 255);
+}
+.win-ui-dark .win-toggleswitch .win-switch::-ms-fill-upper {
+    background-color:  transparent;
+}
+.win-ui-dark .win-toggleswitch .win-switch:disabled::-ms-track {
+    border-color:  rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark .win-toggleswitch .win-switch:disabled::-ms-fill-lower,
+.win-ui-dark .win-toggleswitch .win-switch:disabled::-ms-fill-upper {
+    background-color:  rgba(255, 255, 255, 0.4);
+}
+.win-toggleswitch .win-switch::-ms-track {
+    border-color:  rgb(0, 0, 0);
+}
+.win-toggleswitch .win-switch::-ms-fill-upper {
+    background-color:  transparent;
+}
+.win-toggleswitch .win-switch:disabled::-ms-track {
+    border-color:  rgba(0, 0, 0, 0.3);
+}
+.win-toggleswitch .win-switch:disabled::-ms-fill-lower,
+.win-toggleswitch .win-switch:disabled::-ms-fill-upper {
+    background-color:  rgba(0, 0, 0, 0.3);
+}
+
+/*
+High contrast colors.
+*/
+@media (-ms-high-contrast) {
+    /*
+    ListView/ ItemContainer high contrast colors
+    */
+    .win-listview .win-groupheader {
+        color: WindowText;
+    } 
+    .win-selectioncheckmark {
+        color: HighlightText;
+    }
+    .win-listview .win-selectionhint,
+    .win-itemcontainer .win-selectionhint {
+        color: WindowText;
+    }
+}
+
+/*
+Phone specific color styles
+*/
+
+/* 
+Opt out of high contrast colors for supported controls
+We must do this on the body because otherwise trident will set
+the background to white in Light theme and black in Dark theme, 
+which will conflict with apps that don't respect user theme settings
+(the vast majority of them). Since we want to have custom colors in 
+high contrast, we can't let trident change the whole page background
+color as most text will be rendered invisible.
+*/
+body {
+    -ms-high-contrast-adjust: none;
+}
+
+/*
+Panning indicator
+*/
+.win-ui-dark * {
+    -ms-scrollbar-shadow-color: rgb(0, 0, 0);
+    -ms-scrollbar-face-color: rgb(255, 255, 255);
+}
+* {
+    -ms-scrollbar-shadow-color: rgb(255, 255, 255);
+    -ms-scrollbar-face-color: rgb(0, 0, 0);
+}
+
+/*
+ListView control colors.
+*/
+.win-ui-dark .win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container::before {
+    border-color: rgb(255, 255, 255);
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container::before {
+    border-color: rgb(0, 0, 0);
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container:active::before {
+    background-color: Highlight;
+}
+
+.win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container.win-selected:active::before {
+    background-color: Highlight;
+}
+
+.win-listview .win-horizontal .win-surface.win-selectionmode.win-listlayout .win-itembox:not(.win-nonselectable)::after,
+.win-listview .win-surface.win-selectionmode:not(.win-listlayout) .win-itembox:not(.win-nonselectable)::after,
+.win-itemcontainer.win-selectionmode .win-itembox::after,
+.win-selectionmode .win-itemcontainer .win-itembox::after {
+    border-color: Highlight;
+}
+
+.win-listview .win-container.win-selected .win-selectionborder,
+.win-itemcontainer.win-container.win-selected .win-selectionborder {
+    border-color: Highlight;
+}
+
+.win-listview .win-container.win-selected:hover .win-selectionborder,
+.win-itemcontainer.win-container.win-selected:hover .win-selectionborder {
+    border-color: Highlight;
+}
+
+.win-listview .win-selectioncheckmarkbackground,
+.win-itemcontainer .win-selectioncheckmarkbackground {
+    border-top-color: Highlight;
+    border-right-color: Highlight;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.win-listview .win-container.win-selected:hover .win-selectioncheckmarkbackground,
+.win-itemcontainer.win-container.win-selected:hover .win-selectioncheckmarkbackground {
+    border-top-color: Highlight;
+    border-right-color: Highlight;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.win-listview.win-rtl .win-selectioncheckmarkbackground,
+.win-itemcontainer.win-rtl .win-selectioncheckmarkbackground {
+    border-left-color: Highlight;
+    border-right-color: transparent;
+}
+
+.win-listview.win-rtl .win-container.win-selected:hover .win-selectioncheckmarkbackground,
+.win-itemcontainer.win-rtl.win-container.win-selected:hover .win-selectioncheckmarkbackground {
+    border-left-color: Highlight;
+    border-right-color: transparent;
+}
+
+/*
+Semantic Zoom
+*/
+.win-ui-dark .win-semanticzoom .win-semanticzoom-zoomedoutview {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.win-semanticzoom .win-semanticzoom-zoomedoutview {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/*
+Toggle switch
+*/
+.win-ui-dark .win-toggleswitch .win-switch::-ms-thumb {
+    border-color: rgb(0, 0, 0);
+}
+.win-toggleswitch .win-switch::-ms-thumb {
+    border-color: rgb(255, 255, 255);
+}
+.win-ui-dark .win-toggleswitch .win-switch:disabled::-ms-fill-upper {
+    background-color: transparent;
+}
+.win-toggleswitch .win-switch:disabled::-ms-fill-upper {
+    background-color: transparent;
+}
+
+@media (-ms-high-contrast) {
+
+    /*
+    Select box high contrast 
+    */
+    .win-ui-dark select:disabled {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    select:disabled {
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    /*
+    Text selection color
+    */
+    .win-ui-dark ::selection {
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+    }
+
+    ::selection {
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+    }
+
+    /* 
+    Radio and check button 
+    */
+    .win-ui-dark input::-ms-check:hover:active, .win-ui-dark input::-ms-check:active {
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+    }
+
+    input::-ms-check:hover:active, input::-ms-check:active {
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+    }
+
+    /* Button */
+    .win-ui-dark button:hover:active, .win-ui-dark input[type=button]:hover:active, .win-ui-dark input[type=submit]:hover:active {
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+    }
+
+    button:hover:active, input[type=button]:hover:active, input[type=submit]:hover:active {
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+    }
+
+    /* 
+    Text input 
+    */
+    .win-ui-dark input:not([type=button]):not([type=submit]), .win-ui-dark textarea, .win-ui-dark .win-textarea {
+        background-color: transparent;
+        border-color: rgb(255, 255, 255);
+        color: rgb(255, 255, 255);
+    }
+
+    .win-ui-dark textarea:-ms-input-placeholder {
+        color: rgb(255, 255, 255);
+    }
+
+    input:not([type=button]):not([type=submit]), textarea, .win-textarea {
+        background-color: transparent;
+        border-color: rgb(0, 0, 0);
+        color: rgb(0, 0, 0);
+    }
+
+    textarea:-ms-input-placeholder {
+        color: rgb(0, 0, 0);
+    }
+
+    .win-ui-dark input:not([type=button]):not([type=submit]):focus, .win-ui-dark textarea:focus, .win-ui-dark .win-textarea:focus {
+        background-color: transparent;
+        border-color: rgb(255, 255, 255);
+        color: rgb(255, 255, 255);
+    }
+
+    input:not([type=button]):not([type=submit]):focus, textarea:focus, .win-textarea:focus {
+        background-color: transparent;
+        border-color: rgb(0, 0, 0);
+        color: rgb(0, 0, 0);
+    }
+
+    .win-ui-dark input:not([type=button]):not([type=submit]):disabled, .win-ui-dark textarea:disabled, .win-ui-dark .win-textarea:disabled {
+        border-color: rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    input:not([type=button]):not([type=submit]):disabled, textarea:disabled, .win-textarea:disabled {
+        border-color: rgba(0, 0, 0, 0.3);
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* 
+    Progress bar
+    */
+    .win-ui-dark progress {
+        background-color: transparent;
+        color: rgb(255, 255, 255);
+        border-width: 0px 1px 1px 1px;
+        border-color: rgb(255, 255, 255);
+        border-style: solid;
+    }
+
+    progress {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 0.87);
+        border-width: 0px 1px 1px 1px;
+        border-color: rgb(0, 0, 0);
+        border-style: solid;
+    }
+
+    .win-ui-dark progress:indeterminate {
+        color: rgb(255, 255, 255);
+        border-style: none;
+    }
+
+    progress:indeterminate {
+        color: rgba(0, 0, 0, 0.87);
+        border-style: none;
+    }
+
+    /* 
+    Slider
+    */
+    .win-ui-dark input[type=range]::-ms-track, .win-ui-dark input[type=range]:active::-ms-track {
+        background-color: transparent;
+        border-color: rgb(255, 255, 255);
+        border-style: solid;
+    }
+
+    .win-ui-dark input[type=range]:disabled::-ms-track, .win-ui-dark input[type=range]:disabled::-ms-track {
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .win-ui-dark input[type=range]::-ms-fill-lower, .win-ui-dark input[type=range]:active::-ms-fill-lower {
+        background-color: rgb(255, 255, 255);
+    }
+
+    .win-ui-dark input[type=range]:disabled::-ms-fill-lower, .win-ui-dark input[type=range]:disabled::-ms-fill-lower {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .win-ui-dark input[type=range]::-ms-thumb {
+        background-color: rgb(0, 0, 0);
+        border-width: 1px;
+        border-color: rgb(255, 255, 255);
+        border-style: solid;
+    }
+
+    .win-ui-dark input[type=range]:disabled::-ms-thumb {
+        background-color: rgb(0, 0, 0);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    input[type=range]::-ms-track, input[type=range]:active::-ms-track {
+        background-color: transparent;
+        border-color: rgb(0, 0, 0);
+        border-style: solid;
+    }
+
+    input[type=range]:disabled::-ms-track, input[type=range]:disabled::-ms-track {
+        border-color: rgba(0, 0, 0, 0.3);
+    }
+
+    input[type=range]::-ms-fill-lower, input[type=range]:active::-ms-fill-lower {
+        background-color: rgb(0, 0, 0);
+    }
+
+    input[type=range]:disabled::-ms-fill-lower, input[type=range]:disabled::-ms-fill-lower {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    input[type=range]::-ms-thumb {
+        background-color: rgb(255, 255, 255);
+        border-width: 1px;
+        border-color: rgb(0, 0, 0);
+        border-style: solid;
+    }
+
+    input[type=range]:disabled::-ms-thumb {
+        background-color: rgb(255, 255, 255);
+        border-color: rgba(0, 0, 0, 0.3);
+    }
+
+    input[type=range]::-ms-fill-upper, input[type=range]:active::-ms-fill-upper, 
+    input[type=range]:disabled::-ms-fill-upper {
+        background-color: transparent;
+    }
+
+    input[type=range] {
+        background-color: transparent;
+    }
+
+    /*
+    Toggle control high contrast colors.
+    */
+    .win-ui-dark .win-toggleswitch .win-switch::-ms-thumb {
+        background-color: rgb(255, 255, 255);
+    }
+    .win-toggleswitch .win-switch::-ms-thumb {
+        background-color: rgb(0, 0, 0);
+    }
+
+    /* 
+    Anchor 
+    */
+    .win-ui-dark a, .win-ui-dark a:hover, .win-ui-dark a:hover:active, .win-ui-dark a:visited {
+        color: rgb(255, 255, 255);
+        text-decoration: underline;   
+    }
+
+    a, a:hover, a:hover:active, a:visited {
+        color: rgb(0, 0, 0);
+        text-decoration: underline;   
+    }
+
+    .win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container:active::before {
+        background-color: transparent;
+    }
+
+    .win-listview .win-vertical .win-surface.win-selectionmode.win-listlayout .win-container.win-selected:active::before {
+        background-color: transparent;
+    }
+}
+
+/*
+AppBar control colors.
+*/
+.win-ui-dark.win-appbar, .win-ui-dark .win-appbar {
+    background-color: rgb(31,31,31);
+    color: rgb(255,255,255);
+}
+.win-appbar {
+    background-color: rgb(221,221,221);
+    color: rgb(0, 0, 0);
+}
+
+@keyframes WinJS-opacity-in               { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WinJS-opacity-out              { from { opacity: 1; } to { opacity: 0; } }
+
+@keyframes WinJS-scale-up                 { from { transform: scale(0.85); } to { transform: scale(1); } }
+@keyframes WinJS-scale-down               { from { transform: scale(1); } to { transform: scale(0.85); } }
+
+@keyframes WinJS-default-remove           { from { transform: translateX( 11px); } to { transform: none; } }
+@keyframes WinJS-default-remove-rtl       { from { transform: translateX(-11px); } to { transform: none; } }
+
+@keyframes WinJS-default-apply            { from { transform: none; } to { transform: translateX( 11px); } }
+@keyframes WinJS-default-apply-rtl        { from { transform: none; } to { transform: translateX(-11px); } }
+
+@keyframes WinJS-showEdgeUI               { from { transform: translateY(-70px); } to { transform: none; } }
+@keyframes WinJS-showPanel                { from { transform: translateX( 364px); } to { transform: none; } }
+@keyframes WinJS-showPanel-rtl            { from { transform: translateX(-364px); } to { transform: none; } }
+@keyframes WinJS-hideEdgeUI               { from { transform: none; } to { transform: translateY(-70px); } }
+@keyframes WinJS-hidePanel                { from { transform: none; } to { transform: translateX( 364px); } }
+@keyframes WinJS-hidePanel-rtl            { from { transform: none; } to { transform: translateX(-364px); } }
+
+@keyframes WinJS-showPopup                { from { transform: translateY(50px); } to { transform: none; } }
+
+@keyframes WinJS-dragSourceEnd            { from { transform: translateX( 11px) scale(1.05); } to { transform: none; } }
+@keyframes WinJS-dragSourceEnd-rtl        { from { transform: translateX(-11px) scale(1.05); } to { transform: none; } }
+
+@keyframes WinJS-enterContent             { from { transform: translateX( 40px); } to { transform: none; } }
+@keyframes WinJS-enterContent-rtl         { from { transform: translateX(-40px); } to { transform: none; } }
+
+@keyframes WinJS-exit                     { from { transform: none; } to { transform: none; } }
+
+@keyframes WinJS-enterPage                { from { transform: translateX( 100px); } to { transform: none; } }
+@keyframes WinJS-enterPage-rtl            { from { transform: translateX(-100px); } to { transform: none; } }
+
+@keyframes WinJS-updateBadge              { from { transform: translateY(24px); } to { transform: none; } }
+
+body,
+.win-type-xx-large,
+.win-type-x-large,
+.win-type-large,
+.win-type-medium,
+.win-type-small,
+.win-type-x-small,
+.win-type-xx-small,
+input,
+textarea,
+.win-textarea,
+button,
+select,
+option {
+    font-family: 
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(am, ti),
+.win-type-xx-large:-ms-lang(am, ti),
+.win-type-x-large:-ms-lang(am, ti),
+.win-type-large:-ms-lang(am, ti),
+.win-type-medium:-ms-lang(am, ti),
+.win-type-small:-ms-lang(am, ti),
+.win-type-x-small:-ms-lang(am, ti),
+.win-type-xx-small:-ms-lang(am, ti),
+input:-ms-lang(am, ti),
+textarea:-ms-lang(am, ti),
+.win-textarea:-ms-lang(am, ti),
+button:-ms-lang(am, ti),
+select:-ms-lang(am, ti),
+option:-ms-lang(am, ti) {
+    font-family: 
+        "Ebrima",
+        "Segoe",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-type-xx-large:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-type-x-large:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-type-large:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-type-medium:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-type-small:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-type-x-small:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-type-xx-small:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+input:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+textarea:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+.win-textarea:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+button:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+select:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
+option:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te) {
+    font-family: 
+        "Nirmala UI",
+        "Segoe",
+        "Ebrima",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(chr-CHER-US),
+.win-type-xx-large:-ms-lang(chr-CHER-US),
+.win-type-x-large:-ms-lang(chr-CHER-US),
+.win-type-large:-ms-lang(chr-CHER-US),
+.win-type-medium:-ms-lang(chr-CHER-US),
+.win-type-small:-ms-lang(chr-CHER-US),
+.win-type-x-small:-ms-lang(chr-CHER-US),
+.win-type-xx-small:-ms-lang(chr-CHER-US),
+input:-ms-lang(chr-CHER-US),
+textarea:-ms-lang(chr-CHER-US),
+.win-textarea:-ms-lang(chr-CHER-US),
+button:-ms-lang(chr-CHER-US),
+select:-ms-lang(chr-CHER-US),
+option:-ms-lang(chr-CHER-US) {
+    font-family: 
+        "Gadugi",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(ja),
+.win-type-xx-large:-ms-lang(ja),
+.win-type-x-large:-ms-lang(ja),
+.win-type-large:-ms-lang(ja),
+.win-type-medium:-ms-lang(ja),
+.win-type-small:-ms-lang(ja),
+.win-type-x-small:-ms-lang(ja),
+.win-type-xx-small:-ms-lang(ja),
+input:-ms-lang(ja),
+textarea:-ms-lang(ja),
+.win-textarea:-ms-lang(ja),
+button:-ms-lang(ja),
+select:-ms-lang(ja),
+option:-ms-lang(ja) {
+    font-family: 
+        "Meiryo UI",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(km, lo, th, bug-Bugi),
+.win-type-xx-large:-ms-lang(km, lo, th, bug-Bugi),
+.win-type-x-large:-ms-lang(km, lo, th, bug-Bugi),
+.win-type-large:-ms-lang(km, lo, th, bug-Bugi),
+.win-type-medium:-ms-lang(km, lo, th, bug-Bugi),
+.win-type-small:-ms-lang(km, lo, th, bug-Bugi),
+.win-type-x-small:-ms-lang(km, lo, th, bug-Bugi),
+.win-type-xx-small:-ms-lang(km, lo, th, bug-Bugi),
+input:-ms-lang(km, lo, th, bug-Bugi),
+textarea:-ms-lang(km, lo, th, bug-Bugi),
+.win-textarea:-ms-lang(km, lo, th, bug-Bugi),
+button:-ms-lang(km, lo, th, bug-Bugi),
+select:-ms-lang(km, lo, th, bug-Bugi),
+option:-ms-lang(km, lo, th, bug-Bugi) {
+    font-family: 
+        "Leelawadee UI",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(ko),
+.win-type-xx-large:-ms-lang(ko),
+.win-type-x-large:-ms-lang(ko),
+.win-type-large:-ms-lang(ko),
+.win-type-medium:-ms-lang(ko),
+.win-type-small:-ms-lang(ko),
+.win-type-x-small:-ms-lang(ko),
+.win-type-xx-small:-ms-lang(ko),
+input:-ms-lang(ko),
+textarea:-ms-lang(ko),
+.win-textarea:-ms-lang(ko),
+button:-ms-lang(ko),
+select:-ms-lang(ko),
+option:-ms-lang(ko) {
+    font-family: 
+        "Malgun Gothic",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(jv-Java),
+.win-type-xx-large:-ms-lang(jv-Java),
+.win-type-x-large:-ms-lang(jv-Java),
+.win-type-large:-ms-lang(jv-Java),
+.win-type-medium:-ms-lang(jv-Java),
+.win-type-small:-ms-lang(jv-Java),
+.win-type-x-small:-ms-lang(jv-Java),
+.win-type-xx-small:-ms-lang(jv-Java),
+input:-ms-lang(jv-Java),
+textarea:-ms-lang(jv-Java),
+.win-textarea:-ms-lang(jv-Java),
+button:-ms-lang(jv-Java),
+select:-ms-lang(jv-Java),
+option:-ms-lang(jv-Java) {
+    font-family: 
+        "Javanese Text",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(cop-Copt),
+.win-type-xx-large:-ms-lang(cop-Copt),
+.win-type-x-large:-ms-lang(cop-Copt),
+.win-type-large:-ms-lang(cop-Copt),
+.win-type-medium:-ms-lang(cop-Copt),
+.win-type-small:-ms-lang(cop-Copt),
+.win-type-x-small:-ms-lang(cop-Copt),
+.win-type-xx-small:-ms-lang(cop-Copt),
+input:-ms-lang(cop-Copt),
+textarea:-ms-lang(cop-Copt),
+.win-textarea:-ms-lang(cop-Copt),
+button:-ms-lang(cop-Copt),
+select:-ms-lang(cop-Copt),
+option:-ms-lang(cop-Copt) {
+    font-family: 
+        "Segoe UI Symbol",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-type-xx-large:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-type-x-large:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-type-large:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-type-medium:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-type-small:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-type-x-small:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-type-xx-small:-ms-lang(zh-CN, zh-Hans, zh-SG),
+input:-ms-lang(zh-CN, zh-Hans, zh-SG),
+textarea:-ms-lang(zh-CN, zh-Hans, zh-SG),
+.win-textarea:-ms-lang(zh-CN, zh-Hans, zh-SG),
+button:-ms-lang(zh-CN, zh-Hans, zh-SG),
+select:-ms-lang(zh-CN, zh-Hans, zh-SG),
+option:-ms-lang(zh-CN, zh-Hans, zh-SG) {
+    font-family: 
+        "Microsoft YaHei UI",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft JhengHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
+body:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-type-xx-large:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-type-x-large:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-type-large:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-type-medium:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-type-small:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-type-x-small:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-type-xx-small:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+input:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+textarea:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+.win-textarea:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+button:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+select:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
+option:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO) {
+    font-family: 
+        "Microsoft JhengHei UI",
+        "Segoe",
+        "Ebrima",
+        "Nirmala UI",
+        "Gadugi",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Meiryo UI",
+        "Leelawadee UI",
+        "Microsoft YaHei UI",
+        "Malgun Gothic",
+        "Estrangelo Edessa",
+        "Microsoft Himalaya",
+        "Microsoft New Tai Lue",
+        "Microsoft PhagsPa",
+        "Microsoft Tai Le",
+        "Microsoft Yi Baiti",
+        "Mongolian Baiti",
+        "MV Boli",
+        "Myanmar Text",
+        "Javanese Text",
+        "Cambria Math";
+}
+
