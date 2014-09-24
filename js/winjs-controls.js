@@ -55,8 +55,6 @@ window.addEventListener('load', function()
           var ui = document.createElement('script');
           base.src = versions[version] + 'js/base.js';
           ui.src = versions[version] + 'js/ui.js';
-          base.async = false;
-          ui.async = false;
 
           // Run WinJS
           ui.onload = function()
