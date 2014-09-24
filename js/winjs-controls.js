@@ -57,8 +57,6 @@ window.addEventListener('load', function()
           ui.src = versions[version] + 'js/ui.js';
           base.async = false;
           ui.async = false;
-          iframe.contentDocument.head.appendChild(base);
-          iframe.contentDocument.head.appendChild(ui);
 
           // Run WinJS
           ui.onload = function()
@@ -75,7 +73,10 @@ window.addEventListener('load', function()
             {
               iframe.contentWindow.initialize();
             }
-          }
+          };
+
+          iframe.contentDocument.head.appendChild(base);
+          iframe.contentDocument.head.appendChild(ui);
         };
       })(iframe);
     }
