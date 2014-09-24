@@ -38,14 +38,25 @@ body
   background-color: #aaa;
 }
 
-#control-view
+.control-view
 {
-  border: none;
   position: absolute;
   top: 0;
+  border: none;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.control-view.left
+{
   left: 0;
   width: 100%;
-  height: 100%;
+}
+
+.control-view.right
+{
+  left: 50%;
+  width: 50%;
 }
 
 .version-select
@@ -54,4 +65,23 @@ body
   font-size: 20px;
   padding: 5px;
   margin: 15px 5px;
+}
+
+.right
+{
+  display: none;
+}
+
+@media (min-width: 1200px)
+{
+  .control-view.left
+  {
+    border-right: 1px solid black;
+    width: 50%;
+  }
+
+  .right
+  {
+    display: block;
+  }
 }
