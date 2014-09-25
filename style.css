@@ -85,3 +85,29 @@ body
     display: block;
   }
 }
+
+@media (max-width: 320px)
+{
+  .main
+  {
+    left: 0;
+    width: 100%;
+    height: calc(100% - 75px);
+  }
+
+  .pane
+  {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 75px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+
+  .control-link
+  {
+    display: inline-block;
+  }
+}
