@@ -1,0 +1,27 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+
+  <script>
+    function initialize()
+    {
+      document.getElementById('navbar').winControl.show();
+    }
+  </script>
+</head>
+<body>
+
+  <div data-win-control="WinJS.UI.AppBar" data-win-options="{sticky: true, placement: 'top'}">
+    <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdAdd',label:'Add',icon:'add',section:'global',tooltip:'Add item'}"></button>
+    <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',section:'global',tooltip:'Remove item'}"></button>
+    <hr data-win-control="WinJS.UI.AppBarCommand" data-win-options="{type:'separator',section:'global'}" />
+    <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdDelete',label:'Delete',icon:'delete',section:'global',tooltip:'Delete item'}"></button>
+    <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdEdit',label:'Edit',icon:'edit',section:'selection',tooltip:'Edit'}"></button>
+  </div>
+
+</body>
+</html>
