@@ -67,6 +67,19 @@ body
   margin: 15px 5px;
 }
 
+.drop-box
+{
+  width: 200px;
+  height: 50px;
+  margin: 15px 5px;
+  border: dashed;
+  border-width: 2px;
+  border-color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 20px;
+  text-align: center;
+}
+
 .right
 {
   display: none;

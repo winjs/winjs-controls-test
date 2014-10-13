@@ -1,8 +1,60 @@
 window.addEventListener('load', function()
 {
   var iframes = document.querySelectorAll('.control-view');
+  var dropBoxes = document.querySelectorAll('.drop-box');
   var selectControlLeft = document.querySelector('.version-select.left');
   var selectControlRight = document.querySelector('.version-select.right');
+  var droppedStyles = [null, null];
+
+  //
+  // Handle file drops
+  //
+  function getHandleDragFunc(index)
+  {
+    var func = function(e)
+    {
+      e.stopPropagation();
+      e.preventDefault();
+    };
+
+    return func;
+  };
+
+  function getHandleDropFunc(index)
+  {
+    var func = function(e)
+    {
+      e.stopPropagation();
+      e.preventDefault();
+
+      var file = e.dataTransfer.files[0];
+      var reader = new FileReader();
+      reader.onloadend = function(loadEvent)
+      {
+        // Remove previous stylesheet
+        var oldStyle = iframes[index].contentDocument.querySelector('#winjs-stylesheet');
+        oldStyle.parentElement.removeChild(oldStyle);
+
+        // Add the stylesheet
+        var text = loadEvent.target.result;
+        var style = iframes[index].contentDocument.createElement('style');
+        style.innerHTML = text;
+        style.id = 'winjs-stylesheet';
+        iframes[index].contentDocument.head.appendChild(style);
+        droppedStyles[index] = text;
+      };
+      reader.readAsText(file);
+    };
+
+    return func;
+  };
+
+  for (var i = 0; i < iframes.length; ++i)
+  {
+    dropBoxes[i].addEventListener('dragover', getHandleDragFunc(i));
+    dropBoxes[i].addEventListener('drop', getHandleDropFunc(i));
+  }
+
 
   //
   // Version paths
@@ -44,11 +96,21 @@ window.addEventListener('load', function()
         iframe.onload = function()
         {
           // Add stylesheet
-          var style = iframe.contentDocument.createElement('link');
-          style.rel = 'stylesheet';
-          style.href = versions[version] + 'css/ui-' + theme + '.css';
-          style.id = 'winjs-stylesheet';
-          iframe.contentDocument.head.appendChild(style);
+          if (droppedStyles[index])
+          {
+            var style = iframe.contentDocument.createElement('style');
+            style.innerHTML = droppedStyles[index];
+            style.id = 'winjs-stylesheet';
+            iframe.contentDocument.head.appendChild(style);
+          }
+          else
+          {
+            var style = iframe.contentDocument.createElement('link');
+            style.rel = 'stylesheet';
+            style.href = versions[version] + 'css/ui-' + theme + '.css';
+            style.id = 'winjs-stylesheet';
+            iframe.contentDocument.head.appendChild(style);
+          }
 
           // Add javascript
           var base = iframe.contentDocument.createElement('script');
@@ -88,11 +150,13 @@ window.addEventListener('load', function()
   selectControlLeft.addEventListener('change', function()
   {
     var parts = selectControlLeft.value.split(' ');
+    droppedStyles[0] = null;
     update(iframes[0].src, parts[0], parts[1], 0);
   });
   selectControlRight.addEventListener('change', function()
   {
     var parts = selectControlRight.value.split(' ');
+    droppedStyles[1] = null;
     update(iframes[1].src, parts[0], parts[1], 1);
   });
 
