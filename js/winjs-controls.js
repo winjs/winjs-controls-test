@@ -33,7 +33,8 @@ window.addEventListener('load', function()
       {
         // Remove previous stylesheet
         var oldStyle = iframes[index].contentDocument.querySelector('#winjs-stylesheet');
-        oldStyle.parentElement.removeChild(oldStyle);
+        if (oldStyle)
+          oldStyle.parentElement.removeChild(oldStyle);
 
         // Add the stylesheet
         var text = loadEvent.target.result;
@@ -65,6 +66,7 @@ window.addEventListener('load', function()
     '3.0(CDN)': '//cdnjs.cloudflare.com/ajax/libs/winjs/3.0.0/',
     '2.1': '../winjs/2.1/',
     '2.0': '../winjs/2.0/',
+    'none': ''
   };
 
   //
@@ -73,8 +75,15 @@ window.addEventListener('load', function()
   var selectHTML = '';
   for (var i in versions)
   {
-    selectHTML += '<option>' + i + ' dark' + '</option>';
-    selectHTML += '<option>' + i + ' light' + '</option>';
+    if (!versions[i])
+    {
+      selectHTML += '<option>' + i + '</option>';
+    }
+    else
+    {
+      selectHTML += '<option>' + i + ' dark' + '</option>';
+      selectHTML += '<option>' + i + ' light' + '</option>';
+    }
   }
   selectControlLeft.innerHTML = selectHTML;
   selectControlRight.innerHTML = selectHTML;
@@ -103,7 +112,7 @@ window.addEventListener('load', function()
             style.id = 'winjs-stylesheet';
             iframe.contentDocument.head.appendChild(style);
           }
-          else
+          else if (versions[version])
           {
             var style = iframe.contentDocument.createElement('link');
             style.rel = 'stylesheet';
@@ -111,6 +120,9 @@ window.addEventListener('load', function()
             style.id = 'winjs-stylesheet';
             iframe.contentDocument.head.appendChild(style);
           }
+
+          if (!versions[version])
+            return;
 
           // Add javascript
           var base = iframe.contentDocument.createElement('script');
