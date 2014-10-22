@@ -1,13 +1,13 @@
 ﻿/*!
   Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-  Build: 3.0.0.winjs.2014.9.23
-  Version: WinJS.3.0
+  Build: 3.1.0.winjs.2014.10.22
+  Version: WinJS.3.1
 */
 
 (function (global) {
     global.strings = global.strings || {};
 
-    var appxVersion = "WinJS.3.0";
+    var appxVersion = "WinJS.3.1";
     var developerPrefix = "Developer.";
     if (appxVersion.indexOf(developerPrefix) === 0) {
         appxVersion = appxVersion.substring(developerPrefix.length);
@@ -22,6 +22,15 @@
 {
     "appBarAriaLabel": "App Bar",
     "appBarCommandAriaLabel": "App Bar Item",
+    "autoSuggestBoxAriaLabel": "Autosuggestbox",
+    "autoSuggestBoxAriaLabelInputNoPlaceHolder": "Autosuggestbox, enter to submit query, esc to clear text",
+    "autoSuggestBoxAriaLabelInputPlaceHolder": "Autosuggestbox, {0}, enter to submit query, esc to clear text",
+    "autoSuggestBoxAriaLabelQuery": "Suggestion: {0}",
+    "_autoSuggestBoxAriaLabelQuery.comment": "Suggestion: query text (example: Suggestion: contoso)",
+    "autoSuggestBoxAriaLabelSeparator": "Separator: {0}",
+    "_autoSuggestBoxAriaLabelSeparator.comment": "Separator: separator text (example: Separator: People or Separator: Apps)",
+    "autoSuggestBoxAriaLabelResult": "Result: {0}, {1}",
+    "_autoSuggestBoxAriaLabelResult.comment": "Result: text, detailed text (example: Result: contoso, www.contoso.com)",
     "averageRating": "Average Rating",
     "backbuttonarialabel": "Back",
     "clearYourRating" : "Clear your rating",
@@ -42,12 +51,6 @@
     "searchBoxAriaLabelInputNoPlaceHolder": "Searchbox, enter to submit query, esc to clear text",
     "searchBoxAriaLabelInputPlaceHolder": "Searchbox, {0}, enter to submit query, esc to clear text",
     "searchBoxAriaLabelButton": "Click to submit query",
-    "searchBoxAriaLabelQuery": "Suggestion: {0}",
-    "_searchBoxAriaLabelQuery.comment": "Suggestion: query text (example: Suggestion: contoso)",
-    "searchBoxAriaLabelSeparator": "Separator: {0}",
-    "_searchBoxAriaLabelSeparator.comment": "Separator: separator text (example: Separator: People or Separator: Apps)",
-    "searchBoxAriaLabelResult": "Result: {0}, {1}",
-    "_searchBoxAriaLabelResult.comment": "Result: text, detailed text (example: Result: contoso, www.contoso.com)",
     "selectAMPM": "Select A.M P.M",
     "selectDay": "Select Day",
     "selectHour": "Select Hour",

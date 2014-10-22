@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.0 3.0.0.winjs.2014.9.23 base.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.22 base.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.0 3.0.0.winjs.2014.9.23 base.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.22 base.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -769,6 +769,15 @@ define('require-json',{load: function(id){throw new Error("Dynamic load not allo
 define('require-json!en-US/ui.resjson',{
     "appBarAriaLabel": "App Bar",
     "appBarCommandAriaLabel": "App Bar Item",
+    "autoSuggestBoxAriaLabel": "Autosuggestbox",
+    "autoSuggestBoxAriaLabelInputNoPlaceHolder": "Autosuggestbox, enter to submit query, esc to clear text",
+    "autoSuggestBoxAriaLabelInputPlaceHolder": "Autosuggestbox, {0}, enter to submit query, esc to clear text",
+    "autoSuggestBoxAriaLabelQuery": "Suggestion: {0}",
+    "_autoSuggestBoxAriaLabelQuery.comment": "Suggestion: query text (example: Suggestion: contoso)",
+    "autoSuggestBoxAriaLabelSeparator": "Separator: {0}",
+    "_autoSuggestBoxAriaLabelSeparator.comment": "Separator: separator text (example: Separator: People or Separator: Apps)",
+    "autoSuggestBoxAriaLabelResult": "Result: {0}, {1}",
+    "_autoSuggestBoxAriaLabelResult.comment": "Result: text, detailed text (example: Result: contoso, www.contoso.com)",
     "averageRating": "Average Rating",
     "backbuttonarialabel": "Back",
     "clearYourRating" : "Clear your rating",
@@ -789,12 +798,6 @@ define('require-json!en-US/ui.resjson',{
     "searchBoxAriaLabelInputNoPlaceHolder": "Searchbox, enter to submit query, esc to clear text",
     "searchBoxAriaLabelInputPlaceHolder": "Searchbox, {0}, enter to submit query, esc to clear text",
     "searchBoxAriaLabelButton": "Click to submit query",
-    "searchBoxAriaLabelQuery": "Suggestion: {0}",
-    "_searchBoxAriaLabelQuery.comment": "Suggestion: query text (example: Suggestion: contoso)",
-    "searchBoxAriaLabelSeparator": "Separator: {0}",
-    "_searchBoxAriaLabelSeparator.comment": "Separator: separator text (example: Separator: People or Separator: Apps)",
-    "searchBoxAriaLabelResult": "Result: {0}, {1}",
-    "_searchBoxAriaLabelResult.comment": "Result: text, detailed text (example: Result: contoso, www.contoso.com)",
     "selectAMPM": "Select A.M P.M",
     "selectDay": "Select Day",
     "selectHour": "Select Hour",
@@ -1216,7 +1219,7 @@ define('WinJS/Core/_Resources',[
     ], function resourcesInit(exports, _Global, _WinRT, _Base, _Events, defaultStrings) {
     "use strict";
 
-    var appxVersion = "WinJS.3.0";
+    var appxVersion = "WinJS.3.1";
     var developerPrefix = "Developer.";
     if (appxVersion.indexOf(developerPrefix) === 0) {
         appxVersion = appxVersion.substring(developerPrefix.length);
@@ -2837,7 +2840,7 @@ define('WinJS/Promise/_StateMachine',[
                 }
             },
 
-            _cancelBlocker: function Promise__cancelBlocker(input) {
+            _cancelBlocker: function Promise__cancelBlocker(input, oncancel) {
                 //
                 // Returns a promise which on cancelation will still result in downstream cancelation while
                 //  protecting the promise 'input' from being  canceled which has the effect of allowing
@@ -2856,6 +2859,7 @@ define('WinJS/Promise/_StateMachine',[
                     function () {
                         complete = null;
                         error = null;
+                        oncancel && oncancel();
                     }
                 );
                 input.then(
@@ -4651,7 +4655,6 @@ define('WinJS/Core/_BaseUtils',[
     var requestAnimationWorker;
     var requestAnimationId = 0;
     var requestAnimationHandlers = {};
-    var isPhone = false;
     var validation = false;
     var platform = _Global.navigator.platform;
     var isiOS = platform === "iPhone" || platform === "iPad" || platform === "iPod";
@@ -4824,6 +4827,57 @@ define('WinJS/Core/_BaseUtils',[
         // Non-standardized events
         equivalents["manipulationStateChanged"] = ("MSManipulationEvent" in _Global ? "ManipulationEvent" : null);
         return equivalents;
+    }
+
+    // Returns a function which, when called, will call *fn*. However,
+    // if called multiple times, it will only call *fn* at most once every
+    // *delay* milliseconds. Multiple calls during the throttling period
+    // will be coalesced into a single call to *fn* with the arguments being
+    // the ones from the last call received during the throttling period.
+    // Note that, due to the throttling period, *fn* may be invoked asynchronously
+    // relative to the time it was called so make sure its arguments are still valid
+    // (for example, eventObjects will not be valid).
+    //
+    // Example usage. If you want your key down handler to run once every 100 ms,
+    // you could do this:
+    //   var onKeyDown = throttledFunction(function (keyCode) {
+    //     // do something with keyCode
+    //   });
+    //   element.addEventListener("keydown", function (eventObject) { onKeyDown(eventObject.keyCode); });
+    //
+    function throttledFunction(delay, fn) {
+        var throttlePromise = null;
+        var pendingCallPromise = null;
+        var nextContext = null;
+        var nextArgs = null;
+
+        function makeThrottlePromise() {
+            return Promise.timeout(delay).then(function () {
+                throttlePromise = null;
+            });
+        }
+
+        return function () {
+            if (pendingCallPromise) {
+                nextContext = this;
+                nextArgs = [].slice.call(arguments, 0);
+            } else if (throttlePromise) {
+                nextContext = this;
+                nextArgs = [].slice.call(arguments, 0);
+                pendingCallPromise = throttlePromise.then(function () {
+                    var context = nextContext;
+                    nextContext = null;
+                    var args = nextArgs;
+                    nextArgs = null;
+                    throttlePromise = makeThrottlePromise();
+                    pendingCallPromise = null;
+                    fn.apply(context, args);
+                });
+            } else {
+                throttlePromise = makeThrottlePromise();
+                fn.apply(this, arguments);
+            }
+        };
     }
 
     _Base.Namespace._moduleDefine(exports, "WinJS.Utilities", {
@@ -5014,6 +5068,8 @@ define('WinJS/Core/_BaseUtils',[
             _Global.setTimeout(handler, 0);
         },
 
+        _throttledFunction: throttledFunction,
+
         _shallowCopy: function _shallowCopy(a) {
             // Shallow copy a single object.
             return this._mergeAll([a]);
@@ -5053,19 +5109,7 @@ define('WinJS/Core/_BaseUtils',[
         _traceAsyncOperationStarting: _Trace._traceAsyncOperationStarting,
         _traceAsyncOperationCompleted: _Trace._traceAsyncOperationCompleted,
         _traceAsyncCallbackStarting: _Trace._traceAsyncCallbackStarting,
-        _traceAsyncCallbackCompleted: _Trace._traceAsyncCallbackCompleted,
-
-        /// <field type="Boolean" locid="WinJS.Utilities.isPhone" helpKeyword="WinJS.Utilities.isPhone">Determine if we are currently running in the Phone.</field>
-        isPhone: {
-            get: function () { return isPhone; },
-            configurable: false,
-            enumerable: true
-        },
-        _setIsPhone: {
-            set: function (value) {
-                isPhone = value;
-            }
-        }
+        _traceAsyncCallbackCompleted: _Trace._traceAsyncCallbackCompleted
     });
 
     _Base.Namespace._moduleDefine(exports, "WinJS", {
@@ -5300,9 +5344,10 @@ define('WinJS/Utilities/_ElementUtilities',[
     '../Core/_Global',
     '../Core/_Base',
     '../Core/_BaseUtils',
+    '../Core/_WinRT',
     '../Promise',
     '../Scheduler'
-], function elementUtilities(exports, _Global, _Base, _BaseUtils, Promise, Scheduler) {
+], function elementUtilities(exports, _Global, _Base, _BaseUtils, _WinRT, Promise, Scheduler) {
     "use strict";
 
     // not supported in WebWorker
@@ -6036,15 +6081,28 @@ define('WinJS/Utilities/_ElementUtilities',[
             _resizeEvent: { get: function () { return 'WinJSElementResize'; } }
         }
     );
-
-
-    var GlobalListener = new (_Base.Class.define(
-        function GlobalListener_ctor() {
+    
+    // - object: The object on which GenericListener will listen for events.
+    // - objectName: A string representing the name of *object*. This will be
+    //   incorporated into the names of the events and classNames created by
+    //   GenericListener.
+    // - options
+    //   - registerThruWinJSCustomEvents: If true, will register for events using
+    //     _exports._addEventListener so that you can take advantage of WinJS's custom
+    //     events (e.g. focusin, pointer*). Otherwise, registers directly on *object*
+    //     using its add/removeEventListener methods.
+    var GenericListener = _Base.Class.define(
+        function GenericListener_ctor(objectName, object, options) {
+            options = options || {};
+            this.registerThruWinJSCustomEvents = !!options.registerThruWinJSCustomEvents; 
+            
+            this.objectName = objectName;
+            this.object = object;
             this.capture = {};
             this.bubble = {};
         },
         {
-            addEventListener: function GlobalListener_addEventListener(element, name, listener, capture) {
+            addEventListener: function GenericListener_addEventListener(element, name, listener, capture) {
                 name = name.toLowerCase();
                 var handlers = this._getHandlers(capture);
                 var handler = handlers[name];
@@ -6053,15 +6111,19 @@ define('WinJS/Utilities/_ElementUtilities',[
                     handler = this._getListener(name, capture);
                     handler.refCount = 0;
                     handlers[name] = handler;
-
-                    exports._addEventListener(_Global, name, handler, capture);
+                    
+                    if (this.registerThruWinJSCustomEvents) {
+                        exports._addEventListener(this.object, name, handler, capture);
+                    } else {
+                        this.object.addEventListener(name, handler, capture);
+                    }
                 }
 
                 handler.refCount++;
                 element.addEventListener(this._getEventName(name, capture), listener);
                 addClass(element, this._getClassName(name, capture));
             },
-            removeEventListener: function GlobalListener_removeEventListener(element, name, listener, capture) {
+            removeEventListener: function GenericListener_removeEventListener(element, name, listener, capture) {
                 name = name.toLowerCase();
                 var handlers = this._getHandlers(capture);
                 var handler = handlers[name];
@@ -6069,17 +6131,20 @@ define('WinJS/Utilities/_ElementUtilities',[
                 if (handler) {
                     handler.refCount--;
                     if (handler.refCount === 0) {
-                        exports._removeEventListener(_Global, name, handler, capture);
+                        if (this.registerThruWinJSCustomEvents) {
+                            exports._removeEventListener(this.object, name, handler, capture);
+                        } else {
+                            this.object.removeEventListener(name, handler, capture);
+                        }
                         delete handlers[name];
                     }
-
                 }
 
                 removeClass(element, this._getClassName(name, capture));
                 element.removeEventListener(this._getEventName(name, capture), listener);
             },
 
-            _getHandlers: function GlobalListener_getHandlers(capture) {
+            _getHandlers: function GenericListener_getHandlers(capture) {
                 if (capture) {
                     return this.capture;
                 } else {
@@ -6087,33 +6152,36 @@ define('WinJS/Utilities/_ElementUtilities',[
                 }
             },
 
-            _getClassName: function GlobalListener_getClassName(name, capture) {
+            _getClassName: function GenericListener_getClassName(name, capture) {
                 var captureSuffix = capture ? 'capture' : 'bubble';
-                return 'win-global-event-' + name + captureSuffix;
+                return 'win-' + this.objectName.toLowerCase() + '-event-' + name + captureSuffix;
             },
 
-            _getEventName: function GlobalListener_getEventName(name, capture) {
+            _getEventName: function GenericListener_getEventName(name, capture) {
                 var captureSuffix = capture ? 'capture' : 'bubble';
-                return 'WinJSGlobalEvent-' + name + captureSuffix;
+                return 'WinJS' + this.objectName + 'Event-' + name + captureSuffix;
             },
 
-            _getListener: function GlobalListener_getListener(name, capture) {
-                var listener = function GlobalListener_generatedListener(ev) {
+            _getListener: function GenericListener_getListener(name, capture) {
+                var listener = function GenericListener_generatedListener(ev) {
 
                     var targets = _Global.document.querySelectorAll('.' + this._getClassName(name, capture));
                     var length = targets.length;
+                    var handled = false;
                     for (var i = 0; i < length; i++) {
                         var event = _Global.document.createEvent("Event");
                         event.initEvent(this._getEventName(name, capture), false, true);
                         event.detail = { originalEvent: ev };
-                        targets[i].dispatchEvent(event);
+                        var doDefault = targets[i].dispatchEvent(event);
+                        handled = handled || !doDefault;
                     }
+                    return handled;
                 };
 
                 return listener.bind(this);
             }
         }
-    ))();
+    );
 
     var determinedRTLEnvironment = false,
         usingWebkitScrollCoordinates = false,
@@ -6551,8 +6619,13 @@ define('WinJS/Utilities/_ElementUtilities',[
                 return _resizeNotifier;
             }
         },
-
-        _globalListener: GlobalListener,
+        
+        _GenericListener: GenericListener,
+        _globalListener: new GenericListener("Global", _Global, { registerThruWinJSCustomEvents: true }),
+        _documentElementListener: new GenericListener("DocumentElement", _Global.document.documentElement, { registerThruWinJSCustomEvents: true }),
+        _inputPaneListener: _WinRT.Windows.UI.ViewManagement.InputPane ?
+            new GenericListener("InputPane", _WinRT.Windows.UI.ViewManagement.InputPane.getForCurrentView()) :
+            { addEventListener: function () { }, removeEventListener: function () { } },
 
         // Appends a hidden child to the given element that will listen for being added
         // to the DOM. When the hidden element is added to the DOM, it will dispatch a
@@ -7489,7 +7562,40 @@ define('WinJS/Utilities/_ElementUtilities',[
                 }
             };
         },
-
+        
+        // *element* is not included in the tabIndex search
+        _getHighAndLowTabIndices: function Utilities_getHighAndLowTabIndices(element) {
+            var descendants = element.getElementsByTagName("*");
+            var lowestTabIndex = 0;
+            var highestTabIndex = 0;
+            // tabIndex=0 is the highest (considered higher than positive tab indices) so
+            // we can stop searching for a higher tab index once we find tabIndex=0.
+            var foundTabIndex0 = false;
+            for (var i = 0, len = descendants.length; i < len; i++) {
+                var tabIndexStr = descendants[i].getAttribute("tabIndex");
+                if (tabIndexStr !== null && tabIndexStr !== undefined) {
+                    var tabIndex = parseInt(tabIndexStr, 10);
+                    // Update lowest
+                    if (tabIndex > 0 && (tabIndex < lowestTabIndex || lowestTabIndex === 0)) {
+                        lowestTabIndex = tabIndex;
+                    }
+                    // Update highest
+                    if (!foundTabIndex0) {
+                        if (tabIndex === 0) {
+                            foundTabIndex0 = true;
+                            highestTabIndex = 0;
+                        } else if (tabIndex > highestTabIndex) {
+                            highestTabIndex = tabIndex;
+                        }
+                    }
+                } 
+            }
+            
+            return {
+                highest: highestTabIndex,
+                lowest: lowestTabIndex
+            };
+        },
 
         _getLowestTabIndexInList: function Utilities_getLowestTabIndexInList(elements) {
             // Returns the lowest positive tabIndex in a list of elements.
@@ -11981,7 +12087,15 @@ define('WinJS/Utilities/_UI',[
             /// <field locid="WinJS.UI.ListView.ObjectType.groupHeader" helpKeyword="WinJS.UI.ObjectType.groupHeader">
             /// This value represents a ListView group header.
             /// </field>
-            groupHeader: "groupHeader"
+            groupHeader: "groupHeader",
+            /// <field locid="WinJS.UI.ListView.ObjectType.listHeader" helpKeyword="WinJS.UI.ObjectType.listHeader">
+            /// This value represents the ListView's header.
+            /// </field>
+            listHeader: "listHeader",
+            /// <field locid="WinJS.UI.ListView.ObjectType.listFooter" helpKeyword="WinJS.UI.ObjectType.listFooter">
+            /// This value represents the ListView's footer.
+            /// </field>
+            listFooter: "listFooter",
         },
 
         /// <field locid="WinJS.UI.ListView.SelectionMode" helpKeyword="WinJS.UI.SelectionMode">
@@ -12555,7 +12669,7 @@ define('WinJS/Fragments',[
         }
     }
 
-    function forceLocal(uri) {
+    function _forceLocal(uri) {
         if (_BaseUtils.hasWinRT) {
             // we force the URI to be cannonicalized and made absolute by IE
             //
@@ -12607,6 +12721,7 @@ define('WinJS/Fragments',[
     }
 
     var writeProfilerMark = _WriteProfilerMark;
+    var forceLocal = _forceLocal;
 
     var getFragmentContents = getFragmentContentsXHR;
     function getFragmentContentsXHR(href) {
@@ -12621,7 +12736,14 @@ define('WinJS/Fragments',[
         cache: cache,
         clearCache: clearCache,
         _cacheStore: { get: function () { return cacheStore; } },
-        _forceLocal: forceLocal,
+        _forceLocal: {
+            get: function () {
+                return forceLocal;
+            },
+            set: function (value) {
+                forceLocal = value;
+            }
+        },
         _getFragmentContents: {
             get: function () {
                 return getFragmentContents;
@@ -13261,8 +13383,9 @@ define('WinJS/Application',[
     './Navigation',
     './Promise',
     './_Signal',
-    './Scheduler'
-    ], function applicationInit(exports, _Global, _WinRT, _Base, _Events, _Log, _WriteProfilerMark, _State, Navigation, Promise, _Signal, Scheduler) {
+    './Scheduler',
+    './Utilities/_ElementUtilities'
+    ], function applicationInit(exports, _Global, _WinRT, _Base, _Events, _Log, _WriteProfilerMark, _State, Navigation, Promise, _Signal, Scheduler, _ElementUtilities) {
     "use strict";
 
     _Global.Debug && (_Global.Debug.setNonUserCodeExceptions = true);
@@ -13274,7 +13397,12 @@ define('WinJS/Application',[
         readyET = "ready",
         errorET = "error",
         settingsET = "settings",
-        backClickET = "backclick";
+        backClickET = "backclick",
+        beforeRequestingFocusOnKeyboardInputET = "beforerequestingfocusonkeyboardinput",
+        requestingFocusOnKeyboardInputET = "requestingfocusonkeyboardinput",
+        edgyStartingET = "edgystarting",
+        edgyCompletedET = "edgycompleted",
+        edgyCanceledET = "edgycanceled";
 
     var outstandingPromiseErrors;
     var eventQueue = [];
@@ -13288,6 +13416,171 @@ define('WinJS/Application',[
     var createEvent = _Events._createEventProperty;
     var pendingDeferrals = {};
     var pendingDeferralID = 0;
+    var TypeToSearch = {
+        _suggestionManager: null,
+        _registered: false,
+        
+        updateRegistration: function Application_TypeToSearch_updateRegistration() {
+            var ls = listeners._listeners && listeners._listeners[requestingFocusOnKeyboardInputET] || [];
+            if (!TypeToSearch._registered && ls.length > 0) {
+                if (_WinRT.Windows.ApplicationModel.Search.Core.SearchSuggestionManager) {
+                    TypeToSearch._suggestionManager = new _WinRT.Windows.ApplicationModel.Search.Core.SearchSuggestionManager();
+                    TypeToSearch._suggestionManager.addEventListener("requestingfocusonkeyboardinput", requestingFocusOnKeyboardInput);
+                } else {
+                    TypeToSearch._updateKeydownCaptureListeners(_Global.top, true /*add*/);
+                }
+                TypeToSearch._registered = true;
+            }
+            if (TypeToSearch._registered && ls.length === 0) {
+                if (_WinRT.Windows.ApplicationModel.Search.Core.SearchSuggestionManager) {
+                    TypeToSearch._suggestionManager && TypeToSearch._suggestionManager.removeEventListener("requestingfocusonkeyboardinput", requestingFocusOnKeyboardInput);
+                    TypeToSearch._suggestionManager = null;
+                } else {
+                    TypeToSearch._updateKeydownCaptureListeners(_Global.top, false /*add*/);
+                }
+                TypeToSearch._registered = false;
+            }
+        },
+        
+        _keydownCaptureHandler: function Application_TypeToSearch_keydownCaptureHandler(event) {
+            if (TypeToSearch._registered && TypeToSearch._shouldKeyTriggerTypeToSearch(event)) {
+                requestingFocusOnKeyboardInput();
+            }
+        },
+    
+        _frameLoadCaptureHandler: function Application_TypeToSearch_frameLoadCaptureHandler(event) {
+            if (TypeToSearch._registered) {
+                TypeToSearch._updateKeydownCaptureListeners(event.target.contentWindow, true /*add*/);
+            }
+        },
+    
+        _updateKeydownCaptureListeners: function Application_TypeToSearch_updateKeydownCaptureListeners(win, add) {
+            // Register for child frame keydown events in order to support FocusOnKeyboardInput
+            // when focus is in a child frame.  Also register for child frame load events so
+            // it still works after frame navigations.
+            // Note: This won't catch iframes added programmatically later, but that can be worked
+            // around by toggling FocusOnKeyboardInput off/on after the new iframe is added.
+            try {
+                if (add) {
+                    win.document.addEventListener('keydown', TypeToSearch._keydownCaptureHandler, true);
+                } else {
+                    win.document.removeEventListener('keydown', TypeToSearch._keydownCaptureHandler, true);
+                }
+            } catch (e) { // if the IFrame crosses domains, we'll get a permission denied error
+            }
+    
+            if (win.frames) {
+                for (var i = 0, l = win.frames.length; i < l; i++) {
+                    var childWin = win.frames[i];
+                    TypeToSearch._updateKeydownCaptureListeners(childWin, add);
+    
+                    try {
+                        if (add) {
+                            if (childWin.frameElement) {
+                                childWin.frameElement.addEventListener('load', TypeToSearch._frameLoadCaptureHandler, true);
+                            }
+                        } else {
+                            if (childWin.frameElement) {
+                                childWin.frameElement.removeEventListener('load', TypeToSearch._frameLoadCaptureHandler, true);
+                            }
+                        }
+                    } catch (e) { // if the IFrame crosses domains, we'll get a permission denied error
+                    }
+                }
+            }
+        },
+    
+        _shouldKeyTriggerTypeToSearch: function Application_TypeToSearch_shouldKeyTriggerTypeToSearch(event) {
+            var shouldTrigger = false;
+            // First, check if a metaKey is pressed (only applies to MacOS). If so, do nothing here.
+            if (!event.metaKey) {
+                // We also don't handle CTRL/ALT combinations, unless ALTGR is also set. Since there is no shortcut for checking AltGR,
+                // we need to use getModifierState, however, Safari currently doesn't support this.
+                if ((!event.ctrlKey && !event.altKey) || (event.getModifierState && event.getModifierState("AltGraph"))) {
+                    // Show on most keys for visible characters like letters, numbers, etc.
+                    switch (event.keyCode) {
+                        case 0x30:  //0x30 0 key
+                        case 0x31:  //0x31 1 key
+                        case 0x32:  //0x32 2 key
+                        case 0x33:  //0x33 3 key
+                        case 0x34:  //0x34 4 key
+                        case 0x35:  //0x35 5 key
+                        case 0x36:  //0x36 6 key
+                        case 0x37:  //0x37 7 key
+                        case 0x38:  //0x38 8 key
+                        case 0x39:  //0x39 9 key
+    
+                        case 0x41:  //0x41 A key
+                        case 0x42:  //0x42 B key
+                        case 0x43:  //0x43 C key
+                        case 0x44:  //0x44 D key
+                        case 0x45:  //0x45 E key
+                        case 0x46:  //0x46 F key
+                        case 0x47:  //0x47 G key
+                        case 0x48:  //0x48 H key
+                        case 0x49:  //0x49 I key
+                        case 0x4A:  //0x4A J key
+                        case 0x4B:  //0x4B K key
+                        case 0x4C:  //0x4C L key
+                        case 0x4D:  //0x4D M key
+                        case 0x4E:  //0x4E N key
+                        case 0x4F:  //0x4F O key
+                        case 0x50:  //0x50 P key
+                        case 0x51:  //0x51 Q key
+                        case 0x52:  //0x52 R key
+                        case 0x53:  //0x53 S key
+                        case 0x54:  //0x54 T key
+                        case 0x55:  //0x55 U key
+                        case 0x56:  //0x56 V key
+                        case 0x57:  //0x57 W key
+                        case 0x58:  //0x58 X key
+                        case 0x59:  //0x59 Y key
+                        case 0x5A:  //0x5A Z key
+    
+                        case 0x60:  // VK_NUMPAD0,             //0x60 Numeric keypad 0 key
+                        case 0x61:  // VK_NUMPAD1,             //0x61 Numeric keypad 1 key
+                        case 0x62:  // VK_NUMPAD2,             //0x62 Numeric keypad 2 key
+                        case 0x63:  // VK_NUMPAD3,             //0x63 Numeric keypad 3 key
+                        case 0x64:  // VK_NUMPAD4,             //0x64 Numeric keypad 4 key
+                        case 0x65:  // VK_NUMPAD5,             //0x65 Numeric keypad 5 key
+                        case 0x66:  // VK_NUMPAD6,             //0x66 Numeric keypad 6 key
+                        case 0x67:  // VK_NUMPAD7,             //0x67 Numeric keypad 7 key
+                        case 0x68:  // VK_NUMPAD8,             //0x68 Numeric keypad 8 key
+                        case 0x69:  // VK_NUMPAD9,             //0x69 Numeric keypad 9 key
+                        case 0x6A:  // VK_MULTIPLY,            //0x6A Multiply key
+                        case 0x6B:  // VK_ADD,                 //0x6B Add key
+                        case 0x6C:  // VK_SEPARATOR,           //0x6C Separator key
+                        case 0x6D:  // VK_SUBTRACT,            //0x6D Subtract key
+                        case 0x6E:  // VK_DECIMAL,             //0x6E Decimal key
+                        case 0x6F:  // VK_DIVIDE,              //0x6F Divide key
+    
+                        case 0xBA:  // VK_OEM_1,               //0xBA Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ';:' key
+                        case 0xBB:  // VK_OEM_PLUS,            //0xBB For any country/region, the '+' key
+                        case 0xBC:  // VK_OEM_COMMA,           //0xBC For any country/region, the ',' key
+                        case 0xBD:  // VK_OEM_MINUS,           //0xBD For any country/region, the '-' key
+                        case 0xBE:  // VK_OEM_PERIOD,          //0xBE For any country/region, the '.' key
+                        case 0xBF:  // VK_OEM_2,               //0xBF Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '/?' key
+                        case 0xC0:  // VK_OEM_3,               //0xC0 Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '`~' key
+    
+                        case 0xDB:  // VK_OEM_4,               //0xDB Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '[{' key
+                        case 0xDC:  // VK_OEM_5,               //0xDC Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '\|' key
+                        case 0xDD:  // VK_OEM_6,               //0xDD Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ']}' key
+                        case 0xDE:  // VK_OEM_7,               //0xDE Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the 'single-quote/double-quote' key
+                        case 0xDF:  // VK_OEM_8,               //0xDF Used for miscellaneous characters; it can vary by keyboard.
+    
+                        case 0xE2:  // VK_OEM_102,             //0xE2 Either the angle bracket key or the backslash key on the RT 102-key keyboard
+    
+                        case 0xE5:  // VK_PROCESSKEY,          //0xE5 IME PROCESS key
+    
+                        case 0xE7:  // VK_PACKET,              //0xE7 Used to pass Unicode characters as if they were keystrokes. The VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods. For more information, see Remark in KEYBDINPUT, SendInput, WM_KEYDOWN, and WM_KEYUP
+                            shouldTrigger = true;
+                            break;
+                    }
+                }
+            }
+            return shouldTrigger;
+        }
+    };
 
     function safeSerialize(obj) {
         var str;
@@ -13388,6 +13681,10 @@ define('WinJS/Application',[
             /// </signature>
             waitForPromise = waitForPromise.then(function () { return promise; });
         };
+        eventRecord._stoppedImmediatePropagation = false;
+        eventRecord.stopImmediatePropagation = function () {
+            eventRecord._stoppedImmediatePropagation = true;
+        };
         eventRecord.detail = eventRecord.detail || {};
         if (typeof (eventRecord.detail) === "object") {
             eventRecord.detail.setPromise = eventRecord.setPromise;
@@ -13398,9 +13695,9 @@ define('WinJS/Application',[
                 var handled = false;
                 l = listeners._listeners[eventRecord.type];
                 if (l) {
-                    l.forEach(function dispatchOne(e) {
-                        handled = e.listener(eventRecord) || handled;
-                    });
+                    for (var i = 0, len = l.length; i < len && !eventRecord._stoppedImmediatePropagation; i++) {
+                        handled = l[i].listener(eventRecord) || handled;
+                    }
                 }
             }
 
@@ -13577,6 +13874,13 @@ define('WinJS/Application',[
                 }
             }
         ],
+        beforerequestingfocusonkeyboardinput: [
+            function Application_beforeRequestingFocusOnKeyboardInputHandler(e, handled) {
+                if (!handled) {
+                    dispatchEvent({ type: requestingFocusOnKeyboardInputET });
+                }
+            }
+        ]
     };
 
     // loaded == DOMContentLoaded
@@ -13710,6 +14014,24 @@ define('WinJS/Application',[
         });
         dispatchEvent(eventRecord);
     }
+    
+    function requestingFocusOnKeyboardInput() {
+        // Built in listener for beforeRequestingFocusOnKeyboardInputET will trigger
+        // requestingFocusOnKeyboardInputET if it wasn't handled.
+        dispatchEvent({ type: beforeRequestingFocusOnKeyboardInputET });
+    }
+    
+    function edgyStarting(eventObject) {
+        dispatchEvent({ type: edgyStartingET, kind: eventObject.kind });
+    }
+    
+    function edgyCompleted(eventObject) {
+        dispatchEvent({ type: edgyCompletedET, kind: eventObject.kind });
+    }
+    
+    function edgyCanceled(eventObject) {
+        dispatchEvent({ type: edgyCanceledET, kind: eventObject.kind });
+    }
 
     function register() {
         if (!registered) {
@@ -13720,7 +14042,7 @@ define('WinJS/Application',[
             if (_Global.document) {
                 _Global.addEventListener("error", errorHandler, false);
                 if (_WinRT.Windows.UI.WebUI.WebUIApplication) {
-
+                    
                     var wui = _WinRT.Windows.UI.WebUI.WebUIApplication;
                     wui.addEventListener("activated", activatedHandler, false);
                     wui.addEventListener("suspending", suspendingHandler, false);
@@ -13734,6 +14056,13 @@ define('WinJS/Application',[
                 // Code in WinJS.Application for phone. This integrates WinJS.Application into the hardware back button.
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {
                     _WinRT.Windows.Phone.UI.Input.HardwareButtons.addEventListener("backpressed", hardwareButtonBackPressed);
+                }
+                
+                if (_WinRT.Windows.UI.Input.EdgeGesture) {
+                    var edgy = _WinRT.Windows.UI.Input.EdgeGesture.getForCurrentView();
+                    edgy.addEventListener("starting", edgyStarting);
+                    edgy.addEventListener("completed", edgyCompleted);
+                    edgy.addEventListener("canceled", edgyCanceled);
                 }
             }
 
@@ -13764,6 +14093,13 @@ define('WinJS/Application',[
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {
                     _WinRT.Windows.Phone.UI.Input.HardwareButtons.removeEventListener("backpressed", hardwareButtonBackPressed);
                 }
+                
+                if (_WinRT.Windows.UI.Input.EdgeGesture) {
+                    var edgy = _WinRT.Windows.UI.Input.EdgeGesture.getForCurrentView();
+                    edgy.removeEventListener("starting", edgyStarting);
+                    edgy.removeEventListener("completed", edgyCompleted);
+                    edgy.removeEventListener("canceled", edgyCanceled);
+                }
             }
 
             Promise.removeEventListener("error", promiseErrorHandler);
@@ -13771,7 +14107,7 @@ define('WinJS/Application',[
     }
 
     var publicNS = _Base.Namespace._moduleDefine(exports, "WinJS.Application", {
-        stop: function () {
+        stop: function Application_stop() {
             /// <signature helpKeyword="WinJS.Application.stop">
             /// <summary locid="WinJS.Application.stop">
             /// Stops application event processing and resets WinJS.Application
@@ -13798,10 +14134,11 @@ define('WinJS/Application',[
             eventQueueJob = null;
             eventQueuedSignal = null;
             unregister();
+            TypeToSearch.updateRegistration();
             cleanupAllPendingDeferrals();
         },
 
-        addEventListener: function (eventType, listener, capture) {
+        addEventListener: function Application_addEventListener(eventType, listener, capture) {
             /// <signature helpKeyword="WinJS.Application.addEventListener">
             /// <summary locid="WinJS.Application.addEventListener">
             /// Adds an event listener to the control.
@@ -13817,8 +14154,11 @@ define('WinJS/Application',[
             /// </param>
             /// </signature>
             listeners.addEventListener(eventType, listener, capture);
+            if (eventType === requestingFocusOnKeyboardInputET) {
+                TypeToSearch.updateRegistration();
+            }
         },
-        removeEventListener: function (eventType, listener, capture) {
+        removeEventListener: function Application_removeEventListener(eventType, listener, capture) {
             /// <signature helpKeyword="WinJS.Application.removeEventListener">
             /// <summary locid="WinJS.Application.removeEventListener">
             /// Removes an event listener from the control.
@@ -13834,9 +14174,12 @@ define('WinJS/Application',[
             /// </param>
             /// </signature>
             listeners.removeEventListener(eventType, listener, capture);
+            if (eventType === requestingFocusOnKeyboardInputET) {
+                TypeToSearch.updateRegistration();
+            }
         },
 
-        checkpoint: function () {
+        checkpoint: function Application_checkpoint() {
             /// <signature helpKeyword="WinJS.Application.checkpoint">
             /// <summary locid="WinJS.Application.checkpoint">
             /// Queues a checkpoint event.
@@ -13845,7 +14188,7 @@ define('WinJS/Application',[
             queueEvent({ type: checkpointET });
         },
 
-        start: function () {
+        start: function Application_start() {
             /// <signature helpKeyword="WinJS.Application.start">
             /// <summary locid="WinJS.Application.start">
             /// Starts processing events in the WinJS.Application event queue.
@@ -13857,15 +14200,23 @@ define('WinJS/Application',[
         },
 
         queueEvent: queueEvent,
+        
+        // Like queueEvent but fires the event synchronously. Useful in tests.
+        _dispatchEvent: dispatchEvent,
 
         _terminateApp: {
-            get: function () {
+            get: function Application_terminateApp_get() {
                 return terminateAppHandler;
             },
-            set: function (value) {
+            set: function Application_terminateApp_set(value) {
                 terminateAppHandler = value;
             }
         },
+        
+        _applicationListener: _Base.Namespace._lazy(function () {
+            // Use _lazy because publicNS can't be referenced in its own definition
+            return new _ElementUtilities._GenericListener("Application", publicNS);
+        }),
 
         /// <field type="Function" locid="WinJS.Application.oncheckpoint" helpKeyword="WinJS.Application.oncheckpoint">
         /// Occurs when receiving Process Lifetime Management (PLM) notification or when the checkpoint function is called.
@@ -15381,9 +15732,10 @@ define('WinJS/Animations',[
             /// </returns>
             /// </signature>
             writeAnimationProfilerMark("showEdgeUI,StartTM");
-
+            
+            var isTransition = options && options.mechanism === "transition";
             var offsetArray = new OffsetArray(offset, "WinJS-showEdgeUI", [{ top: "-70px", left: "0px" }]);
-            return _TransitionAnimation[((options && options.mechanism === "transition") ? "executeTransition" : "executeAnimation")](
+            return _TransitionAnimation[(isTransition ? "executeTransition" : "executeAnimation")](
                 element,
                 {
                     keyframe: offsetArray.keyframe,
@@ -15391,7 +15743,7 @@ define('WinJS/Animations',[
                     delay: 0,
                     duration: 367,
                     timing: "cubic-bezier(0.1, 0.9, 0.2, 1)",
-                    from: offsetArray.keyframe || translateCallback(offsetArray),
+                    from: isTransition ? translateCallback(offsetArray) : (offsetArray.keyframe || translateCallback(offsetArray)),
                     to: "none"
                 })
                 .then(function () { writeAnimationProfilerMark("showEdgeUI,StopTM"); });
@@ -15465,9 +15817,10 @@ define('WinJS/Animations',[
             /// </returns>
             /// </signature>
             writeAnimationProfilerMark("hideEdgeUI,StartTM");
-
+            
+            var isTransition = options && options.mechanism === "transition";
             var offsetArray = new OffsetArray(offset, "WinJS-hideEdgeUI", [{ top: "-70px", left: "0px" }]);
-            return _TransitionAnimation[((options && options.mechanism === "transition") ? "executeTransition" : "executeAnimation")](
+            return _TransitionAnimation[(isTransition ? "executeTransition" : "executeAnimation")](
                 element,
                 {
                     keyframe: offsetArray.keyframe,
@@ -15476,7 +15829,7 @@ define('WinJS/Animations',[
                     duration: 367,
                     timing: "cubic-bezier(0.1, 0.9, 0.2, 1)",
                     from: "none",
-                    to: offsetArray.keyframe || translateCallback(offsetArray)
+                    to: isTransition ? translateCallback(offsetArray) : (offsetArray.keyframe || translateCallback(offsetArray))
                 })
                 .then(function () { writeAnimationProfilerMark("hideEdgeUI,StopTM"); });
         },
@@ -16893,30 +17246,13 @@ define('WinJS/Animations',[
             /// Returns an object containing the exit and entrance animations to play based on the parameters given.
             /// </returns>
             /// </signature>
-            var PageNavigationAnimation = _Constants.PageNavigationAnimation;
             function emptyAnimationFunction() {
                 return Promise.wrap();
             }
-            if (!_BaseUtils.isPhone || currentPreferredAnimation === PageNavigationAnimation.enterPage || nextPreferredAnimation === PageNavigationAnimation.enterPage) {
-                return {
-                    exit: emptyAnimationFunction,
-                    entrance: exports.enterPage
-                };
-            }
-            if (!nextPreferredAnimation) {
-                nextPreferredAnimation = PageNavigationAnimation.turnstile;
-            }
-            if ((currentPreferredAnimation === PageNavigationAnimation.slide && movingBackwards) ||
-                (nextPreferredAnimation === PageNavigationAnimation.slide && !movingBackwards)) {
-                return {
-                    exit: movingBackwards ? exports.slideDown : emptyAnimationFunction,
-                    entrance: movingBackwards ? emptyAnimationFunction : exports.slideUp
-                };
-            }
-
+            
             return {
-                exit: exports[nextPreferredAnimation + (movingBackwards ? "Backward" : "Forward") + "Out"],
-                entrance: exports[nextPreferredAnimation + (movingBackwards ? "Backward" : "Forward") + "In"]
+                exit: emptyAnimationFunction,
+                entrance: exports.enterPage
             };
         }
     });
@@ -20943,8 +21279,8 @@ define('WinJS/BindingTemplate',[
         /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.Binding.Template"><div>Place content here</div></div>]]></htmlSnippet>
         /// <icon src="base_winjs.ui.template.12x12.png" width="12" height="12" />
         /// <icon src="base_winjs.ui.template.16x16.png" width="16" height="16" />
-        /// <resource type="javascript" src="//WinJS.3.0/js/base.js" shared="true" />
-        /// <resource type="css" src="//WinJS.3.0/css/ui-dark.css" shared="true" />
+        /// <resource type="javascript" src="//WinJS.3.1/js/base.js" shared="true" />
+        /// <resource type="css" src="//WinJS.3.1/css/ui-dark.css" shared="true" />
         Template: _Base.Namespace._lazy(function () {
             function interpretedRender(template, dataContext, container) {
                 _WriteProfilerMark("WinJS.Binding:templateRender" + template._profilerMarkIdentifier + ",StartTM");
@@ -24884,8 +25220,8 @@ define('WinJS/Controls/HtmlControl',[
         /// <icon src="base_winjs.ui.htmlcontrol.12x12.png" width="12" height="12" />
         /// <icon src="base_winjs.ui.htmlcontrol.16x16.png" width="16" height="16" />
         /// <htmlSnippet><![CDATA[<div data-win-control="WinJS.UI.HtmlControl" data-win-options="{ uri: 'somePage.html' }"></div>]]></htmlSnippet>
-        /// <resource type="javascript" src="//WinJS.3.0/js/base.js" shared="true" />
-        /// <resource type="css" src="//WinJS.3.0/css/ui-dark.css" shared="true" />
+        /// <resource type="javascript" src="//WinJS.3.1/js/base.js" shared="true" />
+        /// <resource type="css" src="//WinJS.3.1/css/ui-dark.css" shared="true" />
         HtmlControl: _Base.Class.define(function HtmlControl_ctor(element, options, complete) {
             /// <signature helpKeyword="WinJS.UI.HtmlControl.HtmlControl">
             /// <summary locid="WinJS.UI.HtmlControl.constructor">
