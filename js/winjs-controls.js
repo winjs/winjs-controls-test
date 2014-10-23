@@ -141,12 +141,14 @@ window.addEventListener('load', function()
               return;
             }
 
+            if (iframe.contentWindow.scriptLoaded)
+              iframe.contentWindow.scriptLoaded();
+
             iframe.contentWindow.WinJS.Navigation.history.backStack = [{}];
             iframe.contentWindow.WinJS.UI.processAll();
+
             if (iframe.contentWindow.initialize)
-            {
               iframe.contentWindow.initialize();
-            }
           };
 
           iframe.contentDocument.head.appendChild(base);
