@@ -719,6 +719,7 @@ body {
 }
 html {
   overflow: hidden;
+  direction: ltr;
 }
 html:lang(ar),
 html:lang(dv),
@@ -1805,6 +1806,11 @@ button.win-navigation-backbutton:enabled:hover:active {
   height: auto;
   width: auto;
 }
+.win-datepicker select {
+  min-width: 80px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
 .win-datepicker .win-datepicker-month {
   margin-right: 20px;
 }
@@ -1876,6 +1882,11 @@ button.win-navigation-backbutton:enabled:hover:active {
   display: inline-flex;
   height: auto;
   width: auto;
+}
+.win-timepicker select {
+  min-width: 80px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 .win-timepicker .win-timepicker-hour {
   margin-right: 20px;
@@ -5174,6 +5185,135 @@ html.win-hoverable .win-pivot button.win-pivot-header:hover {
   right: auto;
   left: 0px;
 }
+.win-splitview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  overflow: hidden;
+}
+.win-splitview.win-splitview-placementtop,
+.win-splitview.win-splitview-placementbottom {
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.win-splitview.win-splitview-placementtop .win-splitview-panewrapper,
+.win-splitview.win-splitview-placementbottom .win-splitview-panewrapper {
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.win-splitview .win-splitview-panewrapper {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  overflow: hidden;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.win-splitview .win-splitview-pane,
+.win-splitview .win-splitview-paneplaceholder {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+.win-splitview .win-splitview-content {
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-placementleft .win-splitview-pane,
+.win-splitview.win-splitview-pane-shown.win-splitview-placementright .win-splitview-pane {
+  width: 320px;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-placementtop .win-splitview-pane,
+.win-splitview.win-splitview-pane-shown.win-splitview-placementbottom .win-splitview-pane {
+  height: 320px;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementtop .win-splitview-panewrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementbottom .win-splitview-panewrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft .win-splitview-panewrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+  height: 100%;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ar) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(dv) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(fa) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(he) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ku-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(pa-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(prs) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ps) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(sd-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(syr) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ug) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ur) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(qps-plocm) .win-splitview-panewrapper {
+  position: absolute;
+  top: 0;
+  left: auto;
+  right: 0;
+  height: 100%;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright .win-splitview-panewrapper {
+  position: absolute;
+  top: 0;
+  left: auto;
+  right: 0;
+  height: 100%;
+}
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ar) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(dv) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(fa) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(he) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ku-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(pa-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(prs) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ps) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(sd-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(syr) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ug) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ur) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(qps-plocm) .win-splitview-panewrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+  height: 100%;
+}
+.win-splitview.win-splitview-pane-hidden .win-splitview-paneplaceholder {
+  display: none;
+}
+.win-splitview.win-splitview-pane-hidden.win-splitview-placementtop .win-splitview-pane,
+.win-splitview.win-splitview-pane-hidden.win-splitview-placementbottom .win-splitview-pane {
+  height: 0;
+}
+.win-splitview.win-splitview-pane-hidden.win-splitview-placementleft .win-splitview-pane,
+.win-splitview.win-splitview-pane-hidden.win-splitview-placementright .win-splitview-pane {
+  width: 0;
+}
+.win-splitview.win-splitview-inlinemode .win-splitview-paneplaceholder {
+  display: none;
+}
 .win-ui-light {
   background-color: #ffffff;
   color: #000000;
@@ -5719,12 +5859,12 @@ button.win-command:disabled:active .win-label {
 }
 .win-appbar,
 .win-appbar {
-  background-color: #f0f0f0;
-  border-color: #f0f0f0;
+  background-color: #e6e6e6;
+  border-color: #e6e6e6;
 }
 .win-appbar.win-menulayout .win-toolbar,
 .win-appbar.win-menulayout .win-toolbar {
-  background-color: #f0f0f0;
+  background-color: #e6e6e6;
 }
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton,
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton {
@@ -6626,12 +6766,12 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 }
 .win-ui-dark.win-appbar,
 .win-ui-dark .win-appbar {
-  background-color: #000000;
-  border-color: #000000;
+  background-color: #2b2b2b;
+  border-color: #2b2b2b;
 }
 .win-ui-dark.win-appbar.win-menulayout .win-toolbar,
 .win-ui-dark .win-appbar.win-menulayout .win-toolbar {
-  background-color: #000000;
+  background-color: #2b2b2b;
 }
 .win-ui-dark.win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton,
 .win-ui-dark .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton {

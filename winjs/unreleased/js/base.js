@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.22 base.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.24 base.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.22 base.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.24 base.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -43,6 +43,7 @@ var define;
     // WinJS/Core depends on ./Core/_Base
     // should return WinJS/Core/_Base
     function normalize(id, dependencies) {
+        id = id || "";
         var parent = id.split('/');
         parent.pop();
         return dependencies.map(function (dep) {
@@ -63,14 +64,16 @@ var define;
         });
     }
 
-    function resolve(dependencies, exports) {
+    function resolve(dependencies, parent, exports) {
         return dependencies.map(function (depName) {
             if (depName === 'exports') {
                 return exports;
             }
 
             if (depName === 'require') {
-                return require;
+                return function (dependencies, factory) {
+                    require(normalize(parent, dependencies), factory);
+                };
             }
 
             var dep = defined[depName];
@@ -79,9 +82,8 @@ var define;
             }
 
             if (!dep.resolved) {
-                dep.resolved = load(dep.dependencies, dep.factory, dep.exports);
-                // exports shadows whatever the module factory returns
-                if (dep.exports) {
+                dep.resolved = load(dep.dependencies, dep.factory, depName, dep.exports);
+                if (typeof dep.resolved === "undefined") {
                     dep.resolved = dep.exports;
                 }
             }
@@ -90,8 +92,8 @@ var define;
         });
     }
 
-    function load(dependencies, factory, exports) {
-        var deps = resolve(dependencies, exports);
+    function load(dependencies, factory, parent, exports) {
+        var deps = resolve(dependencies, parent, exports);
         if (factory && factory.apply) {
             return factory.apply(null, deps);
         } else {
@@ -6647,6 +6649,22 @@ define('WinJS/Utilities/_ElementUtilities',[
 
             return hiddenElement;
         },
+        
+        // Returns a promise which completes when *element* is in the DOM.
+        _inDom: function Utilities_inDom(element) {
+            return new Promise(function (c) {
+                if (_Global.document.body.contains(element)) {
+                    c();
+                } else {
+                    var nodeInsertedHandler = function () {
+                        element.removeEventListener("WinJSNodeInserted", nodeInsertedHandler, false);
+                        c();
+                    };
+                    exports._addInsertedNotifier(element);
+                    element.addEventListener("WinJSNodeInserted", nodeInsertedHandler, false);
+                }
+            });
+        },
 
         // Browser agnostic method to set element flex style
         // Param is an object in the form {grow: flex-grow, shrink: flex-shrink, basis: flex-basis}
@@ -7416,31 +7434,7 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// An object that contains the left, top, width and height properties of the element.
             /// </returns>
             /// </signature>
-            var fromElement = element,
-                offsetParent = element.offsetParent,
-                top = element.offsetTop,
-                left = element.offsetLeft;
-
-            while ((element = element.parentNode) &&
-                    element !== _Global.document.body &&
-                    element !== _Global.document.documentElement) {
-                top -= element.scrollTop;
-                var dir = _Global.document.defaultView.getComputedStyle(element, null).direction;
-                left -= dir !== "rtl" ? element.scrollLeft : -getAdjustedScrollPosition(element).scrollLeft;
-
-                if (element === offsetParent) {
-                    top += element.offsetTop;
-                    left += element.offsetLeft;
-                    offsetParent = element.offsetParent;
-                }
-            }
-
-            return {
-                left: left,
-                top: top,
-                width: fromElement.offsetWidth,
-                height: fromElement.offsetHeight
-            };
+            return exports._getPositionRelativeTo(element, null);
         },
 
         getTabIndex: function (element) {
@@ -7560,6 +7554,35 @@ define('WinJS/Utilities/_ElementUtilities',[
                     }
                     return element;
                 }
+            };
+        },
+        
+        _getPositionRelativeTo: function Utilities_getPositionRelativeTo(element, ancestor) {
+            var fromElement = element,
+                offsetParent = element.offsetParent,
+                top = element.offsetTop,
+                left = element.offsetLeft;
+
+            while ((element = element.parentNode) &&
+                    element !== ancestor &&
+                    element !== _Global.document.body &&
+                    element !== _Global.document.documentElement) {
+                top -= element.scrollTop;
+                var dir = _Global.document.defaultView.getComputedStyle(element, null).direction;
+                left -= dir !== "rtl" ? element.scrollLeft : -getAdjustedScrollPosition(element).scrollLeft;
+
+                if (element === offsetParent) {
+                    top += element.offsetTop;
+                    left += element.offsetLeft;
+                    offsetParent = element.offsetParent;
+                }
+            }
+
+            return {
+                left: left,
+                top: top,
+                width: fromElement.offsetWidth,
+                height: fromElement.offsetHeight
             };
         },
         
@@ -7771,7 +7794,6 @@ define('WinJS/Utilities/_ElementUtilities',[
 
             return false;
         }
-
     });
 });
 
@@ -14695,10 +14717,10 @@ define('WinJS/Animations/_TransitionAnimation',[
         }
     }
 
-    function fastAnimation(animation) {
+    function adjustAnimationTime(animation) {
         if (Array.isArray(animation)) {
             return animation.map(function (animation) {
-                return fastAnimation(animation);
+                return adjustAnimationTime(animation);
             });
         } else if (animation) {
             animation.delay = animationTimeAdjustment(animation.delay);
@@ -14710,22 +14732,18 @@ define('WinJS/Animations/_TransitionAnimation',[
     }
 
     function animationAdjustment(animation) {
-        if (fastAnimations) {
-            return fastAnimation(animation);
-        } else {
+        if (animationFactor === 1) {
             return animation;
+        } else {
+            return adjustAnimationTime(animation);
         }
     }
 
     var animationTimeAdjustment = function _animationTimeAdjustmentImpl(v) {
-        if (fastAnimations) {
-            return v / 20;
-        } else {
-            return v;
-        }
+        return v * animationFactor;
     };
-
-    var fastAnimations = false;
+    
+    var animationFactor = 1;
     var libraryDelay = 0;
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
@@ -14825,12 +14843,28 @@ define('WinJS/Animations/_TransitionAnimation',[
     _Base.Namespace._moduleDefine(exports, "WinJS.Utilities", {
         _fastAnimations: {
             get: function () {
-                return fastAnimations;
+                return animationFactor === 1/20;
             },
             set: function (value) {
-                fastAnimations = value;
+                animationFactor = value ? 1/20 : 1;
             }
-        }
+        },
+        _slowAnimations: {
+            get: function () {
+                return animationFactor === 3;
+            },
+            set: function (value) {
+                animationFactor = value ? 3 : 1;
+            }
+        },
+        _animationFactor: {
+            get: function () {
+                return animationFactor;
+            },
+            set: function (value) {
+                animationFactor = value;
+            }
+        },
     });
 
 });
@@ -15476,6 +15510,97 @@ define('WinJS/Animations',[
     }, { // Static Members
         supportedForProcessing: false,
     });
+    
+    //
+    // Resize animation
+    //  The resize animation requires 2 animations to run simultaneously in sync with each other. It's implemented
+    //  without PVL because PVL doesn't provide a way to guarantee that 2 animations will start at the same time.
+    //
+    function transformWithTransition(element, transition) {
+        // transition's properties:
+        // - duration: Number representing the duration of the animation in milliseconds.
+        // - timing: String representing the CSS timing function that controls the progress of the animation.
+        // - to: The value of *element*'s transform property after the animation.
+        var duration = transition.duration * _TransitionAnimation._animationFactor;
+        var transitionProperty = _BaseUtils._browserStyleEquivalents["transition"].scriptName;
+        element.style[transitionProperty] = duration + "ms " + transformNames.cssName + " " + transition.timing;
+        element.style[transformNames.scriptName] = transition.to;
+    
+        var finish;
+        return new Promise(function (c) {
+            var didFinish = false;
+            finish = function () {
+                if (!didFinish) {
+                    _Global.clearTimeout(timeoutId);
+                    element.removeEventListener("transitionend", finish);
+                    element.style[transitionProperty] = "";
+                    didFinish = true;
+                }
+                c();
+            };
+    
+            // Watch dog timeout
+            var timeoutId = _Global.setTimeout(function () {
+                timeoutId = _Global.setTimeout(finish, duration);
+            }, 50);
+    
+            element.addEventListener("transitionend", finish);
+        }, function () {
+            finish(); // On cancelation, complete the promise successfully to match PVL
+        });
+    }
+    // See _resizeTransition's comment for documentation on *args*.
+    function growTransition(elementClipper, element, args) {
+        var diff = args.anchorTrailingEdge ? args.to.total - args.from.total : args.from.total - args.to.total;
+        var translate = args.dimension === "width" ? "translateX" : "translateY";
+        var size = args.dimension;
+    
+        // Set up
+        elementClipper.style[size] = args.to.total + "px";
+        elementClipper.style[transformNames.scriptName] = translate + "(" + diff + "px)";
+        element.style[size] = args.to.content + "px";
+        element.style[transformNames.scriptName] = translate + "(" + -diff + "px)";
+    
+        // Resolve styles
+        _Global.getComputedStyle(elementClipper).opacity;
+        _Global.getComputedStyle(element).opacity;
+        
+        // Animate
+        var transition = {
+            duration: 367,
+            timing: "cubic-bezier(0.1, 0.9, 0.2, 1)",
+            to: ""
+        };
+        return Promise.join([
+            transformWithTransition(elementClipper,  transition),
+            transformWithTransition(element, transition)
+        ]);
+    }
+    // See _resizeTransition's comment for documentation on *args*.
+    function shrinkTransition(elementClipper, element, args) {
+        var diff = args.anchorTrailingEdge ? args.from.total - args.to.total : args.to.total - args.from.total;
+        var translate = args.dimension === "width" ? "translateX" : "translateY";
+    
+        // Set up
+        elementClipper.style[transformNames.scriptName] = "";
+        element.style[transformNames.scriptName] = "";
+    
+        // Resolve styles
+        _Global.getComputedStyle(elementClipper).opacity;
+        _Global.getComputedStyle(element).opacity;
+    
+        // Animate
+        var transition = {
+            duration: 367,
+            timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
+        };
+        var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + diff + "px)" });
+        var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -diff + "px)" });
+        return Promise.join([
+            transformWithTransition(elementClipper, clipperTransition),
+            transformWithTransition(element, elementTransition)
+        ]);
+    }
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI.Animation", {
 
@@ -17254,6 +17379,31 @@ define('WinJS/Animations',[
                 exit: emptyAnimationFunction,
                 entrance: exports.enterPage
             };
+        },
+        
+        // Plays an animation which makes an element look like it is resizing in 1 dimension. Arguments:
+        // - elementClipper: The parent of *element*. It shouldn't have any margin, border, or padding and its
+        //   size should match element's size. Its purpose is to clip *element* during the animation to give
+        //   it the illusion that it is resizing.
+        // - element: The element that should look like it's resizing.
+        // - args: An object with the following required properties: 
+        //   - from: An object representing the old width/height of the element.
+        //   - to: An object representing the new width/height of the element.
+        //     from/to are objects of the form { content: number; total: number; }. "content" is the
+        //     width/height of *element*'s content box (e.g. getContentWidth). "total" is the width/height
+        //     of *element*'s margin box (e.g. getTotalWidth).
+        //   - dimension: The dimension on which *element* is resizing. Either "width" or "height".
+        //   - anchorTrailingEdge: During the resize animation, one edge will move and the other edge will
+        //     remain where it is. This flag specifies which edge is anchored (i.e. won't move).
+        //
+        _resizeTransition: function Utilities_resizeTransition(elementClipper, element, args) {
+            if (args.to.total > args.from.total) {
+                return growTransition(elementClipper, element, args);
+            } else if (args.to.total < args.from.total) {
+                return shrinkTransition(elementClipper, element, args);
+            } else {
+                return Promise.as();
+            }
         }
     });
 
