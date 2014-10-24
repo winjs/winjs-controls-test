@@ -1,4 +1,5 @@
 ﻿/* Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information. */
+
 @keyframes WinJS-node-inserted {
   from {
     outline-color: #000;
@@ -3506,7 +3507,7 @@ AppBar commands layout
   padding-left: 32px;
 }
 /*
-AppBar menu layout 
+AppBar menu layout
 */
 .win-menulayout .win-appbar-menu {
   position: absolute;
