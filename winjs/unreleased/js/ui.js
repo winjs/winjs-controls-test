@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.24 ui.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.25 ui.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.24 ui.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.25 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -39549,14 +39549,14 @@ define('WinJS/Controls/Flyout/_Overlay',[
                 // and a finalDiv with tabIndex equal to the highest tabIndex in the element.
                 // Also the firstDiv must be its first child and finalDiv be its last child.
                 // Returns true if successful, false otherwise.
-                _focusOnFirstFocusableElement: function _Overlay__focusOnFirstFocusableElement() {
+                _focusOnFirstFocusableElement: function _Overlay__focusOnFirstFocusableElement(useSetActive, scroller) {
                     if (this._element.firstElementChild) {
                         var oldFirstTabIndex = this._element.firstElementChild.tabIndex;
                         var oldLastTabIndex = this._element.lastElementChild.tabIndex;
                         this._element.firstElementChild.tabIndex = -1;
                         this._element.lastElementChild.tabIndex = -1;
 
-                        var tabResult = _ElementUtilities._focusFirstFocusableElement(this._element);
+                        var tabResult = _ElementUtilities._focusFirstFocusableElement(this._element, useSetActive, scroller);
 
                         if (tabResult) {
                             _Overlay._trySelect(_Global.document.activeElement);
@@ -39829,11 +39829,11 @@ define('WinJS/Controls/Flyout/_Overlay',[
                 },
 
                 // Try to set us as active
-                _trySetActive: function (element) {
+                _trySetActive: function (element, scroller) {
                     if (!element || !_Global.document.body || !_Global.document.body.contains(element)) {
                         return false;
                     }
-                    if (!_ElementUtilities._setActive(element)) {
+                    if (!_ElementUtilities._setActive(element, scroller)) {
                         return false;
                     }
                     return (element === _Global.document.activeElement);
@@ -43972,6 +43972,9 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     // NOP
                     return Promise.wrap();
                 },
+                setFocusOnShow: function _AppBarBaseLayout_setFocusOnShow() {
+                    this.appBarEl.winControl._setFocusToAppBar();
+                }
             });
             return _AppBarBaseLayout;
         }),
@@ -44399,6 +44402,12 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     }
                     this._originalCommands = [];
                     this._displayedCommands = [];
+                },
+                
+                setFocusOnShow: function _AppBarMenuLayout_setFocusOnShow() {
+                    // Make sure the toolbarContainer (used for clipping during the resize animation)
+                    // doesn't scroll when we give focus to the AppBar.
+                    this.appBarEl.winControl._setFocusToAppBar(true, this._toolbarContainer);
                 },
 
                 _updateData: function _AppBarMenuLayout_updateData(data) {
@@ -45402,8 +45411,8 @@ define('WinJS/Controls/AppBar',[
                             if (!_Overlay._Overlay._ElementWithFocusPreviousToAppBar) {
                                 _storePreviousFocus(_Global.document.activeElement);
                             }
-
-                            this._positionChangingPromise.then(this._setFocusToAppBarBound, this._setFocusToAppBarBound);
+                            
+                            this._layout.setFocusOnShow();
                         }
                     }
                 },
@@ -45774,7 +45783,7 @@ define('WinJS/Controls/AppBar',[
                 _animatePositionChange: function AppBar_animatePositionChange(fromPosition, toPosition) {
                     // Determines and executes the proper transition between visible positions
 
-                    this._positionChangingPromise = this._layout.positionChanging(fromPosition, toPosition);
+                    this._layout.positionChanging(fromPosition, toPosition);
 
                     // Get values in terms of pixels to perform animation.
                     var beginningVisiblePixelHeight = this._visiblePixels[fromPosition],
@@ -45877,10 +45886,10 @@ define('WinJS/Controls/AppBar',[
                 },
 
                 // Set focus to the passed in AppBar
-                _setFocusToAppBar: function AppBar_setFocusToAppBar() {
-                    if (!this._focusOnFirstFocusableElement()) {
+                _setFocusToAppBar: function AppBar_setFocusToAppBar(useSetActive, scroller) {
+                    if (!this._focusOnFirstFocusableElement(useSetActive, scroller)) {
                         // No first element, set it to appbar itself
-                        _Overlay._Overlay._trySetActive(this._element);
+                        _Overlay._Overlay._trySetActive(this._element, scroller);
                     }
                 },
 
