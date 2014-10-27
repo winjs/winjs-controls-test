@@ -122,4 +122,9 @@ body
   {
     display: inline-block;
   }
+
+  .drop-box
+  {
+    display: none;
+  }
 }
