@@ -5314,17 +5314,17 @@ html.win-hoverable .win-pivot button.win-pivot-header:hover {
 .win-splitview.win-splitview-inlinemode .win-splitview-paneplaceholder {
   display: none;
 }
+body {
+  background-color: #000000;
+  color: #ffffff;
+}
 .win-ui-dark {
   background-color: #000000;
   color: #ffffff;
 }
 .win-ui-light {
-  background-color: #000000;
-  color: #ffffff;
-}
-body {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
 }
 ::selection {
   background-color: #0078d7;
@@ -6227,17 +6227,17 @@ html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover .win-tool
 html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis {
   color: #ffffff;
 }
+.win-ui-light body {
+  background-color: #ffffff;
+  color: #000000;
+}
 .win-ui-light .win-ui-light {
   background-color: #ffffff;
   color: #000000;
 }
 .win-ui-light .win-ui-dark {
-  background-color: #ffffff;
-  color: #000000;
-}
-.win-ui-light body {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #000000;
+  color: #ffffff;
 }
 .win-ui-light ::selection {
   background-color: #0078d7;
