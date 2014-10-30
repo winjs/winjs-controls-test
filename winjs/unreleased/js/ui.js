@@ -43815,26 +43815,6 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
 //# sourceMappingURL=_Toolbar.js.map
 ;
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-/// <reference path="../../../../typings/require.d.ts" />
-define('WinJS/Controls/Toolbar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
-    var module = null;
-
-    _Base.Namespace.define("WinJS.UI", {
-        Toolbar: {
-            get: function () {
-                if (!module) {
-                    require(["./Toolbar/_Toolbar"], function (m) {
-                        module = m;
-                    });
-                }
-                return module.Toolbar;
-            }
-        }
-    });
-});
-//# sourceMappingURL=Toolbar.js.map
-;
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Layouts',[
     'exports',
     '../../Animations/_TransitionAnimation',
@@ -43845,7 +43825,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
     '../../Core/_ErrorFromName',
     '../../Core/_Resources',
     '../../Core/_WriteProfilerMark',
-    '../../Controls/Toolbar',
+    '../../Controls/Toolbar/_Toolbar',
     '../../Controls/Toolbar/_Constants',
     '../../Promise',
     '../../Scheduler',
@@ -43854,7 +43834,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
     '../../Utilities/_ElementUtilities',
     './_Command',
     './_Constants'
-], function appBarLayoutsInit(exports, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, Toolbar, _ToolbarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
+], function appBarLayoutsInit(exports, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, _Toolbar, _ToolbarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
     "use strict";
 
     // AppBar will use this when AppBar.layout property is set to "custom"
@@ -44510,7 +44490,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     var prevAppBarDisplay = this.appBarEl.style.display;
                     this.appBarEl.style.display = "";
 
-                    this._toolbar = new Toolbar.Toolbar(this._toolbarEl, {
+                    this._toolbar = new _Toolbar.Toolbar(this._toolbarEl, {
                         data: new BindingList.List(this._originalCommands),
                         inlineMenu: true
                     });
@@ -52043,6 +52023,26 @@ define('WinJS/Controls/ContentDialog',[
     });
 });
 
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/// <reference path="../../../../typings/require.d.ts" />
+define('WinJS/Controls/Toolbar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
+    var module = null;
+
+    _Base.Namespace.define("WinJS.UI", {
+        Toolbar: {
+            get: function () {
+                if (!module) {
+                    require(["./Toolbar/_Toolbar"], function (m) {
+                        module = m;
+                    });
+                }
+                return module.Toolbar;
+            }
+        }
+    });
+});
+//# sourceMappingURL=Toolbar.js.map
+;
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../../typings/require.d.ts" />
 define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../Promise', '../../_Signal', '../../Animations/_TransitionAnimation'], function(require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, Promise, _Signal, _TransitionAnimation) {
