@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.29 ui.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 ui.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.29 ui.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -42910,7 +42910,9 @@ define('WinJS/Controls/Toolbar/_MenuCommand',["require", "exports", "../Menu/_Co
 });
 //# sourceMappingURL=_MenuCommand.js.map
 ;
-define('WinJS/Controls/Toolbar',["require", "exports", "../Animations", "../Core/_Base", "../Core/_BaseUtils", "../BindingList", "../ControlProcessor", "./Toolbar/_Constants", "./AppBar/_Command", "../Utilities/_Control", "../Utilities/_Dispose", "../Utilities/_ElementUtilities", "../Core/_ErrorFromName", "../Controls/Flyout", "../Core/_Global", "../Utilities/_Hoverable", "../Utilities/_KeyboardBehavior", "../Controls/Menu", "./Menu/_Command", "../Core/_Resources", "../Scheduler", "./Toolbar/_MenuCommand", "../Core/_WriteProfilerMark"], function(require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Menu, _MenuCommand, _Resources, Scheduler, _ToolbarMenuCommand, _WriteProfilerMark) {
+define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../Toolbar/_Constants", "../AppBar/_Command", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", "../../Controls/Menu", "../Menu/_Command", "../../Core/_Resources", "../../Scheduler", "../Toolbar/_MenuCommand", "../../Core/_WriteProfilerMark"], function(require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Menu, _MenuCommand, _Resources, Scheduler, _ToolbarMenuCommand, _WriteProfilerMark) {
+    require(["require-style!less/controls"]);
+
     "use strict";
 
     var strings = {
@@ -43809,9 +43811,25 @@ define('WinJS/Controls/Toolbar',["require", "exports", "../Animations", "../Core
 
     // addEventListener, removeEventListener, dispatchEvent
     _Base.Class.mix(Toolbar, _Control.DOMEventMixin);
+});
+//# sourceMappingURL=_Toolbar.js.map
+;
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/// <reference path="../../../../typings/require.d.ts" />
+define('WinJS/Controls/Toolbar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
+    var module = null;
 
     _Base.Namespace.define("WinJS.UI", {
-        Toolbar: Toolbar
+        Toolbar: {
+            get: function () {
+                if (!module) {
+                    require(["./Toolbar/_Toolbar"], function (m) {
+                        module = m;
+                    });
+                }
+                return module.Toolbar;
+            }
+        }
     });
 });
 //# sourceMappingURL=Toolbar.js.map
