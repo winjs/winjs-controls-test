@@ -60,7 +60,7 @@
     "settingsFlyoutAriaLabel": "Settings Flyout",
     "tentativeRating": "Tentative Rating",
     "timePicker": "Time Picker",
-    "toolbarAriaLabel": "Toolbar",
+    "toolbarAriaLabel": "ToolBar",
     "toolbarOverflowButtonAriaLabel": "View more",
     "unrated": "Unrated",
     "userRating": "User Rating",

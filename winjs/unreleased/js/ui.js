@@ -41060,8 +41060,8 @@ define('WinJS/Controls/Flyout',[
 
 });
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-define('WinJS/Controls/Toolbar/_Constants',["require", "exports"], function(require, exports) {
-    // Toolbar class names
+define('WinJS/Controls/ToolBar/_Constants',["require", "exports"], function(require, exports) {
+    // ToolBar class names
     exports.controlCssClass = "win-toolbar";
     exports.actionAreaCssClass = "win-toolbar-actionarea";
     exports.overflowButtonCssClass = "win-toolbar-overflowbutton";
@@ -41070,7 +41070,7 @@ define('WinJS/Controls/Toolbar/_Constants',["require", "exports"], function(requ
     exports.overflowContentFlyoutCssClass = "win-toolbar-contentflyout";
     exports.flyoutMenuCssClass = "win-toolbar-flyoutmenu";
     exports.inlineMenuCssClass = "win-toolbar-inlinemenu";
-    exports.emptyToolbarCssClass = "win-toolbar-empty";
+    exports.emptyToolBarCssClass = "win-toolbar-empty";
     exports.menuCssClass = "win-menu";
     exports.menuToggleClass = "win-menu-toggle";
 
@@ -42874,7 +42874,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define('WinJS/Controls/Toolbar/_MenuCommand',["require", "exports", "../Menu/_Command"], function(require, exports, _MenuCommandBase) {
+define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Command"], function(require, exports, _MenuCommandBase) {
     var _MenuCommand = (function (_super) {
         __extends(_MenuCommand, _super);
         function _MenuCommand(isAttachedMode, element, options) {
@@ -42910,7 +42910,7 @@ define('WinJS/Controls/Toolbar/_MenuCommand',["require", "exports", "../Menu/_Co
 });
 //# sourceMappingURL=_MenuCommand.js.map
 ;
-define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../Toolbar/_Constants", "../AppBar/_Command", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", "../../Controls/Menu", "../Menu/_Command", "../../Core/_Resources", "../../Scheduler", "../Toolbar/_MenuCommand", "../../Core/_WriteProfilerMark"], function(require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Menu, _MenuCommand, _Resources, Scheduler, _ToolbarMenuCommand, _WriteProfilerMark) {
+define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../ToolBar/_Constants", "../AppBar/_Command", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", "../../Controls/Menu", "../Menu/_Command", "../../Core/_Resources", "../../Scheduler", "../ToolBar/_MenuCommand", "../../Core/_WriteProfilerMark"], function(require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Menu, _MenuCommand, _Resources, Scheduler, _ToolBarMenuCommand, _WriteProfilerMark) {
     require(["require-style!less/controls"]);
 
     "use strict";
@@ -42931,41 +42931,41 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
     };
 
     /// <field>
-    /// <summary locid="WinJS.UI.Toolbar">
+    /// <summary locid="WinJS.UI.ToolBar">
     /// Represents a toolbar for displaying commands.
     /// </summary>
     /// </field>
     /// <icon src="ui_winjs.ui.toolbar.12x12.png" width="12" height="12" />
     /// <icon src="ui_winjs.ui.toolbar.16x16.png" width="16" height="16" />
-    /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.UI.Toolbar">
+    /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.UI.ToolBar">
     /// <button data-win-control="WinJS.UI.Command" data-win-options="{id:'',label:'example',icon:'back',type:'button',onclick:null,section:'primary'}"></button>
     /// </div>]]></htmlSnippet>
-    /// <part name="toolbar" class="win-toolbar" locid="WinJS.UI.Toolbar_part:toolbar">The entire Toolbar control.</part>
-    /// <part name="toolbar-overflowbutton" class="win-toolbar-overflowbutton" locid="WinJS.UI.Toolbar_part:Toolbar-overflowbutton">The toolbar overflow button.</part>
-    /// <part name="toolbar-overflowarea" class="win-toolbar-overflowarea" locid="WinJS.UI.Toolbar_part:Toolbar-overflowarea">The container for toolbar commands that overflow.</part>
+    /// <part name="toolbar" class="win-toolbar" locid="WinJS.UI.ToolBar_part:toolbar">The entire ToolBar control.</part>
+    /// <part name="toolbar-overflowbutton" class="win-toolbar-overflowbutton" locid="WinJS.UI.ToolBar_part:ToolBar-overflowbutton">The toolbar overflow button.</part>
+    /// <part name="toolbar-overflowarea" class="win-toolbar-overflowarea" locid="WinJS.UI.ToolBar_part:ToolBar-overflowarea">The container for toolbar commands that overflow.</part>
     /// <resource type="javascript" src="//WinJS.3.1/js/base.js" shared="true" />
     /// <resource type="javascript" src="//WinJS.3.1/js/ui.js" shared="true" />
     /// <resource type="css" src="//WinJS.3.1/css/ui-dark.css" shared="true" />
-    var Toolbar = (function () {
-        function Toolbar(element, options) {
+    var ToolBar = (function () {
+        function ToolBar(element, options) {
             if (typeof options === "undefined") { options = {}; }
             var _this = this;
             this._measured = false;
             this._initializing = true;
             this._hoverable = _Hoverable.isHoverable;
             this._dataChangedEvents = ["itemchanged", "iteminserted", "itemmoved", "itemremoved", "reload"];
-            /// <signature helpKeyword="WinJS.UI.Toolbar.Toolbar">
-            /// <summary locid="WinJS.UI.Toolbar.constructor">
-            /// Creates a new Toolbar control.
+            /// <signature helpKeyword="WinJS.UI.ToolBar.ToolBar">
+            /// <summary locid="WinJS.UI.ToolBar.constructor">
+            /// Creates a new ToolBar control.
             /// </summary>
-            /// <param name="element" type="HTMLElement" domElement="true" locid="WinJS.UI.Toolbar.constructor_p:element">
+            /// <param name="element" type="HTMLElement" domElement="true" locid="WinJS.UI.ToolBar.constructor_p:element">
             /// The DOM element that will host the control.
             /// </param>
-            /// <param name="options" type="Object" locid="WinJS.UI.Toolbar.constructor_p:options">
-            /// The set of properties and values to apply to the new Toolbar control.
+            /// <param name="options" type="Object" locid="WinJS.UI.ToolBar.constructor_p:options">
+            /// The set of properties and values to apply to the new ToolBar control.
             /// </param>
-            /// <returns type="WinJS.UI.Toolbar" locid="WinJS.UI.Toolbar.constructor_returnValue">
-            /// The new Toolbar control.
+            /// <returns type="WinJS.UI.ToolBar" locid="WinJS.UI.ToolBar.constructor_returnValue">
+            /// The new ToolBar control.
             /// </returns>
             /// </signature>
             // Make sure there's an element
@@ -43037,9 +43037,9 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
 
             return this;
         }
-        Object.defineProperty(Toolbar.prototype, "element", {
-            /// <field type="HTMLElement" domElement="true" hidden="true" locid="WinJS.UI.Toolbar.element" helpKeyword="WinJS.UI.Toolbar.element">
-            /// Gets the DOM element that hosts the Toolbar.
+        Object.defineProperty(ToolBar.prototype, "element", {
+            /// <field type="HTMLElement" domElement="true" hidden="true" locid="WinJS.UI.ToolBar.element" helpKeyword="WinJS.UI.ToolBar.element">
+            /// Gets the DOM element that hosts the ToolBar.
             /// </field>
             get: function () {
                 return this._element;
@@ -43048,8 +43048,8 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             configurable: true
         });
 
-        Object.defineProperty(Toolbar.prototype, "inlineMenu", {
-            /// <field type="Boolean" locid="WinJS.UI.Toolbar.inlineMenu" helpKeyword="WinJS.UI.Toolbar.inlineMenu">
+        Object.defineProperty(ToolBar.prototype, "inlineMenu", {
+            /// <field type="Boolean" locid="WinJS.UI.ToolBar.inlineMenu" helpKeyword="WinJS.UI.ToolBar.inlineMenu">
             /// Indicates whether the commands that overflow should be displayed in an inline menu or not
             /// </field>
             get: function () {
@@ -43086,10 +43086,10 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             configurable: true
         });
 
-        Object.defineProperty(Toolbar.prototype, "extraClass", {
-            /// <field type="String" locid="WinJS.UI.Toolbar.extraClass" helpKeyword="WinJS.UI.Toolbar.extraClass">
+        Object.defineProperty(ToolBar.prototype, "extraClass", {
+            /// <field type="String" locid="WinJS.UI.ToolBar.extraClass" helpKeyword="WinJS.UI.ToolBar.extraClass">
             /// Gets or sets the extra CSS class that is applied to the host DOM element, and the corresponding
-            /// overflow menu created by the Toolbar when its inlineMenu property is false.
+            /// overflow menu created by the ToolBar when its inlineMenu property is false.
             /// </field>
             get: function () {
                 return this._extraClass;
@@ -43110,9 +43110,9 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             configurable: true
         });
 
-        Object.defineProperty(Toolbar.prototype, "data", {
-            /// <field type="WinJS.Binding.List" locid="WinJS.UI.Toolbar.data" helpKeyword="WinJS.UI.Toolbar.data">
-            /// Gets or sets the Binding List of WinJS.UI.Command for the Toolbar.
+        Object.defineProperty(ToolBar.prototype, "data", {
+            /// <field type="WinJS.Binding.List" locid="WinJS.UI.ToolBar.data" helpKeyword="WinJS.UI.ToolBar.data">
+            /// Gets or sets the Binding List of WinJS.UI.Command for the ToolBar.
             /// </field>
             get: function () {
                 return this._data;
@@ -43124,7 +43124,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
                     return;
                 }
                 if (!(value instanceof BindingList.List)) {
-                    throw new _ErrorFromName("WinJS.UI.Toolbar.BadData", strings.badData);
+                    throw new _ErrorFromName("WinJS.UI.ToolBar.BadData", strings.badData);
                 }
 
                 if (this._data) {
@@ -43138,10 +43138,10 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             configurable: true
         });
 
-        Toolbar.prototype.dispose = function () {
-            /// <signature helpKeyword="WinJS.UI.Toolbar.dispose">
-            /// <summary locid="WinJS.UI.Toolbar.dispose">
-            /// Disposes this Toolbar.
+        ToolBar.prototype.dispose = function () {
+            /// <signature helpKeyword="WinJS.UI.ToolBar.dispose">
+            /// <summary locid="WinJS.UI.ToolBar.dispose">
+            /// Disposes this ToolBar.
             /// </summary>
             /// </signature>
             if (this._disposed) {
@@ -43164,20 +43164,20 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             this._disposed = true;
         };
 
-        Toolbar.prototype.forceLayout = function () {
-            /// <signature helpKeyword="WinJS.UI.Toolbar.forceLayout">
-            /// <summary locid="WinJS.UI.Toolbar.forceLayout">
-            /// Forces the Toolbar to update its layout. Use this function when the window did not change size, but the container of the Toolbar changed size.
+        ToolBar.prototype.forceLayout = function () {
+            /// <signature helpKeyword="WinJS.UI.ToolBar.forceLayout">
+            /// <summary locid="WinJS.UI.ToolBar.forceLayout">
+            /// Forces the ToolBar to update its layout. Use this function when the window did not change size, but the container of the ToolBar changed size.
             /// </summary>
             /// </signature>
             this._positionCommands();
         };
 
-        Toolbar.prototype._writeProfilerMark = function (text) {
-            _WriteProfilerMark("WinJS.UI.Toolbar:" + this._id + ":" + text);
+        ToolBar.prototype._writeProfilerMark = function (text) {
+            _WriteProfilerMark("WinJS.UI.ToolBar:" + this._id + ":" + text);
         };
 
-        Toolbar.prototype._setupTree = function () {
+        ToolBar.prototype._setupTree = function () {
             var _this = this;
             this._writeProfilerMark("_setupTree,info");
 
@@ -43204,7 +43204,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             _ElementUtilities.addClass(this.element, _Constants.flyoutMenuCssClass);
         };
 
-        Toolbar.prototype._getFocusableElementsInfo = function () {
+        ToolBar.prototype._getFocusableElementsInfo = function () {
             var _this = this;
             var focusableCommandsInfo = {
                 elements: [],
@@ -43227,7 +43227,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             return focusableCommandsInfo;
         };
 
-        Toolbar.prototype._dataUpdated = function () {
+        ToolBar.prototype._dataUpdated = function () {
             var _this = this;
             this._writeProfilerMark("_dataUpdated,info");
 
@@ -43257,7 +43257,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             this._secondaryCommands = [];
 
             if (this.data.length > 0) {
-                _ElementUtilities.removeClass(this.element, _Constants.emptyToolbarCssClass);
+                _ElementUtilities.removeClass(this.element, _Constants.emptyToolBarCssClass);
                 this.data.forEach(function (command) {
                     if (command.section === "secondary") {
                         _this._secondaryCommands.push(command);
@@ -43272,14 +43272,14 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
                 }
             } else {
                 this._setupOverflowArea([]);
-                _ElementUtilities.addClass(this.element, _Constants.emptyToolbarCssClass);
+                _ElementUtilities.addClass(this.element, _Constants.emptyToolBarCssClass);
             }
 
             // Execute the animation.
             updateCommandAnimation.execute();
         };
 
-        Toolbar.prototype._getDataChangeInfo = function () {
+        ToolBar.prototype._getDataChangeInfo = function () {
             var child;
             var i = 0, len = 0;
             var dataElements = [];
@@ -43315,7 +43315,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             };
         };
 
-        Toolbar.prototype._refresh = function () {
+        ToolBar.prototype._refresh = function () {
             var _this = this;
             if (!this._refreshPending) {
                 this._refreshPending = true;
@@ -43326,25 +43326,25 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
                         _this._dataUpdated();
                         _this._refreshPending = false;
                     }
-                }, Scheduler.Priority.high, null, "WinJS.UI.Toolbar._refresh");
+                }, Scheduler.Priority.high, null, "WinJS.UI.ToolBar._refresh");
             }
         };
 
-        Toolbar.prototype._addDataListeners = function () {
+        ToolBar.prototype._addDataListeners = function () {
             var _this = this;
             this._dataChangedEvents.forEach(function (eventName) {
                 _this._data.addEventListener(eventName, _this._refreshBound, false);
             });
         };
 
-        Toolbar.prototype._removeDataListeners = function () {
+        ToolBar.prototype._removeDataListeners = function () {
             var _this = this;
             this._dataChangedEvents.forEach(function (eventName) {
                 _this._data.removeEventListener(eventName, _this._refreshBound, false);
             });
         };
 
-        Toolbar.prototype._isElementFocusable = function (element) {
+        ToolBar.prototype._isElementFocusable = function (element) {
             var focusable = false;
             if (element) {
                 var command = element["winControl"];
@@ -43358,12 +43358,12 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             return focusable;
         };
 
-        Toolbar.prototype._isMainActionCommand = function (element) {
+        ToolBar.prototype._isMainActionCommand = function (element) {
             // Returns true if the element is a command in the main action area, false otherwise
             return element && element["winControl"] && element.parentElement === this._mainActionArea;
         };
 
-        Toolbar.prototype._getLastElementFocus = function (element) {
+        ToolBar.prototype._getLastElementFocus = function (element) {
             if (this._isMainActionCommand(element)) {
                 // Only commands in the main action area support lastElementFocus
                 return element["winControl"].lastElementFocus;
@@ -43372,7 +43372,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             }
         };
 
-        Toolbar.prototype._getFirstElementFocus = function (element) {
+        ToolBar.prototype._getFirstElementFocus = function (element) {
             if (this._isMainActionCommand(element)) {
                 // Only commands in the main action area support firstElementFocus
                 return element["winControl"].firstElementFocus;
@@ -43381,7 +43381,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             }
         };
 
-        Toolbar.prototype._keyDownHandler = function (ev) {
+        ToolBar.prototype._keyDownHandler = function (ev) {
             if (!ev.altKey) {
                 if (_ElementUtilities._matchesSelector(ev.target, ".win-interactive, .win-interactive *")) {
                     return;
@@ -43429,7 +43429,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             }
         };
 
-        Toolbar.prototype._getDataFromDOMElements = function () {
+        ToolBar.prototype._getDataFromDOMElements = function () {
             this._writeProfilerMark("_getDataFromDOMElements,info");
 
             ControlProcessor.processAll(this._mainActionArea, true);
@@ -43442,23 +43442,23 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
                 if (child["winControl"] && child["winControl"] instanceof _Command.AppBarCommand) {
                     commands.push(child["winControl"]);
                 } else if (!this._overflowButton) {
-                    throw new _ErrorFromName("WinJS.UI.Toolbar.MustContainCommands", strings.mustContainCommands);
+                    throw new _ErrorFromName("WinJS.UI.ToolBar.MustContainCommands", strings.mustContainCommands);
                 }
             }
             return new BindingList.List(commands);
         };
 
-        Toolbar.prototype._resizeHandler = function () {
+        ToolBar.prototype._resizeHandler = function () {
             if (this.element.offsetWidth > 0) {
                 this._positionCommands();
             }
         };
 
-        Toolbar.prototype._commandUniqueId = function (command) {
+        ToolBar.prototype._commandUniqueId = function (command) {
             return _ElementUtilities._uniqueID(command.element);
         };
 
-        Toolbar.prototype._getCommandsInfo = function () {
+        ToolBar.prototype._getCommandsInfo = function () {
             var width = 0;
             var commands = [];
             var priority = 0;
@@ -43483,7 +43483,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             return commands;
         };
 
-        Toolbar.prototype._getPrimaryCommandsLocation = function (mainActionWidth) {
+        ToolBar.prototype._getPrimaryCommandsLocation = function (mainActionWidth) {
             this._writeProfilerMark("_getCommandsLocation,info");
 
             var mainActionCommands = [];
@@ -43527,7 +43527,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             };
         };
 
-        Toolbar.prototype._getCommandWidth = function (command) {
+        ToolBar.prototype._getCommandWidth = function (command) {
             if (command.type === _Constants.typeContent) {
                 return this._customContentCommandsWidth[this._commandUniqueId(command)];
             } else if (command.type === _Constants.typeSeparator) {
@@ -43537,7 +43537,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             }
         };
 
-        Toolbar.prototype._measureCommands = function () {
+        ToolBar.prototype._measureCommands = function () {
             var _this = this;
             this._writeProfilerMark("_measureCommands,info");
 
@@ -43583,7 +43583,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             this._measured = true;
         };
 
-        Toolbar.prototype._positionCommands = function () {
+        ToolBar.prototype._positionCommands = function () {
             this._writeProfilerMark("_positionCommands,StartTM");
 
             if (this._disposed || !this._measured) {
@@ -43623,16 +43623,16 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             this._writeProfilerMark("_positionCommands,StopTM");
         };
 
-        Toolbar.prototype._getMenuCommand = function (command) {
+        ToolBar.prototype._getMenuCommand = function (command) {
             var _this = this;
-            var menuCommand = new _ToolbarMenuCommand._MenuCommand(this.inlineMenu, null, {
+            var menuCommand = new _ToolBarMenuCommand._MenuCommand(this.inlineMenu, null, {
                 label: command.label,
                 type: (command.type === _Constants.typeContent ? _Constants.typeFlyout : command.type) || _Constants.typeButton,
                 disabled: command.disabled,
                 flyout: command.flyout,
                 beforeOnClick: function () {
                     // Save the command that was selected
-                    _this._chosenCommand = (menuCommand["_originalToolbarCommand"]);
+                    _this._chosenCommand = (menuCommand["_originalToolBarCommand"]);
 
                     // If this WinJS.UI.MenuCommand has type: toggle, we should also toggle the value of the original WinJS.UI.Command
                     if (_this._chosenCommand.type === _Constants.typeToggle) {
@@ -43657,11 +43657,11 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             } else {
                 menuCommand.onclick = command.onclick;
             }
-            menuCommand["_originalToolbarCommand"] = command;
+            menuCommand["_originalToolBarCommand"] = command;
             return menuCommand;
         };
 
-        Toolbar.prototype._setupOverflowArea = function (additionalCommands) {
+        ToolBar.prototype._setupOverflowArea = function (additionalCommands) {
             if (this.inlineMenu) {
                 // Inline menu mode always has the overflow button hidden
                 this._overflowButton.style.display = "";
@@ -43675,7 +43675,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             }
         };
 
-        Toolbar.prototype._setupOverflowAreaInline = function (additionalCommands) {
+        ToolBar.prototype._setupOverflowAreaInline = function (additionalCommands) {
             var _this = this;
             this._writeProfilerMark("_setupOverflowAreaInline,info");
 
@@ -43697,7 +43697,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             // Add separator between primary and secondary command if applicable
             var secondaryCommandsLength = this._secondaryCommands.length;
             if (additionalCommands.length > 0 && secondaryCommandsLength > 0) {
-                var separator = new _ToolbarMenuCommand._MenuCommand(this.inlineMenu, null, {
+                var separator = new _ToolBarMenuCommand._MenuCommand(this.inlineMenu, null, {
                     type: _Constants.typeSeparator
                 });
                 this._inlineOverflowArea.appendChild(separator.element);
@@ -43719,7 +43719,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             _ElementUtilities[hasToggleCommands ? "addClass" : "removeClass"](this._inlineOverflowArea, _Constants.menuToggleClass);
         };
 
-        Toolbar.prototype._setupOverflowAreaDetached = function (additionalCommands) {
+        ToolBar.prototype._setupOverflowAreaDetached = function (additionalCommands) {
             var _this = this;
             this._writeProfilerMark("_setupOverflowAreaDetached,info");
 
@@ -43781,7 +43781,7 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             this._menu.commands = menuCommands;
         };
 
-        Toolbar.prototype._hideSeparatorsIfNeeded = function (commands) {
+        ToolBar.prototype._hideSeparatorsIfNeeded = function (commands) {
             var prevType = _Constants.typeSeparator;
             var command;
 
@@ -43804,15 +43804,15 @@ define('WinJS/Controls/Toolbar/_Toolbar',["require", "exports", "../../Animation
             }
         };
 
-        Toolbar.supportedForProcessing = true;
-        return Toolbar;
+        ToolBar.supportedForProcessing = true;
+        return ToolBar;
     })();
-    exports.Toolbar = Toolbar;
+    exports.ToolBar = ToolBar;
 
     // addEventListener, removeEventListener, dispatchEvent
-    _Base.Class.mix(Toolbar, _Control.DOMEventMixin);
+    _Base.Class.mix(ToolBar, _Control.DOMEventMixin);
 });
-//# sourceMappingURL=_Toolbar.js.map
+//# sourceMappingURL=_ToolBar.js.map
 ;
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Layouts',[
@@ -43825,8 +43825,8 @@ define('WinJS/Controls/AppBar/_Layouts',[
     '../../Core/_ErrorFromName',
     '../../Core/_Resources',
     '../../Core/_WriteProfilerMark',
-    '../../Controls/Toolbar/_Toolbar',
-    '../../Controls/Toolbar/_Constants',
+    '../../Controls/ToolBar/_ToolBar',
+    '../../Controls/ToolBar/_Constants',
     '../../Promise',
     '../../Scheduler',
     '../../Utilities/_Control',
@@ -43834,7 +43834,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
     '../../Utilities/_ElementUtilities',
     './_Command',
     './_Constants'
-], function appBarLayoutsInit(exports, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, _Toolbar, _ToolbarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
+], function appBarLayoutsInit(exports, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, _ToolBar, _ToolBarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
     "use strict";
 
     // AppBar will use this when AppBar.layout property is set to "custom"
@@ -44291,7 +44291,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 exports._AppBarBaseLayout.call(this, appBarEl, { _className: layoutClassName, _type: layoutType });
                 this._tranformNames = _BaseUtils._browserStyleEquivalents["transform"];
                 this._animationCompleteBound = this._animationComplete.bind(this);
-                this._positionToolbarBound = this._positionToolbar.bind(this);
+                this._positionToolBarBound = this._positionToolBar.bind(this);
             }, {
                 layout: function _AppBarMenuLayout_layout(commands) {
                     this._writeProfilerMark("layout,info");
@@ -44320,7 +44320,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     this._toolbarEl = _Global.document.createElement("div");
                     this._toolbarContainer.appendChild(this._toolbarEl);
 
-                    this._createToolbar(commands);
+                    this._createToolBar(commands);
                 },
 
                 showCommands: function _AppBarMenuLayout_showCommands(commands) {
@@ -44384,13 +44384,13 @@ define('WinJS/Controls/AppBar/_Layouts',[
 
                     this._animating = true;
                     if (toPosition === "shown" || (fromPosition !== "shown" && toPosition === "compact")) {
-                        this._positionToolbar();
-                        this._animationPromise = this._animateToolbarEntrance();
+                        this._positionToolBar();
+                        this._animationPromise = this._animateToolBarEntrance();
                     } else {
                         if (fromPosition === "minimal" || fromPosition === "compact" || fromPosition === "hidden") {
                             this._animationPromise = Promise.wrap();
                         } else {
-                            this._animationPromise = this._animateToolbarExit();
+                            this._animationPromise = this._animateToolBarExit();
                         }
                     }
                     this._animationPromise.then(this._animationCompleteBound, this._animationCompleteBound);
@@ -44425,7 +44425,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
 
                     this._toolbar.data = new BindingList.List(data);
                     if (hadHiddenClass) {
-                        this._positionToolbar();
+                        this._positionToolBar();
                     }
 
                     // Restore state to AppBar.
@@ -44435,8 +44435,8 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     }
 
                     if (hadShownClass) {
-                        this._positionToolbar();
-                        this._animateToolbarEntrance();
+                        this._positionToolBar();
+                        this._animateToolBarEntrance();
                     }
                 },
 
@@ -44480,8 +44480,8 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     this._animating = false;
                 },
 
-                _createToolbar: function _AppBarMenuLayout_createToolbar(commands) {
-                    this._writeProfilerMark("_createToolbar,info");
+                _createToolBar: function _AppBarMenuLayout_createToolBar(commands) {
+                    this._writeProfilerMark("_createToolBar,info");
 
                     var hadHiddenClass = _ElementUtilities.hasClass(this.appBarEl, _Constants.hiddenClass);
                     _ElementUtilities.removeClass(this.appBarEl, _Constants.hiddenClass);
@@ -44490,19 +44490,19 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     var prevAppBarDisplay = this.appBarEl.style.display;
                     this.appBarEl.style.display = "";
 
-                    this._toolbar = new _Toolbar.Toolbar(this._toolbarEl, {
+                    this._toolbar = new _ToolBar.ToolBar(this._toolbarEl, {
                         data: new BindingList.List(this._originalCommands),
                         inlineMenu: true
                     });
 
                     var that = this;
                     this._appbarInvokeButton = this.appBarEl.querySelector("." + _Constants.invokeButtonClass);
-                    this._overflowButton = this._toolbarEl.querySelector("." + _ToolbarConstants.overflowButtonCssClass);
+                    this._overflowButton = this._toolbarEl.querySelector("." + _ToolBarConstants.overflowButtonCssClass);
                     this._overflowButton.addEventListener("click", function () {
                         that._appbarInvokeButton.click();
                     });
 
-                    this._positionToolbar();
+                    this._positionToolBar();
 
                     // Restore state to AppBar.
                     this.appBarEl.style.display = prevAppBarDisplay;
@@ -44511,8 +44511,8 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     }
                 },
 
-                _positionToolbar: function _AppBarMenuLayout_positionToolbar() {
-                    this._writeProfilerMark("_positionToolbar,info");
+                _positionToolBar: function _AppBarMenuLayout_positionToolBar() {
+                    this._writeProfilerMark("_positionToolBar,info");
 
                     var menuOffset = this._toolbarEl.offsetHeight - ((this._isMinimal() && !this._isBottom()) ? 0 : this.appBarEl.offsetHeight);
                     var toolbarOffset = this._toolbarEl.offsetHeight - (this._isMinimal() ? 0 : this.appBarEl.offsetHeight);
@@ -44529,13 +44529,13 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     this._initialized = true;
                 },
 
-                _animateToolbarEntrance: function _AppBarMenuLayout_animateToolbarEntrance() {
-                    this._writeProfilerMark("_animateToolbarEntrance,info");
+                _animateToolBarEntrance: function _AppBarMenuLayout_animateToolBarEntrance() {
+                    this._writeProfilerMark("_animateToolBarEntrance,info");
 
                     if (this._forceLayoutPending) {
                         this._forceLayoutPending = false;
                         this._toolbar.forceLayout();
-                        this._positionToolbar();
+                        this._positionToolBar();
                     }
 
                     var heightVisible = this._isMinimal() ? 0 : this.appBarEl.offsetHeight;
@@ -44550,14 +44550,14 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     return Promise.join([animation1, animation2]);
                 },
 
-                _animateToolbarExit: function _AppBarMenuLayout_animateToolbarExit() {
-                    this._writeProfilerMark("_animateToolbarExit,info");
+                _animateToolBarExit: function _AppBarMenuLayout_animateToolBarExit() {
+                    this._writeProfilerMark("_animateToolBarExit,info");
 
                     var heightVisible = this._isMinimal() ? 0 : this.appBarEl.offsetHeight;
                     var animation1 = this._executeTranslate(this._toolbarContainer, "translateY(0px)");
                     var animation2 = this._executeTranslate(this._toolbarEl, "translateY(" + (this._toolbarContainer.offsetHeight - heightVisible) + "px)");
                     var animation = Promise.join([animation1, animation2]);
-                    animation.then(this._positionToolbarBound, this._positionToolbarBound);
+                    animation.then(this._positionToolBarBound, this._positionToolBarBound);
                     return animation;
                 },
 
@@ -52025,23 +52025,23 @@ define('WinJS/Controls/ContentDialog',[
 
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
-define('WinJS/Controls/Toolbar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
+define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
     var module = null;
 
     _Base.Namespace.define("WinJS.UI", {
-        Toolbar: {
+        ToolBar: {
             get: function () {
                 if (!module) {
-                    require(["./Toolbar/_Toolbar"], function (m) {
+                    require(["./ToolBar/_ToolBar"], function (m) {
                         module = m;
                     });
                 }
-                return module.Toolbar;
+                return module.ToolBar;
             }
         }
     });
 });
-//# sourceMappingURL=Toolbar.js.map
+//# sourceMappingURL=ToolBar.js.map
 ;
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../../typings/require.d.ts" />
@@ -53088,7 +53088,7 @@ define('ui',[
     'WinJS/Controls/Tooltip',
     'WinJS/Controls/ViewBox',
     'WinJS/Controls/ContentDialog',
-    'WinJS/Controls/Toolbar',
+    'WinJS/Controls/ToolBar',
     'WinJS/Controls/SplitView'
     ], function (_WinJS) {
     "use strict";
