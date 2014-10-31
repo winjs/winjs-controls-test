@@ -557,7 +557,7 @@ textarea:-ms-lang(am, ti),
 button:-ms-lang(am, ti),
 select:-ms-lang(am, ti),
 option:-ms-lang(am, ti) {
-  font-family: "Ebrima", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Ebrima", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
 .win-type-xx-large:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
@@ -573,7 +573,7 @@ textarea:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb
 button:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
 select:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
 option:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te) {
-  font-family: "Nirmala UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Nirmala UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(chr-CHER-US),
 .win-type-xx-large:-ms-lang(chr-CHER-US),
@@ -589,7 +589,7 @@ textarea:-ms-lang(chr-CHER-US),
 button:-ms-lang(chr-CHER-US),
 select:-ms-lang(chr-CHER-US),
 option:-ms-lang(chr-CHER-US) {
-  font-family: "Gadugi", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Gadugi", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(ja),
 .win-type-xx-large:-ms-lang(ja),
@@ -605,7 +605,7 @@ textarea:-ms-lang(ja),
 button:-ms-lang(ja),
 select:-ms-lang(ja),
 option:-ms-lang(ja) {
-  font-family: "Meiryo UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Yu Gothic UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(km, lo, th, bug-Bugi),
 .win-type-xx-large:-ms-lang(km, lo, th, bug-Bugi),
@@ -621,7 +621,7 @@ textarea:-ms-lang(km, lo, th, bug-Bugi),
 button:-ms-lang(km, lo, th, bug-Bugi),
 select:-ms-lang(km, lo, th, bug-Bugi),
 option:-ms-lang(km, lo, th, bug-Bugi) {
-  font-family: "Leelawadee UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Leelawadee UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(ko),
 .win-type-xx-large:-ms-lang(ko),
@@ -637,7 +637,7 @@ textarea:-ms-lang(ko),
 button:-ms-lang(ko),
 select:-ms-lang(ko),
 option:-ms-lang(ko) {
-  font-family: "Malgun Gothic", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Malgun Gothic", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(jv-Java),
 .win-type-xx-large:-ms-lang(jv-Java),
@@ -653,7 +653,7 @@ textarea:-ms-lang(jv-Java),
 button:-ms-lang(jv-Java),
 select:-ms-lang(jv-Java),
 option:-ms-lang(jv-Java) {
-  font-family: "Javanese Text", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Javanese Text", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(cop-Copt),
 .win-type-xx-large:-ms-lang(cop-Copt),
@@ -669,7 +669,7 @@ textarea:-ms-lang(cop-Copt),
 button:-ms-lang(cop-Copt),
 select:-ms-lang(cop-Copt),
 option:-ms-lang(cop-Copt) {
-  font-family: "Segoe UI Symbol", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Segoe UI Symbol", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(zh-CN, zh-Hans, zh-SG),
 .win-type-xx-large:-ms-lang(zh-CN, zh-Hans, zh-SG),
@@ -685,7 +685,7 @@ textarea:-ms-lang(zh-CN, zh-Hans, zh-SG),
 button:-ms-lang(zh-CN, zh-Hans, zh-SG),
 select:-ms-lang(zh-CN, zh-Hans, zh-SG),
 option:-ms-lang(zh-CN, zh-Hans, zh-SG) {
-  font-family: "Microsoft YaHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Microsoft YaHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 .win-type-xx-large:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
@@ -701,7 +701,7 @@ textarea:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 button:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 select:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 option:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO) {
-  font-family: "Microsoft JhengHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Microsoft JhengHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 html,
 body {
