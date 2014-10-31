@@ -4039,24 +4039,21 @@ Settings Pane
   position: relative;
   width: 266px;
   min-width: 265px;
-  height: 28px;
-  border-style: solid;
-  border-width: 2px;
+  min-height: 28px;
 }
 .win-autosuggestbox-flyout {
   position: absolute;
   top: 100%;
   width: 100%;
-  border-style: solid;
-  border-width: 2px 2px 2px 2px;
   z-index: 100;
-  padding: 5px 0 10px 0;
-  left: -2px;
-  right: -2px;
-  max-height: 454px;
+  max-height: 374px;
+  min-height: 44px;
   overflow: auto;
   -ms-scroll-chaining: none;
   touch-action: none;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
 }
 .win-autosuggestbox-flyout-above {
   bottom: 100%;
@@ -4071,14 +4068,13 @@ Settings Pane
   flex-direction: column-reverse;
 }
 .win-autosuggestbox input {
-  height: 100%;
-  border-style: none;
-  margin: 0px;
-  width: 100%;
-  font-size: 11pt;
   -ms-ime-align: after;
-  line-height: 20px;
-  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+}
+.win-autosuggestbox-suggestion-selected {
+  outline-style: dotted;
+  outline-width: 1px;
 }
 .win-autosuggestbox-suggestion-result {
   display: -ms-flexbox;
@@ -4091,7 +4087,6 @@ Settings Pane
 }
 .win-autosuggestbox-suggestion-result div {
   line-height: 20px;
-  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -4100,7 +4095,6 @@ Settings Pane
   padding-bottom: 11px;
   height: 60px;
   width: 179px;
-  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   line-height: 20px;
@@ -4108,7 +4102,6 @@ Settings Pane
 .win-autosuggestbox-suggestion-result-detailed-text {
   display: inline-block;
   overflow: hidden;
-  text-overflow: ellipsis;
   line-height: 22px;
   /* Some characters get clipped if line height is < 22px. Work around by setting -2 margin. */
   margin-top: -1px;
@@ -4141,13 +4134,11 @@ Settings Pane
   padding-right: 0;
 }
 .win-autosuggestbox-suggestion-query {
-  padding: 9px 18px 11px 18px;
-  font-weight: normal;
+  height: 20px;
+  padding: 11px 0px 13px 12px;
   outline: none;
-  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 11pt;
   line-height: 20px;
 }
 .win-autosuggestbox-suggestion-separator {
@@ -5957,38 +5948,6 @@ button.win-command:disabled:active .win-label {
   background-color: transparent;
   color: rgba(0, 0, 0, 0.4);
 }
-.win-autosuggestbox {
-  border-color: rgba(0, 0, 0, 0.27);
-  background-color: rgba(255, 255, 255, 0.8);
-  color: rgba(0, 0, 0, 0.6);
-}
-.win-autosuggestbox-disabled {
-  background-color: rgba(202, 202, 202, 0.4);
-  border-color: rgba(0, 0, 0, 0.15);
-}
-.win-autosuggestbox-disabled input[disabled] {
-  background-color: rgba(202, 202, 202, 0.4);
-  color: rgba(0, 0, 0, 0.22);
-}
-.win-autosuggestbox-disabled div {
-  background-color: rgba(202, 202, 202, 0.4);
-  color: rgba(0, 0, 0, 0.22);
-}
-.win-autosuggestbox-input-focus {
-  border-color: #2a2a2a;
-}
-.win-autosuggestbox-flyout {
-  border-color: #2a2a2a;
-  background-color: #ffffff;
-}
-.win-autosuggestbox-suggestion-query,
-.win-autosuggestbox-suggestion-result {
-  color: #000000;
-}
-.win-autosuggestbox-suggestion-selected {
-  background-color: #4617b4;
-  color: #ffffff;
-}
 .win-autosuggestbox-flyout-highlighttext {
   color: #4617b4;
 }
@@ -6000,6 +5959,20 @@ button.win-command:disabled:active .win-label {
 }
 .win-autosuggestbox-suggestion-selected .win-autosuggestbox-flyout-highlighttext {
   color: #a38bda;
+}
+.win-autosuggestbox-flyout {
+  background-color: #f2f2f2;
+  color: #000000;
+}
+.win-autosuggestbox-suggestion-selected {
+  background-color: rgba(0, 120, 215, 0.4);
+}
+.win-autosuggestbox-suggestion-result:hover:active,
+.win-autosuggestbox-suggestion-query:hover:active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.win-autosuggestbox-suggestion-selected.win-autosuggestbox-suggestion-selected:hover:active {
+  background-color: rgba(0, 120, 215, 0.7);
 }
 .win-searchbox-button {
   color: rgba(0, 0, 0, 0.6);
@@ -6175,15 +6148,12 @@ html.win-hoverable button:enabled[aria-checked=true].win-command:hover:after {
 html.win-hoverable button:enabled[aria-checked=true].win-command:hover:active:after {
   opacity: 1;
 }
-html.win-hoverable .win-autosuggestbox[disabled=false]:hover {
-  background-color: rgba(255, 255, 255, 0.87);
-}
 html.win-hoverable .win-autosuggestbox-suggestion-result:hover,
 html.win-hoverable .win-autosuggestbox-suggestion-query:hover {
-  background-color: #e5e5e5;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 html.win-hoverable .win-autosuggestbox-suggestion-selected:hover {
-  background-color: #5f37be;
+  background-color: rgba(0, 120, 215, 0.6);
 }
 html.win-hoverable .win-searchbox-button[disabled=false]:hover {
   background-color: #5f37be;
@@ -6859,39 +6829,6 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   background-color: transparent;
   color: rgba(255, 255, 255, 0.4);
 }
-.win-ui-dark .win-autosuggestbox {
-  border-color: rgba(255, 255, 255, 0.8);
-  background-color: rgba(255, 255, 255, 0.8);
-  color: rgba(0, 0, 0, 0.6);
-}
-.win-ui-dark .win-autosuggestbox-disabled {
-  background-color: transparent;
-  border-color: rgba(255, 255, 255, 0.4);
-}
-.win-ui-dark .win-autosuggestbox-disabled input[disabled] {
-  background-color: transparent;
-  color: rgba(255, 255, 255, 0.4);
-}
-.win-ui-dark .win-autosuggestbox-disabled div {
-  background-color: transparent;
-  color: rgba(255, 255, 255, 0.4);
-}
-.win-ui-dark .win-autosuggestbox-input-focus {
-  border-color: #2a2a2a;
-  background-color: #ffffff;
-}
-.win-ui-dark .win-autosuggestbox-flyout {
-  border-color: #2a2a2a;
-  background-color: #ffffff;
-}
-.win-ui-dark .win-autosuggestbox-suggestion-query,
-.win-ui-dark .win-autosuggestbox-suggestion-result {
-  color: #000000;
-}
-.win-ui-dark .win-autosuggestbox-suggestion-selected {
-  background-color: #4617b4;
-  color: #ffffff;
-}
 .win-ui-dark .win-autosuggestbox-flyout-highlighttext {
   color: #4617b4;
 }
@@ -6903,6 +6840,20 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 }
 .win-ui-dark .win-autosuggestbox-suggestion-selected .win-autosuggestbox-flyout-highlighttext {
   color: #a38bda;
+}
+.win-ui-dark .win-autosuggestbox-flyout {
+  background-color: #2b2b2b;
+  color: #ffffff;
+}
+.win-ui-dark .win-autosuggestbox-suggestion-selected {
+  background-color: rgba(0, 120, 215, 0.6);
+}
+.win-ui-dark .win-autosuggestbox-suggestion-result:hover:active,
+.win-ui-dark .win-autosuggestbox-suggestion-query:hover:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark .win-autosuggestbox-suggestion-selected.win-autosuggestbox-suggestion-selected:hover:active {
+  background-color: rgba(0, 120, 215, 0.9);
 }
 .win-ui-dark .win-searchbox-button {
   color: rgba(0, 0, 0, 0.6);
@@ -7078,20 +7029,12 @@ html.win-hoverable .win-ui-dark button:enabled[aria-checked=true].win-command:ho
 html.win-hoverable .win-ui-dark button:enabled[aria-checked=true].win-command:hover:active:after {
   opacity: 1;
 }
-html.win-hoverable .win-ui-dark .win-autosuggestbox[disabled=false]:hover {
-  border-color: rgba(255, 255, 255, 0.87);
-  background-color: rgba(255, 255, 255, 0.87);
-}
-html.win-hoverable .win-ui-dark .win-autosuggestbox-input-focus:hover {
-  border-color: #2a2a2a;
-  background-color: #ffffff;
-}
 html.win-hoverable .win-ui-dark .win-autosuggestbox-suggestion-result:hover,
 html.win-hoverable .win-ui-dark .win-autosuggestbox-suggestion-query:hover {
-  background-color: #e5e5e5;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 html.win-hoverable .win-ui-dark .win-autosuggestbox-suggestion-selected:hover {
-  background-color: #5f37be;
+  background-color: rgba(0, 120, 215, 0.8);
 }
 html.win-hoverable .win-ui-dark .win-searchbox-button[disabled=false]:hover {
   background-color: #5f37be;
