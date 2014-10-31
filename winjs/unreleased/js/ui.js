@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 ui.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.31 ui.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 ui.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.31 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -42998,6 +42998,10 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 this._element.setAttribute("aria-label", strings.ariaLabel);
             }
 
+            this._customContentCommandsWidth = {};
+            this._separatorWidth = 0;
+            this._standardCommandWidth = 0;
+
             this._refreshBound = this._refresh.bind(this);
 
             this._setupTree();
@@ -43170,6 +43174,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             /// Forces the ToolBar to update its layout. Use this function when the window did not change size, but the container of the ToolBar changed size.
             /// </summary>
             /// </signature>
+            this._measureCommands();
             this._positionCommands();
         };
 
@@ -43450,6 +43455,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
 
         ToolBar.prototype._resizeHandler = function () {
             if (this.element.offsetWidth > 0) {
+                this._measureCommands(true);
                 this._positionCommands();
             }
         };
@@ -43537,18 +43543,20 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             }
         };
 
-        ToolBar.prototype._measureCommands = function () {
+        ToolBar.prototype._measureCommands = function (skipIfMeasured) {
             var _this = this;
+            if (typeof skipIfMeasured === "undefined") { skipIfMeasured = false; }
             this._writeProfilerMark("_measureCommands,info");
 
-            if (this._disposed || !_Global.document.body.contains(this._element)) {
+            if (this._disposed || !_Global.document.body.contains(this._element) || this.element.offsetWidth === 0) {
                 return;
             }
 
-            this._customContentCommandsWidth = {};
-            this._separatorWidth = 0;
-            this._standardCommandWidth = 0;
-
+            if (!skipIfMeasured) {
+                this._customContentCommandsWidth = {};
+                this._separatorWidth = 0;
+                this._standardCommandWidth = 0;
+            }
             this._primaryCommands.forEach(function (command) {
                 if (!command.element.parentElement) {
                     _this._mainActionArea.appendChild(command.element);
@@ -43559,7 +43567,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 var originalDisplayStyle = command.element.style.display;
                 command.element.style.display = "";
 
-                if (command.type === _Constants.typeContent) {
+                if (command.type === _Constants.typeContent && !_this._customContentCommandsWidth[_this._commandUniqueId(command)]) {
                     _this._customContentCommandsWidth[_this._commandUniqueId(command)] = _ElementUtilities.getTotalWidth(command.element);
                 } else if (command.type === _Constants.typeSeparator) {
                     if (!_this._separatorWidth) {
@@ -43600,7 +43608,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 command.element.style.display = (command.hidden ? "none" : "");
             });
 
-            var mainActionWidth = _ElementUtilities.getTotalWidth(this.element);
+            var mainActionWidth = _ElementUtilities.getContentWidth(this.element);
 
             var commandsLocation = this._getPrimaryCommandsLocation(mainActionWidth);
 
