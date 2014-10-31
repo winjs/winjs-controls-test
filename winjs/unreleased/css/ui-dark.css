@@ -4711,29 +4711,26 @@ Hide clear button in search box control.
   -ms-scroll-limit-x-max: 0px;
 }
 .win-pivot .win-pivot-navbutton {
-  transition: opacity linear 167ms;
-  -webkit-transition: opacity linear 167ms;
   position: absolute;
-  width: 18px;
-  height: 40px;
-  margin-top: 30px;
+  width: 20px;
+  height: 36px;
   padding: 0px;
-  top: 0px;
+  margin: 0px;
+  top: 10px;
   min-width: 0px;
   border-width: 0px;
   cursor: pointer;
   opacity: 0;
   font-family: "Segoe UI Symbol", "Symbols";
-  font-size: 16pt;
 }
 .win-pivot .win-pivot-headers.win-pivot-shownavbuttons .win-pivot-navbutton {
   opacity: 1;
 }
 .win-pivot .win-pivot-headers .win-pivot-navbutton-prev:before {
-  content: "\E0E2";
+  content: "\E096";
 }
 .win-pivot .win-pivot-headers .win-pivot-navbutton-next:before {
-  content: "\E0E3";
+  content: "\E09B";
 }
 .win-pivot .win-pivot-title {
   -ms-flex: 0 0 auto;
@@ -4773,28 +4770,32 @@ Hide clear button in search box control.
   white-space: nowrap;
   position: relative;
   overflow-y: visible;
-  height: 72px;
+  height: 48px;
   touch-action: none;
   -ms-touch-action: none;
 }
 .win-pivot .win-pivot-header {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
   display: inline-block;
-  text-overflow: ellipsis;
   transition: opacity linear 167ms;
   -webkit-transition: opacity linear 167ms;
   overflow: hidden;
+  height: 30px;
+  border: 0;
+  padding: 0;
+  margin: 13px 12px 15px 12px;
 }
 .win-pivot button.win-pivot-header,
 .win-pivot button.win-pivot-header:hover:active {
   background-color: transparent;
   border: 0;
-  margin: 0;
-  padding: 0px 9px;
+  padding: 0;
   letter-spacing: 0px;
+  margin: 13px 12px 15px 12px;
   min-height: 0;
   min-width: 0;
-  font-size: 45pt;
-  font-weight: 400;
 }
 .win-pivot button.win-pivot-header.win-keyboard:focus {
   outline-style: dotted;
@@ -4806,6 +4807,9 @@ Hide clear button in search box control.
 }
 .win-pivot .win-pivot-header.win-pivot-header-selected,
 .win-pivot.win-pivot-locked .win-pivot-header.win-pivot-header-selected {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.333;
   opacity: 1.0;
   visibility: inherit;
 }
@@ -4821,8 +4825,8 @@ Hide clear button in search box control.
             header track space, and position: relative allows interacting with it as if the viewport was drawn over the header track.
         */
   position: relative;
-  padding-top: 72px;
-  margin-top: -72px;
+  padding-top: 48px;
+  margin-top: -48px;
 }
 .win-pivot.win-pivot-mouse .win-pivot-viewport {
   padding-top: 0px;
@@ -4840,13 +4844,18 @@ Hide clear button in search box control.
 html.win-hoverable .win-pivot button.win-pivot-header:hover {
   background-color: transparent;
   border: 0;
-  margin: 0;
-  padding: 0px 9px;
+  padding: 0;
   letter-spacing: 0px;
+  margin: 13px 12px 15px 12px;
   min-height: 0;
   min-width: 0;
-  font-size: 45pt;
-  font-weight: 400;
+}
+html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
+  margin: 0px;
+  padding: 0px;
+  border-width: 0px;
+  cursor: pointer;
+  font-family: "Segoe UI Symbol", "Symbols";
 }
 /*
     PivotItem
@@ -6037,21 +6046,17 @@ button.win-command:disabled:active .win-label {
   background-color: #ffffff;
   color: #000000;
 }
-.win-pivot .win-pivot-header {
-  opacity: 0.4;
+.win-pivot .win-pivot-navbutton {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.8);
+}
+.win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
+  color: rgba(255, 255, 255, 0.8);
 }
 .win-pivot button.win-pivot-header,
 .win-pivot button.win-pivot-header:focus,
 .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
-  color: white;
-}
-.win-pivot .win-pivot-navbutton {
-  background-color: rgba(213, 213, 213, 0.298);
-  color: rgba(255, 255, 255, 0.6);
-}
-.win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
-  background-color: rgba(191, 191, 191, 0.749);
-  color: black;
+  color: #ffffff;
 }
 .win-toolbar,
 .win-toolbar {
@@ -6210,12 +6215,11 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   background-color: #ffffff;
   color: #000000;
 }
-html.win-hoverable .win-pivot button.win-pivot-header:hover {
-  color: white;
-}
 html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
-  background-color: rgba(49, 49, 49, 0.937);
-  color: white;
+  color: rgba(255, 255, 255, 0.6);
+}
+html.win-hoverable .win-pivot button.win-pivot-header:hover {
+  color: #ffffff;
 }
 html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover,
 html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover,
@@ -6948,21 +6952,17 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   background-color: #000000;
   color: #ffffff;
 }
-.win-ui-light .win-pivot .win-pivot-header {
-  opacity: 0.2;
+.win-ui-light .win-pivot .win-pivot-navbutton {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-ui-light .win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
+  color: rgba(0, 0, 0, 0.8);
 }
 .win-ui-light .win-pivot button.win-pivot-header,
 .win-ui-light .win-pivot button.win-pivot-header:focus,
 .win-ui-light .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
-  color: black;
-}
-.win-ui-light .win-pivot .win-pivot-navbutton {
-  background-color: rgba(213, 213, 213, 0.349);
-  color: rgba(0, 0, 0, 0.6);
-}
-.win-ui-light .win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
-  background-color: rgba(41, 41, 41, 0.741);
-  color: white;
+  color: #000000;
 }
 .win-ui-light.win-toolbar,
 .win-ui-light .win-toolbar {
@@ -7116,12 +7116,11 @@ html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-pressed:hove
   background-color: #000000;
   color: #ffffff;
 }
-html.win-hoverable .win-ui-light .win-pivot button.win-pivot-header:hover {
-  color: black;
-}
 html.win-hoverable .win-ui-light .win-pivot .win-pivot-navbutton:hover {
-  background-color: rgba(215, 215, 215, 0.941);
-  color: black;
+  color: rgba(0, 0, 0, 0.6);
+}
+html.win-hoverable .win-ui-light .win-pivot button.win-pivot-header:hover {
+  color: #000000;
 }
 html.win-hoverable .win-ui-light.win-toolbar button.win-toolbar-overflowbutton:hover,
 html.win-hoverable .win-ui-light .win-toolbar button.win-toolbar-overflowbutton:hover,
