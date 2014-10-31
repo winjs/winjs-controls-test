@@ -4291,28 +4291,6 @@ ASB control animations
     color: HighlightText;
   }
 }
-.win-searchbox-flyout {
-  max-height: 272px;
-}
-.win-searchbox input {
-  padding-right: 28px;
-}
-.win-searchbox input:lang(ar),
-.win-searchbox input:lang(dv),
-.win-searchbox input:lang(fa),
-.win-searchbox input:lang(he),
-.win-searchbox input:lang(ku-Arab),
-.win-searchbox input:lang(pa-Arab),
-.win-searchbox input:lang(prs),
-.win-searchbox input:lang(ps),
-.win-searchbox input:lang(sd-Arab),
-.win-searchbox input:lang(syr),
-.win-searchbox input:lang(ug),
-.win-searchbox input:lang(ur),
-.win-searchbox input:lang(qps-plocm) {
-  padding-right: 0;
-  padding-left: 28px;
-}
 /*
 Hide clear button in search box control.
 */
