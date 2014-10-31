@@ -66412,8 +66412,7 @@ define('WinJS/Controls/ToolBar/_Constants',["require", "exports"], function(requ
     exports.typeToggle = "toggle";
     exports.typeFlyout = "flyout";
 });
-//# sourceMappingURL=_Constants.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // Glyph Enumeration
 /// <dictionary>Segoe</dictionary>
@@ -68237,8 +68236,7 @@ define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Co
     })(_MenuCommandBase.MenuCommand);
     exports._MenuCommand = _MenuCommand;
 });
-//# sourceMappingURL=_MenuCommand.js.map
-;
+
 define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../ToolBar/_Constants", "../AppBar/_Command", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", "../../Controls/Menu", "../Menu/_Command", "../../Core/_Resources", "../../Scheduler", "../ToolBar/_MenuCommand", "../../Core/_WriteProfilerMark"], function(require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Menu, _MenuCommand, _Resources, Scheduler, _ToolBarMenuCommand, _WriteProfilerMark) {
     require(["require-style!less/controls"]);
 
@@ -69149,8 +69147,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
     // addEventListener, removeEventListener, dispatchEvent
     _Base.Class.mix(ToolBar, _Control.DOMEventMixin);
 });
-//# sourceMappingURL=_ToolBar.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
@@ -69182,8 +69179,7 @@ define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], functio
     
     return publicMembers;
 });
-//# sourceMappingURL=ToolBar.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Layouts',[
     'exports',
@@ -78377,8 +78373,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
     _Base.Class.mix(SplitView, _Events.createEventProperties(EventNames.beforeShow, EventNames.afterShow, EventNames.beforeHide, EventNames.afterHide));
     _Base.Class.mix(SplitView, _Control.DOMEventMixin);
 });
-//# sourceMappingURL=_SplitView.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
@@ -78397,8 +78392,7 @@ define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], funct
         }
     });
 });
-//# sourceMappingURL=SplitView.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS',[
     'WinJS/Core/_WinJS',
