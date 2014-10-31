@@ -26591,7 +26591,7 @@ define('WinJS/Controls/FlipView',[
     './FlipView/_Constants',
     './FlipView/_PageManager',
     'require-style!less/controls'
-    ], function flipperInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _UI, _Constants, _PageManager) {
+], function flipperInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _UI, _Constants, _PageManager) {
     "use strict";
 
     _Base.Namespace.define("WinJS.UI", {
@@ -27062,28 +27062,8 @@ define('WinJS/Controls/FlipView',[
                         allFeaturesSupported = allFeaturesSupported && !!(styleEquivalents[stylesRequiredForFullFeatureMode[i]]);
                     }
                     allFeaturesSupported = allFeaturesSupported && !!_BaseUtils._browserEventEquivalents["manipulationStateChanged"];
+                    allFeaturesSupported = allFeaturesSupported && _ElementUtilities._supportsSnapPoints;
                     this._environmentSupportsTouch = allFeaturesSupported;
-                    if (allFeaturesSupported) {
-                        // All of our synchronous checks indicate that touch is supported. Because the last check can be
-                        // asynchronous, we'll assume that touch is supported for now and if we later find out it isn't,
-                        // we'll tear down the touch features.
-                        _ElementUtilities._detectSnapPointsSupport().then(function (snapPointsSupported) {
-                            if (!snapPointsSupported) {
-                                that._environmentSupportsTouch = false;
-
-                                // Tear down the touch features
-                                if (flipViewInitialized) {
-                                    that._fadeInButton("prev");
-                                    that._fadeInButton("next");
-                                    _ElementUtilities._removeEventListener(that._contentDiv, "pointerdown", handlePointerDown, false);
-                                    _ElementUtilities._removeEventListener(that._contentDiv, "pointermove", handleShowButtons, false);
-                                    _ElementUtilities._removeEventListener(that._contentDiv, "pointerup", handlePointerUp, false);
-                                    that._panningDivContainer.style[that._isHorizontal ? "overflowX" : "overflowY"] = "hidden";
-                                    that._pageManager.disableTouchFeatures();
-                                }
-                            }
-                        });
-                    }
 
                     var accName = this._flipviewDiv.getAttribute("aria-label");
                     if (!accName) {
@@ -27282,7 +27262,7 @@ define('WinJS/Controls/FlipView',[
                         }
                     }
 
-                    function handlePointerUp (e) {
+                    function handlePointerUp(e) {
                         if (e.pointerType !== PT_TOUCH) {
                             that._touchInteraction = false;
                         }
@@ -35052,8 +35032,7 @@ define('WinJS/Controls/Pivot',[
             };
             var MSManipulationEventStates = _ElementUtilities._MSManipulationEvent;
 
-            var supportsSnap = false;
-            var ready = null;
+            var supportsSnap = !!(_ElementUtilities._supportsSnapPoints && _Global.HTMLElement.prototype.msZoomTo);
 
             function _nop() { }
             var headersStates = {
@@ -35592,13 +35571,6 @@ define('WinJS/Controls/Pivot',[
                 /// The new Pivot.
                 /// </returns>
                 /// </signature>
-
-                if (!ready) {
-                    ready = _ElementUtilities._detectSnapPointsSupport().then(function (value) {
-                        supportsSnap = value;
-                    });
-                }
-
                 element = element || _Global.document.createElement("DIV");
                 options = options || {};
 
@@ -35618,6 +35590,9 @@ define('WinJS/Controls/Pivot',[
                 // Attaching JS control to DOM element
                 element.winControl = this;
                 this._element = element;
+                if (!supportsSnap) {
+                    _ElementUtilities.addClass(this.element, Pivot._ClassName.pivotNoSnap);
+                }
                 this._element.setAttribute('role', 'tablist');
                 if (!this._element.getAttribute("aria-label")) {
                     this._element.setAttribute('aria-label', strings.pivotAriaLabel);
@@ -35931,19 +35906,12 @@ define('WinJS/Controls/Pivot',[
                     this._currentIndexOnScreen = 0;
                     this._firstLoad = true;
                     this._cachedRTL = _Global.getComputedStyle(this._element, null).direction === "rtl";
+                    headersStates.common.refreshHeadersState(this, true);
+                    this._pendingRefresh = false;
 
-                    var that = this;
-                    ready.done(function () {
-                        headersStates.common.refreshHeadersState(that, true);
-                        if (!supportsSnap) {
-                            _ElementUtilities.addClass(that.element, Pivot._ClassName.pivotNoSnap);
-                        }
-
-                        that._pendingRefresh = false;
-                        that.selectedIndex = Math.min(pendingIndexOnScreen, that.items.length - 1);
-                        that._firstLoad = false;
-                        that._recenterUI();
-                    });
+                    this.selectedIndex = Math.min(pendingIndexOnScreen, this.items.length - 1);
+                    this._firstLoad = false;
+                    this._recenterUI();
                 },
 
                 _attachItems: function pivot_attachItems() {
@@ -36084,7 +36052,7 @@ define('WinJS/Controls/Pivot',[
                     }
 
                     var zooming = false;
-                    if (supportsSnap && _ElementUtilities._supportsZoomTo && this._currentManipulationState !== MSManipulationEventStates.MS_MANIPULATION_STATE_INERTIA) {
+                    if (supportsSnap && this._currentManipulationState !== MSManipulationEventStates.MS_MANIPULATION_STATE_INERTIA) {
                         if (this._firstLoad) {
                             _Log.log && _Log.log('_firstLoad index:' + this.selectedIndex + ' offset: ' + this._offsetFromCenter + ' scrollLeft: ' + this._currentScrollTargetLocation, "winjs pivot", "log");
                             _ElementUtilities.setScrollPosition(this._viewportElement, { scrollLeft: this._currentScrollTargetLocation });
@@ -49215,7 +49183,7 @@ define('WinJS/Controls/NavBar/_Container',[
     '../AppBar/_Constants',
     '../Repeater',
     './_Command'
-    ], function NavBarContainerInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Navigation, Promise, Scheduler, _Control, _ElementUtilities, _KeyboardBehavior, _UI, _Constants, Repeater, _Command) {
+], function NavBarContainerInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Navigation, Promise, Scheduler, _Control, _ElementUtilities, _KeyboardBehavior, _UI, _Constants, Repeater, _Command) {
     "use strict";
 
     function nobodyHasFocus() {
@@ -49311,7 +49279,7 @@ define('WinJS/Controls/NavBar/_Container',[
                 this._closeSplitAndResetBound = this._closeSplitAndReset.bind(this);
                 this._currentManipulationState = MS_MANIPULATION_STATE_STOPPED;
 
-                this._panningDisabled = false;
+                this._panningDisabled = !_ElementUtilities._supportsSnapPoints;
                 this._fixedSize = false;
                 this._maxRows = 1;
                 this._sizes = {};
@@ -49349,19 +49317,7 @@ define('WinJS/Controls/NavBar/_Container',[
                     this.currentIndex = options.currentIndex;
                 }
 
-                var that = this;
-                var updatedPageUI = false;
-                _ElementUtilities._detectSnapPointsSupport().then(function (supportsSnap) {
-                    that._panningDisabled = !supportsSnap;
-                    if (!that._disposed) {
-                        that._updatePageUI();
-                        updatedPageUI = true;
-                    }
-                });
-
-                if (!updatedPageUI) {
-                    this._updatePageUI();
-                }
+                this._updatePageUI();
 
                 Scheduler.schedule(function NavBarContainer_async_initialize() {
                     this._updateAppBarReference();
