@@ -76405,7 +76405,7 @@ define('WinJS/Controls/ContentDialog',[
                 beforeHide: "beforehide",
                 afterHide: "afterhide",
             };
-            var minContentHeightWithInputPane = 120;
+            var minContentHeightWithInputPane = 96;
             
             ContentDialogManager = new (_Base.Class.define(function () {
                 this._dialogs = [];

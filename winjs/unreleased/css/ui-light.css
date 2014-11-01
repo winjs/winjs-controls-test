@@ -4863,14 +4863,14 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
       - Horizontal alignment
         - Always horizontally centered
       - Vertical alignment
-        - If height of window < dialog max, dialog is attached to top of window
+        - If height of window < @dialogVerticallyCenteredThreshold, dialog is attached to top of window
         - Otherwise, dialog is vertically centered
       - Width:
-        - Always stays between min and max width
+        - Always stays between @minWidth and @maxWidth
         - Sizes to width of window
       - Height:
-        - Always stays between min and max height
-        - If window height < dialog max and dialog height > 50% of window
+        - Always stays between @minHeight and @maxHeight
+        - If window height < @maxHeight and dialog height > 50% of window
           height, dialog height = window height
         - Otherwise, dialog height sizes to its content
      */
@@ -4934,13 +4934,15 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   -ms-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
+  outline-style: solid;
+  outline-width: 1px;
   box-sizing: border-box;
-  padding: 12px;
+  padding: 18px 24px 24px 24px;
   width: 100vw;
   min-width: 320px;
-  max-width: 432px;
-  min-height: 160px;
-  max-height: 520px;
+  max-width: 456px;
+  min-height: 184px;
+  max-height: 758px;
   /* Center horizontally */
   margin-left: auto;
   margin-right: auto;
@@ -4952,11 +4954,11 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   flex: 10000 0 auto;
   width: 0;
 }
-@media (min-height: 520px) {
+@media (min-height: 640px) {
   .win-contentdialog .win-contentdialog-dialog {
-    -ms-flex: 0 0 auto;
-    -webkit-flex: 0 0 auto;
-    flex: 0 0 auto;
+    -ms-flex: 0 1 auto;
+    -webkit-flex: 0 1 auto;
+    flex: 0 1 auto;
   }
   .win-contentdialog .win-contentdialog-column0or1 {
     display: none;
@@ -4980,13 +4982,16 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   flex: 0 0 auto;
   overflow: hidden;
   font-size: 20px;
-  max-height: 56px;
+  font-weight: 400;
+  line-height: 1.2;
 }
 .win-contentdialog .win-contentdialog-content {
   -ms-flex: 1 0 auto;
   -webkit-flex: 1 0 auto;
   flex: 1 0 auto;
   font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
 }
 .win-contentdialog .win-contentdialog-commands {
   -ms-flex: 0 0 auto;
@@ -4995,6 +5000,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  margin-top: 24px;
   margin-right: -4px;
   /* Chop off margin on last command */
 }
@@ -5013,32 +5019,6 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   margin-right: 4px;
   /* 4px of space between each command */
   white-space: nowrap;
-  padding-left: 12px;
-  padding-right: 12px;
-  font-size: 15px;
-}
-/* For now until the colors are finalized, just use the light theme's colors everywhere */
-.win-contentdialog .win-contentdialog-backgroundoverlay {
-  background-color: #000000;
-  opacity: 0.45;
-}
-.win-contentdialog .win-contentdialog-dialog {
-  background-color: #ffffff;
-  /* ChromeColor? */
-}
-.win-contentdialog .win-contentdialog-title {
-  color: rgba(0, 0, 0, 0.87);
-}
-.win-contentdialog .win-contentdialog-content {
-  color: rgba(0, 0, 0, 0.87);
-}
-.win-contentdialog .win-contentdialog-primarycommand {
-  color: #ffffff;
-  background-color: #0078d7;
-}
-.win-contentdialog .win-contentdialog-secondarycommand {
-  color: rgba(0, 0, 0, 0.87);
-  background-color: rgba(0, 0, 0, 0.3);
 }
 .win-toolbar {
   width: 100%;
@@ -6007,6 +5987,20 @@ button.win-command:disabled:active .win-label {
 .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
   color: #000000;
 }
+.win-contentdialog-dialog {
+  background-color: #f2f2f2;
+  outline-color: #0078d7;
+}
+.win-contentdialog-title {
+  color: #000000;
+}
+.win-contentdialog-content {
+  color: #000000;
+}
+.win-contentdialog-backgroundoverlay {
+  background-color: #ffffff;
+  opacity: 0.6;
+}
 .win-toolbar,
 .win-toolbar {
   background-color: #e6e6e6;
@@ -6890,6 +6884,20 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 .win-ui-dark .win-pivot button.win-pivot-header:focus,
 .win-ui-dark .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
   color: #ffffff;
+}
+.win-ui-dark .win-contentdialog-dialog {
+  background-color: #2b2b2b;
+  outline-color: #0078d7;
+}
+.win-ui-dark .win-contentdialog-title {
+  color: #ffffff;
+}
+.win-ui-dark .win-contentdialog-content {
+  color: #ffffff;
+}
+.win-ui-dark .win-contentdialog-backgroundoverlay {
+  background-color: #000000;
+  opacity: 0.6;
 }
 .win-ui-dark.win-toolbar,
 .win-ui-dark .win-toolbar {
