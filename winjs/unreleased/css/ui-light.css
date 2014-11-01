@@ -6037,6 +6037,9 @@ button.win-command:disabled:active .win-label {
   color: #000000;
   background-color: #8a8a8a;
 }
+.win-splitview-pane {
+  background-color: #f0f0f0;
+}
 html.win-hoverable {
   /* Appbar control colors */
 }
@@ -6917,6 +6920,9 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 .win-ui-dark .win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active {
   color: #ffffff;
   background-color: #808080;
+}
+.win-ui-dark .win-splitview-pane {
+  background-color: #0c0c0c;
 }
 html.win-hoverable .win-ui-dark {
   /* Appbar control colors */
