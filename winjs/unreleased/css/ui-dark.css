@@ -5103,6 +5103,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   flex-direction: column;
 }
 .win-splitview .win-splitview-panewrapper {
+  z-index: 1;
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -5119,6 +5120,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   overflow: hidden;
 }
 .win-splitview .win-splitview-content {
+  z-index: 0;
   -ms-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;

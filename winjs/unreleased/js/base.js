@@ -15515,11 +15515,17 @@ define('WinJS/Animations',[
     
         var finish;
         return new Promise(function (c) {
+            var onTransitionEnd = function (eventObject) {
+                if (eventObject.target === element && eventObject.propertyName === transformNames.cssName) {
+                    finish();
+                }
+            };
+            
             var didFinish = false;
             finish = function () {
                 if (!didFinish) {
                     _Global.clearTimeout(timeoutId);
-                    element.removeEventListener("transitionend", finish);
+                    element.removeEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
                     element.style[transitionProperty] = "";
                     didFinish = true;
                 }
@@ -15531,7 +15537,7 @@ define('WinJS/Animations',[
                 timeoutId = _Global.setTimeout(finish, duration);
             }, 50);
     
-            element.addEventListener("transitionend", finish);
+            element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
         }, function () {
             finish(); // On cancelation, complete the promise successfully to match PVL
         });

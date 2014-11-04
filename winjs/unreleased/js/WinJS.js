@@ -15515,11 +15515,17 @@ define('WinJS/Animations',[
     
         var finish;
         return new Promise(function (c) {
+            var onTransitionEnd = function (eventObject) {
+                if (eventObject.target === element && eventObject.propertyName === transformNames.cssName) {
+                    finish();
+                }
+            };
+            
             var didFinish = false;
             finish = function () {
                 if (!didFinish) {
                     _Global.clearTimeout(timeoutId);
-                    element.removeEventListener("transitionend", finish);
+                    element.removeEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
                     element.style[transitionProperty] = "";
                     didFinish = true;
                 }
@@ -15531,7 +15537,7 @@ define('WinJS/Animations',[
                 timeoutId = _Global.setTimeout(finish, duration);
             }, 50);
     
-            element.addEventListener("transitionend", finish);
+            element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
         }, function () {
             finish(); // On cancelation, complete the promise successfully to match PVL
         });
@@ -78079,7 +78085,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         SplitView.prototype._prepareAnimation = function (paneRect, contentRect) {
             var paneWrapperStyle = this._dom.paneWrapper.style;
             paneWrapperStyle.position = "absolute";
-            paneWrapperStyle.zIndex = "1";
             paneWrapperStyle.left = paneRect.left + "px";
             paneWrapperStyle.top = paneRect.top + "px";
             paneWrapperStyle.height = paneRect.totalHeight + "px";
@@ -78087,7 +78092,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
             var contentStyle = this._dom.content.style;
             contentStyle.position = "absolute";
-            contentStyle.zIndex = "0";
             this._setContentRect(contentRect);
         };
 
@@ -78095,7 +78099,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         SplitView.prototype._clearAnimation = function () {
             var paneWrapperStyle = this._dom.paneWrapper.style;
             paneWrapperStyle.position = "";
-            paneWrapperStyle.zIndex = "";
             paneWrapperStyle.left = "";
             paneWrapperStyle.top = "";
             paneWrapperStyle.height = "";
@@ -78104,7 +78107,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
             var contentStyle = this._dom.content.style;
             contentStyle.position = "";
-            contentStyle.zIndex = "";
             contentStyle.left = "";
             contentStyle.top = "";
             contentStyle.height = "";

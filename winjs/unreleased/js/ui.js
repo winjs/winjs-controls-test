@@ -52718,7 +52718,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         SplitView.prototype._prepareAnimation = function (paneRect, contentRect) {
             var paneWrapperStyle = this._dom.paneWrapper.style;
             paneWrapperStyle.position = "absolute";
-            paneWrapperStyle.zIndex = "1";
             paneWrapperStyle.left = paneRect.left + "px";
             paneWrapperStyle.top = paneRect.top + "px";
             paneWrapperStyle.height = paneRect.totalHeight + "px";
@@ -52726,7 +52725,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
             var contentStyle = this._dom.content.style;
             contentStyle.position = "absolute";
-            contentStyle.zIndex = "0";
             this._setContentRect(contentRect);
         };
 
@@ -52734,7 +52732,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         SplitView.prototype._clearAnimation = function () {
             var paneWrapperStyle = this._dom.paneWrapper.style;
             paneWrapperStyle.position = "";
-            paneWrapperStyle.zIndex = "";
             paneWrapperStyle.left = "";
             paneWrapperStyle.top = "";
             paneWrapperStyle.height = "";
@@ -52743,7 +52740,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
             var contentStyle = this._dom.content.style;
             contentStyle.position = "";
-            contentStyle.zIndex = "";
             contentStyle.left = "";
             contentStyle.top = "";
             contentStyle.height = "";
