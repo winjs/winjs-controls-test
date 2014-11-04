@@ -11998,6 +11998,30 @@ define('WinJS/Utilities/_Select',[
 });
 
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+define('WinJS/Utilities/_Telemetry',[
+    'exports'
+    ], function telemetryInit(exports) {
+    "use strict";
+
+    /// NOTE: This file should be included when NOT building
+    /// Microsoft WinJS Framework Package which will be available in Windows Store.
+    
+    exports.send = function (name, params) {
+    /// <signature helpKeyword="WinJS._Telemetry.send">
+    /// <summary locid="WinJS._Telemetry.send">
+    /// Formatter to upload the name/value pair to Asimov in the correct format.
+    /// This will result in no-op when built outside of Microsoft Framework Package.
+    /// </summary>
+    /// <param name="params" type="Object" locid="WinJS._Telemetry.send_p:params">
+    /// Object of name/value pair items that need to be logged. They can be of type,
+    /// bool, int32, string.  Any other type will be ignored.
+    /// </param>
+    /// </signature>
+        /* empty */
+    };
+});
+
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Utilities/_UI',[
     'exports',
     '../Core/_BaseCoreUtils',
@@ -12269,6 +12293,7 @@ define('WinJS/Utilities',[
     './Utilities/_SafeHtml',
     './Utilities/_Select',
     './Utilities/_TabContainer',
+    './Utilities/_Telemetry',
     './Utilities/_UI',
     './Utilities/_VersionManager',
     './Utilities/_Xhr' ], function () {
