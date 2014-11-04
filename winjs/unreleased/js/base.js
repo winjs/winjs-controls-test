@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 base.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.4 base.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 base.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.4 base.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -6280,7 +6280,10 @@ define('WinJS/Utilities/_ElementUtilities',[
         setAdjustedScrollPosition(element, position.scrollLeft, position.scrollTop);
     }
 
-    var supportsZoomTo = !!_Global.HTMLElement.prototype.msZoomTo;
+    // navigator.msManipulationViewsEnabled tells us whether snap points work or not regardless of whether the style properties exist, however,
+    // on Phone WWAs, this check returns false even though snap points are supported. To work around this bug, we check for the presence of
+    // 'MSAppHost' in the user agent string which indicates that we are in a WWA environment; all WWA environments support snap points.
+    var supportsSnapPoints = _Global.navigator.msManipulationViewsEnabled || _Global.navigator.userAgent.indexOf("MSAppHost") >= 0;
     var supportsTouchDetection = !!(_Global.MSPointerEvent || _Global.TouchEvent);
 
     var uniqueElementIDCounter = 0;
@@ -6326,15 +6329,15 @@ define('WinJS/Utilities/_ElementUtilities',[
     _Base.Namespace._moduleDefine(exports, "WinJS.Utilities", {
         _dataKey: _dataKey,
 
-        _supportsTouchDetection: {
+        _supportsSnapPoints: {
             get: function () {
-                return supportsTouchDetection;
+                return supportsSnapPoints;
             }
         },
 
-        _supportsZoomTo: {
+        _supportsTouchDetection: {
             get: function () {
-                return supportsZoomTo;
+                return supportsTouchDetection;
             }
         },
 
@@ -6378,48 +6381,6 @@ define('WinJS/Utilities/_ElementUtilities',[
                 }
                 return this._supportsTouchActionCrossSlideValue;
             }
-        },
-
-        _detectSnapPointsSupport: function () {
-            // Snap point feature detection is special - On most platforms it is enough to check if 'msZoomTo'
-            // is available, however, Windows Phone IEs claim that they support it but don't really do so we
-            // test by creating a scroller with mandatory snap points and test against ManipulationStateChanged events.
-            if (!this._snapPointsDetectionPromise) {
-                if (!_Global.HTMLElement.prototype.msZoomTo) {
-                    this._snapPointsDetectionPromise = Promise.wrap(false);
-                } else {
-                    this._snapPointsDetectionPromise = new Promise(function (c) {
-                        var scroller = _Global.document.createElement("div");
-                        scroller.style.width = "100px";
-                        scroller.style.overflowX = "scroll";
-                        scroller.style.msScrollSnapType = "mandatory";
-                        scroller.style.position = "absolute";
-                        scroller.style.opacity = "0";
-                        scroller.style.visibility = "hidden";
-                        var handler = function (e) {
-                            scroller.removeEventListener("MSManipulationStateChanged", handler);
-                            _Global.clearTimeout(timeoutHandle);
-                            _Global.document.body.removeChild(scroller);
-                            c(true);
-                        };
-                        scroller.addEventListener("MSManipulationStateChanged", handler);
-
-                        var content = _Global.document.createElement("div");
-                        content.style.width = content.style.height = "200px";
-                        scroller.appendChild(content);
-
-                        _Global.document.body.appendChild(scroller);
-                        scroller.msZoomTo({ contentX: 90 });
-
-                        var timeoutHandle = _Global.setTimeout(function () {
-                            scroller.removeEventListener("MSManipulationStateChanged", handler);
-                            _Global.document.body.removeChild(scroller);
-                            c(false);
-                        }, 50);
-                    });
-                }
-            }
-            return this._snapPointsDetectionPromise;
         },
 
         _MSGestureEvent: _MSGestureEvent,
@@ -11771,7 +11732,7 @@ define('WinJS/Utilities/_SafeHtml',[
     };
 
     var msApp = _Global.MSApp;
-    if (msApp) {
+    if (msApp && msApp.execUnsafeLocalFunction) {
         setInnerHTMLUnsafe = function (element, text) {
             /// <signature helpKeyword="WinJS.Utilities.setInnerHTMLUnsafe">
             /// <summary locid="WinJS.Utilities.setInnerHTMLUnsafe">
@@ -12034,6 +11995,30 @@ define('WinJS/Utilities/_Select',[
             });
         })
     });
+});
+
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+define('WinJS/Utilities/_Telemetry',[
+    'exports'
+    ], function telemetryInit(exports) {
+    "use strict";
+
+    /// NOTE: This file should be included when NOT building
+    /// Microsoft WinJS Framework Package which will be available in Windows Store.
+    
+    exports.send = function (name, params) {
+    /// <signature helpKeyword="WinJS._Telemetry.send">
+    /// <summary locid="WinJS._Telemetry.send">
+    /// Formatter to upload the name/value pair to Asimov in the correct format.
+    /// This will result in no-op when built outside of Microsoft Framework Package.
+    /// </summary>
+    /// <param name="params" type="Object" locid="WinJS._Telemetry.send_p:params">
+    /// Object of name/value pair items that need to be logged. They can be of type,
+    /// bool, int32, string.  Any other type will be ignored.
+    /// </param>
+    /// </signature>
+        /* empty */
+    };
 });
 
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
@@ -12308,6 +12293,7 @@ define('WinJS/Utilities',[
     './Utilities/_SafeHtml',
     './Utilities/_Select',
     './Utilities/_TabContainer',
+    './Utilities/_Telemetry',
     './Utilities/_UI',
     './Utilities/_VersionManager',
     './Utilities/_Xhr' ], function () {
@@ -15529,11 +15515,17 @@ define('WinJS/Animations',[
     
         var finish;
         return new Promise(function (c) {
+            var onTransitionEnd = function (eventObject) {
+                if (eventObject.target === element && eventObject.propertyName === transformNames.cssName) {
+                    finish();
+                }
+            };
+            
             var didFinish = false;
             finish = function () {
                 if (!didFinish) {
                     _Global.clearTimeout(timeoutId);
-                    element.removeEventListener("transitionend", finish);
+                    element.removeEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
                     element.style[transitionProperty] = "";
                     didFinish = true;
                 }
@@ -15545,7 +15537,7 @@ define('WinJS/Animations',[
                 timeoutId = _Global.setTimeout(finish, duration);
             }, 50);
     
-            element.addEventListener("transitionend", finish);
+            element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
         }, function () {
             finish(); // On cancelation, complete the promise successfully to match PVL
         });

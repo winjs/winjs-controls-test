@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.4 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.10.30 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.4 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -6280,7 +6280,10 @@ define('WinJS/Utilities/_ElementUtilities',[
         setAdjustedScrollPosition(element, position.scrollLeft, position.scrollTop);
     }
 
-    var supportsZoomTo = !!_Global.HTMLElement.prototype.msZoomTo;
+    // navigator.msManipulationViewsEnabled tells us whether snap points work or not regardless of whether the style properties exist, however,
+    // on Phone WWAs, this check returns false even though snap points are supported. To work around this bug, we check for the presence of
+    // 'MSAppHost' in the user agent string which indicates that we are in a WWA environment; all WWA environments support snap points.
+    var supportsSnapPoints = _Global.navigator.msManipulationViewsEnabled || _Global.navigator.userAgent.indexOf("MSAppHost") >= 0;
     var supportsTouchDetection = !!(_Global.MSPointerEvent || _Global.TouchEvent);
 
     var uniqueElementIDCounter = 0;
@@ -6326,15 +6329,15 @@ define('WinJS/Utilities/_ElementUtilities',[
     _Base.Namespace._moduleDefine(exports, "WinJS.Utilities", {
         _dataKey: _dataKey,
 
-        _supportsTouchDetection: {
+        _supportsSnapPoints: {
             get: function () {
-                return supportsTouchDetection;
+                return supportsSnapPoints;
             }
         },
 
-        _supportsZoomTo: {
+        _supportsTouchDetection: {
             get: function () {
-                return supportsZoomTo;
+                return supportsTouchDetection;
             }
         },
 
@@ -6378,48 +6381,6 @@ define('WinJS/Utilities/_ElementUtilities',[
                 }
                 return this._supportsTouchActionCrossSlideValue;
             }
-        },
-
-        _detectSnapPointsSupport: function () {
-            // Snap point feature detection is special - On most platforms it is enough to check if 'msZoomTo'
-            // is available, however, Windows Phone IEs claim that they support it but don't really do so we
-            // test by creating a scroller with mandatory snap points and test against ManipulationStateChanged events.
-            if (!this._snapPointsDetectionPromise) {
-                if (!_Global.HTMLElement.prototype.msZoomTo) {
-                    this._snapPointsDetectionPromise = Promise.wrap(false);
-                } else {
-                    this._snapPointsDetectionPromise = new Promise(function (c) {
-                        var scroller = _Global.document.createElement("div");
-                        scroller.style.width = "100px";
-                        scroller.style.overflowX = "scroll";
-                        scroller.style.msScrollSnapType = "mandatory";
-                        scroller.style.position = "absolute";
-                        scroller.style.opacity = "0";
-                        scroller.style.visibility = "hidden";
-                        var handler = function (e) {
-                            scroller.removeEventListener("MSManipulationStateChanged", handler);
-                            _Global.clearTimeout(timeoutHandle);
-                            _Global.document.body.removeChild(scroller);
-                            c(true);
-                        };
-                        scroller.addEventListener("MSManipulationStateChanged", handler);
-
-                        var content = _Global.document.createElement("div");
-                        content.style.width = content.style.height = "200px";
-                        scroller.appendChild(content);
-
-                        _Global.document.body.appendChild(scroller);
-                        scroller.msZoomTo({ contentX: 90 });
-
-                        var timeoutHandle = _Global.setTimeout(function () {
-                            scroller.removeEventListener("MSManipulationStateChanged", handler);
-                            _Global.document.body.removeChild(scroller);
-                            c(false);
-                        }, 50);
-                    });
-                }
-            }
-            return this._snapPointsDetectionPromise;
         },
 
         _MSGestureEvent: _MSGestureEvent,
@@ -11771,7 +11732,7 @@ define('WinJS/Utilities/_SafeHtml',[
     };
 
     var msApp = _Global.MSApp;
-    if (msApp) {
+    if (msApp && msApp.execUnsafeLocalFunction) {
         setInnerHTMLUnsafe = function (element, text) {
             /// <signature helpKeyword="WinJS.Utilities.setInnerHTMLUnsafe">
             /// <summary locid="WinJS.Utilities.setInnerHTMLUnsafe">
@@ -12034,6 +11995,30 @@ define('WinJS/Utilities/_Select',[
             });
         })
     });
+});
+
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+define('WinJS/Utilities/_Telemetry',[
+    'exports'
+    ], function telemetryInit(exports) {
+    "use strict";
+
+    /// NOTE: This file should be included when NOT building
+    /// Microsoft WinJS Framework Package which will be available in Windows Store.
+    
+    exports.send = function (name, params) {
+    /// <signature helpKeyword="WinJS._Telemetry.send">
+    /// <summary locid="WinJS._Telemetry.send">
+    /// Formatter to upload the name/value pair to Asimov in the correct format.
+    /// This will result in no-op when built outside of Microsoft Framework Package.
+    /// </summary>
+    /// <param name="params" type="Object" locid="WinJS._Telemetry.send_p:params">
+    /// Object of name/value pair items that need to be logged. They can be of type,
+    /// bool, int32, string.  Any other type will be ignored.
+    /// </param>
+    /// </signature>
+        /* empty */
+    };
 });
 
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
@@ -12308,6 +12293,7 @@ define('WinJS/Utilities',[
     './Utilities/_SafeHtml',
     './Utilities/_Select',
     './Utilities/_TabContainer',
+    './Utilities/_Telemetry',
     './Utilities/_UI',
     './Utilities/_VersionManager',
     './Utilities/_Xhr' ], function () {
@@ -15529,11 +15515,17 @@ define('WinJS/Animations',[
     
         var finish;
         return new Promise(function (c) {
+            var onTransitionEnd = function (eventObject) {
+                if (eventObject.target === element && eventObject.propertyName === transformNames.cssName) {
+                    finish();
+                }
+            };
+            
             var didFinish = false;
             finish = function () {
                 if (!didFinish) {
                     _Global.clearTimeout(timeoutId);
-                    element.removeEventListener("transitionend", finish);
+                    element.removeEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
                     element.style[transitionProperty] = "";
                     didFinish = true;
                 }
@@ -15545,7 +15537,7 @@ define('WinJS/Animations',[
                 timeoutId = _Global.setTimeout(finish, duration);
             }, 50);
     
-            element.addEventListener("transitionend", finish);
+            element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
         }, function () {
             finish(); // On cancelation, complete the promise successfully to match PVL
         });
@@ -51966,7 +51958,7 @@ define('WinJS/Controls/FlipView',[
     './FlipView/_Constants',
     './FlipView/_PageManager',
     'require-style!less/controls'
-    ], function flipperInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _UI, _Constants, _PageManager) {
+], function flipperInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _UI, _Constants, _PageManager) {
     "use strict";
 
     _Base.Namespace.define("WinJS.UI", {
@@ -52437,28 +52429,8 @@ define('WinJS/Controls/FlipView',[
                         allFeaturesSupported = allFeaturesSupported && !!(styleEquivalents[stylesRequiredForFullFeatureMode[i]]);
                     }
                     allFeaturesSupported = allFeaturesSupported && !!_BaseUtils._browserEventEquivalents["manipulationStateChanged"];
+                    allFeaturesSupported = allFeaturesSupported && _ElementUtilities._supportsSnapPoints;
                     this._environmentSupportsTouch = allFeaturesSupported;
-                    if (allFeaturesSupported) {
-                        // All of our synchronous checks indicate that touch is supported. Because the last check can be
-                        // asynchronous, we'll assume that touch is supported for now and if we later find out it isn't,
-                        // we'll tear down the touch features.
-                        _ElementUtilities._detectSnapPointsSupport().then(function (snapPointsSupported) {
-                            if (!snapPointsSupported) {
-                                that._environmentSupportsTouch = false;
-
-                                // Tear down the touch features
-                                if (flipViewInitialized) {
-                                    that._fadeInButton("prev");
-                                    that._fadeInButton("next");
-                                    _ElementUtilities._removeEventListener(that._contentDiv, "pointerdown", handlePointerDown, false);
-                                    _ElementUtilities._removeEventListener(that._contentDiv, "pointermove", handleShowButtons, false);
-                                    _ElementUtilities._removeEventListener(that._contentDiv, "pointerup", handlePointerUp, false);
-                                    that._panningDivContainer.style[that._isHorizontal ? "overflowX" : "overflowY"] = "hidden";
-                                    that._pageManager.disableTouchFeatures();
-                                }
-                            }
-                        });
-                    }
 
                     var accName = this._flipviewDiv.getAttribute("aria-label");
                     if (!accName) {
@@ -52657,7 +52629,7 @@ define('WinJS/Controls/FlipView',[
                         }
                     }
 
-                    function handlePointerUp (e) {
+                    function handlePointerUp(e) {
                         if (e.pointerType !== PT_TOUCH) {
                             that._touchInteraction = false;
                         }
@@ -60427,8 +60399,7 @@ define('WinJS/Controls/Pivot',[
             };
             var MSManipulationEventStates = _ElementUtilities._MSManipulationEvent;
 
-            var supportsSnap = false;
-            var ready = null;
+            var supportsSnap = !!(_ElementUtilities._supportsSnapPoints && _Global.HTMLElement.prototype.msZoomTo);
 
             function _nop() { }
             var headersStates = {
@@ -60455,7 +60426,10 @@ define('WinJS/Controls/Pivot',[
                 common: {
                     // This object contains a set of static helper functions for other states to use
 
-                    headersContainerLeadingMargin: 9,
+                    headersContainerLeadingMargin: 12,
+
+                    headerPadding: 4,
+                    headerHorizontalMargin: 12,
 
                     getCumulativeHeaderWidth: function headersState_getCumulativeHeaderWidth(pivot, index) {
                         // Computes the total width of headers from 0 up to the specified index
@@ -60473,6 +60447,8 @@ define('WinJS/Controls/Pivot',[
                         var leftElement = pivot._rtl ? pivot._headersContainerElement.lastElementChild : pivot._headersContainerElement.children[originalLength];
                         var rightElement = pivot._rtl ? pivot._headersContainerElement.children[originalLength] : pivot._headersContainerElement.lastElementChild;
                         width = (rightElement.offsetLeft + rightElement.offsetWidth) - leftElement.offsetLeft;
+                        width += index * headersStates.common.headerPadding;
+                        width += 2 * headersStates.common.headerHorizontalMargin;
 
                         for (var i = 0; i < index; i++) {
                             pivot._headersContainerElement.removeChild(pivot._headersContainerElement.lastElementChild);
@@ -60504,6 +60480,7 @@ define('WinJS/Controls/Pivot',[
                         var item = pivot._items.getAt(index);
 
                         var headerContainerEl = _Global.document.createElement("BUTTON");
+                        headerContainerEl.style.marginLeft = headerContainerEl.style.marginRight = headersStates.common.headerHorizontalMargin + "px";
                         _ElementUtilities.addClass(headerContainerEl, Pivot._ClassName.pivotHeader);
                         headerContainerEl._item = item;
                         headerContainerEl._pivotItemIndex = index;
@@ -60531,6 +60508,14 @@ define('WinJS/Controls/Pivot',[
                         return headerContainerEl;
                     },
 
+                    freezeHeaderWidth: function headersState_freezeHeaderWidth(headerElement) {
+                        // Depending on whether a header is selected or not, its size grows and shrinks slightly due to different type ramps.
+                        // To prevent that from happening we freeze the header's size to its size at creation as if it was selected. We also
+                        // add a few pixels of padding to the computed size so that when it grows, it won't run into clipping issues.
+                        headerElement.style.width = "";
+                        headerElement.style.width = (headerElement.offsetWidth + headersStates.common.headerPadding) + "px";
+                    },
+
                     updateHeader: function headersState_updateHeader(pivot, item) {
                         // Updates the label of a header
                         var index = pivot.items.indexOf(item);
@@ -60539,6 +60524,8 @@ define('WinJS/Controls/Pivot',[
 
                         var template = _ElementUtilities._syncRenderer(pivotDefaultHeaderTemplate);
                         template(item, headerElement);
+
+                        this.freezeHeaderWidth(headerElement);
                     },
 
                     setActiveHeader: function headersState_setActiveHeader(newSelectedHeader, currentSelectedHeader) {
@@ -60572,14 +60559,13 @@ define('WinJS/Controls/Pivot',[
                         var start = 0;
                         var end = 0;
                         if (pivot._rtl) {
-                            start = selectedHeader.offsetLeft;
-                            start += selectedHeader.offsetWidth;
+                            start = selectedHeader.offsetLeft + selectedHeader.offsetWidth + headersStates.common.headerHorizontalMargin;
                             end = pivot._viewportWidth - headersStates.common.getCumulativeHeaderWidth(pivot, pivot.selectedIndex) - headersStates.common.headersContainerLeadingMargin;
                             end += parseFloat(pivot._headersContainerElement.style.marginLeft);
                         } else {
                             start = selectedHeader.offsetLeft;
-                            start += parseFloat(pivot._headersContainerElement.style.marginLeft);
-                            end = headersStates.common.getCumulativeHeaderWidth(pivot, pivot.selectedIndex) + headersStates.common.headersContainerLeadingMargin;
+                            start += parseFloat(pivot._headersContainerElement.style.marginLeft); // overflow state has a hidden first element that we need to account for
+                            end = headersStates.common.getCumulativeHeaderWidth(pivot, pivot.selectedIndex) + headersStates.common.headersContainerLeadingMargin + headersStates.common.headerHorizontalMargin;
                         }
                         var offset = start - end;
 
@@ -60630,6 +60616,7 @@ define('WinJS/Controls/Pivot',[
                             for (var i = 0; i < pivot.items.length; i++) {
                                 var header = headersStates.common.renderHeader(pivot, i, true);
                                 pivot._headersContainerElement.appendChild(header);
+                                headersStates.common.freezeHeaderWidth(header);
 
                                 if (i === pivot.selectedIndex) {
                                     header.classList.add(Pivot._ClassName.pivotHeaderSelected);
@@ -60692,11 +60679,13 @@ define('WinJS/Controls/Pivot',[
                         if (pivot._rtl) {
                             start = pivot._viewportWidth - headersStates.common.headersContainerLeadingMargin;
                             end = selectedHeader.offsetLeft;
+                            end += headersStates.common.headerHorizontalMargin;
                             end += selectedHeader.offsetWidth;
                             end += parseFloat(pivot._headersContainerElement.style.marginLeft);
                         } else {
                             start = headersStates.common.headersContainerLeadingMargin;
                             end = selectedHeader.offsetLeft;
+                            end -= headersStates.common.headerHorizontalMargin;
                             end += parseFloat(pivot._headersContainerElement.style.marginLeft);
                         }
                         var offset = start - end;
@@ -60735,12 +60724,12 @@ define('WinJS/Controls/Pivot',[
                         _Dispose._disposeElement(pivot._headersContainerElement);
                         _ElementUtilities.empty(pivot._headersContainerElement);
 
-                        var maxHeaderWidth = (pivot._viewportWidth * 0.8) + "px";
 
                         if (pivot._items.length === 1) {
                             var header = headersStates.common.renderHeader(pivot, 0, true);
                             header.classList.add(Pivot._ClassName.pivotHeaderSelected);
                             pivot._headersContainerElement.appendChild(header);
+                            headersStates.common.freezeHeaderWidth(header);
 
                             pivot._viewportElement.style.overflow = "hidden";
                             pivot._headersContainerElement.style.marginLeft = "0px";
@@ -60750,6 +60739,7 @@ define('WinJS/Controls/Pivot',[
                             // When going backwards, we render 2 additional headers, the first one as usual, and the second one for
                             // fading out the previous last header.
                             var numberOfHeadersToRender = pivot._items.length + (goPrevious ? 2 : 1);
+                            var maxHeaderWidth = pivot._viewportWidth * 0.8;
                             var indexToRender = pivot.selectedIndex - 1;
 
                             if (pivot._viewportElement.style.overflow) {
@@ -60764,8 +60754,15 @@ define('WinJS/Controls/Pivot',[
                                 }
 
                                 var header = headersStates.common.renderHeader(pivot, indexToRender, true);
-                                header.style.maxWidth = maxHeaderWidth;
                                 pivot._headersContainerElement.appendChild(header);
+
+                                if (header.offsetWidth > maxHeaderWidth) {
+                                    header.style.textOverflow = "ellipsis";
+                                    header.style.width = maxHeaderWidth + "px";
+                                } else {
+                                    headersStates.common.freezeHeaderWidth(header);
+                                }
+
                                 if (indexToRender === pivot.selectedIndex) {
                                     header.classList.add(Pivot._ClassName.pivotHeaderSelected);
                                 }
@@ -60793,15 +60790,14 @@ define('WinJS/Controls/Pivot',[
                             pivot._headersContainerElement.style.marginLeft = "0px";
                             pivot._headersContainerElement.style.marginRight = "0px";
                             var leadingMargin = pivot._rtl ? "marginRight" : "marginLeft";
-                            var trailingPadding = pivot._rtl ? "paddingLeft" : "paddingRight";
                             var firstHeader = pivot._headersContainerElement.children[0];
-                            var leadingSpace = firstHeader.offsetWidth + parseFloat(_Global.getComputedStyle(firstHeader)[leadingMargin]) - parseFloat(_Global.getComputedStyle(firstHeader)[trailingPadding]);
+                            var leadingSpace = _ElementUtilities.getTotalWidth(firstHeader);
                             if (firstHeader !== pivot._headersContainerElement.children[0]) {
-                                // Calling offsetWidth caused a layout which can trigger a synchronous resize which in turn
+                                // Calling getTotalWidth caused a layout which can trigger a synchronous resize which in turn
                                 // calls renderHeaders. We can ignore this one since its the old headers which are not in the DOM.
                                 return;
                             }
-                            pivot._headersContainerElement.style[leadingMargin] = (-1 * leadingSpace) + "px";
+                            pivot._headersContainerElement.style[leadingMargin] = (-1 * leadingSpace + headersStates.common.headersContainerLeadingMargin) + "px";
 
                             // Create header track nav button elements
                             pivot._prevButton = _Global.document.createElement("button");
@@ -60942,13 +60938,6 @@ define('WinJS/Controls/Pivot',[
                 /// The new Pivot.
                 /// </returns>
                 /// </signature>
-
-                if (!ready) {
-                    ready = _ElementUtilities._detectSnapPointsSupport().then(function (value) {
-                        supportsSnap = value;
-                    });
-                }
-
                 element = element || _Global.document.createElement("DIV");
                 options = options || {};
 
@@ -60968,6 +60957,9 @@ define('WinJS/Controls/Pivot',[
                 // Attaching JS control to DOM element
                 element.winControl = this;
                 this._element = element;
+                if (!supportsSnap) {
+                    _ElementUtilities.addClass(this.element, Pivot._ClassName.pivotNoSnap);
+                }
                 this._element.setAttribute('role', 'tablist');
                 if (!this._element.getAttribute("aria-label")) {
                     this._element.setAttribute('aria-label', strings.pivotAriaLabel);
@@ -61281,19 +61273,12 @@ define('WinJS/Controls/Pivot',[
                     this._currentIndexOnScreen = 0;
                     this._firstLoad = true;
                     this._cachedRTL = _Global.getComputedStyle(this._element, null).direction === "rtl";
+                    headersStates.common.refreshHeadersState(this, true);
+                    this._pendingRefresh = false;
 
-                    var that = this;
-                    ready.done(function () {
-                        headersStates.common.refreshHeadersState(that, true);
-                        if (!supportsSnap) {
-                            _ElementUtilities.addClass(that.element, Pivot._ClassName.pivotNoSnap);
-                        }
-
-                        that._pendingRefresh = false;
-                        that.selectedIndex = Math.min(pendingIndexOnScreen, that.items.length - 1);
-                        that._firstLoad = false;
-                        that._recenterUI();
-                    });
+                    this.selectedIndex = Math.min(pendingIndexOnScreen, this.items.length - 1);
+                    this._firstLoad = false;
+                    this._recenterUI();
                 },
 
                 _attachItems: function pivot_attachItems() {
@@ -61434,7 +61419,7 @@ define('WinJS/Controls/Pivot',[
                     }
 
                     var zooming = false;
-                    if (supportsSnap && _ElementUtilities._supportsZoomTo && this._currentManipulationState !== MSManipulationEventStates.MS_MANIPULATION_STATE_INERTIA) {
+                    if (supportsSnap && this._currentManipulationState !== MSManipulationEventStates.MS_MANIPULATION_STATE_INERTIA) {
                         if (this._firstLoad) {
                             _Log.log && _Log.log('_firstLoad index:' + this.selectedIndex + ' offset: ' + this._offsetFromCenter + ' scrollLeft: ' + this._currentScrollTargetLocation, "winjs pivot", "log");
                             _ElementUtilities.setScrollPosition(this._viewportElement, { scrollLeft: this._currentScrollTargetLocation });
@@ -66458,8 +66443,7 @@ define('WinJS/Controls/ToolBar/_Constants',["require", "exports"], function(requ
     exports.typeToggle = "toggle";
     exports.typeFlyout = "flyout";
 });
-//# sourceMappingURL=_Constants.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // Glyph Enumeration
 /// <dictionary>Segoe</dictionary>
@@ -68283,8 +68267,7 @@ define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Co
     })(_MenuCommandBase.MenuCommand);
     exports._MenuCommand = _MenuCommand;
 });
-//# sourceMappingURL=_MenuCommand.js.map
-;
+
 define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../ToolBar/_Constants", "../AppBar/_Command", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", "../../Controls/Menu", "../Menu/_Command", "../../Core/_Resources", "../../Scheduler", "../ToolBar/_MenuCommand", "../../Core/_WriteProfilerMark"], function(require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Menu, _MenuCommand, _Resources, Scheduler, _ToolBarMenuCommand, _WriteProfilerMark) {
     require(["require-style!less/controls"]);
 
@@ -68372,6 +68355,10 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             if (!label) {
                 this._element.setAttribute("aria-label", strings.ariaLabel);
             }
+
+            this._customContentCommandsWidth = {};
+            this._separatorWidth = 0;
+            this._standardCommandWidth = 0;
 
             this._refreshBound = this._refresh.bind(this);
 
@@ -68545,6 +68532,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             /// Forces the ToolBar to update its layout. Use this function when the window did not change size, but the container of the ToolBar changed size.
             /// </summary>
             /// </signature>
+            this._measureCommands();
             this._positionCommands();
         };
 
@@ -68825,6 +68813,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
 
         ToolBar.prototype._resizeHandler = function () {
             if (this.element.offsetWidth > 0) {
+                this._measureCommands(true);
                 this._positionCommands();
             }
         };
@@ -68912,18 +68901,20 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             }
         };
 
-        ToolBar.prototype._measureCommands = function () {
+        ToolBar.prototype._measureCommands = function (skipIfMeasured) {
             var _this = this;
+            if (typeof skipIfMeasured === "undefined") { skipIfMeasured = false; }
             this._writeProfilerMark("_measureCommands,info");
 
-            if (this._disposed || !_Global.document.body.contains(this._element)) {
+            if (this._disposed || !_Global.document.body.contains(this._element) || this.element.offsetWidth === 0) {
                 return;
             }
 
-            this._customContentCommandsWidth = {};
-            this._separatorWidth = 0;
-            this._standardCommandWidth = 0;
-
+            if (!skipIfMeasured) {
+                this._customContentCommandsWidth = {};
+                this._separatorWidth = 0;
+                this._standardCommandWidth = 0;
+            }
             this._primaryCommands.forEach(function (command) {
                 if (!command.element.parentElement) {
                     _this._mainActionArea.appendChild(command.element);
@@ -68934,7 +68925,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 var originalDisplayStyle = command.element.style.display;
                 command.element.style.display = "";
 
-                if (command.type === _Constants.typeContent) {
+                if (command.type === _Constants.typeContent && !_this._customContentCommandsWidth[_this._commandUniqueId(command)]) {
                     _this._customContentCommandsWidth[_this._commandUniqueId(command)] = _ElementUtilities.getTotalWidth(command.element);
                 } else if (command.type === _Constants.typeSeparator) {
                     if (!_this._separatorWidth) {
@@ -68975,7 +68966,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 command.element.style.display = (command.hidden ? "none" : "");
             });
 
-            var mainActionWidth = _ElementUtilities.getTotalWidth(this.element);
+            var mainActionWidth = _ElementUtilities.getContentWidth(this.element);
 
             var commandsLocation = this._getPrimaryCommandsLocation(mainActionWidth);
 
@@ -69187,8 +69178,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
     // addEventListener, removeEventListener, dispatchEvent
     _Base.Class.mix(ToolBar, _Control.DOMEventMixin);
 });
-//# sourceMappingURL=_ToolBar.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
@@ -69220,8 +69210,7 @@ define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], functio
     
     return publicMembers;
 });
-//# sourceMappingURL=ToolBar.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Layouts',[
     'exports',
@@ -74557,7 +74546,7 @@ define('WinJS/Controls/NavBar/_Container',[
     '../AppBar/_Constants',
     '../Repeater',
     './_Command'
-    ], function NavBarContainerInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Navigation, Promise, Scheduler, _Control, _ElementUtilities, _KeyboardBehavior, _UI, _Constants, Repeater, _Command) {
+], function NavBarContainerInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Navigation, Promise, Scheduler, _Control, _ElementUtilities, _KeyboardBehavior, _UI, _Constants, Repeater, _Command) {
     "use strict";
 
     function nobodyHasFocus() {
@@ -74653,7 +74642,7 @@ define('WinJS/Controls/NavBar/_Container',[
                 this._closeSplitAndResetBound = this._closeSplitAndReset.bind(this);
                 this._currentManipulationState = MS_MANIPULATION_STATE_STOPPED;
 
-                this._panningDisabled = false;
+                this._panningDisabled = !_ElementUtilities._supportsSnapPoints;
                 this._fixedSize = false;
                 this._maxRows = 1;
                 this._sizes = {};
@@ -74691,19 +74680,7 @@ define('WinJS/Controls/NavBar/_Container',[
                     this.currentIndex = options.currentIndex;
                 }
 
-                var that = this;
-                var updatedPageUI = false;
-                _ElementUtilities._detectSnapPointsSupport().then(function (supportsSnap) {
-                    that._panningDisabled = !supportsSnap;
-                    if (!that._disposed) {
-                        that._updatePageUI();
-                        updatedPageUI = true;
-                    }
-                });
-
-                if (!updatedPageUI) {
-                    this._updatePageUI();
-                }
+                this._updatePageUI();
 
                 Scheduler.schedule(function NavBarContainer_async_initialize() {
                     this._updateAppBarReference();
@@ -76459,7 +76436,7 @@ define('WinJS/Controls/ContentDialog',[
                 beforeHide: "beforehide",
                 afterHide: "afterhide",
             };
-            var minContentHeightWithInputPane = 120;
+            var minContentHeightWithInputPane = 96;
             
             ContentDialogManager = new (_Base.Class.define(function () {
                 this._dialogs = [];
@@ -78108,7 +78085,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         SplitView.prototype._prepareAnimation = function (paneRect, contentRect) {
             var paneWrapperStyle = this._dom.paneWrapper.style;
             paneWrapperStyle.position = "absolute";
-            paneWrapperStyle.zIndex = "1";
             paneWrapperStyle.left = paneRect.left + "px";
             paneWrapperStyle.top = paneRect.top + "px";
             paneWrapperStyle.height = paneRect.totalHeight + "px";
@@ -78116,7 +78092,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
             var contentStyle = this._dom.content.style;
             contentStyle.position = "absolute";
-            contentStyle.zIndex = "0";
             this._setContentRect(contentRect);
         };
 
@@ -78124,7 +78099,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         SplitView.prototype._clearAnimation = function () {
             var paneWrapperStyle = this._dom.paneWrapper.style;
             paneWrapperStyle.position = "";
-            paneWrapperStyle.zIndex = "";
             paneWrapperStyle.left = "";
             paneWrapperStyle.top = "";
             paneWrapperStyle.height = "";
@@ -78133,7 +78107,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
             var contentStyle = this._dom.content.style;
             contentStyle.position = "";
-            contentStyle.zIndex = "";
             contentStyle.left = "";
             contentStyle.top = "";
             contentStyle.height = "";
@@ -78427,8 +78400,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
     _Base.Class.mix(SplitView, _Events.createEventProperties(EventNames.beforeShow, EventNames.afterShow, EventNames.beforeHide, EventNames.afterHide));
     _Base.Class.mix(SplitView, _Control.DOMEventMixin);
 });
-//# sourceMappingURL=_SplitView.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
@@ -78447,8 +78419,7 @@ define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], funct
         }
     });
 });
-//# sourceMappingURL=SplitView.js.map
-;
+
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS',[
     'WinJS/Core/_WinJS',
