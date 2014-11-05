@@ -5685,7 +5685,11 @@ define('WinJS/Utilities/_ElementUtilities',[
     // Generally, use these instead of using the browser's blur/focus/focusout/focusin events directly.
     // However, this doesn't support the window object. If you need to listen to focus events on the window,
     // use the browser's events directly.
-    //
+    // 
+    // In order to send our custom focusin/focusout events synchronously on every browser, we feature detect 
+    // for native "focusin" and "focusout" since every browser that supports them will fire them synchronously. 
+    // Every browser in our support matrix, except for IE, also fires focus/blur synchronously, we fall back to 
+    // those events in browsers such as Firefox that do not have native support for focusin/focusout.
 
     function bubbleEvent(element, type, eventObject) {
         while (element) {
@@ -5708,21 +5712,24 @@ define('WinJS/Utilities/_ElementUtilities',[
         return eventObject;
     }
 
+    var nativeSupportForFocusIn = "onfocusin" in _Global.document.documentElement;
     var activeElement = null;
-    _Global.addEventListener("blur", function () {
+    _Global.addEventListener(nativeSupportForFocusIn ? "focusout" : "blur", function (eventObject) {
         // Fires focusout when focus move to another window or into an iframe.
-        var previousActiveElement = activeElement;
-        if (previousActiveElement) {
-            bubbleEvent(previousActiveElement, "focusout", prepareFocusEvent({
-                type: "focusout",
-                target: previousActiveElement,
-                relatedTarget: null
-            }));
+        if (eventObject.target === _Global) {
+            var previousActiveElement = activeElement;
+            if (previousActiveElement) {
+                bubbleEvent(previousActiveElement, "focusout", prepareFocusEvent({
+                    type: "focusout",
+                    target: previousActiveElement,
+                    relatedTarget: null
+                }));
+            }
+            activeElement = null;
         }
-        activeElement = null;
     });
 
-    _Global.document.documentElement.addEventListener("focus", function (eventObject) {
+    _Global.document.documentElement.addEventListener(nativeSupportForFocusIn ? "focusin" : "focus", function (eventObject) {
         var previousActiveElement = activeElement;
         activeElement = eventObject.target;
         if (previousActiveElement) {
@@ -6084,7 +6091,7 @@ define('WinJS/Utilities/_ElementUtilities',[
             _resizeEvent: { get: function () { return 'WinJSElementResize'; } }
         }
     );
-    
+
     // - object: The object on which GenericListener will listen for events.
     // - objectName: A string representing the name of *object*. This will be
     //   incorporated into the names of the events and classNames created by
@@ -6097,8 +6104,8 @@ define('WinJS/Utilities/_ElementUtilities',[
     var GenericListener = _Base.Class.define(
         function GenericListener_ctor(objectName, object, options) {
             options = options || {};
-            this.registerThruWinJSCustomEvents = !!options.registerThruWinJSCustomEvents; 
-            
+            this.registerThruWinJSCustomEvents = !!options.registerThruWinJSCustomEvents;
+
             this.objectName = objectName;
             this.object = object;
             this.capture = {};
@@ -6114,7 +6121,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                     handler = this._getListener(name, capture);
                     handler.refCount = 0;
                     handlers[name] = handler;
-                    
+
                     if (this.registerThruWinJSCustomEvents) {
                         exports._addEventListener(this.object, name, handler, capture);
                     } else {
@@ -6583,7 +6590,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                 return _resizeNotifier;
             }
         },
-        
+
         _GenericListener: GenericListener,
         _globalListener: new GenericListener("Global", _Global, { registerThruWinJSCustomEvents: true }),
         _documentElementListener: new GenericListener("DocumentElement", _Global.document.documentElement, { registerThruWinJSCustomEvents: true }),
@@ -6611,7 +6618,7 @@ define('WinJS/Utilities/_ElementUtilities',[
 
             return hiddenElement;
         },
-        
+
         // Returns a promise which completes when *element* is in the DOM.
         _inDom: function Utilities_inDom(element) {
             return new Promise(function (c) {
@@ -7518,7 +7525,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                 }
             };
         },
-        
+
         _getPositionRelativeTo: function Utilities_getPositionRelativeTo(element, ancestor) {
             var fromElement = element,
                 offsetParent = element.offsetParent,
@@ -7547,7 +7554,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                 height: fromElement.offsetHeight
             };
         },
-        
+
         // *element* is not included in the tabIndex search
         _getHighAndLowTabIndices: function Utilities_getHighAndLowTabIndices(element) {
             var descendants = element.getElementsByTagName("*");
@@ -7573,9 +7580,9 @@ define('WinJS/Utilities/_ElementUtilities',[
                             highestTabIndex = tabIndex;
                         }
                     }
-                } 
+                }
             }
-            
+
             return {
                 highest: highestTabIndex,
                 lowest: lowestTabIndex
