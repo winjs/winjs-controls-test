@@ -942,10 +942,10 @@ input[type=file]::-ms-browse {
 select {
   min-width: 296px;
   min-height: 32px;
-  padding: 3px 10px 5px 10px;
+  border: none;
+  padding: 5px 12px 7px 12px;
+  margin: 8px 0;
   outline: 0;
-  border-style: solid;
-  border-width: 2px;
   background-clip: border-box;
   box-sizing: border-box;
   font-size: 15px;
@@ -5348,20 +5348,17 @@ button[type=submit] {
 }
 select {
   color: #000000;
-  border-color: rgba(0, 0, 0, 0.4);
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 select::-ms-expand {
-  color: rgba(0, 0, 0, 0.8);
+  color: #000000;
   background-color: transparent;
 }
 select:hover {
-  border-color: rgba(0, 0, 0, 0.6);
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 select:disabled {
   color: rgba(0, 0, 0, 0.2);
-  border-color: transparent;
   background-color: rgba(0, 0, 0, 0.2);
 }
 select:disabled::-ms-expand {
@@ -5369,23 +5366,23 @@ select:disabled::-ms-expand {
 }
 option {
   color: #000000;
-  background-color: #f2f2f2;
-}
-option:hover {
-  color: #000000;
-  background-color: rgba(0, 0, 0, 0.1);
 }
 option:checked {
-  color: #000000;
+  color: #ffffff;
   background-color: #0078d7;
 }
-option:active {
-  color: #000000;
+option:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
 select[multiple] {
   border: none;
   background-color: #f2f2f2;
+}
+select[multiple] option {
+  color: #000000;
+}
+select[multiple] option:hover {
+  color: #000000;
 }
 input[type=range] {
   background-color: transparent;
@@ -6232,44 +6229,41 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 }
 .win-ui-dark select {
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.4);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 .win-ui-dark select::-ms-expand {
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
   background-color: transparent;
 }
 .win-ui-dark select:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.4);
 }
 .win-ui-dark select:disabled {
   color: rgba(255, 255, 255, 0.2);
-  border-color: transparent;
   background-color: rgba(255, 255, 255, 0.2);
 }
 .win-ui-dark select:disabled::-ms-expand {
   color: rgba(255, 255, 255, 0.2);
 }
 .win-ui-dark option {
-  color: #ffffff;
-  background-color: #2b2b2b;
-}
-.win-ui-dark option:hover {
-  color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.1);
+  color: #000000;
 }
 .win-ui-dark option:checked {
   color: #ffffff;
   background-color: #0078d7;
 }
-.win-ui-dark option:active {
-  color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.2);
+.win-ui-dark option:hover {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-dark select[multiple] {
   border: none;
   background-color: #2b2b2b;
+}
+.win-ui-dark select[multiple] option {
+  color: #ffffff;
+}
+.win-ui-dark select[multiple] option:hover {
+  color: #ffffff;
 }
 .win-ui-dark input[type=range] {
   background-color: transparent;
