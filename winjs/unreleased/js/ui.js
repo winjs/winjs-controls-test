@@ -42656,6 +42656,9 @@ define('WinJS/Controls/Menu',[
                     }
 
                     this._showCommands(commands, true);
+                    if (!this.hidden) {
+                        this._checkToggle();
+                    }
                 },
 
                 hideCommands: function (commands) {
@@ -42673,6 +42676,9 @@ define('WinJS/Controls/Menu',[
                     }
 
                     this._hideCommands(commands, true);
+                    if (!this.hidden) {
+                        this._checkToggle();
+                    }
                 },
 
                 showOnlyCommands: function (commands) {
