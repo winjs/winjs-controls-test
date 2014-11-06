@@ -2900,9 +2900,9 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
   max-width: 320px;
   box-sizing: border-box;
   margin: 0;
-  padding: 8px;
+  padding: 4px 7px 6px 7px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   z-index: 9999;
   word-wrap: break-word;
   animation-fill-mode: both;
@@ -2919,11 +2919,6 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
   border-width: 0;
   margin: 0;
   padding: 0;
-}
-.win-tooltip {
-  background-color: #ffffff;
-  border-color: #808080;
-  color: rgba(0, 0, 0, 0.6);
 }
 @media (-ms-high-contrast) {
   .win-tooltip {
@@ -5661,6 +5656,11 @@ button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-key
 html.win-hoverable .win-flipview .win-navbutton:hover {
   background-color: rgba(0, 0, 0, 0.6);
 }
+.win-tooltip {
+  color: #000000;
+  border-color: #cccccc;
+  background-color: #f2f2f2;
+}
 .win-semanticzoom-button {
   background-color: rgba(216, 216, 216, 0.33);
   border-color: transparent;
@@ -6551,6 +6551,11 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 }
 .win-ui-dark html.win-hoverable .win-flipview .win-navbutton:hover {
   background-color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark .win-tooltip {
+  color: #ffffff;
+  border-color: #767676;
+  background-color: #2b2b2b;
 }
 .win-ui-dark .win-semanticzoom-button {
   background-color: rgba(216, 216, 216, 0.33);
