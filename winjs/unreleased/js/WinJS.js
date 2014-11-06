@@ -63129,6 +63129,11 @@ define('WinJS/Controls/Hub',[
                     Promise.join([this.runningAnimations, onScreenItemsAnimatedPromise, allSectionsLoadedPromise]).done(function () {
                         if (loadId === this._loadId && !that._disposed) {
                             this.runningAnimations = Promise.wrap();
+                            if (this._measured && this._scrollLength !== this._viewportElement[this._names.scrollSize]) {
+                                // A section changed size during processing. Invalidate the Hub's measurements so that its
+                                // API's work correctly within the loadingState=complete handler.
+                                this._measured = false;
+                            }
                             this._setState(Hub.LoadingState.complete);
                             Scheduler.schedule(this._updateSnapList.bind(this), Scheduler.Priority.idle);
                         }
