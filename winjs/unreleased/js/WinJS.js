@@ -77473,20 +77473,20 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         /// </field>
         inline: "inline"
     };
-    var Placement = {
-        /// <field locid="WinJS.UI.SplitView.Placement.left" helpKeyword="WinJS.UI.SplitView.Placement.left">
+    var PanePlacement = {
+        /// <field locid="WinJS.UI.SplitView.PanePlacement.left" helpKeyword="WinJS.UI.SplitView.PanePlacement.left">
         /// Pane is positioned left of the SplitView's content.
         /// </field>
         left: "left",
-        /// <field locid="WinJS.UI.SplitView.Placement.right" helpKeyword="WinJS.UI.SplitView.Placement.right">
+        /// <field locid="WinJS.UI.SplitView.PanePlacement.right" helpKeyword="WinJS.UI.SplitView.PanePlacement.right">
         /// Pane is positioned right of the SplitView's content.
         /// </field>
         right: "right",
-        /// <field locid="WinJS.UI.SplitView.Placement.top" helpKeyword="WinJS.UI.SplitView.Placement.top">
+        /// <field locid="WinJS.UI.SplitView.PanePlacement.top" helpKeyword="WinJS.UI.SplitView.PanePlacement.top">
         /// Pane is positioned above the SplitView's content.
         /// </field>
         top: "top",
-        /// <field locid="WinJS.UI.SplitView.Placement.bottom" helpKeyword="WinJS.UI.SplitView.Placement.bottom">
+        /// <field locid="WinJS.UI.SplitView.PanePlacement.bottom" helpKeyword="WinJS.UI.SplitView.PanePlacement.bottom">
         /// Pane is positioned below the SplitView's content.
         /// </field>
         bottom: "bottom"
@@ -77494,11 +77494,11 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
     var shownDisplayModeClassMap = {};
     shownDisplayModeClassMap[ShownDisplayMode.overlay] = ClassNames._overlayMode;
     shownDisplayModeClassMap[ShownDisplayMode.inline] = ClassNames._inlineMode;
-    var placementClassMap = {};
-    placementClassMap[Placement.left] = ClassNames._placementLeft;
-    placementClassMap[Placement.right] = ClassNames._placementRight;
-    placementClassMap[Placement.top] = ClassNames._placementTop;
-    placementClassMap[Placement.bottom] = ClassNames._placementBottom;
+    var panePlacementClassMap = {};
+    panePlacementClassMap[PanePlacement.left] = ClassNames._placementLeft;
+    panePlacementClassMap[PanePlacement.right] = ClassNames._placementRight;
+    panePlacementClassMap[PanePlacement.top] = ClassNames._placementTop;
+    panePlacementClassMap[PanePlacement.bottom] = ClassNames._placementBottom;
 
     // Versions of add/removeClass that are no ops when called with falsy class names.
     function addClass(element, className) {
@@ -77625,33 +77625,33 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
                         _this.splitView._cachedHiddenPaneThickness = null;
 
-                        _this.splitView.hidden = true;
+                        _this.splitView.paneHidden = true;
                         _this.splitView.shownDisplayMode = ShownDisplayMode.overlay;
-                        _this.splitView.placement = Placement.left;
+                        _this.splitView.panePlacement = PanePlacement.left;
                         _Control.setOptions(_this.splitView, options);
 
                         return _ElementUtilities._inDom(_this.splitView._dom.root).then(function () {
                             _this.splitView._rtl = _Global.getComputedStyle(_this.splitView._dom.root).direction === 'rtl';
-                            _this.splitView._isShownMode = !_this._hidden;
+                            _this.splitView._isShownMode = !_this._paneHidden;
                             _this.splitView._updateDomImpl();
-                            _this.splitView._setState(_this._hidden ? Hidden : Shown);
+                            _this.splitView._setState(_this._paneHidden ? Hidden : Shown);
                         });
                     });
                 });
             };
 
-            Object.defineProperty(Init.prototype, "hidden", {
+            Object.defineProperty(Init.prototype, "paneHidden", {
                 get: function () {
-                    return this._hidden;
+                    return this._paneHidden;
                 },
                 enumerable: true,
                 configurable: true
             });
             Init.prototype.showPane = function () {
-                this._hidden = false;
+                this._paneHidden = false;
             };
             Init.prototype.hidePane = function () {
-                this._hidden = true;
+                this._paneHidden = true;
             };
             return Init;
         })();
@@ -77662,7 +77662,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             function Hidden() {
                 this.name = "Hidden";
                 this.exit = _;
-                this.hidden = true;
+                this.paneHidden = true;
                 this.hidePane = _;
                 this.updateDom = updateDomImpl;
             }
@@ -77684,7 +77684,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             function BeforeShow() {
                 this.name = "BeforeShow";
                 this.exit = cancelInterruptibles;
-                this.hidden = true;
+                this.paneHidden = true;
                 this.showPane = _;
                 this.hidePane = _;
                 this.updateDom = updateDomImpl;
@@ -77734,7 +77734,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 });
             };
 
-            Object.defineProperty(Showing.prototype, "hidden", {
+            Object.defineProperty(Showing.prototype, "paneHidden", {
                 get: function () {
                     return this._hideIsPending;
                 },
@@ -77755,7 +77755,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             function Shown() {
                 this.name = "Shown";
                 this.exit = _;
-                this.hidden = false;
+                this.paneHidden = false;
                 this.showPane = _;
                 this.updateDom = updateDomImpl;
             }
@@ -77777,7 +77777,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             function BeforeHide() {
                 this.name = "BeforeHide";
                 this.exit = cancelInterruptibles;
-                this.hidden = false;
+                this.paneHidden = false;
                 this.showPane = _;
                 this.hidePane = _;
                 this.updateDom = updateDomImpl;
@@ -77823,7 +77823,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 });
             };
 
-            Object.defineProperty(Hiding.prototype, "hidden", {
+            Object.defineProperty(Hiding.prototype, "paneHidden", {
                 get: function () {
                     return !this._showIsPending;
                 },
@@ -77843,7 +77843,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             function Disposed() {
                 this.name = "Disposed";
                 this.exit = _;
-                this.hidden = true;
+                this.paneHidden = true;
                 this.showPane = _;
                 this.hidePane = _;
                 this.updateDom = _;
@@ -77954,16 +77954,16 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             configurable: true
         });
 
-        Object.defineProperty(SplitView.prototype, "placement", {
-            /// <field type="String" oamOptionsDatatype="WinJS.UI.SplitView.Placement" locid="WinJS.UI.SplitView.placement" helpKeyword="WinJS.UI.SplitView.placement">
+        Object.defineProperty(SplitView.prototype, "panePlacement", {
+            /// <field type="String" oamOptionsDatatype="WinJS.UI.SplitView.PanePlacement" locid="WinJS.UI.SplitView.panePlacement" helpKeyword="WinJS.UI.SplitView.panePlacement">
             /// Gets or sets the placement of the SplitView's pane.
             /// </field>
             get: function () {
-                return this._placement;
+                return this._panePlacement;
             },
             set: function (value) {
-                if (Placement[value] && this._placement !== value) {
-                    this._placement = value;
+                if (PanePlacement[value] && this._panePlacement !== value) {
+                    this._panePlacement = value;
                     this._cachedHiddenPaneThickness = null;
                     this._state.updateDom();
                 }
@@ -77972,12 +77972,12 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             configurable: true
         });
 
-        Object.defineProperty(SplitView.prototype, "hidden", {
-            /// <field type="Boolean" hidden="true" locid="WinJS.UI.SplitView.hidden" helpKeyword="WinJS.UI.SplitView.hidden">
+        Object.defineProperty(SplitView.prototype, "paneHidden", {
+            /// <field type="Boolean" hidden="true" locid="WinJS.UI.SplitView.paneHidden" helpKeyword="WinJS.UI.SplitView.paneHidden">
             /// Gets or sets whether the SpitView's pane is currently collapsed.
             /// </field>
             get: function () {
-                return this._state.hidden;
+                return this._state.paneHidden;
             },
             set: function (value) {
                 if (value) {
@@ -78023,6 +78023,15 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             this._state.hidePane();
         };
 
+        SplitView.prototype.togglePane = function () {
+            /// <signature helpKeyword="WinJS.UI.SplitView.togglePane">
+            /// <summary locid="WinJS.UI.SplitView.togglePane">
+            /// Toggles the SplitView's pane, hiding it if it's currently shown and showing it if it's currently hidden.
+            /// </summary>
+            /// </signature>
+            this.paneHidden = !this.paneHidden;
+        };
+
         SplitView.prototype._initializeDom = function (root) {
             // The first child is the pane
             var paneEl = root.firstElementChild || _Global.document.createElement("div");
@@ -78065,7 +78074,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 paneIsFirst: undefined,
                 isShownMode: undefined,
                 shownDisplayMode: undefined,
-                placement: undefined,
+                panePlacement: undefined,
                 panePlaceholderWidth: undefined,
                 panePlaceholderHeight: undefined
             };
@@ -78136,8 +78145,8 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             if (this.shownDisplayMode === ShownDisplayMode.overlay) {
                 return shownContentRect;
             } else {
-                var placementRight = this._rtl ? Placement.left : Placement.right;
-                var multiplier = this.placement === placementRight || this.placement === Placement.bottom ? 0 : 1;
+                var placementRight = this._rtl ? PanePlacement.left : PanePlacement.right;
+                var multiplier = this.panePlacement === placementRight || this.panePlacement === PanePlacement.bottom ? 0 : 1;
                 var paneDiff = {
                     content: shownPaneThickness.content - hiddenPaneThickness.content,
                     total: shownPaneThickness.total - hiddenPaneThickness.total
@@ -78161,13 +78170,13 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         };
 
         SplitView.prototype._getAnimationOffsets = function (shownPaneRect) {
-            var placementLeft = this._rtl ? Placement.right : Placement.left;
+            var placementLeft = this._rtl ? PanePlacement.right : PanePlacement.left;
             return this._horizontal ? {
-                left: (this.placement === placementLeft ? -1 : 1) * shownPaneRect.totalWidth + "px",
+                left: (this.panePlacement === placementLeft ? -1 : 1) * shownPaneRect.totalWidth + "px",
                 top: "0px"
             } : {
                 left: "0px",
-                top: (this.placement === Placement.top ? -1 : 1) * shownPaneRect.totalHeight + "px"
+                top: (this.panePlacement === PanePlacement.top ? -1 : 1) * shownPaneRect.totalHeight + "px"
             };
         };
 
@@ -78184,7 +78193,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             // Methods called by states
             //
             get: function () {
-                return this.placement === Placement.left || this.placement === Placement.right;
+                return this.panePlacement === PanePlacement.left || this.panePlacement === PanePlacement.right;
             },
             enumerable: true,
             configurable: true
@@ -78256,12 +78265,12 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 var peek = hiddenPaneThickness.total > 0;
 
                 if (peek) {
-                    var placementRight = _this._rtl ? Placement.left : Placement.right;
+                    var placementRight = _this._rtl ? PanePlacement.left : PanePlacement.right;
                     return resizeTransition(_this._dom.paneWrapper, _this._dom.pane, {
                         from: hiddenPaneThickness,
                         to: shownPaneThickness,
                         dimension: dim,
-                        anchorTrailingEdge: _this.placement === placementRight || _this.placement === Placement.bottom
+                        anchorTrailingEdge: _this.panePlacement === placementRight || _this.panePlacement === PanePlacement.bottom
                     });
                 } else {
                     return _this._paneSlideIn(shownPaneRect);
@@ -78303,12 +78312,12 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 var peek = hiddenPaneThickness.total > 0;
 
                 if (peek) {
-                    var placementRight = _this._rtl ? Placement.left : Placement.right;
+                    var placementRight = _this._rtl ? PanePlacement.left : PanePlacement.right;
                     return resizeTransition(_this._dom.paneWrapper, _this._dom.pane, {
                         from: shownPaneThickness,
                         to: hiddenPaneThickness,
                         dimension: dim,
-                        anchorTrailingEdge: _this.placement === placementRight || _this.placement === Placement.bottom
+                        anchorTrailingEdge: _this.panePlacement === placementRight || _this.panePlacement === PanePlacement.bottom
                     });
                 } else {
                     return _this._paneSlideOut(shownPaneRect);
@@ -78336,7 +78345,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         };
 
         SplitView.prototype._updateDomImpl = function () {
-            var paneShouldBeFirst = this.placement === Placement.left || this.placement === Placement.top;
+            var paneShouldBeFirst = this.panePlacement === PanePlacement.left || this.panePlacement === PanePlacement.top;
             if (paneShouldBeFirst !== this._rendered.paneIsFirst) {
                 // TODO: restore focus
                 if (paneShouldBeFirst) {
@@ -78362,10 +78371,10 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             }
             this._rendered.isShownMode = this._isShownMode;
 
-            if (this._rendered.placement !== this.placement) {
-                removeClass(this._dom.root, placementClassMap[this._rendered.placement]);
-                addClass(this._dom.root, placementClassMap[this.placement]);
-                this._rendered.placement = this.placement;
+            if (this._rendered.panePlacement !== this.panePlacement) {
+                removeClass(this._dom.root, panePlacementClassMap[this._rendered.panePlacement]);
+                addClass(this._dom.root, panePlacementClassMap[this.panePlacement]);
+                this._rendered.panePlacement = this.panePlacement;
             }
 
             if (this._rendered.shownDisplayMode !== this.shownDisplayMode) {
@@ -78401,7 +78410,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         };
         SplitView.ShownDisplayMode = ShownDisplayMode;
 
-        SplitView.Placement = Placement;
+        SplitView.PanePlacement = PanePlacement;
 
         SplitView.supportedForProcessing = true;
 
