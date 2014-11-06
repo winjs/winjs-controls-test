@@ -5359,7 +5359,7 @@ option:hover {
 }
 select[multiple] {
   border: none;
-  background-color: #2b2b2b;
+  background-color: #1f1f1f;
 }
 select[multiple] option {
   color: #ffffff;
@@ -5659,7 +5659,7 @@ html.win-hoverable .win-flipview .win-navbutton:hover {
 .win-tooltip {
   color: #ffffff;
   border-color: #767676;
-  background-color: #2b2b2b;
+  background-color: #1f1f1f;
 }
 .win-semanticzoom-button {
   background-color: rgba(216, 216, 216, 0.33);
@@ -5849,7 +5849,7 @@ button.win-command:disabled:active .win-label {
   color: #a38bda;
 }
 .win-autosuggestbox-flyout {
-  background-color: #2b2b2b;
+  background-color: #1f1f1f;
   color: #ffffff;
 }
 .win-autosuggestbox-suggestion-selected {
@@ -5918,7 +5918,7 @@ button.win-command:disabled:active .win-label {
   color: #ffffff;
 }
 .win-contentdialog-dialog {
-  background-color: #2b2b2b;
+  background-color: #1f1f1f;
   outline-color: #0078d7;
 }
 .win-contentdialog-title {
@@ -5962,7 +5962,7 @@ button.win-command:disabled:active .win-label {
   background-color: #808080;
 }
 .win-splitview-pane {
-  background-color: #0c0c0c;
+  background-color: #171717;
 }
 html.win-hoverable {
   /* Appbar control colors */
@@ -6255,7 +6255,7 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 }
 .win-ui-light select[multiple] {
   border: none;
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
 }
 .win-ui-light select[multiple] option {
   color: #000000;
@@ -6555,7 +6555,7 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 .win-ui-light .win-tooltip {
   color: #000000;
   border-color: #cccccc;
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
 }
 .win-ui-light .win-semanticzoom-button {
   background-color: rgba(216, 216, 216, 0.33);
@@ -6745,7 +6745,7 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   color: #a38bda;
 }
 .win-ui-light .win-autosuggestbox-flyout {
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
   color: #000000;
 }
 .win-ui-light .win-autosuggestbox-suggestion-selected {
@@ -6814,7 +6814,7 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   color: #000000;
 }
 .win-ui-light .win-contentdialog-dialog {
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
   outline-color: #0078d7;
 }
 .win-ui-light .win-contentdialog-title {
@@ -6858,7 +6858,7 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   background-color: #8a8a8a;
 }
 .win-ui-light .win-splitview-pane {
-  background-color: #f0f0f0;
+  background-color: #f2f2f2;
 }
 html.win-hoverable .win-ui-light {
   /* Appbar control colors */
