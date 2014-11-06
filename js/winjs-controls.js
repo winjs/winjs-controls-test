@@ -89,6 +89,42 @@ window.addEventListener('load', function()
   selectControlRight.innerHTML = selectHTML;
 
   //
+  // Add javascript
+  //
+  function addJavascript(version, iframe)
+  {
+    // Add javascript
+    var base = iframe.contentDocument.createElement('script');
+    var ui = iframe.contentDocument.createElement('script');
+    base.src = versions[version] + 'js/base.js';
+    ui.src = versions[version] + 'js/ui.js';
+    base.async = false;
+    ui.async = false;
+
+    // Run WinJS
+    ui.onload = function()
+    {
+      if (!iframe.contentWindow.WinJS)
+      {
+        console.warn('WinJS failed to load, skipping initialization', '(' + version + ')')
+        return;
+      }
+
+      if (iframe.contentWindow.scriptLoaded)
+        iframe.contentWindow.scriptLoaded();
+
+      iframe.contentWindow.WinJS.Navigation.history.backStack = [{}];
+      iframe.contentWindow.WinJS.UI.processAll();
+
+      if (iframe.contentWindow.initialize)
+        iframe.contentWindow.initialize();
+    };
+
+    iframe.contentDocument.head.appendChild(base);
+    iframe.contentDocument.head.appendChild(ui);
+  }
+
+  //
   // Update the control display
   //
   function update(path, version, theme, index)
@@ -111,6 +147,7 @@ window.addEventListener('load', function()
             style.innerHTML = droppedStyles[index];
             style.id = 'winjs-stylesheet';
             iframe.contentDocument.head.appendChild(style);
+            addJavascript(version, iframe);
           }
           else if (versions[version])
           {
@@ -119,41 +156,12 @@ window.addEventListener('load', function()
             style.href = versions[version] + 'css/ui-' + theme + '.css';
             style.id = 'winjs-stylesheet';
             iframe.contentDocument.head.appendChild(style);
+            var imgHack = iframe.contentDocument.createElement('img');
+            imgHack.onerror = function() { addJavascript(version, iframe); };
+            imgHack.src = style.href;
           }
-
-          if (!versions[version])
-            return;
-
-          // Add javascript
-          var base = iframe.contentDocument.createElement('script');
-          var ui = iframe.contentDocument.createElement('script');
-          base.src = versions[version] + 'js/base.js';
-          ui.src = versions[version] + 'js/ui.js';
-          base.async = false;
-          ui.async = false;
-
-          // Run WinJS
-          ui.onload = function()
-          {
-            if (!iframe.contentWindow.WinJS)
-            {
-              console.warn('WinJS failed to load, skipping initialization', '(' + version + ')')
-              return;
-            }
-
-            if (iframe.contentWindow.scriptLoaded)
-              iframe.contentWindow.scriptLoaded();
-
-            iframe.contentWindow.WinJS.Navigation.history.backStack = [{}];
-            iframe.contentWindow.WinJS.UI.processAll();
-
-            if (iframe.contentWindow.initialize)
-              iframe.contentWindow.initialize();
-          };
-
-          iframe.contentDocument.head.appendChild(base);
-          iframe.contentDocument.head.appendChild(ui);
         };
+
       })(iframe);
     }
   }
