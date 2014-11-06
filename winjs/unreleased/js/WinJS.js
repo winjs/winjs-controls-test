@@ -45330,7 +45330,9 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
 });
 
 
-define('require-style!less/controls',[],function(){});
+define('require-style!less/styles-listview',[],function(){});
+
+define('require-style!less/colors-listview',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView',[
     '../Core/_Global',
@@ -45366,7 +45368,8 @@ define('WinJS/Controls/ListView',[
     './ListView/_Layouts',
     './ListView/_SelectionManager',
     './ListView/_VirtualizeContentsView',
-    'require-style!less/controls'
+    'require-style!less/styles-listview',
+    'require-style!less/colors-listview'
 ], function listViewImplInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, _TransitionAnimation, BindingList, Promise, Scheduler, _Signal, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _SafeHtml, _TabContainer, _UI, _VersionManager, _Constants, _ItemEventsHandler, _BrowseMode, _ErrorMessages, _GroupFocusCache, _GroupsContainer, _Helpers, _ItemsContainer, _Layouts, _SelectionManager, _VirtualizeContentsView) {
     "use strict";
 
@@ -51944,6 +51947,10 @@ define('WinJS/Controls/FlipView/_PageManager',[
 
 });
 
+
+define('require-style!less/styles-flipview',[],function(){});
+
+define('require-style!less/colors-flipview',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/FlipView',[
     '../Core/_Global',
@@ -51966,7 +51973,8 @@ define('WinJS/Controls/FlipView',[
     '../Utilities/_UI',
     './FlipView/_Constants',
     './FlipView/_PageManager',
-    'require-style!less/controls'
+    'require-style!less/styles-flipview',
+    'require-style!less/colors-flipview'
 ], function flipperInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _UI, _Constants, _PageManager) {
     "use strict";
 
@@ -54506,6 +54514,8 @@ define('WinJS/Controls/Repeater',[
 
 });
 
+
+define('require-style!less/styles-datetimepicker',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/DatePicker',[
     '../Core/_Global',
@@ -54518,7 +54528,7 @@ define('WinJS/Controls/DatePicker',[
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
     '../Utilities/_Select',
-    'require-style!less/controls'
+    'require-style!less/styles-datetimepicker'
     ], function datePickerInit(_Global, _WinRT, _Base, _BaseUtils, _Events, _Resources, _Control, _ElementUtilities, _Hoverable, _Select) {
     "use strict";
 
@@ -55275,7 +55285,7 @@ define('WinJS/Controls/TimePicker',[
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
     '../Utilities/_Select',
-    'require-style!less/controls'
+    'require-style!less/styles-datetimepicker'
     ], function timePickerInit(_Global, _WinRT, _Base, _BaseUtils, _Events, _Resources, _Control, _ElementUtilities, _Hoverable, _Select) {
     "use strict";
 
@@ -55854,6 +55864,10 @@ define('WinJS/Controls/TimePicker',[
 
 });
 
+
+define('require-style!less/styles-backbutton',[],function(){});
+
+define('require-style!less/colors-backbutton',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // Back Button
 define('WinJS/Controls/BackButton',[
@@ -55865,7 +55879,8 @@ define('WinJS/Controls/BackButton',[
     '../Utilities/_Control',
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
-    'require-style!less/controls'
+    'require-style!less/styles-backbutton',
+    'require-style!less/colors-backbutton'
     ], function backButtonInit(_Global, _Base, _ErrorFromName, _Resources, Navigation, _Control, _ElementUtilities, _Hoverable) {
     "use strict";
 
@@ -56098,6 +56113,10 @@ define('WinJS/Controls/BackButton',[
 
 });
 
+
+define('require-style!less/styles-tooltip',[],function(){});
+
+define('require-style!less/colors-tooltip',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/Tooltip',[
     'exports',
@@ -56112,7 +56131,8 @@ define('WinJS/Controls/Tooltip',[
     '../Utilities/_Dispose',
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
-    'require-style!less/controls'
+    'require-style!less/styles-tooltip',
+    'require-style!less/colors-tooltip'
     ], function tooltipInit(exports, _Global, _WinRT, _Base, _BaseUtils, _Events, Animations, _TransitionAnimation, _Control, _Dispose, _ElementUtilities, _Hoverable) {
     "use strict";
 
@@ -57051,6 +57071,10 @@ define('WinJS/Controls/Tooltip',[
     });
 
 });
+
+define('require-style!less/styles-rating',[],function(){});
+
+define('require-style!less/colors-rating',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/Rating',[
     '../Core/_Global',
@@ -57063,7 +57087,8 @@ define('WinJS/Controls/Rating',[
     '../Utilities/_Hoverable',
     '../Utilities/_SafeHtml',
     './Tooltip',
-    'require-style!less/controls'
+    'require-style!less/styles-rating',
+    'require-style!less/colors-rating'
     ], function ratingInit(_Global,_Base, _ErrorFromName, _Events, _Resources, _Control, _ElementUtilities, _Hoverable, _SafeHtml, Tooltip) {
     "use strict";
 
@@ -58201,6 +58226,10 @@ define('WinJS/Controls/Rating',[
 
 });
 
+
+define('require-style!less/styles-toggleswitch',[],function(){});
+
+define('require-style!less/colors-toggleswitch',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/ToggleSwitch',[
     '../Core/_Global',
@@ -58210,7 +58239,8 @@ define('WinJS/Controls/ToggleSwitch',[
     '../Core/_Resources',
     '../Utilities/_Control',
     '../Utilities/_ElementUtilities',
-    'require-style!less/controls'
+    'require-style!less/styles-toggleswitch',
+    'require-style!less/colors-toggleswitch'
     ],
     function toggleInit(_Global, _Base, _BaseUtils, _Events, _Resources, _Control, _ElementUtilities) {
         "use strict";
@@ -58578,6 +58608,10 @@ define('WinJS/Controls/ToggleSwitch',[
         });
     }
 );
+
+define('require-style!less/styles-semanticzoom',[],function(){});
+
+define('require-style!less/colors-semanticzoom',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // Semantic Zoom control
 define('WinJS/Controls/SemanticZoom',[
@@ -58597,7 +58631,8 @@ define('WinJS/Controls/SemanticZoom',[
     '../Utilities/_ElementUtilities',
     '../Utilities/_ElementListUtilities',
     '../Utilities/_Hoverable',
-    'require-style!less/controls'
+    'require-style!less/styles-semanticzoom',
+    'require-style!less/colors-semanticzoom'
     ], function semanticZoomInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, ControlProcessor, Promise, _Control, _Dispose, _ElementUtilities, _ElementListUtilities, _Hoverable) {
     "use strict";
 
@@ -60340,6 +60375,10 @@ define('WinJS/Controls/Pivot/_Item',[
 
 });
 
+
+define('require-style!less/styles-pivot',[],function(){});
+
+define('require-style!less/colors-pivot',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/Pivot',[
     '../Core/_Global',
@@ -60365,7 +60404,8 @@ define('WinJS/Controls/Pivot',[
     '../Utilities/_KeyboardBehavior',
     './Pivot/_Constants',
     './Pivot/_Item',
-    'require-style!less/controls'
+    'require-style!less/styles-pivot',
+    'require-style!less/colors-pivot'
 ], function pivotInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Promise, Scheduler, _Signal, _Control, _Dispose, _ElementUtilities, _Hoverable, _TabContainer, _KeyboardBehavior, _Constants, _Item) {
     "use strict";
 
@@ -62274,6 +62314,10 @@ define('WinJS/Controls/Hub/_Section',[
 
 });
 
+
+define('require-style!less/styles-hub',[],function(){});
+
+define('require-style!less/colors-hub',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/Hub',[
     '../Core/_Global',
@@ -62296,7 +62340,8 @@ define('WinJS/Controls/Hub',[
     '../Utilities/_Hoverable',
     '../Utilities/_UI',
     './Hub/_Section',
-    'require-style!less/controls'
+    'require-style!less/styles-hub',
+    'require-style!less/colors-hub'
     ], function hubInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Promise, _Signal, Scheduler, _Control, _ElementUtilities, _Hoverable, _UI, _Section) {
     "use strict";
 
@@ -63775,6 +63820,10 @@ define('WinJS/Controls/AppBar/_Constants',[
         commandVisibilityChanged: "commandvisibilitychanged",
     });
 });
+
+define('require-style!less/styles-overlay',[],function(){});
+
+define('require-style!less/colors-overlay',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <dictionary>animatable,appbar,appbars,divs,Flyout,Flyouts,iframe,Statics,unfocus,unselectable</dictionary>
 define('WinJS/Controls/Flyout/_Overlay',[
@@ -63794,7 +63843,9 @@ define('WinJS/Controls/Flyout/_Overlay',[
     '../../Scheduler',
     '../../Utilities/_Control',
     '../../Utilities/_ElementUtilities',
-    '../AppBar/_Constants'
+    '../AppBar/_Constants',
+    'require-style!less/styles-overlay',
+    'require-style!less/colors-overlay'
 ], function overlayInit(exports, _Global, _WinRT, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, Application, ControlProcessor, Promise, Scheduler, _Control, _ElementUtilities, _Constants) {
     "use strict";
 
@@ -65538,8 +65589,7 @@ define('WinJS/Controls/Flyout',[
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
     './AppBar/_Constants',
-    './Flyout/_Overlay',
-    'require-style!less/controls'
+    './Flyout/_Overlay'
 ], function flyoutInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Resources, _WriteProfilerMark, Animations, _Dispose, _ElementUtilities, _Hoverable, _Constants, _Overlay) {
     "use strict";
 
@@ -67867,8 +67917,7 @@ define('WinJS/Controls/Menu',[
     './AppBar/_Constants',
     './Flyout',
     './Flyout/_Overlay',
-    './Menu/_Command',
-    'require-style!less/controls'
+    './Menu/_Command'
     ], function menuInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Resources, _WriteProfilerMark, _ElementUtilities, _Hoverable, _KeyboardBehavior, _Constants, Flyout, _Overlay, _Command) {
     "use strict";
 
@@ -68283,8 +68332,13 @@ define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Co
     exports._MenuCommand = _MenuCommand;
 });
 
+
+define('require-style!less/styles-toolbar',[],function(){});
+
+define('require-style!less/colors-toolbar',[],function(){});
 define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../ToolBar/_Constants", "../AppBar/_Command", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", "../../Controls/Menu", "../Menu/_Command", "../../Core/_Resources", "../../Scheduler", "../ToolBar/_MenuCommand", "../../Core/_WriteProfilerMark"], function(require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Menu, _MenuCommand, _Resources, Scheduler, _ToolBarMenuCommand, _WriteProfilerMark) {
-    require(["require-style!less/controls"]);
+    require(["require-style!less/styles-toolbar"]);
+    require(["require-style!less/colors-toolbar"]);
 
     "use strict";
 
@@ -70027,8 +70081,7 @@ define('WinJS/Controls/AppBar',[
     './AppBar/_Command',
     './AppBar/_Icon',
     './Flyout/_Overlay',
-    '../Application',
-    'require-style!less/controls'
+    '../Application'
 ], function appBarInit(exports, _Global, _WinRT, _Base, _BaseUtils, _ErrorFromName, _Resources, _WriteProfilerMark, Animations, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Hoverable, _KeyboardBehavior, _Constants, _Layouts, _Command, _Icon, _Overlay, Application) {
     "use strict";
 
@@ -70501,7 +70554,7 @@ define('WinJS/Controls/AppBar',[
                     },
                     set: function (layout) {
                         if (layout !== _Constants.appBarLayoutCommands &&
-                            layout !== _Constants.appBarLayoutCustom && 
+                            layout !== _Constants.appBarLayoutCustom &&
                             layout !== _Constants.appBarLayoutMenu) {
                             throw new _ErrorFromName("WinJS.UI.AppBar.BadLayout", strings.badLayout);
                         }
@@ -71878,6 +71931,10 @@ define('WinJS/Controls/AutoSuggestBox/_SearchSuggestionManagerShim',[
         _SearchSuggestionManagerShim: SearchSuggestionManagerShim,
     });
 });
+
+define('require-style!less/styles-autosuggestbox',[],function(){});
+
+define('require-style!less/colors-autosuggestbox',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/AutoSuggestBox',[
     "exports",
@@ -71896,6 +71953,8 @@ define('WinJS/Controls/AutoSuggestBox',[
     "../Promise",
     "./Repeater",
     "./AutoSuggestBox/_SearchSuggestionManagerShim",
+    "require-style!less/styles-autosuggestbox",
+    "require-style!less/colors-autosuggestbox"
 ], function autoSuggestBoxInit(exports, _Global, _WinRT, _Base, _ErrorFromName, _Events, _Resources, _Control, _ElementListUtilities, _ElementUtilities, _Hoverable, Animations, BindingList, Promise, Repeater, _SuggestionManagerShim) {
     "use strict";
 
@@ -73177,6 +73236,10 @@ define('WinJS/Controls/AutoSuggestBox',[
         })
     });
 });
+
+define('require-style!less/styles-searchbox',[],function(){});
+
+define('require-style!less/colors-searchbox',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/SearchBox',[
     '../Core/_Global',
@@ -73190,7 +73253,8 @@ define('WinJS/Controls/SearchBox',[
     '../Utilities/_ElementUtilities',
     './AutoSuggestBox/_SearchSuggestionManagerShim',
     '../Application',
-    'require-style!less/controls'
+    'require-style!less/styles-searchbox',
+    'require-style!less/colors-searchbox'
 ], function searchboxInit(_Global, _WinRT, _Base, _ErrorFromName, _Events, _Resources, AutoSuggestBox, _Control, _ElementUtilities, _SuggestionManagerShim, Application) {
     "use strict";
 
@@ -73268,13 +73332,13 @@ define('WinJS/Controls/SearchBox',[
                 /// <compatibleWith platform="Windows" minVersion="8.1"/>
                 /// </signature>
                 this._requestingFocusOnKeyboardInputHandlerBind = this._requestingFocusOnKeyboardInputHandler.bind(this);
-                
+
                 // Elements
                 this._buttonElement = null;
 
                 // Variables
                 this._focusOnKeyboardInput = false;
-                
+
                 AutoSuggestBox.AutoSuggestBox.call(this, element, options);
 
                 this._setupSearchBoxDOM();
@@ -73314,7 +73378,7 @@ define('WinJS/Controls/SearchBox',[
                         return;
                     }
                     AutoSuggestBox.AutoSuggestBox.prototype.dispose.call(this);
-                    
+
                     if (this._focusOnKeyboardInput) {
                         Application._applicationListener.removeEventListener(this.element, "requestingfocusonkeyboardinput", this._requestingFocusOnKeyboardInputHandlerBind);
                     }
@@ -73469,8 +73533,7 @@ define('WinJS/Controls/SettingsFlyout',[
     '../Utilities/_ElementListUtilities',
     '../Utilities/_Hoverable',
     './AppBar/_Constants',
-    './Flyout/_Overlay',
-    'require-style!less/controls'
+    './Flyout/_Overlay'
     ], function settingsFlyoutInit(_Global,_WinRT, _Base, _BaseUtils, _ErrorFromName, _Resources, _WriteProfilerMark, Animations, Pages, Promise, _Dispose, _ElementUtilities, _ElementListUtilities, _Hoverable, _Constants, _Overlay) {
     "use strict";
 
@@ -75942,6 +76005,10 @@ define('WinJS/Controls/NavBar/_Container',[
 
 });
 
+
+define('require-style!less/styles-navbar',[],function(){});
+
+define('require-style!less/colors-navbar',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/NavBar',[
     '../Core/_Global',
@@ -75957,7 +76024,8 @@ define('WinJS/Controls/NavBar',[
     './AppBar',
     './NavBar/_Command',
     './NavBar/_Container',
-    'require-style!less/controls'
+    'require-style!less/styles-navbar',
+    'require-style!less/colors-navbar'
 ], function NavBarInit(_Global,_WinRT, _Base, _BaseUtils, _Events, _WriteProfilerMark, Promise, Scheduler, _ElementUtilities, _Hoverable, AppBar, _Command, _Container) {
     "use strict";
 
@@ -76162,6 +76230,8 @@ define('WinJS/Controls/NavBar',[
     });
 
 });
+
+define('require-style!less/styles-viewbox',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // ViewBox control
 define('WinJS/Controls/ViewBox',[
@@ -76175,7 +76245,7 @@ define('WinJS/Controls/ViewBox',[
     '../Utilities/_Dispose',
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
-    'require-style!less/controls'
+    'require-style!less/styles-viewbox'
     ], function viewboxInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Resources, Scheduler, _Control, _Dispose, _ElementUtilities, _Hoverable) {
     "use strict";
 
@@ -76342,6 +76412,10 @@ define('WinJS/Controls/ViewBox',[
 
 });
 
+
+define('require-style!less/styles-contentdialog',[],function(){});
+
+define('require-style!less/colors-contentdialog',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/ContentDialog',[
     '../Application',
@@ -76359,12 +76433,13 @@ define('WinJS/Controls/ContentDialog',[
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
     '../Animations',
-    'require-style!less/controls'
+    'require-style!less/styles-contentdialog',
+    'require-style!less/colors-contentdialog'
     ], function contentDialogInit(Application, _Dispose, Promise, _Signal, _BaseUtils, _Global, _WinRT, _Base, _Events, _ErrorFromName, _Resources, _Control, _ElementUtilities, _Hoverable, _Animations) {
     "use strict";
 
     var ContentDialogManager;
-    
+
     // Need to be the first one to register these events so that they can be
     // canceled before any other listener sees them.
     var eventsToBlock = [
@@ -76372,13 +76447,13 @@ define('WinJS/Controls/ContentDialog',[
         "edgycompleted",
         "edgycanceled"
     ];
-    
+
     function blockEventIfDialogIsShowing(eventObject) {
         if (ContentDialogManager && ContentDialogManager.aDialogIsShowing()) {
             eventObject.stopImmediatePropagation();
         }
     }
-    
+
     eventsToBlock.forEach(function (eventName) {
         Application.addEventListener(eventName, blockEventIfDialogIsShowing);
     });
@@ -76452,44 +76527,44 @@ define('WinJS/Controls/ContentDialog',[
                 afterHide: "afterhide",
             };
             var minContentHeightWithInputPane = 96;
-            
+
             ContentDialogManager = new (_Base.Class.define(function () {
                 this._dialogs = [];
                 this._prevFocus = null;
             }, {
                 willShow: function ContentDialogManager_willShow(dialog) {
-                    var startLength = this._dialogs.length; 
+                    var startLength = this._dialogs.length;
                     this._pruneDialogsMissingFromDom();
-                    
+
                     if (this._dialogs.indexOf(dialog) === -1) {
                         this._dialogs.push(dialog);
                     }
-                    
+
                     if (startLength === 0 && this._dialogs.length === 1) {
                         this._firstDialogWillShow(dialog);
                     }
                 },
-                
+
                 didHide: function ContentDialogManager_didHide(dialog) {
-                    var startLength = this._dialogs.length; 
+                    var startLength = this._dialogs.length;
                     this._pruneDialogsMissingFromDom();
-                    
+
                     var index = this._dialogs.indexOf(dialog);
                     if (index !== -1) {
                         this._dialogs.splice(index, 1);
                     }
-                    
+
                     if (startLength > 0 && this._dialogs.length === 0) {
                         this._lastDialogDidHide();
                     }
                 },
-                
+
                 aDialogIsShowing: function ContentDialogManager_aDialogIsShowing() {
                     return this._dialogs.some(function (dialog) {
                         return !dialog.hidden;
                     });
                 },
-                
+
                 // Filter out any ContentDialogs that may have been ripped
                 // out of the DOM without getting hidden or disposed.
                 _pruneDialogsMissingFromDom: function ContentDialogManager_pruneDialogsMissingFromDom() {
@@ -76497,18 +76572,18 @@ define('WinJS/Controls/ContentDialog',[
                         return !_Global.document.body.contains(dialog.element);
                     });
                 },
-                
+
                 _firstDialogWillShow: function ContentDialogManager_firstDialogWillShow(dialog) {
                     this._prevFocus = _Global.document.activeElement;
                 },
-                
+
                 _lastDialogDidHide: function ContentDialogManager_lastDialogDidHide() {
                     var prevFocus = this._prevFocus;
                     this._prevFocus = null;
                     prevFocus && prevFocus.focus();
                 }
             }))();
-            
+
             function elementInFlyout(element) {
                 while (element) {
                     if (_ElementUtilities.hasClass(element, "win-flyout")) {
@@ -76874,7 +76949,7 @@ define('WinJS/Controls/ContentDialog',[
                     throw new _ErrorFromName("WinJS.UI.ContentDialog.DuplicateConstruction", Strings.duplicateConstruction);
                 }
                 options = options || {};
-                
+
                 this._onBackClickBound = this._onBackClick.bind(this);
                 this._onBeforeRequestingFocusOnKeyboardInputBound = this._onBeforeRequestingFocusOnKeyboardInput.bind(this);
                 this._onInputPaneShownBound = this._onInputPaneShown.bind(this);
@@ -76882,11 +76957,11 @@ define('WinJS/Controls/ContentDialog',[
                 this._onFocusInBound = this._onFocusIn.bind(this);
                 this._onKeyDownEnteringDocumentBound = this._onKeyDownEnteringDocument.bind(this);
                 this._onKeyEnteringDocumentBound = this._onKeyEnteringDocument.bind(this);
-                
+
                 this._disposed = false;
                 this._resizedForInputPane = false;
                 this._currentFocus = null;
-                
+
                 this._initializeDom(element || _Global.document.createElement("div"));
                 this._setState(States.Init);
 
@@ -76957,7 +77032,7 @@ define('WinJS/Controls/ContentDialog',[
                         }
                     }
                 },
-                
+
                 /// <field type="Boolean" locid="WinJS.UI.ContentDialog.primaryCommandDisabled" helpKeyword="WinJS.UI.ContentDialog.primaryCommandDisabled">
                 /// Indicates whether the button representing the primary command is currently disabled.
                 /// </field>
@@ -76973,7 +77048,7 @@ define('WinJS/Controls/ContentDialog',[
                         }
                     }
                 },
-                
+
                 /// <field type="Boolean" locid="WinJS.UI.ContentDialog.secondaryCommandDisabled" helpKeyword="WinJS.UI.ContentDialog.secondaryCommandDisabled">
                 /// Indicates whether the button representing the secondary command is currently disabled.
                 /// </field>
@@ -77094,7 +77169,7 @@ define('WinJS/Controls/ContentDialog',[
                     dom.startBodyTab.setAttribute("x-ms-aria-flowfrom", dom.endBodyTab.id);
                     dom.endBodyTab.setAttribute("aria-flowto", dom.startBodyTab.id);
                     this._updateTabIndices();
-                    
+
                     var onKeyLeavingElementBound = this._onKeyLeavingElement.bind(this);
                     dom.root.addEventListener("keydown", onKeyLeavingElementBound);
                     dom.root.addEventListener("keyup", onKeyLeavingElementBound);
@@ -77107,11 +77182,11 @@ define('WinJS/Controls/ContentDialog',[
                     dom.commands[0].addEventListener("click", this._onCommandClicked.bind(this, DismissalReason.primary));
                     dom.commands[1].addEventListener("click", this._onCommandClicked.bind(this, DismissalReason.secondary));
                 },
-                
+
                 _updateCommandsUI: function ContentDialog_updateCommandsUI() {
                     this._dom.commands[0].style.display = this.primaryCommandText ? "" : "none";
                     this._dom.commands[1].style.display = this.secondaryCommandText ? "" : "none";
-                    
+
                     // commandSpacer's purpose is to ensure that when only 1 button is shown, that button takes up half
                     // the width of the dialog and is right-aligned. It works by:
                     // - When only one command is shown:
@@ -77122,13 +77197,13 @@ define('WinJS/Controls/ContentDialog',[
                     //   - Having display: none (so it doesn't occupy any space and the two shown commands each take up half the dialog)
                     // - When 0 commands are shown:
                     //   - Having display: none (so the commands area takes up no space)
-                    this._dom.commandSpacer.style.display = this.primaryCommandText && !this.secondaryCommandText || !this.primaryCommandText && this.secondaryCommandText ? "" : "none"; 
+                    this._dom.commandSpacer.style.display = this.primaryCommandText && !this.secondaryCommandText || !this.primaryCommandText && this.secondaryCommandText ? "" : "none";
                 },
-                
+
                 // _updateTabIndices and _updateTabIndicesImpl are used in tests
                 _updateTabIndices: function ContentDialog_updateTabIndices() {
                     if (!this._updateTabIndicesThrottled) {
-                        this._updateTabIndicesThrottled = _BaseUtils._throttledFunction(100, this._updateTabIndicesImpl.bind(this));    
+                        this._updateTabIndicesThrottled = _BaseUtils._throttledFunction(100, this._updateTabIndicesImpl.bind(this));
                     }
                     this._updateTabIndicesThrottled();
                 },
@@ -77139,27 +77214,27 @@ define('WinJS/Controls/ContentDialog',[
                     this._dom.commands[1].tabIndex = tabIndex.highest;
                     this._dom.endBodyTab.tabIndex = tabIndex.highest;
                 },
-                
+
                 _elementInDialog: function ContentDialog_elementInDialog(element) {
                     return this._dom.dialog.contains(element) || element === this._dom.startBodyTab || element === this._dom.endBodyTab;
                 },
-                
+
                 _retakeFocus: function ContentDialog_retakeFocus(element) {
                     if (!(this._currentFocus && this._elementInDialog(this._currentFocus) && _ElementUtilities._tryFocus(this._currentFocus))) {
                         this._focusInitialElement();
                     }
                 },
-                
+
                 _isTopLevel: {
                     get: function ContentDialog_isTopLevel_get() {
                         return !elementInFlyout(_Global.document.activeElement);
                     }
                 },
-                
+
                 _onCommandClicked: function ContentDialog_onCommandClicked(reason) {
                     this._state.onCommandClicked(reason);
                 },
-                
+
                 _onPointerDown: function ContentDialog_onPointerDown(eventObject) {
                     eventObject.stopPropagation();
                     if (!this._elementInDialog(eventObject.target)) {
@@ -77180,7 +77255,7 @@ define('WinJS/Controls/ContentDialog',[
                         eventObject.preventDefault();
                     }
                 },
-                
+
                 _onFocusIn: function ContentDialog_onFocusIn(eventObject) {
                     eventObject = eventObject.detail.originalEvent;
                     if (this._isTopLevel) {
@@ -77191,7 +77266,7 @@ define('WinJS/Controls/ContentDialog',[
                         }
                     }
                 },
-                
+
                 _onKeyDownEnteringDocument: function ContentDialog_onKeyDownEnteringDocument(eventObject) {
                     eventObject = eventObject.detail.originalEvent;
                     if (this._isTopLevel) {
@@ -77208,7 +77283,7 @@ define('WinJS/Controls/ContentDialog',[
                         }
                     }
                 },
-                
+
                 _onKeyEnteringDocument: function ContentDialog_onKeyEnteringDocument(eventObject) {
                     eventObject = eventObject.detail.originalEvent;
                     if (this._isTopLevel && !this._elementInDialog(_Global.document.activeElement) && eventObject.keyCode !== _ElementUtilities.Key.tab) {
@@ -77217,7 +77292,7 @@ define('WinJS/Controls/ContentDialog',[
                         eventObject.stopImmediatePropagation();
                     }
                 },
-                
+
                 _onKeyLeavingElement: function ContentDialog_onKeyLeavingElement(eventObject) {
                     if (this._isTopLevel) {
                         // stopImmediatePropagation so that none of the app's other event handlers will see the event.
@@ -77225,12 +77300,12 @@ define('WinJS/Controls/ContentDialog',[
                         eventObject.stopImmediatePropagation();
                     }
                 },
-                
+
                 _onBeforeRequestingFocusOnKeyboardInput: function ContentDialog_onBeforeRequestingFocusOnKeyboardInput(eventObject) {
                     // Suppress the requestingFocusOnKeyboardInput event.
                     eventObject.preventDefault();
                 },
-                
+
                 _onBackClick: function ContentDialog_onBackClick(eventObject) {
                     if (this._isTopLevel) {
                         this.hide(DismissalReason.none);
@@ -77282,7 +77357,7 @@ define('WinJS/Controls/ContentDialog',[
                     dismissedSignal.cancel();
                     return newDismissedSignal;
                 },
-                
+
                 // Calls into arbitrary app code
                 _fireEvent: function ContentDialog_fireEvent(eventName, options) {
                     options = options || {};
@@ -77300,7 +77375,7 @@ define('WinJS/Controls/ContentDialog',[
                         cancelable: true
                     });
                 },
-                
+
                 // Calls into arbitrary app code
                 _fireBeforeHide: function ContentDialog_fireBeforeHide(reason) {
                     return this._fireEvent(EventNames.beforeHide, {
@@ -77323,29 +77398,29 @@ define('WinJS/Controls/ContentDialog',[
                 _playExitAnimation: function ContentDialog_playExitAnimation() {
                     return cancelablePromise(_Animations.fadeOut(this._dom.root));
                 },
-                
+
                 _addExternalListeners: function ContentDialog_addExternalListeners() {
                     _ElementUtilities._inputPaneListener.addEventListener(this._dom.root, "showing", this._onInputPaneShownBound);
                     _ElementUtilities._inputPaneListener.addEventListener(this._dom.root, "hiding", this._onInputPaneShownBound);
-                    
+
                     _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "keydown", this._onKeyDownEnteringDocumentBound, true);
                     _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "keyup", this._onKeyEnteringDocumentBound, true);
                     _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "keypress", this._onKeyEnteringDocumentBound, true);
                     _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "focusin", this._onFocusInBound);
-                    
+
                     Application._applicationListener.addEventListener(this._dom.root, "backclick", this._onBackClickBound);
                     Application._applicationListener.addEventListener(this._dom.root, "beforerequestingfocusonkeyboardinput", this._onBeforeRequestingFocusOnKeyboardInputBound);
                 },
-                
+
                 _removeExternalListeners: function ContentDialog_removeExternalListeners() {
                     _ElementUtilities._inputPaneListener.removeEventListener(this._dom.root, "showing", this._onInputPaneShownBound);
                     _ElementUtilities._inputPaneListener.removeEventListener(this._dom.root, "hiding", this._onInputPaneShownBound);
-                    
+
                     _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "keydown", this._onKeyDownEnteringDocumentBound, true);
                     _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "keyup", this._onKeyEnteringDocumentBound, true);
                     _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "keypress", this._onKeyEnteringDocumentBound, true);
                     _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "focusin", this._onFocusInBound);
-                    
+
                     Application._applicationListener.removeEventListener(this._dom.root, "backclick", this._onBackClickBound);
                     Application._applicationListener.removeEventListener(this._dom.root, "beforerequestingfocusonkeyboardinput", this._onBeforeRequestingFocusOnKeyboardInputBound);
                 },
@@ -77388,7 +77463,7 @@ define('WinJS/Controls/ContentDialog',[
                             // Make sure the title isn't in the scroller
                             this._dom.dialog.insertBefore(this._dom.title, this._dom.scroller);
                         }
-                        
+
                         var style = this._dom.dialog.style;
                         this._dom.root.style.display = "";
                         style.height = "";
@@ -77399,7 +77474,7 @@ define('WinJS/Controls/ContentDialog',[
                         this._resizedForInputPane = false;
                     }
                 },
-                
+
                 _focusInitialElement: function ContentDialog_focusInitialElement() {
                     _ElementUtilities._focusFirstFocusableElement(this._dom.content) || this._dom.dialog.focus();
                 }
@@ -77408,7 +77483,7 @@ define('WinJS/Controls/ContentDialog',[
                 /// Specifies the reason that the ContentDialog was dismissed.
                 /// </field>
                 DismissalReason: DismissalReason,
-                
+
                 _ClassNames: ClassNames
             });
             _Base.Class.mix(ContentDialog, _Events.createEventProperties(
@@ -77423,10 +77498,15 @@ define('WinJS/Controls/ContentDialog',[
     });
 });
 
+
+define('require-style!less/styles-splitview',[],function(){});
+
+define('require-style!less/colors-splitview',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../../typings/require.d.ts" />
 define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../Promise', '../../_Signal', '../../Animations/_TransitionAnimation'], function(require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, Promise, _Signal, _TransitionAnimation) {
-    require(["require-style!less/controls"]);
+    require(["require-style!less/styles-splitview"]);
+    require(["require-style!less/colors-splitview"]);
 
     "use strict";
 

@@ -1226,708 +1226,6 @@ h6 {
   font-weight: 400;
   line-height: 1.333;
 }
-.win-toggleswitch {
-  outline: 0;
-}
-.win-toggleswitch .win-toggleswitch-header {
-  max-width: 470px;
-  width: 22em;
-  margin-bottom: 14px;
-  margin-top: 22px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.333;
-}
-.win-toggleswitch .win-toggleswitch-values {
-  display: inline-block;
-  vertical-align: top;
-}
-.win-toggleswitch .win-toggleswitch-value {
-  min-width: 65px;
-  margin-left: 12px;
-  height: 16px;
-  vertical-align: top;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 16px;
-}
-.win-toggleswitch .win-toggleswitch-description {
-  font-size: 12pt;
-  width: 22em;
-  margin-top: 28px;
-  display: none;
-}
-.win-toggleswitch .win-toggleswitch-clickregion {
-  display: inline-block;
-  touch-action: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-.win-toggleswitch .win-toggleswitch-track {
-  position: relative;
-  display: inline-block;
-  width: 44px;
-  height: 16px;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-.win-toggleswitch .win-toggleswitch-thumb {
-  position: absolute;
-  top: 2px;
-  display: inline-block;
-  width: 20px;
-  height: 8px;
-  border-radius: 4px;
-  -webkit-transition: left 0.1s;
-  transition: left 0.1s;
-}
-.win-toggleswitch:focus .win-toggleswitch-track {
-  outline-width: 1px;
-  outline-style: dotted;
-}
-.win-toggleswitch.win-toggleswitch-dragging .win-toggleswitch-thumb {
-  -webkit-transition: none;
-  transition: none;
-}
-.win-toggleswitch.win-toggleswitch-off .win-toggleswitch-value-on {
-  height: 0;
-  visibility: hidden;
-}
-.win-toggleswitch.win-toggleswitch-on .win-toggleswitch-value-off {
-  height: 0;
-  visibility: hidden;
-}
-.win-toggleswitch.win-toggleswitch-on .win-toggleswitch-thumb {
-  left: 18px;
-}
-.win-toggleswitch.win-toggleswitch-off .win-toggleswitch-thumb {
-  left: 2px;
-}
-.win-toggleswitch:lang(ar),
-.win-toggleswitch:lang(dv),
-.win-toggleswitch:lang(fa),
-.win-toggleswitch:lang(he),
-.win-toggleswitch:lang(ku-Arab),
-.win-toggleswitch:lang(pa-Arab),
-.win-toggleswitch:lang(prs),
-.win-toggleswitch:lang(ps),
-.win-toggleswitch:lang(sd-Arab),
-.win-toggleswitch:lang(syr),
-.win-toggleswitch:lang(ug),
-.win-toggleswitch:lang(ur),
-.win-toggleswitch:lang(qps-plocm) {
-  direction: rtl;
-}
-.win-toggleswitch:lang(ar).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(dv).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(fa).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(he).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ku-Arab).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(pa-Arab).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(prs).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ps).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(sd-Arab).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(syr).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ug).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ur).win-toggleswitch-on .win-toggleswitch-thumb,
-.win-toggleswitch:lang(qps-plocm).win-toggleswitch-on .win-toggleswitch-thumb {
-  left: 2px;
-}
-.win-toggleswitch:lang(ar).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(dv).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(fa).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(he).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ku-Arab).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(pa-Arab).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(prs).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ps).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(sd-Arab).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(syr).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ug).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(ur).win-toggleswitch-off .win-toggleswitch-thumb,
-.win-toggleswitch:lang(qps-plocm).win-toggleswitch-off .win-toggleswitch-thumb {
-  left: 18px;
-}
-.win-hub {
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
-.win-hub-progress {
-  position: absolute;
-  top: 10px;
-  width: 100%;
-  z-index: 1;
-}
-.win-hub-viewport {
-  height: 100%;
-  width: 100%;
-  /* Allow win-hub-surface margin/padding right to work */
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-  -ms-scroll-snap-type: proximity;
-}
-.win-hub-horizontal .win-hub-viewport {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-.win-hub-vertical .win-hub-viewport {
-  position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-}
-.win-hub-surface {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-}
-.win-hub-vertical .win-hub-surface {
-  width: 100%;
-  padding: 15px 0;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-}
-.win-hub-horizontal .win-hub-surface {
-  height: 100%;
-  padding: 0 80px;
-}
-.win-hub-section {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  padding: 0 40px;
-}
-.win-hub-horizontal .win-hub-section {
-  height: 100%;
-}
-.win-hub-horizontal .win-hub-section-header {
-  margin-top: 129px;
-}
-.win-hub-vertical .win-hub-section {
-  width: calc(100% - 80px);
-  padding: 14px 40px;
-}
-.win-hub-vertical .win-hub-section-header {
-  margin-top: 1px;
-}
-.win-hub-section-header {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-  margin: 4px 0;
-  font-size: 20pt;
-  text-align: left;
-}
-.win-hub-section-header:lang(ar),
-.win-hub-section-header:lang(dv),
-.win-hub-section-header:lang(fa),
-.win-hub-section-header:lang(he),
-.win-hub-section-header:lang(ku-Arab),
-.win-hub-section-header:lang(pa-Arab),
-.win-hub-section-header:lang(prs),
-.win-hub-section-header:lang(ps),
-.win-hub-section-header:lang(sd-Arab),
-.win-hub-section-header:lang(syr),
-.win-hub-section-header:lang(ug),
-.win-hub-section-header:lang(ur),
-.win-hub-section-header:lang(qps-plocm) {
-  text-align: right;
-}
-button.win-hub-section-header-tabstop,
-html.win-hoverable button.win-hub-section-header-tabstop:hover,
-button.win-hub-section-header-tabstop:hover:active {
-  background-color: transparent;
-  border: 0;
-  padding: 0 3px 0 0;
-  min-height: 0;
-  min-width: 0;
-  max-width: calc(100% - 3px);
-  font-size: 20pt;
-}
-button.win-hub-section-header-tabstop:lang(ar),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ar),
-button.win-hub-section-header-tabstop:hover:active:lang(ar),
-button.win-hub-section-header-tabstop:lang(dv),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(dv),
-button.win-hub-section-header-tabstop:hover:active:lang(dv),
-button.win-hub-section-header-tabstop:lang(fa),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(fa),
-button.win-hub-section-header-tabstop:hover:active:lang(fa),
-button.win-hub-section-header-tabstop:lang(he),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(he),
-button.win-hub-section-header-tabstop:hover:active:lang(he),
-button.win-hub-section-header-tabstop:lang(ku-Arab),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ku-Arab),
-button.win-hub-section-header-tabstop:hover:active:lang(ku-Arab),
-button.win-hub-section-header-tabstop:lang(pa-Arab),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(pa-Arab),
-button.win-hub-section-header-tabstop:hover:active:lang(pa-Arab),
-button.win-hub-section-header-tabstop:lang(prs),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(prs),
-button.win-hub-section-header-tabstop:hover:active:lang(prs),
-button.win-hub-section-header-tabstop:lang(ps),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ps),
-button.win-hub-section-header-tabstop:hover:active:lang(ps),
-button.win-hub-section-header-tabstop:lang(sd-Arab),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(sd-Arab),
-button.win-hub-section-header-tabstop:hover:active:lang(sd-Arab),
-button.win-hub-section-header-tabstop:lang(syr),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(syr),
-button.win-hub-section-header-tabstop:hover:active:lang(syr),
-button.win-hub-section-header-tabstop:lang(ug),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ug),
-button.win-hub-section-header-tabstop:hover:active:lang(ug),
-button.win-hub-section-header-tabstop:lang(ur),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ur),
-button.win-hub-section-header-tabstop:hover:active:lang(ur),
-button.win-hub-section-header-tabstop:lang(qps-plocm),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(qps-plocm),
-button.win-hub-section-header-tabstop:hover:active:lang(qps-plocm) {
-  padding: 0 0 0 3px;
-}
-button.win-hub-section-header-tabstop:focus {
-  outline: none;
-}
-button.win-hub-section-header-tabstop:-ms-keyboard-active {
-  background-color: transparent;
-}
-.win-hub-section-header-wrapper {
-  display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
-  display: inline-flex;
-  -ms-flex-direction: row;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  width: 100%;
-  outline: none;
-}
-.win-hub-section-header-content {
-  display: inline-block;
-  -ms-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
-.win-hub-section-header-chevron {
-  display: none;
-}
-.win-hub-section-header-interactive .win-hub-section-header-chevron {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-  display: inline-block;
-  margin-left: 7px;
-}
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ar),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(dv),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(fa),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(he),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ku-Arab),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(pa-Arab),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(prs),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ps),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(sd-Arab),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(syr),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ug),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ur),
-.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(qps-plocm) {
-  margin-left: 0;
-  margin-right: 7px;
-}
-.win-hub-section-header-chevron::before {
-  font-family: "Segoe UI Symbol", "Symbols";
-  content: "\E26B";
-}
-.win-hub-section-header-chevron:lang(ar),
-.win-hub-section-header-chevron:lang(dv),
-.win-hub-section-header-chevron:lang(fa),
-.win-hub-section-header-chevron:lang(he),
-.win-hub-section-header-chevron:lang(ku-Arab),
-.win-hub-section-header-chevron:lang(pa-Arab),
-.win-hub-section-header-chevron:lang(prs),
-.win-hub-section-header-chevron:lang(ps),
-.win-hub-section-header-chevron:lang(sd-Arab),
-.win-hub-section-header-chevron:lang(syr),
-.win-hub-section-header-chevron:lang(ug),
-.win-hub-section-header-chevron:lang(ur),
-.win-hub-section-header-chevron:lang(qps-plocm) {
-  font-family: "Segoe UI Symbol", "Symbols";
-  content: "\E26C";
-}
-.win-hub-section-content {
-  -ms-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
-.win-hub-horizontal .win-hub-section-content {
-  height: calc(100% - 44px);
-}
-.win-hub-vertical .win-hub-section-content {
-  width: 100%;
-}
-@media (-ms-high-contrast) {
-  button.win-hub-section-header-tabstop,
-  html.win-hoverable button.win-hub-section-header-tabstop:hover,
-  button.win-hub-section-header-tabstop:hover:active {
-    background-color: transparent;
-    color: WindowText;
-  }
-  button.win-hub-section-header-tabstop:-ms-keyboard-active {
-    color: WindowText;
-  }
-  html.win-hoverable button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover,
-  button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover:active {
-    color: -ms-hotlight;
-  }
-  button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-keyboard-active {
-    color: -ms-hotlight;
-  }
-}
-body > .win-navigation-backbutton {
-  position: absolute;
-  top: 50px;
-  left: 20px;
-}
-.win-backbutton,
-.win-navigation-backbutton,
-.win-back {
-  display: inline-block;
-  min-width: 0;
-  min-height: 0;
-  padding: 0;
-  text-align: center;
-  width: 41px;
-  height: 41px;
-  font-size: 14pt;
-  line-height: 41px;
-  vertical-align: baseline;
-}
-.win-backbutton::before,
-.win-back::before {
-  font-family: "Segoe UI Symbol", "Symbols";
-  font-weight: normal;
-  content: "\E0D5";
-  vertical-align: 50%;
-}
-.win-backbutton:lang(ar)::before,
-.win-backbutton:lang(dv)::before,
-.win-backbutton:lang(fa)::before,
-.win-backbutton:lang(he)::before,
-.win-backbutton:lang(ku-Arab)::before,
-.win-backbutton:lang(pa-Arab)::before,
-.win-backbutton:lang(prs)::before,
-.win-backbutton:lang(ps)::before,
-.win-backbutton:lang(sd-Arab)::before,
-.win-backbutton:lang(syr)::before,
-.win-backbutton:lang(ug)::before,
-.win-backbutton:lang(ur)::before,
-.win-backbutton:lang(qps-plocm)::before,
-.win-back:lang(ar)::before,
-.win-back:lang(dv)::before,
-.win-back:lang(fa)::before,
-.win-back:lang(he)::before,
-.win-back:lang(ku-Arab)::before,
-.win-back:lang(pa-Arab)::before,
-.win-back:lang(prs)::before,
-.win-back:lang(ps)::before,
-.win-back:lang(sd-Arab)::before,
-.win-back:lang(syr)::before,
-.win-back:lang(ug)::before,
-.win-back:lang(ur)::before,
-.win-back:lang(qps-plocm)::before {
-  content: "\E0AE";
-}
-button.win-navigation-backbutton,
-button.win-navigation-backbutton:active,
-html.win-hoverable button.win-navigation-backbutton:enabled:hover,
-button.win-navigation-backbutton:enabled:hover:active {
-  background-color: transparent;
-  border: none;
-}
-@media (-ms-high-contrast) {
-  button.win-navigation-backbutton,
-  button.win-navigation-backbutton:active,
-  html.win-hoverable button.win-navigation-backbutton:enabled:hover,
-  button.win-navigation-backbutton:enabled:hover:active {
-    /* Overwrite default background and border styles from BackButton control's <button> element */
-    background-color: transparent;
-    border: none;
-  }
-  .win-backbutton,
-  .win-back {
-    background-color: ButtonFace;
-    border-color: ButtonText;
-    color: ButtonText;
-  }
-  .win-backbutton.win-backbutton:enabled:hover:active,
-  .win-navigation-backbutton.win-navigation-backbutton:enabled:hover:active .win-back {
-    background-clip: border-box;
-    background-color: ButtonText;
-    border-color: transparent;
-    color: ButtonFace;
-  }
-  .win-backbutton:disabled,
-  .win-navigation-backbutton:disabled .win-back,
-  .win-backbutton:disabled:active,
-  .win-navigation-backbutton:disabled:active .win-back {
-    background-color: ButtonFace;
-    border-color: GrayText;
-    color: GrayText;
-  }
-  .win-backbutton:-ms-keyboard-active,
-  .win-navigation-backbutton:-ms-keyboard-active .win-back {
-    background-clip: border-box;
-    background-color: ButtonText;
-    border-color: transparent;
-    color: ButtonFace;
-  }
-  html.win-hoverable .win-backbutton:enabled:hover,
-  html.win-hoverable .win-navigation-backbutton:enabled:hover .win-back {
-    background-color: Highlight;
-    border-color: ButtonText;
-    color: HighlightText;
-  }
-}
-.win-rating {
-  display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
-  display: inline-flex;
-  -ms-flex-pack: self;
-  -webkit-justify-content: self;
-  justify-content: self;
-  -ms-flex-align: stretch;
-  -webkit-align-items: stretch;
-  align-items: stretch;
-  height: auto;
-  width: auto;
-  white-space: normal;
-  outline: 0;
-}
-.win-rating .win-star {
-  -ms-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
-  height: 24px;
-  width: 24px;
-  padding: 9px 10px 11px 10px;
-  font-family: "Segoe UI Symbol", "Symbols";
-  font-size: 24px;
-  overflow: hidden;
-  text-indent: 0;
-  line-height: 1;
-  cursor: default;
-  position: relative;
-  letter-spacing: 0;
-  -ms-touch-action: none;
-  touch-action: none;
-}
-.win-rating.win-small .win-star {
-  width: 12px;
-  height: 12px;
-  font-size: 12px;
-  padding: 3px 4px 5px 4px;
-}
-.win-rating .win-star:before {
-  content: "\E082";
-}
-.win-rating .win-star.win-disabled {
-  cursor: default;
-  -ms-touch-action: auto;
-  touch-action: auto;
-}
-@media (-ms-high-contrast) {
-  .win-rating .win-star:before {
-    content: "\E082" !important;
-  }
-  .win-rating .win-star.win-full {
-    color: HighLight;
-  }
-  .win-rating .win-star.win-tentative.win-full {
-    color: ButtonText;
-  }
-  .win-rating .win-star.win-empty {
-    color: ButtonFace;
-  }
-  .win-rating .win-star:after {
-    content: "\E224" !important;
-    position: relative;
-    top: -100%;
-    color: ButtonText;
-  }
-}
-.win-datepicker {
-  display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
-  display: inline-flex;
-  height: auto;
-  width: auto;
-}
-.win-datepicker select {
-  min-width: 80px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-.win-datepicker .win-datepicker-month {
-  margin-right: 20px;
-}
-.win-datepicker .win-datepicker-date.win-order0,
-.win-datepicker .win-datepicker-date.win-order1 {
-  margin-right: 20px;
-}
-.win-datepicker .win-datepicker-year.win-order0 {
-  margin-right: 20px;
-}
-.win-datepicker .win-datepicker-month:lang(ar),
-.win-datepicker .win-datepicker-month:lang(dv),
-.win-datepicker .win-datepicker-month:lang(fa),
-.win-datepicker .win-datepicker-month:lang(he),
-.win-datepicker .win-datepicker-month:lang(ku-Arab),
-.win-datepicker .win-datepicker-month:lang(pa-Arab),
-.win-datepicker .win-datepicker-month:lang(prs),
-.win-datepicker .win-datepicker-month:lang(ps),
-.win-datepicker .win-datepicker-month:lang(sd-Arab),
-.win-datepicker .win-datepicker-month:lang(syr),
-.win-datepicker .win-datepicker-month:lang(ug),
-.win-datepicker .win-datepicker-month:lang(ur),
-.win-datepicker .win-datepicker-month:lang(qps-plocm),
-.win-datepicker .win-datepicker-date.win-order0:lang(ar),
-.win-datepicker .win-datepicker-date.win-order0:lang(dv),
-.win-datepicker .win-datepicker-date.win-order0:lang(fa),
-.win-datepicker .win-datepicker-date.win-order0:lang(he),
-.win-datepicker .win-datepicker-date.win-order0:lang(ku-Arab),
-.win-datepicker .win-datepicker-date.win-order0:lang(pa-Arab),
-.win-datepicker .win-datepicker-date.win-order0:lang(prs),
-.win-datepicker .win-datepicker-date.win-order0:lang(ps),
-.win-datepicker .win-datepicker-date.win-order0:lang(sd-Arab),
-.win-datepicker .win-datepicker-date.win-order0:lang(syr),
-.win-datepicker .win-datepicker-date.win-order0:lang(ug),
-.win-datepicker .win-datepicker-date.win-order0:lang(ur),
-.win-datepicker .win-datepicker-date.win-order0:lang(qps-plocm),
-.win-datepicker .win-datepicker-date.win-order1:lang(ar),
-.win-datepicker .win-datepicker-date.win-order1:lang(dv),
-.win-datepicker .win-datepicker-date.win-order1:lang(fa),
-.win-datepicker .win-datepicker-date.win-order1:lang(he),
-.win-datepicker .win-datepicker-date.win-order1:lang(ku-Arab),
-.win-datepicker .win-datepicker-date.win-order1:lang(pa-Arab),
-.win-datepicker .win-datepicker-date.win-order1:lang(prs),
-.win-datepicker .win-datepicker-date.win-order1:lang(ps),
-.win-datepicker .win-datepicker-date.win-order1:lang(sd-Arab),
-.win-datepicker .win-datepicker-date.win-order1:lang(syr),
-.win-datepicker .win-datepicker-date.win-order1:lang(ug),
-.win-datepicker .win-datepicker-date.win-order1:lang(ur),
-.win-datepicker .win-datepicker-date.win-order1:lang(qps-plocm),
-.win-datepicker .win-datepicker-year.win-order0:lang(ar),
-.win-datepicker .win-datepicker-year.win-order0:lang(dv),
-.win-datepicker .win-datepicker-year.win-order0:lang(fa),
-.win-datepicker .win-datepicker-year.win-order0:lang(he),
-.win-datepicker .win-datepicker-year.win-order0:lang(ku-Arab),
-.win-datepicker .win-datepicker-year.win-order0:lang(pa-Arab),
-.win-datepicker .win-datepicker-year.win-order0:lang(prs),
-.win-datepicker .win-datepicker-year.win-order0:lang(ps),
-.win-datepicker .win-datepicker-year.win-order0:lang(sd-Arab),
-.win-datepicker .win-datepicker-year.win-order0:lang(syr),
-.win-datepicker .win-datepicker-year.win-order0:lang(ug),
-.win-datepicker .win-datepicker-year.win-order0:lang(ur),
-.win-datepicker .win-datepicker-year.win-order0:lang(qps-plocm) {
-  margin-right: 0;
-  margin-left: 20px;
-}
-.win-timepicker {
-  display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
-  display: inline-flex;
-  height: auto;
-  width: auto;
-}
-.win-timepicker select {
-  min-width: 80px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-.win-timepicker .win-timepicker-hour {
-  margin-right: 20px;
-}
-.win-timepicker .win-timepicker-period.win-order0 {
-  margin-right: 20px;
-}
-.win-timepicker .win-timepicker-minute.win-order1 {
-  margin-right: 20px;
-}
-.win-timepicker .win-timepicker-period.win-order0:lang(ar),
-.win-timepicker .win-timepicker-period.win-order0:lang(dv),
-.win-timepicker .win-timepicker-period.win-order0:lang(fa),
-.win-timepicker .win-timepicker-period.win-order0:lang(he),
-.win-timepicker .win-timepicker-period.win-order0:lang(ku-Arab),
-.win-timepicker .win-timepicker-period.win-order0:lang(pa-Arab),
-.win-timepicker .win-timepicker-period.win-order0:lang(prs),
-.win-timepicker .win-timepicker-period.win-order0:lang(ps),
-.win-timepicker .win-timepicker-period.win-order0:lang(sd-Arab),
-.win-timepicker .win-timepicker-period.win-order0:lang(syr),
-.win-timepicker .win-timepicker-period.win-order0:lang(ug),
-.win-timepicker .win-timepicker-period.win-order0:lang(ur),
-.win-timepicker .win-timepicker-period.win-order0:lang(qps-plocm),
-.win-timepicker .win-timepicker-hour:lang(ar),
-.win-timepicker .win-timepicker-hour:lang(dv),
-.win-timepicker .win-timepicker-hour:lang(fa),
-.win-timepicker .win-timepicker-hour:lang(he),
-.win-timepicker .win-timepicker-hour:lang(ku-Arab),
-.win-timepicker .win-timepicker-hour:lang(pa-Arab),
-.win-timepicker .win-timepicker-hour:lang(prs),
-.win-timepicker .win-timepicker-hour:lang(ps),
-.win-timepicker .win-timepicker-hour:lang(sd-Arab),
-.win-timepicker .win-timepicker-hour:lang(syr),
-.win-timepicker .win-timepicker-hour:lang(ug),
-.win-timepicker .win-timepicker-hour:lang(ur),
-.win-timepicker .win-timepicker-hour:lang(qps-plocm) {
-  margin-right: 0;
-  margin-left: 20px;
-}
-.win-timepicker .win-timepicker-minute.win-order1:lang(ar),
-.win-timepicker .win-timepicker-minute.win-order1:lang(dv),
-.win-timepicker .win-timepicker-minute.win-order1:lang(fa),
-.win-timepicker .win-timepicker-minute.win-order1:lang(he),
-.win-timepicker .win-timepicker-minute.win-order1:lang(ku-Arab),
-.win-timepicker .win-timepicker-minute.win-order1:lang(pa-Arab),
-.win-timepicker .win-timepicker-minute.win-order1:lang(prs),
-.win-timepicker .win-timepicker-minute.win-order1:lang(ps),
-.win-timepicker .win-timepicker-minute.win-order1:lang(sd-Arab),
-.win-timepicker .win-timepicker-minute.win-order1:lang(syr),
-.win-timepicker .win-timepicker-minute.win-order1:lang(ug),
-.win-timepicker .win-timepicker-minute.win-order1:lang(ur),
-.win-timepicker .win-timepicker-minute.win-order1:lang(qps-plocm),
-.win-timepicker .win-timepicker-minute.win-order0:lang(ar),
-.win-timepicker .win-timepicker-minute.win-order0:lang(dv),
-.win-timepicker .win-timepicker-minute.win-order0:lang(fa),
-.win-timepicker .win-timepicker-minute.win-order0:lang(he),
-.win-timepicker .win-timepicker-minute.win-order0:lang(ku-Arab),
-.win-timepicker .win-timepicker-minute.win-order0:lang(pa-Arab),
-.win-timepicker .win-timepicker-minute.win-order0:lang(prs),
-.win-timepicker .win-timepicker-minute.win-order0:lang(ps),
-.win-timepicker .win-timepicker-minute.win-order0:lang(sd-Arab),
-.win-timepicker .win-timepicker-minute.win-order0:lang(syr),
-.win-timepicker .win-timepicker-minute.win-order0:lang(ug),
-.win-timepicker .win-timepicker-minute.win-order0:lang(ur),
-.win-timepicker .win-timepicker-minute.win-order0:lang(qps-plocm) {
-  margin-left: 20px;
-  margin-right: 0;
-}
 .win-listview {
   overflow: hidden;
   height: 400px;
@@ -2892,6 +2190,267 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
     color: HighlightText;
   }
 }
+.win-datepicker {
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  height: auto;
+  width: auto;
+}
+.win-datepicker select {
+  min-width: 80px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.win-datepicker .win-datepicker-month {
+  margin-right: 20px;
+}
+.win-datepicker .win-datepicker-date.win-order0,
+.win-datepicker .win-datepicker-date.win-order1 {
+  margin-right: 20px;
+}
+.win-datepicker .win-datepicker-year.win-order0 {
+  margin-right: 20px;
+}
+.win-datepicker .win-datepicker-month:lang(ar),
+.win-datepicker .win-datepicker-month:lang(dv),
+.win-datepicker .win-datepicker-month:lang(fa),
+.win-datepicker .win-datepicker-month:lang(he),
+.win-datepicker .win-datepicker-month:lang(ku-Arab),
+.win-datepicker .win-datepicker-month:lang(pa-Arab),
+.win-datepicker .win-datepicker-month:lang(prs),
+.win-datepicker .win-datepicker-month:lang(ps),
+.win-datepicker .win-datepicker-month:lang(sd-Arab),
+.win-datepicker .win-datepicker-month:lang(syr),
+.win-datepicker .win-datepicker-month:lang(ug),
+.win-datepicker .win-datepicker-month:lang(ur),
+.win-datepicker .win-datepicker-month:lang(qps-plocm),
+.win-datepicker .win-datepicker-date.win-order0:lang(ar),
+.win-datepicker .win-datepicker-date.win-order0:lang(dv),
+.win-datepicker .win-datepicker-date.win-order0:lang(fa),
+.win-datepicker .win-datepicker-date.win-order0:lang(he),
+.win-datepicker .win-datepicker-date.win-order0:lang(ku-Arab),
+.win-datepicker .win-datepicker-date.win-order0:lang(pa-Arab),
+.win-datepicker .win-datepicker-date.win-order0:lang(prs),
+.win-datepicker .win-datepicker-date.win-order0:lang(ps),
+.win-datepicker .win-datepicker-date.win-order0:lang(sd-Arab),
+.win-datepicker .win-datepicker-date.win-order0:lang(syr),
+.win-datepicker .win-datepicker-date.win-order0:lang(ug),
+.win-datepicker .win-datepicker-date.win-order0:lang(ur),
+.win-datepicker .win-datepicker-date.win-order0:lang(qps-plocm),
+.win-datepicker .win-datepicker-date.win-order1:lang(ar),
+.win-datepicker .win-datepicker-date.win-order1:lang(dv),
+.win-datepicker .win-datepicker-date.win-order1:lang(fa),
+.win-datepicker .win-datepicker-date.win-order1:lang(he),
+.win-datepicker .win-datepicker-date.win-order1:lang(ku-Arab),
+.win-datepicker .win-datepicker-date.win-order1:lang(pa-Arab),
+.win-datepicker .win-datepicker-date.win-order1:lang(prs),
+.win-datepicker .win-datepicker-date.win-order1:lang(ps),
+.win-datepicker .win-datepicker-date.win-order1:lang(sd-Arab),
+.win-datepicker .win-datepicker-date.win-order1:lang(syr),
+.win-datepicker .win-datepicker-date.win-order1:lang(ug),
+.win-datepicker .win-datepicker-date.win-order1:lang(ur),
+.win-datepicker .win-datepicker-date.win-order1:lang(qps-plocm),
+.win-datepicker .win-datepicker-year.win-order0:lang(ar),
+.win-datepicker .win-datepicker-year.win-order0:lang(dv),
+.win-datepicker .win-datepicker-year.win-order0:lang(fa),
+.win-datepicker .win-datepicker-year.win-order0:lang(he),
+.win-datepicker .win-datepicker-year.win-order0:lang(ku-Arab),
+.win-datepicker .win-datepicker-year.win-order0:lang(pa-Arab),
+.win-datepicker .win-datepicker-year.win-order0:lang(prs),
+.win-datepicker .win-datepicker-year.win-order0:lang(ps),
+.win-datepicker .win-datepicker-year.win-order0:lang(sd-Arab),
+.win-datepicker .win-datepicker-year.win-order0:lang(syr),
+.win-datepicker .win-datepicker-year.win-order0:lang(ug),
+.win-datepicker .win-datepicker-year.win-order0:lang(ur),
+.win-datepicker .win-datepicker-year.win-order0:lang(qps-plocm) {
+  margin-right: 0;
+  margin-left: 20px;
+}
+.win-timepicker {
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  height: auto;
+  width: auto;
+}
+.win-timepicker select {
+  min-width: 80px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.win-timepicker .win-timepicker-hour {
+  margin-right: 20px;
+}
+.win-timepicker .win-timepicker-period.win-order0 {
+  margin-right: 20px;
+}
+.win-timepicker .win-timepicker-minute.win-order1 {
+  margin-right: 20px;
+}
+.win-timepicker .win-timepicker-period.win-order0:lang(ar),
+.win-timepicker .win-timepicker-period.win-order0:lang(dv),
+.win-timepicker .win-timepicker-period.win-order0:lang(fa),
+.win-timepicker .win-timepicker-period.win-order0:lang(he),
+.win-timepicker .win-timepicker-period.win-order0:lang(ku-Arab),
+.win-timepicker .win-timepicker-period.win-order0:lang(pa-Arab),
+.win-timepicker .win-timepicker-period.win-order0:lang(prs),
+.win-timepicker .win-timepicker-period.win-order0:lang(ps),
+.win-timepicker .win-timepicker-period.win-order0:lang(sd-Arab),
+.win-timepicker .win-timepicker-period.win-order0:lang(syr),
+.win-timepicker .win-timepicker-period.win-order0:lang(ug),
+.win-timepicker .win-timepicker-period.win-order0:lang(ur),
+.win-timepicker .win-timepicker-period.win-order0:lang(qps-plocm),
+.win-timepicker .win-timepicker-hour:lang(ar),
+.win-timepicker .win-timepicker-hour:lang(dv),
+.win-timepicker .win-timepicker-hour:lang(fa),
+.win-timepicker .win-timepicker-hour:lang(he),
+.win-timepicker .win-timepicker-hour:lang(ku-Arab),
+.win-timepicker .win-timepicker-hour:lang(pa-Arab),
+.win-timepicker .win-timepicker-hour:lang(prs),
+.win-timepicker .win-timepicker-hour:lang(ps),
+.win-timepicker .win-timepicker-hour:lang(sd-Arab),
+.win-timepicker .win-timepicker-hour:lang(syr),
+.win-timepicker .win-timepicker-hour:lang(ug),
+.win-timepicker .win-timepicker-hour:lang(ur),
+.win-timepicker .win-timepicker-hour:lang(qps-plocm) {
+  margin-right: 0;
+  margin-left: 20px;
+}
+.win-timepicker .win-timepicker-minute.win-order1:lang(ar),
+.win-timepicker .win-timepicker-minute.win-order1:lang(dv),
+.win-timepicker .win-timepicker-minute.win-order1:lang(fa),
+.win-timepicker .win-timepicker-minute.win-order1:lang(he),
+.win-timepicker .win-timepicker-minute.win-order1:lang(ku-Arab),
+.win-timepicker .win-timepicker-minute.win-order1:lang(pa-Arab),
+.win-timepicker .win-timepicker-minute.win-order1:lang(prs),
+.win-timepicker .win-timepicker-minute.win-order1:lang(ps),
+.win-timepicker .win-timepicker-minute.win-order1:lang(sd-Arab),
+.win-timepicker .win-timepicker-minute.win-order1:lang(syr),
+.win-timepicker .win-timepicker-minute.win-order1:lang(ug),
+.win-timepicker .win-timepicker-minute.win-order1:lang(ur),
+.win-timepicker .win-timepicker-minute.win-order1:lang(qps-plocm),
+.win-timepicker .win-timepicker-minute.win-order0:lang(ar),
+.win-timepicker .win-timepicker-minute.win-order0:lang(dv),
+.win-timepicker .win-timepicker-minute.win-order0:lang(fa),
+.win-timepicker .win-timepicker-minute.win-order0:lang(he),
+.win-timepicker .win-timepicker-minute.win-order0:lang(ku-Arab),
+.win-timepicker .win-timepicker-minute.win-order0:lang(pa-Arab),
+.win-timepicker .win-timepicker-minute.win-order0:lang(prs),
+.win-timepicker .win-timepicker-minute.win-order0:lang(ps),
+.win-timepicker .win-timepicker-minute.win-order0:lang(sd-Arab),
+.win-timepicker .win-timepicker-minute.win-order0:lang(syr),
+.win-timepicker .win-timepicker-minute.win-order0:lang(ug),
+.win-timepicker .win-timepicker-minute.win-order0:lang(ur),
+.win-timepicker .win-timepicker-minute.win-order0:lang(qps-plocm) {
+  margin-left: 20px;
+  margin-right: 0;
+}
+body > .win-navigation-backbutton {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+}
+.win-backbutton,
+.win-navigation-backbutton,
+.win-back {
+  display: inline-block;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  text-align: center;
+  width: 41px;
+  height: 41px;
+  font-size: 14pt;
+  line-height: 41px;
+  vertical-align: baseline;
+}
+.win-backbutton::before,
+.win-back::before {
+  font-family: "Segoe UI Symbol", "Symbols";
+  font-weight: normal;
+  content: "\E0D5";
+  vertical-align: 50%;
+}
+.win-backbutton:lang(ar)::before,
+.win-backbutton:lang(dv)::before,
+.win-backbutton:lang(fa)::before,
+.win-backbutton:lang(he)::before,
+.win-backbutton:lang(ku-Arab)::before,
+.win-backbutton:lang(pa-Arab)::before,
+.win-backbutton:lang(prs)::before,
+.win-backbutton:lang(ps)::before,
+.win-backbutton:lang(sd-Arab)::before,
+.win-backbutton:lang(syr)::before,
+.win-backbutton:lang(ug)::before,
+.win-backbutton:lang(ur)::before,
+.win-backbutton:lang(qps-plocm)::before,
+.win-back:lang(ar)::before,
+.win-back:lang(dv)::before,
+.win-back:lang(fa)::before,
+.win-back:lang(he)::before,
+.win-back:lang(ku-Arab)::before,
+.win-back:lang(pa-Arab)::before,
+.win-back:lang(prs)::before,
+.win-back:lang(ps)::before,
+.win-back:lang(sd-Arab)::before,
+.win-back:lang(syr)::before,
+.win-back:lang(ug)::before,
+.win-back:lang(ur)::before,
+.win-back:lang(qps-plocm)::before {
+  content: "\E0AE";
+}
+button.win-navigation-backbutton,
+button.win-navigation-backbutton:active,
+html.win-hoverable button.win-navigation-backbutton:enabled:hover,
+button.win-navigation-backbutton:enabled:hover:active {
+  background-color: transparent;
+  border: none;
+}
+@media (-ms-high-contrast) {
+  button.win-navigation-backbutton,
+  button.win-navigation-backbutton:active,
+  html.win-hoverable button.win-navigation-backbutton:enabled:hover,
+  button.win-navigation-backbutton:enabled:hover:active {
+    /* Overwrite default background and border styles from BackButton control's <button> element */
+    background-color: transparent;
+    border: none;
+  }
+  .win-backbutton,
+  .win-back {
+    background-color: ButtonFace;
+    border-color: ButtonText;
+    color: ButtonText;
+  }
+  .win-backbutton.win-backbutton:enabled:hover:active,
+  .win-navigation-backbutton.win-navigation-backbutton:enabled:hover:active .win-back {
+    background-clip: border-box;
+    background-color: ButtonText;
+    border-color: transparent;
+    color: ButtonFace;
+  }
+  .win-backbutton:disabled,
+  .win-navigation-backbutton:disabled .win-back,
+  .win-backbutton:disabled:active,
+  .win-navigation-backbutton:disabled:active .win-back {
+    background-color: ButtonFace;
+    border-color: GrayText;
+    color: GrayText;
+  }
+  .win-backbutton:-ms-keyboard-active,
+  .win-navigation-backbutton:-ms-keyboard-active .win-back {
+    background-clip: border-box;
+    background-color: ButtonText;
+    border-color: transparent;
+    color: ButtonFace;
+  }
+  html.win-hoverable .win-backbutton:enabled:hover,
+  html.win-hoverable .win-navigation-backbutton:enabled:hover .win-back {
+    background-color: Highlight;
+    border-color: ButtonText;
+    color: HighlightText;
+  }
+}
 .win-tooltip {
   display: block;
   position: fixed;
@@ -2926,6 +2485,199 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
     border-color: WindowText;
     color: WindowText;
   }
+}
+.win-rating {
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -ms-flex-pack: self;
+  -webkit-justify-content: self;
+  justify-content: self;
+  -ms-flex-align: stretch;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+  height: auto;
+  width: auto;
+  white-space: normal;
+  outline: 0;
+}
+.win-rating .win-star {
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  height: 24px;
+  width: 24px;
+  padding: 9px 10px 11px 10px;
+  font-family: "Segoe UI Symbol", "Symbols";
+  font-size: 24px;
+  overflow: hidden;
+  text-indent: 0;
+  line-height: 1;
+  cursor: default;
+  position: relative;
+  letter-spacing: 0;
+  -ms-touch-action: none;
+  touch-action: none;
+}
+.win-rating.win-small .win-star {
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
+  padding: 3px 4px 5px 4px;
+}
+.win-rating .win-star:before {
+  content: "\E082";
+}
+.win-rating .win-star.win-disabled {
+  cursor: default;
+  -ms-touch-action: auto;
+  touch-action: auto;
+}
+@media (-ms-high-contrast) {
+  .win-rating .win-star:before {
+    content: "\E082" !important;
+  }
+  .win-rating .win-star.win-full {
+    color: HighLight;
+  }
+  .win-rating .win-star.win-tentative.win-full {
+    color: ButtonText;
+  }
+  .win-rating .win-star.win-empty {
+    color: ButtonFace;
+  }
+  .win-rating .win-star:after {
+    content: "\E224" !important;
+    position: relative;
+    top: -100%;
+    color: ButtonText;
+  }
+}
+.win-toggleswitch {
+  outline: 0;
+}
+.win-toggleswitch .win-toggleswitch-header {
+  max-width: 470px;
+  width: 22em;
+  margin-bottom: 14px;
+  margin-top: 22px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+.win-toggleswitch .win-toggleswitch-values {
+  display: inline-block;
+  vertical-align: top;
+}
+.win-toggleswitch .win-toggleswitch-value {
+  min-width: 65px;
+  margin-left: 12px;
+  height: 16px;
+  vertical-align: top;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 16px;
+}
+.win-toggleswitch .win-toggleswitch-description {
+  font-size: 12pt;
+  width: 22em;
+  margin-top: 28px;
+  display: none;
+}
+.win-toggleswitch .win-toggleswitch-clickregion {
+  display: inline-block;
+  touch-action: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.win-toggleswitch .win-toggleswitch-track {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 16px;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.win-toggleswitch .win-toggleswitch-thumb {
+  position: absolute;
+  top: 2px;
+  display: inline-block;
+  width: 20px;
+  height: 8px;
+  border-radius: 4px;
+  -webkit-transition: left 0.1s;
+  transition: left 0.1s;
+}
+.win-toggleswitch:focus .win-toggleswitch-track {
+  outline-width: 1px;
+  outline-style: dotted;
+}
+.win-toggleswitch.win-toggleswitch-dragging .win-toggleswitch-thumb {
+  -webkit-transition: none;
+  transition: none;
+}
+.win-toggleswitch.win-toggleswitch-off .win-toggleswitch-value-on {
+  height: 0;
+  visibility: hidden;
+}
+.win-toggleswitch.win-toggleswitch-on .win-toggleswitch-value-off {
+  height: 0;
+  visibility: hidden;
+}
+.win-toggleswitch.win-toggleswitch-on .win-toggleswitch-thumb {
+  left: 18px;
+}
+.win-toggleswitch.win-toggleswitch-off .win-toggleswitch-thumb {
+  left: 2px;
+}
+.win-toggleswitch:lang(ar),
+.win-toggleswitch:lang(dv),
+.win-toggleswitch:lang(fa),
+.win-toggleswitch:lang(he),
+.win-toggleswitch:lang(ku-Arab),
+.win-toggleswitch:lang(pa-Arab),
+.win-toggleswitch:lang(prs),
+.win-toggleswitch:lang(ps),
+.win-toggleswitch:lang(sd-Arab),
+.win-toggleswitch:lang(syr),
+.win-toggleswitch:lang(ug),
+.win-toggleswitch:lang(ur),
+.win-toggleswitch:lang(qps-plocm) {
+  direction: rtl;
+}
+.win-toggleswitch:lang(ar).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(dv).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(fa).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(he).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ku-Arab).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(pa-Arab).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(prs).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ps).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(sd-Arab).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(syr).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ug).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ur).win-toggleswitch-on .win-toggleswitch-thumb,
+.win-toggleswitch:lang(qps-plocm).win-toggleswitch-on .win-toggleswitch-thumb {
+  left: 2px;
+}
+.win-toggleswitch:lang(ar).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(dv).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(fa).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(he).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ku-Arab).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(pa-Arab).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(prs).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ps).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(sd-Arab).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(syr).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ug).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(ur).win-toggleswitch-off .win-toggleswitch-thumb,
+.win-toggleswitch:lang(qps-plocm).win-toggleswitch-off .win-toggleswitch-thumb {
+  left: 18px;
 }
 .win-semanticzoom {
   touch-action: pan-x pan-y double-tap-zoom;
@@ -2999,10 +2751,447 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
     color: HighlightText;
   }
 }
-.win-viewbox {
+.win-pivot {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-wrap: none;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  height: 100%;
   width: 100%;
+  overflow: hidden;
+  -ms-scroll-limit-x-max: 0px;
+}
+.win-pivot .win-pivot-navbutton {
+  position: absolute;
+  width: 20px;
+  height: 36px;
+  padding: 0px;
+  margin: 0px;
+  top: 10px;
+  min-width: 0px;
+  border-width: 0px;
+  cursor: pointer;
+  opacity: 0;
+  font-family: "Segoe UI Symbol", "Symbols";
+}
+.win-pivot .win-pivot-headers.win-pivot-shownavbuttons .win-pivot-navbutton {
+  opacity: 1;
+}
+.win-pivot .win-pivot-headers .win-pivot-navbutton-prev:before {
+  content: "\E096";
+}
+.win-pivot .win-pivot-headers .win-pivot-navbutton-next:before {
+  content: "\E09B";
+}
+.win-pivot .win-pivot-title {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  font-size: 14pt;
+  font-weight: 600;
+  white-space: nowrap;
+  margin: 12px 0 -8px 18px;
+}
+.win-pivot .win-pivot-title:lang(ar),
+.win-pivot .win-pivot-title:lang(dv),
+.win-pivot .win-pivot-title:lang(fa),
+.win-pivot .win-pivot-title:lang(he),
+.win-pivot .win-pivot-title:lang(ku-Arab),
+.win-pivot .win-pivot-title:lang(pa-Arab),
+.win-pivot .win-pivot-title:lang(prs),
+.win-pivot .win-pivot-title:lang(ps),
+.win-pivot .win-pivot-title:lang(sd-Arab),
+.win-pivot .win-pivot-title:lang(syr),
+.win-pivot .win-pivot-title:lang(ug),
+.win-pivot .win-pivot-title:lang(ur),
+.win-pivot .win-pivot-title:lang(qps-plocm) {
+  margin: 12px 18px -8px 0;
+}
+.win-pivot > .win-pivot-item {
+  /*
+        Hide the pivot items defined declaratively until we reparent them to ensure correct
+        measuring and to avoid showing unprocessed content in the wrong location.
+        */
+  display: none;
+}
+.win-pivot .win-pivot-headers {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  position: relative;
+  overflow-y: visible;
+  height: 48px;
+  touch-action: none;
+  -ms-touch-action: none;
+}
+.win-pivot .win-pivot-header {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+  display: inline-block;
+  transition: opacity linear 167ms;
+  -webkit-transition: opacity linear 167ms;
+  overflow: hidden;
+  height: 30px;
+  border: 0;
+  padding: 0;
+  margin: 13px 12px 15px 12px;
+}
+.win-pivot button.win-pivot-header,
+.win-pivot button.win-pivot-header:hover:active {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  letter-spacing: 0px;
+  margin: 13px 12px 15px 12px;
+  min-height: 0;
+  min-width: 0;
+}
+.win-pivot button.win-pivot-header.win-keyboard:focus {
+  outline-style: dotted;
+  outline-width: 1px;
+}
+.win-pivot.win-pivot-locked .win-pivot-header {
+  opacity: 0;
+  visibility: hidden;
+}
+.win-pivot .win-pivot-header.win-pivot-header-selected,
+.win-pivot.win-pivot-locked .win-pivot-header.win-pivot-header-selected {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.333;
+  opacity: 1.0;
+  visibility: inherit;
+}
+.win-pivot .win-pivot-viewport {
+  /* Overlap the headers but not the title */
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -ms-scroll-snap-type: mandatory;
+  -ms-scroll-snap-points-x: snapInterval(0%, 100%);
+  -ms-overflow-style: none;
+  /* The following 3 styles take advantage of a Trident bug to make the viewport pannable on the header track. The viewport is extended over the
+            header track space, and position: relative allows interacting with it as if the viewport was drawn over the header track.
+        */
+  position: relative;
+  padding-top: 48px;
+  margin-top: -48px;
+}
+.win-pivot.win-pivot-mouse .win-pivot-viewport {
+  padding-top: 0px;
+  margin-top: 0px;
+}
+.win-pivot.win-pivot-locked .win-pivot-viewport {
+  overflow: hidden;
+}
+.win-pivot .win-pivot-surface {
+  /* 49 before, 1 current, 50 after */
+  width: 10000%;
   height: 100%;
   position: relative;
+}
+html.win-hoverable .win-pivot button.win-pivot-header:hover {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  letter-spacing: 0px;
+  margin: 13px 12px 15px 12px;
+  min-height: 0;
+  min-width: 0;
+}
+html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
+  margin: 0px;
+  padding: 0px;
+  border-width: 0px;
+  cursor: pointer;
+  font-family: "Segoe UI Symbol", "Symbols";
+}
+/*
+    PivotItem
+*/
+.win-pivot-item {
+  position: absolute;
+  top: 28px;
+  bottom: 0;
+  /* Since the surface is 100x in width, 1% here means the size of the viewport. */
+  width: 1%;
+}
+.win-pivot-item .win-pivot-item-content {
+  height: 100%;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  padding: 0px 19px;
+  width: calc(100% - 28px);
+}
+/*
+    Modified styles for when the Pivot is in nosnap mode
+*/
+.win-pivot.win-pivot-nosnap .win-pivot-viewport {
+  padding-top: 0px;
+  margin-top: 0px;
+  overflow: hidden;
+}
+.win-pivot.win-pivot-nosnap .win-pivot-surface {
+  width: 100%;
+  position: static;
+}
+.win-pivot.win-pivot-nosnap .win-pivot-item {
+  width: 100%;
+}
+.win-hub {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.win-hub-progress {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  z-index: 1;
+}
+.win-hub-viewport {
+  height: 100%;
+  width: 100%;
+  /* Allow win-hub-surface margin/padding right to work */
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  -ms-scroll-snap-type: proximity;
+}
+.win-hub-horizontal .win-hub-viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.win-hub-vertical .win-hub-viewport {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.win-hub-surface {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+.win-hub-vertical .win-hub-surface {
+  width: 100%;
+  padding: 15px 0;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.win-hub-horizontal .win-hub-surface {
+  height: 100%;
+  padding: 0 80px;
+}
+.win-hub-section {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  padding: 0 40px;
+}
+.win-hub-horizontal .win-hub-section {
+  height: 100%;
+}
+.win-hub-horizontal .win-hub-section-header {
+  margin-top: 129px;
+}
+.win-hub-vertical .win-hub-section {
+  width: calc(100% - 80px);
+  padding: 14px 40px;
+}
+.win-hub-vertical .win-hub-section-header {
+  margin-top: 1px;
+}
+.win-hub-section-header {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin: 4px 0;
+  font-size: 20pt;
+  text-align: left;
+}
+.win-hub-section-header:lang(ar),
+.win-hub-section-header:lang(dv),
+.win-hub-section-header:lang(fa),
+.win-hub-section-header:lang(he),
+.win-hub-section-header:lang(ku-Arab),
+.win-hub-section-header:lang(pa-Arab),
+.win-hub-section-header:lang(prs),
+.win-hub-section-header:lang(ps),
+.win-hub-section-header:lang(sd-Arab),
+.win-hub-section-header:lang(syr),
+.win-hub-section-header:lang(ug),
+.win-hub-section-header:lang(ur),
+.win-hub-section-header:lang(qps-plocm) {
+  text-align: right;
+}
+button.win-hub-section-header-tabstop,
+html.win-hoverable button.win-hub-section-header-tabstop:hover,
+button.win-hub-section-header-tabstop:hover:active {
+  background-color: transparent;
+  border: 0;
+  padding: 0 3px 0 0;
+  min-height: 0;
+  min-width: 0;
+  max-width: calc(100% - 3px);
+  font-size: 20pt;
+}
+button.win-hub-section-header-tabstop:lang(ar),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ar),
+button.win-hub-section-header-tabstop:hover:active:lang(ar),
+button.win-hub-section-header-tabstop:lang(dv),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(dv),
+button.win-hub-section-header-tabstop:hover:active:lang(dv),
+button.win-hub-section-header-tabstop:lang(fa),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(fa),
+button.win-hub-section-header-tabstop:hover:active:lang(fa),
+button.win-hub-section-header-tabstop:lang(he),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(he),
+button.win-hub-section-header-tabstop:hover:active:lang(he),
+button.win-hub-section-header-tabstop:lang(ku-Arab),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ku-Arab),
+button.win-hub-section-header-tabstop:hover:active:lang(ku-Arab),
+button.win-hub-section-header-tabstop:lang(pa-Arab),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(pa-Arab),
+button.win-hub-section-header-tabstop:hover:active:lang(pa-Arab),
+button.win-hub-section-header-tabstop:lang(prs),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(prs),
+button.win-hub-section-header-tabstop:hover:active:lang(prs),
+button.win-hub-section-header-tabstop:lang(ps),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ps),
+button.win-hub-section-header-tabstop:hover:active:lang(ps),
+button.win-hub-section-header-tabstop:lang(sd-Arab),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(sd-Arab),
+button.win-hub-section-header-tabstop:hover:active:lang(sd-Arab),
+button.win-hub-section-header-tabstop:lang(syr),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(syr),
+button.win-hub-section-header-tabstop:hover:active:lang(syr),
+button.win-hub-section-header-tabstop:lang(ug),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ug),
+button.win-hub-section-header-tabstop:hover:active:lang(ug),
+button.win-hub-section-header-tabstop:lang(ur),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ur),
+button.win-hub-section-header-tabstop:hover:active:lang(ur),
+button.win-hub-section-header-tabstop:lang(qps-plocm),
+html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(qps-plocm),
+button.win-hub-section-header-tabstop:hover:active:lang(qps-plocm) {
+  padding: 0 0 0 3px;
+}
+button.win-hub-section-header-tabstop:focus {
+  outline: none;
+}
+button.win-hub-section-header-tabstop:-ms-keyboard-active {
+  background-color: transparent;
+}
+.win-hub-section-header-wrapper {
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  width: 100%;
+  outline: none;
+}
+.win-hub-section-header-content {
+  display: inline-block;
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.win-hub-section-header-chevron {
+  display: none;
+}
+.win-hub-section-header-interactive .win-hub-section-header-chevron {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: inline-block;
+  margin-left: 7px;
+}
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ar),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(dv),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(fa),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(he),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ku-Arab),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(pa-Arab),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(prs),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ps),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(sd-Arab),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(syr),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ug),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ur),
+.win-hub-section-header-interactive .win-hub-section-header-chevron:lang(qps-plocm) {
+  margin-left: 0;
+  margin-right: 7px;
+}
+.win-hub-section-header-chevron::before {
+  font-family: "Segoe UI Symbol", "Symbols";
+  content: "\E26B";
+}
+.win-hub-section-header-chevron:lang(ar),
+.win-hub-section-header-chevron:lang(dv),
+.win-hub-section-header-chevron:lang(fa),
+.win-hub-section-header-chevron:lang(he),
+.win-hub-section-header-chevron:lang(ku-Arab),
+.win-hub-section-header-chevron:lang(pa-Arab),
+.win-hub-section-header-chevron:lang(prs),
+.win-hub-section-header-chevron:lang(ps),
+.win-hub-section-header-chevron:lang(sd-Arab),
+.win-hub-section-header-chevron:lang(syr),
+.win-hub-section-header-chevron:lang(ug),
+.win-hub-section-header-chevron:lang(ur),
+.win-hub-section-header-chevron:lang(qps-plocm) {
+  font-family: "Segoe UI Symbol", "Symbols";
+  content: "\E26C";
+}
+.win-hub-section-content {
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.win-hub-horizontal .win-hub-section-content {
+  height: calc(100% - 44px);
+}
+.win-hub-vertical .win-hub-section-content {
+  width: 100%;
+}
+@media (-ms-high-contrast) {
+  button.win-hub-section-header-tabstop,
+  html.win-hoverable button.win-hub-section-header-tabstop:hover,
+  button.win-hub-section-header-tabstop:hover:active {
+    background-color: transparent;
+    color: WindowText;
+  }
+  button.win-hub-section-header-tabstop:-ms-keyboard-active {
+    color: WindowText;
+  }
+  html.win-hoverable button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover,
+  button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover:active {
+    color: -ms-hotlight;
+  }
+  button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-keyboard-active {
+    color: -ms-hotlight;
+  }
 }
 /*
 AppBar/Flyout z-index values:
@@ -3955,6 +4144,129 @@ Settings Pane
     -webkit-transform: none;
   }
 }
+.win-toolbar {
+  width: 100%;
+  outline: none;
+}
+.win-toolbar .win-toolbar-actionarea {
+  width: 100%;
+  min-height: 24px;
+  vertical-align: top;
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+.win-toolbar .win-toolbar-actionarea .win-command,
+.win-toolbar .win-toolbar-actionarea .win-toolbar-overflowbutton {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+.win-toolbar.win-toolbar-flyoutmenu {
+  min-width: 68px;
+  /* enough for one primary command */
+}
+.win-toolbar.win-toolbar-flyoutmenu > .win-toolbar-overflowarea {
+  display: none;
+}
+.win-toolbar.win-toolbar-inlinemenu {
+  min-width: 320px;
+}
+.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 0;
+  max-height: 198px;
+  /* 4.5 * 44px */
+  overflow-y: auto;
+  padding: 0;
+}
+.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea button.win-command {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border: 1px dotted transparent;
+  padding: 10px 11px 12px 11px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+  white-space: nowrap;
+  overflow: hidden;
+  width: auto;
+}
+.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea hr.win-command {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  height: 2px;
+  margin: 6px 12px 4px 12px;
+}
+.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowbutton {
+  min-height: 24px;
+  visibility: hidden;
+}
+.win-toolbar.win-toolbar-empty .win-toolbar-overflowbutton {
+  display: none;
+}
+.win-toolbar .win-toolbar-overflowbutton {
+  width: 32px;
+  /* 30px + 2px border */
+  min-height: 48px;
+  /* height of a command without labels */
+  margin: 0px;
+  padding: 0px;
+  border: 1px dotted;
+  min-width: 0px;
+  position: relative;
+  outline: none;
+  -ms-flex-item-align: stretch;
+  -webkit-align-self: stretch;
+  align-self: stretch;
+  box-sizing: border-box;
+  background-clip: border-box;
+}
+.win-toolbar .win-toolbar-overflowbutton .win-toolbar-ellipsis {
+  width: 32px;
+  right: 0px;
+  top: 12px;
+  line-height: 24px;
+  position: absolute;
+  display: inline-block;
+  font-size: 14px;
+  text-align: center;
+  font-family: "Segoe UI Symbol", "Symbols";
+}
+.win-toolbar .win-toolbar-overflowbutton .win-toolbar-ellipsis::before {
+  content: "\E10C";
+  position: relative;
+}
+.win-toolbar:lang(ar) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(dv) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(fa) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(he) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(ku-Arab) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(pa-Arab) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(prs) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(ps) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(sd-Arab) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(syr) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(ug) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(ur) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
+.win-toolbar:lang(qps-plocm) .win-toolbar-overflowbutton .win-toolbar-ellipsis {
+  right: auto;
+  left: 0px;
+}
 .win-autosuggestbox {
   white-space: normal;
   position: relative;
@@ -3988,7 +4300,7 @@ Settings Pane
   -webkit-flex-direction: column-reverse;
   flex-direction: column-reverse;
 }
-.win-autosuggestbox input {
+.win-autosuggestbox .win-autosuggestbox-input {
   -ms-ime-align: after;
   margin: 0;
   width: 100%;
@@ -4585,199 +4897,10 @@ Hide clear button in search box control.
     color: ButtonFace;
   }
 }
-.win-pivot {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-wrap: none;
-  -webkit-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  height: 100%;
+.win-viewbox {
   width: 100%;
-  overflow: hidden;
-  -ms-scroll-limit-x-max: 0px;
-}
-.win-pivot .win-pivot-navbutton {
-  position: absolute;
-  width: 20px;
-  height: 36px;
-  padding: 0px;
-  margin: 0px;
-  top: 10px;
-  min-width: 0px;
-  border-width: 0px;
-  cursor: pointer;
-  opacity: 0;
-  font-family: "Segoe UI Symbol", "Symbols";
-}
-.win-pivot .win-pivot-headers.win-pivot-shownavbuttons .win-pivot-navbutton {
-  opacity: 1;
-}
-.win-pivot .win-pivot-headers .win-pivot-navbutton-prev:before {
-  content: "\E096";
-}
-.win-pivot .win-pivot-headers .win-pivot-navbutton-next:before {
-  content: "\E09B";
-}
-.win-pivot .win-pivot-title {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-  font-size: 14pt;
-  font-weight: 600;
-  white-space: nowrap;
-  margin: 12px 0 -8px 18px;
-}
-.win-pivot .win-pivot-title:lang(ar),
-.win-pivot .win-pivot-title:lang(dv),
-.win-pivot .win-pivot-title:lang(fa),
-.win-pivot .win-pivot-title:lang(he),
-.win-pivot .win-pivot-title:lang(ku-Arab),
-.win-pivot .win-pivot-title:lang(pa-Arab),
-.win-pivot .win-pivot-title:lang(prs),
-.win-pivot .win-pivot-title:lang(ps),
-.win-pivot .win-pivot-title:lang(sd-Arab),
-.win-pivot .win-pivot-title:lang(syr),
-.win-pivot .win-pivot-title:lang(ug),
-.win-pivot .win-pivot-title:lang(ur),
-.win-pivot .win-pivot-title:lang(qps-plocm) {
-  margin: 12px 18px -8px 0;
-}
-.win-pivot > .win-pivot-item {
-  /*
-        Hide the pivot items defined declaratively until we reparent them to ensure correct
-        measuring and to avoid showing unprocessed content in the wrong location.
-        */
-  display: none;
-}
-.win-pivot .win-pivot-headers {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-  white-space: nowrap;
-  position: relative;
-  overflow-y: visible;
-  height: 48px;
-  touch-action: none;
-  -ms-touch-action: none;
-}
-.win-pivot .win-pivot-header {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.333;
-  display: inline-block;
-  transition: opacity linear 167ms;
-  -webkit-transition: opacity linear 167ms;
-  overflow: hidden;
-  height: 30px;
-  border: 0;
-  padding: 0;
-  margin: 13px 12px 15px 12px;
-}
-.win-pivot button.win-pivot-header,
-.win-pivot button.win-pivot-header:hover:active {
-  background-color: transparent;
-  border: 0;
-  padding: 0;
-  letter-spacing: 0px;
-  margin: 13px 12px 15px 12px;
-  min-height: 0;
-  min-width: 0;
-}
-.win-pivot button.win-pivot-header.win-keyboard:focus {
-  outline-style: dotted;
-  outline-width: 1px;
-}
-.win-pivot.win-pivot-locked .win-pivot-header {
-  opacity: 0;
-  visibility: hidden;
-}
-.win-pivot .win-pivot-header.win-pivot-header-selected,
-.win-pivot.win-pivot-locked .win-pivot-header.win-pivot-header-selected {
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.333;
-  opacity: 1.0;
-  visibility: inherit;
-}
-.win-pivot .win-pivot-viewport {
-  /* Overlap the headers but not the title */
-  height: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -ms-scroll-snap-type: mandatory;
-  -ms-scroll-snap-points-x: snapInterval(0%, 100%);
-  -ms-overflow-style: none;
-  /* The following 3 styles take advantage of a Trident bug to make the viewport pannable on the header track. The viewport is extended over the
-            header track space, and position: relative allows interacting with it as if the viewport was drawn over the header track.
-        */
-  position: relative;
-  padding-top: 48px;
-  margin-top: -48px;
-}
-.win-pivot.win-pivot-mouse .win-pivot-viewport {
-  padding-top: 0px;
-  margin-top: 0px;
-}
-.win-pivot.win-pivot-locked .win-pivot-viewport {
-  overflow: hidden;
-}
-.win-pivot .win-pivot-surface {
-  /* 49 before, 1 current, 50 after */
-  width: 10000%;
   height: 100%;
   position: relative;
-}
-html.win-hoverable .win-pivot button.win-pivot-header:hover {
-  background-color: transparent;
-  border: 0;
-  padding: 0;
-  letter-spacing: 0px;
-  margin: 13px 12px 15px 12px;
-  min-height: 0;
-  min-width: 0;
-}
-html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
-  margin: 0px;
-  padding: 0px;
-  border-width: 0px;
-  cursor: pointer;
-  font-family: "Segoe UI Symbol", "Symbols";
-}
-/*
-    PivotItem
-*/
-.win-pivot-item {
-  position: absolute;
-  top: 28px;
-  bottom: 0;
-  /* Since the surface is 100x in width, 1% here means the size of the viewport. */
-  width: 1%;
-}
-.win-pivot-item .win-pivot-item-content {
-  height: 100%;
-  overflow-y: auto;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-  padding: 0px 19px;
-  width: calc(100% - 28px);
-}
-/*
-    Modified styles for when the Pivot is in nosnap mode
-*/
-.win-pivot.win-pivot-nosnap .win-pivot-viewport {
-  padding-top: 0px;
-  margin-top: 0px;
-  overflow: hidden;
-}
-.win-pivot.win-pivot-nosnap .win-pivot-surface {
-  width: 100%;
-  position: static;
-}
-.win-pivot.win-pivot-nosnap .win-pivot-item {
-  width: 100%;
 }
 .win-contentdialog {
   /* Dialog's positioning and sizing rules:
@@ -4940,129 +5063,6 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   margin-right: 4px;
   /* 4px of space between each command */
   white-space: nowrap;
-}
-.win-toolbar {
-  width: 100%;
-  outline: none;
-}
-.win-toolbar .win-toolbar-actionarea {
-  width: 100%;
-  min-height: 24px;
-  vertical-align: top;
-  display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
-  display: inline-flex;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-  -ms-flex-align: start;
-  -webkit-align-items: flex-start;
-  align-items: flex-start;
-}
-.win-toolbar .win-toolbar-actionarea .win-command,
-.win-toolbar .win-toolbar-actionarea .win-toolbar-overflowbutton {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-}
-.win-toolbar.win-toolbar-flyoutmenu {
-  min-width: 68px;
-  /* enough for one primary command */
-}
-.win-toolbar.win-toolbar-flyoutmenu > .win-toolbar-overflowarea {
-  display: none;
-}
-.win-toolbar.win-toolbar-inlinemenu {
-  min-width: 320px;
-}
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  min-width: 320px;
-  min-height: 0;
-  max-height: 198px;
-  /* 4.5 * 44px */
-  overflow-y: auto;
-  padding: 0;
-}
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea button.win-command {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-  border: 1px dotted transparent;
-  padding: 10px 11px 12px 11px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.333;
-  white-space: nowrap;
-  overflow: hidden;
-  width: auto;
-}
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea hr.win-command {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
-  height: 2px;
-  margin: 6px 12px 4px 12px;
-}
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowbutton {
-  min-height: 24px;
-  visibility: hidden;
-}
-.win-toolbar.win-toolbar-empty .win-toolbar-overflowbutton {
-  display: none;
-}
-.win-toolbar .win-toolbar-overflowbutton {
-  width: 32px;
-  /* 30px + 2px border */
-  min-height: 48px;
-  /* height of a command without labels */
-  margin: 0px;
-  padding: 0px;
-  border: 1px dotted;
-  min-width: 0px;
-  position: relative;
-  outline: none;
-  -ms-flex-item-align: stretch;
-  -webkit-align-self: stretch;
-  align-self: stretch;
-  box-sizing: border-box;
-  background-clip: border-box;
-}
-.win-toolbar .win-toolbar-overflowbutton .win-toolbar-ellipsis {
-  width: 32px;
-  right: 0px;
-  top: 12px;
-  line-height: 24px;
-  position: absolute;
-  display: inline-block;
-  font-size: 14px;
-  text-align: center;
-  font-family: "Segoe UI Symbol", "Symbols";
-}
-.win-toolbar .win-toolbar-overflowbutton .win-toolbar-ellipsis::before {
-  content: "\E10C";
-  position: relative;
-}
-.win-toolbar:lang(ar) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(dv) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(fa) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(he) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(ku-Arab) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(pa-Arab) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(prs) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(ps) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(sd-Arab) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(syr) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(ug) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(ur) .win-toolbar-overflowbutton .win-toolbar-ellipsis,
-.win-toolbar:lang(qps-plocm) .win-toolbar-overflowbutton .win-toolbar-ellipsis {
-  right: auto;
-  left: 0px;
 }
 .win-splitview {
   position: relative;
@@ -5541,6 +5541,79 @@ input::-ms-reveal:active {
   color: #ffffff;
   background-color: #0078d7;
 }
+.win-listview .win-itembox,
+.win-itemcontainer .win-itembox {
+  background-color: #1d1d1d;
+}
+.win-listview .win-container.win-backdrop {
+  background-color: rgba(155, 155, 155, 0.23);
+}
+.win-selectionhint {
+  color: #ffffff;
+}
+.win-listview .win-groupheader {
+  outline-color: #ffffff;
+}
+.win-listview .win-focusedoutline,
+.win-itemcontainer .win-focusedoutline {
+  outline: #ffffff solid 2px;
+}
+.win-flipview .win-navbutton {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.8);
+}
+.win-flipview .win-navbutton:hover:active {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+html.win-hoverable .win-flipview .win-navbutton:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.win-backbutton,
+.win-back,
+.win-navigation-backbutton {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+}
+.win-backbutton:hover,
+.win-navigation-backbutton:hover .win-back {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.win-backbutton:active,
+.win-navigation-backbutton:active .win-back {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.win-backbutton:disabled,
+.win-backbutton:disabled:active,
+.win-navigation-backbutton:disabled,
+.win-navigation-backbutton:disabled .win-back,
+.win-navigation-backbutton:disabled:active .win-back {
+  color: rgba(255, 255, 255, 0.4);
+  background-color: transparent;
+}
+.win-backbutton:focus,
+.win-navigation-backbutton:focus .win-back {
+  outline-color: #ffffff;
+}
+.win-tooltip {
+  color: #ffffff;
+  border-color: #767676;
+  background-color: #1f1f1f;
+}
+.win-rating .win-star.win-user.win-full,
+.win-rating .win-star.win-user.win-full.win-disabled {
+  color: #0078d7;
+}
+.win-rating .win-star.win-tentative.win-full {
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-rating .win-star.win-average.win-full,
+.win-rating .win-star.win-average.win-full.win-disabled {
+  color: rgba(255, 255, 255, 0.4);
+}
+.win-rating .win-star.win-empty {
+  color: rgba(255, 255, 255, 0.2);
+}
 .win-toggleswitch-header {
   color: #ffffff;
 }
@@ -5572,6 +5645,26 @@ input::-ms-reveal:active {
 .win-toggleswitch-disabled .win-toggleswitch-value {
   color: rgba(255, 255, 255, 0.2);
 }
+.win-semanticzoom-button {
+  background-color: rgba(216, 216, 216, 0.33);
+  border-color: transparent;
+}
+button.win-semanticzoom-button.win-semanticzoom-button:active,
+button.win-semanticzoom-button.win-semanticzoom-button:hover:active {
+  background-color: #ffffff;
+}
+.win-pivot .win-pivot-navbutton {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.8);
+}
+.win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-pivot button.win-pivot-header,
+.win-pivot button.win-pivot-header:focus,
+.win-pivot button.win-pivot-header.win-pivot-header:hover:active {
+  color: #ffffff;
+}
 button.win-hub-section-header-tabstop,
 button.win-hub-section-header-tabstop:hover:active {
   color: #ffffff;
@@ -5587,87 +5680,6 @@ button.win-hub-section-header-tabstop.win-hub-section-header-interactive.win-hub
 }
 button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-keyboard-active {
   color: rgba(255, 255, 255, 0.4);
-}
-.win-backbutton,
-.win-back,
-.win-navigation-backbutton {
-  background-color: transparent;
-  border: none;
-  color: #ffffff;
-}
-.win-backbutton:hover,
-.win-navigation-backbutton:hover .win-back {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.win-backbutton:active,
-.win-navigation-backbutton:active .win-back {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-.win-backbutton:disabled,
-.win-backbutton:disabled:active,
-.win-navigation-backbutton:disabled,
-.win-navigation-backbutton:disabled .win-back,
-.win-navigation-backbutton:disabled:active .win-back {
-  color: rgba(255, 255, 255, 0.4);
-  background-color: transparent;
-}
-.win-backbutton:focus,
-.win-navigation-backbutton:focus .win-back {
-  outline-color: #ffffff;
-}
-.win-rating .win-star.win-user.win-full,
-.win-rating .win-star.win-user.win-full.win-disabled {
-  color: #0078d7;
-}
-.win-rating .win-star.win-tentative.win-full {
-  color: rgba(255, 255, 255, 0.8);
-}
-.win-rating .win-star.win-average.win-full,
-.win-rating .win-star.win-average.win-full.win-disabled {
-  color: rgba(255, 255, 255, 0.4);
-}
-.win-rating .win-star.win-empty {
-  color: rgba(255, 255, 255, 0.2);
-}
-.win-listview .win-itembox,
-.win-itemcontainer .win-itembox {
-  background-color: #1d1d1d;
-}
-.win-listview .win-container.win-backdrop {
-  background-color: rgba(155, 155, 155, 0.23);
-}
-.win-selectionhint {
-  color: #ffffff;
-}
-.win-listview .win-groupheader {
-  outline-color: #ffffff;
-}
-.win-listview .win-focusedoutline,
-.win-itemcontainer .win-focusedoutline {
-  outline: #ffffff solid 2px;
-}
-.win-flipview .win-navbutton {
-  background-color: rgba(255, 255, 255, 0.4);
-  color: rgba(0, 0, 0, 0.8);
-}
-.win-flipview .win-navbutton:hover:active {
-  background-color: rgba(255, 255, 255, 0.8);
-}
-html.win-hoverable .win-flipview .win-navbutton:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-}
-.win-tooltip {
-  color: #ffffff;
-  border-color: #767676;
-  background-color: #1f1f1f;
-}
-.win-semanticzoom-button {
-  background-color: rgba(216, 216, 216, 0.33);
-  border-color: transparent;
-}
-button.win-semanticzoom-button.win-semanticzoom-button:active,
-button.win-semanticzoom-button.win-semanticzoom-button:hover:active {
-  background-color: #ffffff;
 }
 .win-overlay {
   outline: none;
@@ -5836,6 +5848,36 @@ button.win-command:disabled:active .win-label {
   background-color: transparent;
   color: rgba(255, 255, 255, 0.4);
 }
+.win-toolbar,
+.win-toolbar {
+  background-color: #2b2b2b;
+}
+.win-toolbar button.win-toolbar-overflowbutton,
+.win-toolbar button.win-toolbar-overflowbutton {
+  background-color: transparent;
+  border-color: transparent;
+}
+.win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active,
+.win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active {
+  background-color: transparent;
+}
+.win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis,
+.win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis {
+  color: #ffffff;
+}
+.win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus,
+.win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus {
+  border-color: #ffffff;
+}
+.win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active,
+.win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active {
+  background-color: #808080;
+}
+.win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active,
+.win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active {
+  color: #ffffff;
+  background-color: #808080;
+}
 .win-autosuggestbox-flyout-highlighttext {
   color: #4617b4;
 }
@@ -5905,18 +5947,6 @@ button.win-command:disabled:active .win-label {
   background-color: #ffffff;
   color: #000000;
 }
-.win-pivot .win-pivot-navbutton {
-  background-color: rgba(255, 255, 255, 0.4);
-  color: rgba(0, 0, 0, 0.8);
-}
-.win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
-  color: rgba(255, 255, 255, 0.8);
-}
-.win-pivot button.win-pivot-header,
-.win-pivot button.win-pivot-header:focus,
-.win-pivot button.win-pivot-header.win-pivot-header:hover:active {
-  color: #ffffff;
-}
 .win-contentdialog-dialog {
   background-color: #1f1f1f;
   outline-color: #0078d7;
@@ -5931,53 +5961,11 @@ button.win-command:disabled:active .win-label {
   background-color: #000000;
   opacity: 0.6;
 }
-.win-toolbar,
-.win-toolbar {
-  background-color: #2b2b2b;
-}
-.win-toolbar button.win-toolbar-overflowbutton,
-.win-toolbar button.win-toolbar-overflowbutton {
-  background-color: transparent;
-  border-color: transparent;
-}
-.win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active,
-.win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active {
-  background-color: transparent;
-}
-.win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis,
-.win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis {
-  color: #ffffff;
-}
-.win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus,
-.win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus {
-  border-color: #ffffff;
-}
-.win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active,
-.win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active {
-  background-color: #808080;
-}
-.win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active,
-.win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active {
-  color: #ffffff;
-  background-color: #808080;
-}
 .win-splitview-pane {
   background-color: #171717;
 }
 html.win-hoverable {
   /* Appbar control colors */
-}
-html.win-hoverable .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-track {
-  border-color: #ffffff;
-}
-html.win-hoverable .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
-  background-color: #ffffff;
-}
-html.win-hoverable button.win-hub-section-header-tabstop:hover {
-  color: #ffffff;
-}
-html.win-hoverable button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover {
-  color: rgba(255, 255, 255, 0.8);
 }
 html.win-hoverable .win-listview .win-container:hover,
 html.win-hoverable .win-itemcontainer.win-container:hover {
@@ -5992,8 +5980,26 @@ html.win-hoverable .win-listview.win-selectionstylefilled .win-container:hover .
 html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container:hover .win-itembox {
   background-color: rgba(255, 255, 255, 0.3);
 }
+html.win-hoverable .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-track {
+  border-color: #ffffff;
+}
+html.win-hoverable .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
+  background-color: #ffffff;
+}
 html.win-hoverable button:hover.win-semanticzoom-button {
   background-color: #d8d8d8;
+}
+html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+html.win-hoverable .win-pivot button.win-pivot-header:hover {
+  color: #ffffff;
+}
+html.win-hoverable button.win-hub-section-header-tabstop:hover {
+  color: #ffffff;
+}
+html.win-hoverable button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
 html.win-hoverable.win-appbar button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-appbar button.win-appbar-invokebutton:enabled:hover,
@@ -6045,6 +6051,16 @@ html.win-hoverable button:enabled[aria-checked=true].win-command:hover:after {
 html.win-hoverable button:enabled[aria-checked=true].win-command:hover:active:after {
   opacity: 1;
 }
+html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover,
+html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover,
+html.win-hoverable.win-toolbar .win-toolbar-overflowarea button.win-command:hover,
+html.win-hoverable .win-toolbar .win-toolbar-overflowarea button.win-command:hover {
+  background-color: #555555;
+}
+html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis,
+html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis {
+  color: #ffffff;
+}
 html.win-hoverable .win-autosuggestbox-suggestion-result:hover,
 html.win-hoverable .win-autosuggestbox-suggestion-query:hover {
   background-color: rgba(255, 255, 255, 0.1);
@@ -6074,22 +6090,6 @@ html.win-hoverable .win-navbarcommand-button.win-pressed:hover,
 html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   background-color: #ffffff;
   color: #000000;
-}
-html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
-  color: rgba(255, 255, 255, 0.6);
-}
-html.win-hoverable .win-pivot button.win-pivot-header:hover {
-  color: #ffffff;
-}
-html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover,
-html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover,
-html.win-hoverable.win-toolbar .win-toolbar-overflowarea button.win-command:hover,
-html.win-hoverable .win-toolbar .win-toolbar-overflowarea button.win-command:hover {
-  background-color: #555555;
-}
-html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis,
-html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis {
-  color: #ffffff;
 }
 .win-ui-light body {
   background-color: #ffffff;
@@ -6437,6 +6437,79 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   color: #ffffff;
   background-color: #0078d7;
 }
+.win-ui-light .win-listview .win-itembox,
+.win-ui-light .win-itemcontainer .win-itembox {
+  background-color: #ffffff;
+}
+.win-ui-light .win-listview .win-container.win-backdrop {
+  background-color: rgba(155, 155, 155, 0.23);
+}
+.win-ui-light .win-selectionhint {
+  color: #4617b4;
+}
+.win-ui-light .win-listview .win-groupheader {
+  outline-color: #000000;
+}
+.win-ui-light .win-listview .win-focusedoutline,
+.win-ui-light .win-itemcontainer .win-focusedoutline {
+  outline: #000000 solid 2px;
+}
+.win-ui-light .win-flipview .win-navbutton {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-ui-light .win-flipview .win-navbutton:hover:active {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.win-ui-light html.win-hoverable .win-flipview .win-navbutton:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.win-ui-light .win-backbutton,
+.win-ui-light .win-back,
+.win-ui-light .win-navigation-backbutton {
+  background-color: transparent;
+  border: none;
+  color: #000000;
+}
+.win-ui-light .win-backbutton:hover,
+.win-ui-light .win-navigation-backbutton:hover .win-back {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.win-ui-light .win-backbutton:active,
+.win-ui-light .win-navigation-backbutton:active .win-back {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.win-ui-light .win-backbutton:disabled,
+.win-ui-light .win-backbutton:disabled:active,
+.win-ui-light .win-navigation-backbutton:disabled,
+.win-ui-light .win-navigation-backbutton:disabled .win-back,
+.win-ui-light .win-navigation-backbutton:disabled:active .win-back {
+  color: rgba(0, 0, 0, 0.4);
+  background-color: transparent;
+}
+.win-ui-light .win-backbutton:focus,
+.win-ui-light .win-navigation-backbutton:focus .win-back {
+  outline-color: #000000;
+}
+.win-ui-light .win-tooltip {
+  color: #000000;
+  border-color: #cccccc;
+  background-color: #e6e6e6;
+}
+.win-ui-light .win-rating .win-star.win-user.win-full,
+.win-ui-light .win-rating .win-star.win-user.win-full.win-disabled {
+  color: #0078d7;
+}
+.win-ui-light .win-rating .win-star.win-tentative.win-full {
+  color: rgba(0, 0, 0, 0.8);
+}
+.win-ui-light .win-rating .win-star.win-average.win-full,
+.win-ui-light .win-rating .win-star.win-average.win-full.win-disabled {
+  color: rgba(0, 0, 0, 0.4);
+}
+.win-ui-light .win-rating .win-star.win-empty {
+  color: rgba(0, 0, 0, 0.2);
+}
 .win-ui-light .win-toggleswitch-header {
   color: #000000;
 }
@@ -6468,6 +6541,26 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 .win-ui-light .win-toggleswitch-disabled .win-toggleswitch-value {
   color: rgba(0, 0, 0, 0.2);
 }
+.win-ui-light .win-semanticzoom-button {
+  background-color: rgba(216, 216, 216, 0.33);
+  border-color: transparent;
+}
+.win-ui-light button.win-semanticzoom-button.win-semanticzoom-button:active,
+.win-ui-light button.win-semanticzoom-button.win-semanticzoom-button:hover:active {
+  background-color: #000000;
+}
+.win-ui-light .win-pivot .win-pivot-navbutton {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-ui-light .win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
+  color: rgba(0, 0, 0, 0.8);
+}
+.win-ui-light .win-pivot button.win-pivot-header,
+.win-ui-light .win-pivot button.win-pivot-header:focus,
+.win-ui-light .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
+  color: #000000;
+}
 .win-ui-light button.win-hub-section-header-tabstop,
 .win-ui-light button.win-hub-section-header-tabstop:hover:active {
   color: #000000;
@@ -6483,87 +6576,6 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 }
 .win-ui-light button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-keyboard-active {
   color: rgba(0, 0, 0, 0.4);
-}
-.win-ui-light .win-backbutton,
-.win-ui-light .win-back,
-.win-ui-light .win-navigation-backbutton {
-  background-color: transparent;
-  border: none;
-  color: #000000;
-}
-.win-ui-light .win-backbutton:hover,
-.win-ui-light .win-navigation-backbutton:hover .win-back {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.win-ui-light .win-backbutton:active,
-.win-ui-light .win-navigation-backbutton:active .win-back {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-.win-ui-light .win-backbutton:disabled,
-.win-ui-light .win-backbutton:disabled:active,
-.win-ui-light .win-navigation-backbutton:disabled,
-.win-ui-light .win-navigation-backbutton:disabled .win-back,
-.win-ui-light .win-navigation-backbutton:disabled:active .win-back {
-  color: rgba(0, 0, 0, 0.4);
-  background-color: transparent;
-}
-.win-ui-light .win-backbutton:focus,
-.win-ui-light .win-navigation-backbutton:focus .win-back {
-  outline-color: #000000;
-}
-.win-ui-light .win-rating .win-star.win-user.win-full,
-.win-ui-light .win-rating .win-star.win-user.win-full.win-disabled {
-  color: #0078d7;
-}
-.win-ui-light .win-rating .win-star.win-tentative.win-full {
-  color: rgba(0, 0, 0, 0.8);
-}
-.win-ui-light .win-rating .win-star.win-average.win-full,
-.win-ui-light .win-rating .win-star.win-average.win-full.win-disabled {
-  color: rgba(0, 0, 0, 0.4);
-}
-.win-ui-light .win-rating .win-star.win-empty {
-  color: rgba(0, 0, 0, 0.2);
-}
-.win-ui-light .win-listview .win-itembox,
-.win-ui-light .win-itemcontainer .win-itembox {
-  background-color: #ffffff;
-}
-.win-ui-light .win-listview .win-container.win-backdrop {
-  background-color: rgba(155, 155, 155, 0.23);
-}
-.win-ui-light .win-selectionhint {
-  color: #4617b4;
-}
-.win-ui-light .win-listview .win-groupheader {
-  outline-color: #000000;
-}
-.win-ui-light .win-listview .win-focusedoutline,
-.win-ui-light .win-itemcontainer .win-focusedoutline {
-  outline: #000000 solid 2px;
-}
-.win-ui-light .win-flipview .win-navbutton {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: rgba(255, 255, 255, 0.8);
-}
-.win-ui-light .win-flipview .win-navbutton:hover:active {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-.win-ui-light html.win-hoverable .win-flipview .win-navbutton:hover {
-  background-color: rgba(0, 0, 0, 0.6);
-}
-.win-ui-light .win-tooltip {
-  color: #000000;
-  border-color: #cccccc;
-  background-color: #e6e6e6;
-}
-.win-ui-light .win-semanticzoom-button {
-  background-color: rgba(216, 216, 216, 0.33);
-  border-color: transparent;
-}
-.win-ui-light button.win-semanticzoom-button.win-semanticzoom-button:active,
-.win-ui-light button.win-semanticzoom-button.win-semanticzoom-button:hover:active {
-  background-color: #000000;
 }
 .win-ui-light .win-overlay {
   outline: none;
@@ -6732,6 +6744,36 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   background-color: transparent;
   color: rgba(0, 0, 0, 0.4);
 }
+.win-ui-light.win-toolbar,
+.win-ui-light .win-toolbar {
+  background-color: #e6e6e6;
+}
+.win-ui-light.win-toolbar button.win-toolbar-overflowbutton,
+.win-ui-light .win-toolbar button.win-toolbar-overflowbutton {
+  background-color: transparent;
+  border-color: transparent;
+}
+.win-ui-light.win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active,
+.win-ui-light .win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active {
+  background-color: transparent;
+}
+.win-ui-light.win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis,
+.win-ui-light .win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis {
+  color: #000000;
+}
+.win-ui-light.win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus,
+.win-ui-light .win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus {
+  border-color: #000000;
+}
+.win-ui-light.win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active,
+.win-ui-light .win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active {
+  background-color: #8a8a8a;
+}
+.win-ui-light.win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active,
+.win-ui-light .win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active {
+  color: #000000;
+  background-color: #8a8a8a;
+}
 .win-ui-light .win-autosuggestbox-flyout-highlighttext {
   color: #4617b4;
 }
@@ -6801,18 +6843,6 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   background-color: #000000;
   color: #ffffff;
 }
-.win-ui-light .win-pivot .win-pivot-navbutton {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: rgba(255, 255, 255, 0.8);
-}
-.win-ui-light .win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
-  color: rgba(0, 0, 0, 0.8);
-}
-.win-ui-light .win-pivot button.win-pivot-header,
-.win-ui-light .win-pivot button.win-pivot-header:focus,
-.win-ui-light .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
-  color: #000000;
-}
 .win-ui-light .win-contentdialog-dialog {
   background-color: #e6e6e6;
   outline-color: #0078d7;
@@ -6827,53 +6857,11 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
   background-color: #ffffff;
   opacity: 0.6;
 }
-.win-ui-light.win-toolbar,
-.win-ui-light .win-toolbar {
-  background-color: #e6e6e6;
-}
-.win-ui-light.win-toolbar button.win-toolbar-overflowbutton,
-.win-ui-light .win-toolbar button.win-toolbar-overflowbutton {
-  background-color: transparent;
-  border-color: transparent;
-}
-.win-ui-light.win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active,
-.win-ui-light .win-toolbar button.win-toolbar-overflowbutton:enabled:-ms-keyboard-active {
-  background-color: transparent;
-}
-.win-ui-light.win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis,
-.win-ui-light .win-toolbar button.win-toolbar-overflowbutton:enabled .win-toolbar-ellipsis {
-  color: #000000;
-}
-.win-ui-light.win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus,
-.win-ui-light .win-toolbar button.win-toolbar-overflowbutton.win-keyboard:focus {
-  border-color: #000000;
-}
-.win-ui-light.win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active,
-.win-ui-light .win-toolbar button.win-toolbar-overflowbutton.win-toolbar-overflowbutton:hover:active {
-  background-color: #8a8a8a;
-}
-.win-ui-light.win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active,
-.win-ui-light .win-toolbar .win-toolbar-overflowarea button:enabled.win-command:hover:active {
-  color: #000000;
-  background-color: #8a8a8a;
-}
 .win-ui-light .win-splitview-pane {
   background-color: #f2f2f2;
 }
 html.win-hoverable .win-ui-light {
   /* Appbar control colors */
-}
-html.win-hoverable .win-ui-light .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-track {
-  border-color: #000000;
-}
-html.win-hoverable .win-ui-light .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
-  background-color: #000000;
-}
-html.win-hoverable .win-ui-light button.win-hub-section-header-tabstop:hover {
-  color: #000000;
-}
-html.win-hoverable .win-ui-light button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover {
-  color: rgba(0, 0, 0, 0.8);
 }
 html.win-hoverable .win-ui-light .win-listview .win-container:hover,
 html.win-hoverable .win-ui-light .win-itemcontainer.win-container:hover {
@@ -6888,8 +6876,26 @@ html.win-hoverable .win-ui-light .win-listview.win-selectionstylefilled .win-con
 html.win-hoverable .win-ui-light .win-itemcontainer.win-selectionstylefilled.win-container:hover .win-itembox {
   background-color: rgba(0, 0, 0, 0.3);
 }
+html.win-hoverable .win-ui-light .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-track {
+  border-color: #000000;
+}
+html.win-hoverable .win-ui-light .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
+  background-color: #000000;
+}
 html.win-hoverable .win-ui-light button:hover.win-semanticzoom-button {
   background-color: #d8d8d8;
+}
+html.win-hoverable .win-ui-light .win-pivot .win-pivot-navbutton:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+html.win-hoverable .win-ui-light .win-pivot button.win-pivot-header:hover {
+  color: #000000;
+}
+html.win-hoverable .win-ui-light button.win-hub-section-header-tabstop:hover {
+  color: #000000;
+}
+html.win-hoverable .win-ui-light button.win-hub-section-header-tabstop.win-hub-section-header-interactive:hover {
+  color: rgba(0, 0, 0, 0.8);
 }
 html.win-hoverable .win-ui-light.win-appbar button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-ui-light .win-appbar button.win-appbar-invokebutton:enabled:hover,
@@ -6941,6 +6947,16 @@ html.win-hoverable .win-ui-light button:enabled[aria-checked=true].win-command:h
 html.win-hoverable .win-ui-light button:enabled[aria-checked=true].win-command:hover:active:after {
   opacity: 1;
 }
+html.win-hoverable .win-ui-light.win-toolbar button.win-toolbar-overflowbutton:hover,
+html.win-hoverable .win-ui-light .win-toolbar button.win-toolbar-overflowbutton:hover,
+html.win-hoverable .win-ui-light.win-toolbar .win-toolbar-overflowarea button.win-command:hover,
+html.win-hoverable .win-ui-light .win-toolbar .win-toolbar-overflowarea button.win-command:hover {
+  background-color: #b8b8b8;
+}
+html.win-hoverable .win-ui-light.win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis,
+html.win-hoverable .win-ui-light .win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis {
+  color: #000000;
+}
 html.win-hoverable .win-ui-light .win-autosuggestbox-suggestion-result:hover,
 html.win-hoverable .win-ui-light .win-autosuggestbox-suggestion-query:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -6970,22 +6986,6 @@ html.win-hoverable .win-ui-light .win-navbarcommand-button.win-pressed:hover,
 html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-pressed:hover {
   background-color: #000000;
   color: #ffffff;
-}
-html.win-hoverable .win-ui-light .win-pivot .win-pivot-navbutton:hover {
-  color: rgba(0, 0, 0, 0.6);
-}
-html.win-hoverable .win-ui-light .win-pivot button.win-pivot-header:hover {
-  color: #000000;
-}
-html.win-hoverable .win-ui-light.win-toolbar button.win-toolbar-overflowbutton:hover,
-html.win-hoverable .win-ui-light .win-toolbar button.win-toolbar-overflowbutton:hover,
-html.win-hoverable .win-ui-light.win-toolbar .win-toolbar-overflowarea button.win-command:hover,
-html.win-hoverable .win-ui-light .win-toolbar .win-toolbar-overflowarea button.win-command:hover {
-  background-color: #b8b8b8;
-}
-html.win-hoverable .win-ui-light.win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis,
-html.win-hoverable .win-ui-light .win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis {
-  color: #000000;
 }
 @media (-ms-high-contrast) {
   .win-overlay {
