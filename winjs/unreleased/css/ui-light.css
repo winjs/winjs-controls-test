@@ -1724,11 +1724,11 @@ button.win-navigation-backbutton:enabled:hover:active {
   -ms-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
-  height: 28px;
-  width: 28px;
-  padding: 0 6px;
+  height: 24px;
+  width: 24px;
+  padding: 9px 10px 11px 10px;
   font-family: "Segoe UI Symbol", "Symbols";
-  font-size: 28px;
+  font-size: 24px;
   overflow: hidden;
   text-indent: 0;
   line-height: 1;
@@ -1739,10 +1739,10 @@ button.win-navigation-backbutton:enabled:hover:active {
   touch-action: none;
 }
 .win-rating.win-small .win-star {
-  width: 14px;
-  height: 14px;
-  font-size: 14px;
-  padding: 0 3px;
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
+  padding: 3px 4px 5px 4px;
 }
 .win-rating .win-star:before {
   content: "\E082";
@@ -2838,12 +2838,12 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
   left: 50%;
   top: 100%;
   margin-left: -35px;
-  margin-top: -39px;
+  margin-top: -36px;
 }
 .win-flipview .win-navbutton {
   border: none;
-  width: 70px;
-  height: 44px;
+  width: 20px;
+  height: 36px;
   z-index: 1;
   position: absolute;
   font-family: "Segoe UI Symbol", "Symbols";
@@ -2864,18 +2864,6 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-}
-.win-flipview .win-navbutton {
-  background-color: rgba(213, 213, 213, 0.35);
-  color: rgba(0, 0, 0, 0.6);
-}
-.win-flipview .win-navbutton.win-navbutton:hover:active {
-  background-color: rgba(41, 41, 41, 0.74);
-  color: #ffffff;
-}
-html.win-hoverable .win-flipview .win-navbutton:hover {
-  background-color: rgba(215, 215, 215, 0.94);
-  color: #000000;
 }
 @media (-ms-high-contrast) {
   .win-flipview .win-navbottom {
@@ -5634,17 +5622,17 @@ button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-key
 }
 .win-rating .win-star.win-user.win-full,
 .win-rating .win-star.win-user.win-full.win-disabled {
-  color: #4617b4;
+  color: #0078d7;
 }
 .win-rating .win-star.win-tentative.win-full {
-  color: #7241e4;
+  color: rgba(0, 0, 0, 0.8);
 }
 .win-rating .win-star.win-average.win-full,
 .win-rating .win-star.win-average.win-full.win-disabled {
-  color: #000000;
+  color: rgba(0, 0, 0, 0.4);
 }
 .win-rating .win-star.win-empty {
-  color: rgba(0, 0, 0, 0.35);
+  color: rgba(0, 0, 0, 0.2);
 }
 .win-listview .win-itembox,
 .win-itemcontainer .win-itembox {
@@ -5662,6 +5650,16 @@ button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-key
 .win-listview .win-focusedoutline,
 .win-itemcontainer .win-focusedoutline {
   outline: #000000 solid 2px;
+}
+.win-flipview .win-navbutton {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-flipview .win-navbutton:hover:active {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+html.win-hoverable .win-flipview .win-navbutton:hover {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 .win-semanticzoom-button {
   background-color: rgba(216, 216, 216, 0.33);
@@ -6515,17 +6513,17 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 }
 .win-ui-dark .win-rating .win-star.win-user.win-full,
 .win-ui-dark .win-rating .win-star.win-user.win-full.win-disabled {
-  color: #5b2ec5;
+  color: #0078d7;
 }
 .win-ui-dark .win-rating .win-star.win-tentative.win-full {
-  color: #8152ef;
+  color: rgba(255, 255, 255, 0.8);
 }
 .win-ui-dark .win-rating .win-star.win-average.win-full,
 .win-ui-dark .win-rating .win-star.win-average.win-full.win-disabled {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.4);
 }
 .win-ui-dark .win-rating .win-star.win-empty {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.2);
 }
 .win-ui-dark .win-listview .win-itembox,
 .win-ui-dark .win-itemcontainer .win-itembox {
@@ -6543,6 +6541,16 @@ html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-too
 .win-ui-dark .win-listview .win-focusedoutline,
 .win-ui-dark .win-itemcontainer .win-focusedoutline {
   outline: #ffffff solid 2px;
+}
+.win-ui-dark .win-flipview .win-navbutton {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.8);
+}
+.win-ui-dark .win-flipview .win-navbutton:hover:active {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.win-ui-dark html.win-hoverable .win-flipview .win-navbutton:hover {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 .win-ui-dark .win-semanticzoom-button {
   background-color: rgba(216, 216, 216, 0.33);
