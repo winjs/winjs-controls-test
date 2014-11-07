@@ -2124,7 +2124,7 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
 .win-flipview .win-navright {
   left: 100%;
   top: 50%;
-  margin-left: -69px;
+  margin-left: -20px;
   margin-top: -19px;
 }
 .win-flipview .win-navtop {
