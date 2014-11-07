@@ -5354,8 +5354,10 @@ option:checked {
   color: #ffffff;
   background-color: #0078d7;
 }
-option:hover {
+option:hover,
+option:active {
   background-color: rgba(0, 0, 0, 0.2);
+  color: #000000;
 }
 select[multiple] {
   border: none;
@@ -6250,8 +6252,10 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   color: #ffffff;
   background-color: #0078d7;
 }
-.win-ui-dark option:hover {
+.win-ui-dark option:hover,
+.win-ui-dark option:active {
   background-color: rgba(0, 0, 0, 0.2);
+  color: #000000;
 }
 .win-ui-dark select[multiple] {
   border: none;
