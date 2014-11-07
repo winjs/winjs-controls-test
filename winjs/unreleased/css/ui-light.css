@@ -6294,13 +6294,13 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   background: #767676;
 }
 .win-ui-dark input[type=range]:disabled::-ms-thumb {
-  background: #767676;
+  background: #333333;
 }
 .win-ui-dark input[type=range]:disabled::-webkit-slider-thumb {
-  background: #767676;
+  background: #333333;
 }
 .win-ui-dark input[type=range]:disabled::-moz-range-thumb {
-  background: #767676;
+  background: #333333;
 }
 .win-ui-dark input[type=range]::-ms-fill-lower {
   background: #0078d7;

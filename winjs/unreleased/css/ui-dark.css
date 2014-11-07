@@ -5398,13 +5398,13 @@ input[type=range]:active::-moz-range-thumb {
   background: #767676;
 }
 input[type=range]:disabled::-ms-thumb {
-  background: #767676;
+  background: #333333;
 }
 input[type=range]:disabled::-webkit-slider-thumb {
-  background: #767676;
+  background: #333333;
 }
 input[type=range]:disabled::-moz-range-thumb {
-  background: #767676;
+  background: #333333;
 }
 input[type=range]::-ms-fill-lower {
   background: #0078d7;
