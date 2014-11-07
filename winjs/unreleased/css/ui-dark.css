@@ -400,7 +400,7 @@
   letter-spacing: 0px;
 }
 .win-type-x-large {
-  font-size: 34;
+  font-size: 34px;
   font-weight: 200;
   line-height: 1.176;
 }
@@ -1202,7 +1202,7 @@ h1 {
   letter-spacing: 0px;
 }
 h2 {
-  font-size: 34;
+  font-size: 34px;
   font-weight: 200;
   line-height: 1.176;
 }
@@ -1354,7 +1354,7 @@ html.win-hoverable .win-container.win-selected:hover .win-selectionborder {
   outline-width: 0.01px;
   outline-style: none;
   float: left;
-  font-size: 34;
+  font-size: 34px;
   font-weight: 200;
   line-height: 1.176;
 }
