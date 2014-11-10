@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+</head>
+
+<body>
+  <script>
+    function scriptLoaded()
+    {
+      var showButton = document.querySelector('.showButton');
+      showButton.addEventListener('click', function()
+      {
+          var contentDialog = document.querySelector('.win-contentdialog').winControl;
+          contentDialog.show();
+      });
+    }
+  </script>
+
+  <style>
+  </style>
+
+  <button class="showButton">Show</button>
+  <div data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+           title: 'Main instruction',
+           primaryCommandText: 'button1',
+           secondaryCommandText: 'button2'
+      }">
+      Use the content area to present additional information helpful to understanding or using the dialog.
+      You can use this area to provide more detail or define terminology. Don't repeat the main instruction
+      with slightly different wording.
+  </div>
+
+</body>
+
+</html>
