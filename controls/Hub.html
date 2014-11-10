@@ -22,9 +22,42 @@
     <div data-win-control='WinJS.UI.HubSection' data-win-options='{header: "Section 1", isHeaderStatic: true}'>
       <img src='http://lorempixel.com/800/600/nature'>
     </div>
-    <div data-win-control='WinJS.UI.HubSection' data-win-options='{header: "Section 2", isHeaderStatic: true}'>
-      <div>Hello World</div>
-      <div>Hello World</div>
+    <div data-win-control='WinJS.UI.HubSection' data-win-options='{header: "Section 2", isHeaderStatic: false}'>
+      <div>
+        <input type='checkbox' id='checkbox1' />
+        <label for='checkbox1'>checkbox rest state</label>
+        <br />
+        <input type='checkbox' id='checkbox2' checked />
+        <label for='checkbox2'>checkbox checked state</label>
+        <br />
+        <input type='checkbox' id='checkbox3' />
+        <label for='checkbox3'>checkbox indeterminate state</label>
+        <br />
+
+        <input type='checkbox' disabled='true' id='checkbox4' />
+        <label for='checkbox4'>checkbox disabled</label>
+        <br />
+        <input type='checkbox' disabled='true' id='checkbox5' checked />
+        <label for='checkbox5'>checkbox disabled checked</label>
+        <br />
+        <input type='checkbox' disabled='true' id='checkbox6' />
+        <label for='checkbox6'>checkbox indeterminate state</label>
+        <br />
+      </div>
+      <div>
+        <input type='radio' name='radiogroup1' id='radio1' />
+        <label for='radio1'>radio rest state</label>
+        <br />
+        <input type='radio' name='radiogroup1' id='radio2' checked />
+        <label for='radio2'>radio checked state</label>
+        <br />
+
+        <input type='radio' name='radiogroup2' disabled='true' id='radio4' />
+        <label for='radio4'>radio disabled</label>
+        <br />
+        <input type='radio' name='radiogroup2' disabled='true' id='radio5' checked />
+        <label for='radio5'>radio disabled checked</label>
+      </div>
     </div>
   </div>
 
