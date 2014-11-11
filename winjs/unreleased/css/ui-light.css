@@ -5091,7 +5091,6 @@ Hide clear button in search box control.
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
-  overflow: hidden;
   font-size: 20px;
   font-weight: 400;
   line-height: 1.2;
