@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.7 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.11 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.7 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.11 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -78597,8 +78597,8 @@ define('WinJS',[
 
         require(['WinJS/Core/_WinJS', 'WinJS'], function (_WinJS) {
             global.WinJS = _WinJS;
-            return _WinJS;
         });
+        return global.WinJS;
     }));
 }(this));
 
