@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+</head>
+<body>
+
+  <script>
+    function initialize()
+    {
+      var array = [
+        { type: 'item', title: 'Image 1', picture: 'http://lorempixel.com/300/200/nature/1' },
+        { type: 'item', title: 'Image 2', picture: 'http://lorempixel.com/300/200/nature/2' },
+        { type: 'item', title: 'Image 3', picture: 'http://lorempixel.com/300/200/nature/3' }
+      ];
+      var bindingList = new WinJS.Binding.List(array);
+
+      WinJS.Namespace.define('DefaultData', {
+        bindingList: bindingList,
+        array: array
+      });
+
+      WinJS.UI.processAll();
+    }
+  </script>
+
+  <style>
+    body
+    {
+      overflow-y: auto;
+    }
+
+    .row > div
+    {
+      background-color: rgba(255, 100, 100, 0.1);
+      border: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .win-pivot
+    {
+      height: 500px;
+    }
+  </style>
+
+  <h2>Intrinsics</h2>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-sm-6'>
+        <button>Push Button</button>
+        <button>Another Button</button>
+      </div>
+
+      <div class='col-sm-6'>
+        <input type='text' placeholder='Sample Text'></input>
+      </div>
+    </div>
+  </div>
+
+  <h2>Pivot</h2>
+  <ul>
+    <li>Either win-pivot or its container must be given an absolute height</li>
+  </ul>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-sm-4'>
+        <div data-win-control='WinJS.UI.Pivot'>
+          <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 1"}'>
+            <button>Push button</button>
+            <input type='button' value='Push button'/>
+            <input type='submit' value='Submit button'/>
+            <input type='reset' value='Reset button'/>
+          </div>
+
+          <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 2"}'>
+            <div>
+              <input type='checkbox' id='checkbox1' />
+              <label for='checkbox1'>checkbox rest state</label>
+              <br />
+              <input type='checkbox' id='checkbox2' checked />
+              <label for='checkbox2'>checkbox checked state</label>
+              <br />
+              <input type='checkbox' id='checkbox3' />
+              <label for='checkbox3'>checkbox indeterminate state</label>
+              <br />
+
+              <input type='checkbox' disabled='true' id='checkbox4' />
+              <label for='checkbox4'>checkbox disabled</label>
+              <br />
+              <input type='checkbox' disabled='true' id='checkbox5' checked />
+              <label for='checkbox5'>checkbox disabled checked</label>
+              <br />
+              <input type='checkbox' disabled='true' id='checkbox6' />
+              <label for='checkbox6'>checkbox indeterminate state</label>
+              <br />
+            </div>
+            <div>
+              <input type='radio' name='radiogroup1' id='radio1' />
+              <label for='radio1'>radio rest state</label>
+              <br />
+              <input type='radio' name='radiogroup1' id='radio2' checked />
+              <label for='radio2'>radio checked state</label>
+              <br />
+
+              <input type='radio' name='radiogroup2' disabled='true' id='radio4' />
+              <label for='radio4'>radio disabled</label>
+              <br />
+              <input type='radio' name='radiogroup2' disabled='true' id='radio5' checked />
+              <label for='radio5'>radio disabled checked</label>
+            </div>
+          </div>
+
+          <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 3"}'>
+            <h3>text box</h3>
+            <input type='text' placeholder='Sample text' />
+            <h3>password box</h3>
+            <input type='password' />
+
+            <h3>tet area</h3>
+            <textarea></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class='col-sm-8'>
+        <div data-win-control='WinJS.UI.Pivot'>
+          <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 1"}'>
+            <button>Push button</button>
+            <input type='button' value='Push button'/>
+            <input type='submit' value='Submit button'/>
+            <input type='reset' value='Reset button'/>
+          </div>
+
+          <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 2"}'>
+            <div>
+              <input type='checkbox' id='checkbox1' />
+              <label for='checkbox1'>checkbox rest state</label>
+              <br />
+              <input type='checkbox' id='checkbox2' checked />
+              <label for='checkbox2'>checkbox checked state</label>
+              <br />
+              <input type='checkbox' id='checkbox3' />
+              <label for='checkbox3'>checkbox indeterminate state</label>
+              <br />
+
+              <input type='checkbox' disabled='true' id='checkbox4' />
+              <label for='checkbox4'>checkbox disabled</label>
+              <br />
+              <input type='checkbox' disabled='true' id='checkbox5' checked />
+              <label for='checkbox5'>checkbox disabled checked</label>
+              <br />
+              <input type='checkbox' disabled='true' id='checkbox6' />
+              <label for='checkbox6'>checkbox indeterminate state</label>
+              <br />
+            </div>
+            <div>
+              <input type='radio' name='radiogroup1' id='radio1' />
+              <label for='radio1'>radio rest state</label>
+              <br />
+              <input type='radio' name='radiogroup1' id='radio2' checked />
+              <label for='radio2'>radio checked state</label>
+              <br />
+
+              <input type='radio' name='radiogroup2' disabled='true' id='radio4' />
+              <label for='radio4'>radio disabled</label>
+              <br />
+              <input type='radio' name='radiogroup2' disabled='true' id='radio5' checked />
+              <label for='radio5'>radio disabled checked</label>
+            </div>
+          </div>
+
+          <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 3"}'>
+            <h3>text box</h3>
+            <input type='text' placeholder='Sample text' />
+            <h3>password box</h3>
+            <input type='password' />
+
+            <h3>tet area</h3>
+            <textarea></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Flip View</h2>
+  <div class='simple_ItemTemplate' data-win-control='WinJS.Binding.Template' style='display: none'>
+    <div class='itemTemplate'>
+      <img class='image' data-win-bind='src: picture; alt: title' />
+    </div>
+  </div>
+
+  <div class='container'>
+    <div class='row'>
+      <div class='col-sm-8'>
+        <div class='flipView' data-win-control='WinJS.UI.FlipView'
+        data-win-options='{itemDataSource: DefaultData.bindingList.dataSource,itemTemplate: select(".simple_ItemTemplate")}'></div>
+      </div>
+
+      <div class='col-sm-4'>
+        <div class='flipView' data-win-control='WinJS.UI.FlipView'
+        data-win-options='{itemDataSource: DefaultData.bindingList.dataSource,itemTemplate: select(".simple_ItemTemplate")}'></div>
+      </div>
+    </div>
+  </div>
+
+
+
+</body>
+</html>
