@@ -201,8 +201,9 @@ window.addEventListener('load', function()
   //
   // Default version and theme
   //
+  var initialUrl = window.location.hash || '#AppBar';
   var parts = selectControlLeft.value.split(' ');
-  var src = document.querySelector('.control-link').getAttribute('data-link');
+  var src = document.querySelector('a[href="' + initialUrl + '"]').getAttribute('data-link');
   update(src, parts[0], parts[1]);
 });
 
