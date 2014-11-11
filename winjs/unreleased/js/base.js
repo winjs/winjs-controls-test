@@ -6375,23 +6375,6 @@ define('WinJS/Utilities/_ElementUtilities',[
             };
         },
 
-        _supportsTouchActionCrossSlide: {
-            get: function () {
-                if (this._supportsTouchActionCrossSlideValue === undefined) {
-                    this._supportsTouchActionCrossSlideValue = false;
-                    var touchActionStyle = _BaseUtils._browserStyleEquivalents["touch-action"];
-                    if (touchActionStyle) {
-                        var div = _Global.document.createElement("div");
-                        div.style.touchAction = "cross-slide-x";
-                        _Global.document.body.appendChild(div);
-                        this._supportsTouchActionCrossSlideValue = _Global.getComputedStyle(div).touchAction === "cross-slide-x";
-                        _Global.document.body.removeChild(div);
-                    }
-                }
-                return this._supportsTouchActionCrossSlideValue;
-            }
-        },
-
         _MSGestureEvent: _MSGestureEvent,
         _MSManipulationEvent: _MSManipulationEvent,
 

@@ -7487,7 +7487,6 @@ define('WinJS/Controls/ItemContainer/_Constants',[
 
     var members = {};
     members._listViewClass = "win-listview";
-    members._listViewSupportsCrossSlideClass = "win-listview-supports-cross-slide";
     members._viewportClass = "win-viewport";
     members._rtlListViewClass = "win-rtl";
     members._horizontalClass = "win-horizontal";
@@ -7508,8 +7507,6 @@ define('WinJS/Controls/ItemContainer/_Constants',[
     members._footprintClass = "win-footprint";
     members._groupsClass = "win-groups";
     members._selectedClass = "win-selected";
-    members._swipeableClass = "win-swipeable";
-    members._swipeClass = "win-swipe";
     members._selectionBorderClass = "win-selectionborder";
     members._selectionBackgroundClass = "win-selectionbackground";
     members._selectionCheckmarkClass = "win-selectioncheckmark";
@@ -7519,7 +7516,6 @@ define('WinJS/Controls/ItemContainer/_Constants',[
     members._headerContainerClass = "win-groupheadercontainer";
     members._groupLeaderClass = "win-groupleader";
     members._progressClass = "win-progress";
-    members._selectionHintClass = "win-selectionhint";
     members._revealedClass = "win-revealed";
     members._itemFocusClass = "win-focused";
     members._itemFocusOutlineClass = "win-focusedoutline";
@@ -7537,12 +7533,14 @@ define('WinJS/Controls/ItemContainer/_Constants',[
     members._laidOutClass = "win-laidout";
     members._nonDraggableClass = "win-nondraggable";
     members._nonSelectableClass = "win-nonselectable";
-    members._nonSwipeableClass = "win-nonswipeable";
     members._dragOverClass = "win-dragover";
     members._dragSourceClass = "win-dragsource";
     members._clipClass = "win-clip";
     members._selectionModeClass = "win-selectionmode";
     members._noCSSGrid = "win-nocssgrid";
+    members._hidingSelectionMode = "win-hidingselectionmode";
+    members._hidingSelectionModeAnimationName = "WinJS-selectionMode-shiftLeft";
+    members._hidingSelectionModeAnimationTimeout = 250;
 
     members._INVALID_INDEX = -1;
     members._UNINITIALIZED = -1;
@@ -7562,18 +7560,6 @@ define('WinJS/Controls/ItemContainer/_Constants',[
 
     members._DEFERRED_ACTION = 250;
     members._DEFERRED_SCROLL_END = 250;
-
-    // For horizontal layouts
-    members._VERTICAL_SWIPE_SELECTION_THRESHOLD = 39;
-    members._VERTICAL_SWIPE_SPEED_BUMP_START = 0;
-    members._VERTICAL_SWIPE_SPEED_BUMP_END = 127;
-    members._VERTICAL_SWIPE_SELF_REVEAL_GESTURE = 15;
-
-    // For vertical layouts
-    members._HORIZONTAL_SWIPE_SELECTION_THRESHOLD = 27;
-    members._HORIZONTAL_SWIPE_SPEED_BUMP_START = 0;
-    members._HORIZONTAL_SWIPE_SPEED_BUMP_END = 150;
-    members._HORIZONTAL_SWIPE_SELF_REVEAL_GESTURE = 23;
 
     members._SELECTION_CHECKMARK = "\uE081";
 
@@ -7619,8 +7605,6 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
     var transformNames = _BaseUtils._browserStyleEquivalents["transform"];
     var MAX_TILT_ROTATION = 0.15;
     var MAX_TILT_SHRINK = 0.025;
-    var uniqueID = _ElementUtilities._uniqueID;
-    var MSManipulationEventStates = _ElementUtilities._MSManipulationEvent;
 
     function unitVector3d(v) {
         var mag = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
@@ -7702,10 +7686,6 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
         _ItemEventsHandler: _Base.Namespace._lazy(function () {
             var PT_TOUCH = _ElementUtilities._MSPointerEvent.MSPOINTER_TYPE_TOUCH || "touch";
 
-            function getElementWithClass(parent, className) {
-                return parent.querySelector("." + className);
-            }
-
             function createNodeWithClass(className, skipAriaHidden) {
                 var element = _Global.document.createElement("div");
                 element.className = className;
@@ -7720,66 +7700,14 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
 
                 this._work = [];
                 this._animations = {};
-                this._selectionHintTracker = {};
-                this._swipeClassTracker = {};
-
-                // The gesture recognizer is used for SRG, which is not supported on Phone
-                if (!_BaseUtils.isPhone && this._selectionAllowed()) {
-                    var that = this;
-                    _Global.setTimeout(function () {
-                        if (!that._gestureRecognizer && !site.isZombie()) {
-                            that._gestureRecognizer = that._createGestureRecognizer();
-                        }
-                    }, 500);
-                }
             }, {
                 dispose: function () {
                     if (this._disposed) {
                         return;
                     }
                     this._disposed = true;
-                    this._gestureRecognizer = null;
                     _ElementUtilities._removeEventListener(_Global, "pointerup", this._resetPointerDownStateBound);
                     _ElementUtilities._removeEventListener(_Global, "pointercancel", this._resetPointerDownStateBound);
-                },
-
-                onMSManipulationStateChanged: function ItemEventsHandler_onMSManipulationStateChanged(eventObject) {
-                    var state = eventObject.currentState;
-                    // We're not necessarily guaranteed to get onMSPointerDown before we get a selection event from cross slide,
-                    // so if we hit a select state with no pressed item box recorded, we need to set up the pressed info before
-                    // processing the selection.
-                    if (state === MSManipulationEventStates.MS_MANIPULATION_STATE_PRESELECT && !this._site.pressedItemBox) {
-                        var currentPressedIndex = this._site.indexForItemElement(eventObject.target);
-
-                        this._site.pressedEntity = { type: _UI.ObjectType.item, index: currentPressedIndex };
-                        if (this._site.pressedEntity.index !== _Constants._INVALID_INDEX) {
-                            this._site.pressedItemBox = this._site.itemBoxAtIndex(this._site.pressedEntity.index);
-                            this._site.pressedContainer = this._site.containerAtIndex(this._site.pressedEntity.index);
-                            this._site.animatedElement = _BaseUtils.isPhone ? this._site.pressedItemBox : this._site.pressedContainer;
-                            this._site.pressedHeader = null;
-                            var allowed = this._site.verifySelectionAllowed(this._site.pressedEntity);
-                            this._canSelect = allowed.canSelect;
-                            this._canTapSelect = allowed.canTapSelect;
-                            this._swipeBehaviorSelectionChanged = false;
-                            this._selectionHint = null;
-                            if (this._canSelect) {
-                                this._addSelectionHint();
-                            }
-                        }
-                    }
-                    if (this._canSelect && (state === MSManipulationEventStates.MS_MANIPULATION_STATE_PRESELECT ||
-                        state === MSManipulationEventStates.MS_MANIPULATION_STATE_COMMITTED ||
-                        state === MSManipulationEventStates.MS_MANIPULATION_STATE_CANCELLED ||
-                        state === MSManipulationEventStates.MS_MANIPULATION_STATE_SELECTING ||
-                        state === MSManipulationEventStates.MS_MANIPULATION_STATE_DRAGGING)) {
-                        this._dispatchSwipeBehavior(state);
-                    }
-
-                    if (state === MSManipulationEventStates.MS_MANIPULATION_STATE_COMMITTED ||
-                        state === MSManipulationEventStates.MS_MANIPULATION_STATE_CANCELLED ||
-                        state === MSManipulationEventStates.MS_MANIPULATION_STATE_STOPPED) {
-                        this.resetPointerDownState();
-                    }
                 },
 
                 onPointerDown: function ItemEventsHandler_onPointerDown(eventObject) {
@@ -7809,14 +7737,12 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                     this._PointerEnterBound = this._PointerEnterBound || this.onPointerEnter.bind(this);
                     this._PointerLeaveBound = this._PointerLeaveBound || this.onPointerLeave.bind(this);
 
-                    this._swipeBehaviorState = MSManipulationEventStates.MS_MANIPULATION_STATE_STOPPED;
-                    var swipeEnabled = site.swipeBehavior === _UI.SwipeBehavior.select,
-                        isInteractive = this._isInteractive(eventObject.target),
+                    var isInteractive = this._isInteractive(eventObject.target),
                         currentPressedIndex = site.indexForItemElement(eventObject.target),
                         currentPressedHeaderIndex = site.indexForHeaderElement(eventObject.target),
                         mustSetCapture = !isInteractive && currentPressedIndex !== _Constants._INVALID_INDEX;
 
-                    if ((touchInput || leftButton || (this._selectionAllowed() && swipeEnabled && rightButton)) && this._site.pressedEntity.index === _Constants._INVALID_INDEX && !isInteractive) {
+                    if ((touchInput || leftButton) && this._site.pressedEntity.index === _Constants._INVALID_INDEX && !isInteractive) {
                         if (currentPressedHeaderIndex === _Constants._INVALID_INDEX) {
                             this._site.pressedEntity = { type: _UI.ObjectType.item, index: currentPressedIndex };
                         } else {
@@ -7829,9 +7755,6 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                             var allowed = site.verifySelectionAllowed(this._site.pressedEntity);
                             this._canSelect = allowed.canSelect;
                             this._canTapSelect = allowed.canTapSelect;
-
-                            this._swipeBehaviorSelectionChanged = false;
-                            this._selectionHint = null;
 
                             if (this._site.pressedEntity.type === _UI.ObjectType.item) {
                                 this._site.pressedItemBox = site.itemBoxAtIndex(this._site.pressedEntity.index);
@@ -7867,24 +7790,8 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                                 _ElementUtilities._addEventListener(_Global, "pointercancel", this._resetPointerDownStateBound, false);
                             }
 
-                            // The gesture recognizer is used for SRG, which is not supported on Phone
-                            if (this._canSelect && !_BaseUtils.isPhone) {
-                                if (!this._gestureRecognizer) {
-                                    this._gestureRecognizer = this._createGestureRecognizer();
-                                }
-                                this._addSelectionHint();
-                            }
                             this._pointerId = eventObject.pointerId;
                             this._pointerRightButton = rightButton;
-                            this._pointerTriggeredSRG = false;
-
-                            if (this._gestureRecognizer && touchInput) {
-                                try {
-                                    this._gestureRecognizer.addPointer(this._pointerId);
-                                } catch (e) {
-                                    this._gestureRecognizer.stop();
-                                }
-                            }
                         }
                     }
 
@@ -7969,7 +7876,6 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                     var site = this._site;
                     this._skipClick = true;
                     var that = this;
-                    var swipeEnabled = this._site.swipeBehavior === _UI.SwipeBehavior.select;
                     _BaseUtils._yieldForEvents(function () {
                         that._skipClick = false;
                     });
@@ -8012,26 +7918,22 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                                         additive = (this._pointerRightButton || eventObject.ctrlKey || site.tapBehavior === _UI.TapBehavior.toggleSelect);
                                     site.selectRange(firstIndex, lastIndex, additive);
                                 }
-                            } else if (eventObject.ctrlKey || (this._selectionAllowed() && swipeEnabled && this._pointerRightButton)) {
-                                // Swipe emulation
-                                this.handleSwipeBehavior(this._site.pressedEntity.index);
+                            } else if (eventObject.ctrlKey) {
+                                this.toggleSelectionIfAllowed(this._site.pressedEntity.index);
                             }
                         }
 
-                        if ((this._site.pressedHeader || this._site.pressedContainer) && this._swipeBehaviorState !== MSManipulationEventStates.MS_MANIPULATION_STATE_COMMITTED) {
+                        if (this._site.pressedHeader || this._site.pressedContainer) {
                             var upPosition = _ElementUtilities._getCursorPos(eventObject);
                             var isTap = Math.abs(upPosition.left - this._site.pressedPosition.left) <= _Constants._TAP_END_THRESHOLD &&
                                 Math.abs(upPosition.top - this._site.pressedPosition.top) <= _Constants._TAP_END_THRESHOLD;
 
-                            this._endSelfRevealGesture();
-                            this._clearItem(this._site.pressedEntity, this._isSelected(this._site.pressedEntity.index));
-
                             // We do not care whether or not the pressed and released indices are equivalent when the user is using touch. The only time they won't be is if the user
                             // tapped the edge of an item and the pressed animation shrank the item such that the user's finger was no longer over it. In this case, the item should
                             // be considered tapped.
-                            // However, if the user is using touch then we must perform an extra check. Sometimes we receive MSPointerUp events when the user intended to pan or swipe.
-                            // This extra check ensures that these intended pans/swipes aren't treated as taps.
-                            if (!this._pointerRightButton && !this._pointerTriggeredSRG && !eventObject.ctrlKey && !eventObject.shiftKey &&
+                            // However, if the user is using touch then we must perform an extra check. Sometimes we receive MSPointerUp events when the user intended to pan.
+                            // This extra check ensures that these intended pans aren't treated as taps.
+                            if (!this._pointerRightButton && !eventObject.ctrlKey && !eventObject.shiftKey &&
                                     ((touchInput && isTap) ||
                                     (!touchInput && this._site.pressedEntity.index === releasedEntity.index && this._site.pressedEntity.type === releasedEntity.type))) {
                                 if (releasedEntity.type === _UI.ObjectType.groupHeader) {
@@ -8062,14 +7964,14 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                 },
 
                 onPointerCancel: function ItemEventsHandler_onPointerCancel(eventObject) {
-                    if (this._pointerId === eventObject.pointerId && this._swipeBehaviorState !== MSManipulationEventStates.MS_MANIPULATION_STATE_PRESELECT) {
+                    if (this._pointerId === eventObject.pointerId) {
                         _WriteProfilerMark("WinJS.UI._ItemEventsHandler:MSPointerCancel,info");
                         this.resetPointerDownState();
                     }
                 },
 
                 onLostPointerCapture: function ItemEventsHandler_onLostPointerCapture(eventObject) {
-                    if (this._pointerId === eventObject.pointerId && this._swipeBehaviorState !== MSManipulationEventStates.MS_MANIPULATION_STATE_PRESELECT) {
+                    if (this._pointerId === eventObject.pointerId) {
                         _WriteProfilerMark("WinJS.UI._ItemEventsHandler:MSLostPointerCapture,info");
                         this.resetPointerDownState();
                     }
@@ -8096,7 +7998,7 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                     this.resetPointerDownState();
                 },
 
-                handleSwipeBehavior: function ItemEventsHandler_handleSwipeBehavior(itemIndex) {
+                toggleSelectionIfAllowed: function ItemEventsHandler_toggleSelectionIfAllowed(itemIndex) {
                     if (this._selectionAllowed(itemIndex)) {
                         this._toggleItemSelection(itemIndex);
                     }
@@ -8161,7 +8063,7 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                 },
 
                 _isSelected: function ItemEventsHandler_isSelected(index) {
-                    return (!this._swipeBehaviorSelectionChanged && this._site.selection._isIncluded(index)) || (this._swipeBehaviorSelectionChanged && this.swipeBehaviorSelected);
+                    return this._site.selection._isIncluded(index);
                 },
 
                 _isInteractive: function ItemEventsHandler_isInteractive(element) {
@@ -8174,7 +8076,7 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
 
                     this._site.animatedDownPromise && this._site.animatedDownPromise.cancel();
 
-                    if (_BaseUtils.isPhone && !isHeader && _ElementUtilities.hasClass(this._site.pressedItemBox, _Constants._nonSelectableClass)) {
+                    if (!isHeader && _ElementUtilities.hasClass(this._site.pressedItemBox, _Constants._nonSelectableClass)) {
                         return;
                     }
 
@@ -8187,7 +8089,7 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                                 if (eventObject && _BaseUtils.isPhone) {
                                     var boundingElement = isHeader ? that._site.pressedHeader : that._site.pressedContainer;
                                     var transform = tiltTransform(eventObject.clientX, eventObject.clientY, boundingElement.getBoundingClientRect());
-                                    // Timeout prevents item from looking like it was pressed down during swipes and pans
+                                    // Timeout prevents item from looking like it was pressed down during pans
                                     this._site.animatedDownPromise = Promise.timeout(50).then(function () {
                                         applyDownVisual(transform);
                                     });
@@ -8273,128 +8175,6 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                     }
                 },
 
-                _endSwipeBehavior: function ItemEventsHandler_endSwipeBehavior() {
-                    if (!(this._swipeBehaviorState === MSManipulationEventStates.MS_MANIPULATION_STATE_PRESELECT ||
-                        this._swipeBehaviorState === MSManipulationEventStates.MS_MANIPULATION_STATE_SELECTING ||
-                        this._swipeBehaviorState === MSManipulationEventStates.MS_MANIPULATION_STATE_DRAGGING ||
-                        this._swipeBehaviorState === MSManipulationEventStates.MS_MANIPULATION_STATE_COMMITTED ||
-                        this._swipeBehaviorState === MSManipulationEventStates.MS_MANIPULATION_STATE_CANCELLED)) {
-                        return;
-                    }
-
-                    if (this._site.pressedEntity.type === _UI.ObjectType.groupHeader) {
-                        return;
-                    }
-
-                    this._flushUIBatches();
-                    var selectionHint = this._selectionHint;
-                    this._selectionHint = null;
-
-                    if (this._site.pressedItemBox) {
-                        var pressedIndex = this._site.pressedEntity.index,
-                            selected = this._site.selection._isIncluded(pressedIndex);
-                        if (selected) {
-                            var elementsToShowHide = _ElementUtilities._getElementsByClasses(this._site.pressedItemBox, [_Constants._selectionCheckmarkClass, _Constants._selectionCheckmarkBackgroundClass]);
-                            for (var i = 0; i < elementsToShowHide.length; i++) {
-                                elementsToShowHide[i].style.opacity = 1;
-                            }
-                        }
-                        this._clearItem(this._site.pressedEntity, selected);
-                        if (selectionHint) {
-                            this._removeSelectionHint(selectionHint);
-                        }
-                        delete this._animations[pressedIndex];
-                    }
-                },
-
-                _createGestureRecognizer: function ItemEventsHandler_createGestureRecognizer() {
-                    var rootElement = this._site.eventHandlerRoot;
-                    var recognizer = _ElementUtilities._createGestureRecognizer();
-                    recognizer.target = rootElement;
-                    var that = this;
-                    rootElement.addEventListener("MSGestureHold", function (eventObject) {
-                        if (that._site.pressedEntity.index !== -1 && eventObject.detail === _ElementUtilities._MSGestureEvent.MSGESTURE_FLAG_BEGIN) {
-                            that._startSelfRevealGesture();
-                        }
-                    });
-                    return recognizer;
-                },
-
-                _dispatchSwipeBehavior: function ItemEventsHandler_dispatchSwipeBehavior(manipulationState) {
-                    if (this._site.pressedEntity.type === _UI.ObjectType.groupHeader ||
-                        this._site.swipeBehavior !== _UI.SwipeBehavior.select) {
-                        return;
-                    }
-                    this._site.selection._pivot = _Constants._INVALID_INDEX;
-                    if (this._site.pressedItemBox) {
-                        var pressedIndex = this._site.pressedEntity.index;
-                        if (this._swipeBehaviorState !== manipulationState) {
-                            if (manipulationState === MSManipulationEventStates.MS_MANIPULATION_STATE_DRAGGING && this._canSelect) {
-                                this._animateSelectionChange(this._site.selection._isIncluded(pressedIndex));
-                                this._removeSelectionHint(this._selectionHint);
-                            } else if (manipulationState === MSManipulationEventStates.MS_MANIPULATION_STATE_PRESELECT) {
-                                _WriteProfilerMark("WinJS.UI._ItemEventsHandler:crossSlidingStarted,info");
-                                var site = this._site,
-                                    pressedElement = site.itemAtIndex(pressedIndex),
-                                    selected = site.selection._isIncluded(pressedIndex);
-
-                                if (this._selfRevealGesture) {
-                                    this._selfRevealGesture.finishAnimation();
-                                    this._selfRevealGesture = null;
-                                } else if (this._canSelect) {
-                                    this._prepareItem(this._site.pressedEntity, pressedElement, selected);
-                                }
-
-                                if (this._swipeBehaviorState !== MSManipulationEventStates.MS_MANIPULATION_STATE_SELECTING) {
-                                    if (this._site.animatedElement && _ElementUtilities.hasClass(this._site.animatedElement, _Constants._pressedClass)) {
-                                        this._site.animatedDownPromise && this._site.animatedDownPromise.cancel();
-                                        _ElementUtilities.removeClass(this._site.animatedElement, _Constants._pressedClass);
-                                        this._removeTransform(this._site.animatedElement, this._site.animatedElementScaleTransform);
-                                    }
-
-                                    this._showSelectionHintCheckmark();
-                                } else {
-                                    this._animateSelectionChange(this._site.selection._isIncluded(pressedIndex));
-                                }
-                            } else if (manipulationState === MSManipulationEventStates.MS_MANIPULATION_STATE_COMMITTED) {
-                                _WriteProfilerMark("WinJS.UI._ItemEventsHandler:crossSlidingCompleted,info");
-                                var site = this._site,
-                                    selection = site.selection,
-                                    swipeBehaviorSelectionChanged = this._swipeBehaviorSelectionChanged,
-                                    swipeBehaviorSelected = this.swipeBehaviorSelected;
-
-                                if (this._swipeBehaviorState === MSManipulationEventStates.MS_MANIPULATION_STATE_SELECTING && swipeBehaviorSelectionChanged) {
-                                    if (this._selectionAllowed() && site.swipeBehavior === _UI.SwipeBehavior.select) {
-                                        if (site.selectionMode === _UI.SelectionMode.single) {
-                                            if (swipeBehaviorSelected) {
-                                                selection.set(pressedIndex);
-                                            } else if (selection._isIncluded(pressedIndex)) {
-                                                selection.remove(pressedIndex);
-                                            }
-                                        } else {
-                                            if (swipeBehaviorSelected) {
-                                                selection.add(pressedIndex);
-                                            } else if (selection._isIncluded(pressedIndex)) {
-                                                selection.remove(pressedIndex);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // snap back and remove addional elements
-                                this._endSwipeBehavior();
-                            } else if (manipulationState === MSManipulationEventStates.MS_MANIPULATION_STATE_SELECTING && this._canSelect) {
-                                this._animateSelectionChange(!this._site.selection._isIncluded(pressedIndex));
-                            } else if (this._swipeBehaviorState === MSManipulationEventStates.MS_MANIPULATION_STATE_SELECTING && this._canSelect) {
-                                this._animateSelectionChange(this._site.selection._isIncluded(pressedIndex), (manipulationState === MSManipulationEventStates.MS_MANIPULATION_STATE_CANCELLED));
-                            }
-                        }
-                    }
-
-                    this._swipeBehaviorState = manipulationState;
-                },
-
-
                 _resetPointerDownStateForPointerId: function ItemEventsHandler_resetPointerDownState(eventObject) {
                     if (this._pointerId === eventObject.pointerId) {
                         this.resetPointerDownState();
@@ -8402,10 +8182,6 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                 },
 
                 resetPointerDownState: function ItemEventsHandler_resetPointerDownState() {
-                    if (this._gestureRecognizer) {
-                        this._endSelfRevealGesture();
-                        this._endSwipeBehavior();
-                    }
                     this._site.pressedElement = null;
                     _ElementUtilities._removeEventListener(_Global, "pointerup", this._resetPointerDownStateBound);
                     _ElementUtilities._removeEventListener(_Global, "pointercancel", this._resetPointerDownStateBound);
@@ -8417,298 +8193,8 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                     this._site.pressedHeader = null;
                     this._site.pressedItemBox = null;
 
-                    this._removeSelectionHint(this._selectionHint);
-                    this._selectionHint = null;
-
                     this._site.pressedEntity = { type: _UI.ObjectType.item, index: _Constants._INVALID_INDEX };
                     this._pointerId = null;
-                },
-
-                // Play the self-reveal gesture (SRG) animation which jiggles the item to reveal the selection hint behind it.
-                // This function is overridden by internal teams to add a tooltip on SRG start - treat this function as a public API for the sake of function name/parameter changes.
-                _startSelfRevealGesture: function ItemEventsHandler_startSelfRevealGesture() {
-                    if (this._canSelect && this._site.swipeBehavior === _UI.SwipeBehavior.select) {
-                        _WriteProfilerMark("WinJS.UI._ItemEventsHandler:playSelfRevealGesture,info");
-
-                        var that = this;
-                        var site = this._site,
-                            index = this._site.pressedEntity.index,
-                            itemBox = site.itemBoxAtIndex(index),
-                            selected = site.selection._isIncluded(index),
-                            finished = false;
-
-                        var swipeReveal = function () {
-                            var top,
-                                left;
-
-                            if (site.horizontal) {
-                                top = _Constants._VERTICAL_SWIPE_SELF_REVEAL_GESTURE + "px";
-                                left = "0px";
-                            } else {
-                                top = "0px";
-                                left = (site.rtl() ? "" : "-") + _Constants._HORIZONTAL_SWIPE_SELF_REVEAL_GESTURE + "px";
-                            }
-
-                            return Animations.swipeReveal(itemBox, { top: top, left: left });
-                        };
-
-                        var swipeHide = function () {
-                            return finished ? Promise.wrap() : Animations.swipeReveal(itemBox, { top: "0px", left: "0px" });
-                        };
-
-                        var cleanUp = function (selectionHint) {
-                            if (!site.isZombie()) {
-                                if (selectionHint) {
-                                    that._removeSelectionHint(selectionHint);
-                                }
-                                that._clearItem(site.pressedEntity, site.selection._isIncluded(index));
-                            }
-                        };
-
-                        // Immediately begins the last phase of the SRG animation which animates the item back to its original location
-                        var finishAnimation = function () {
-                            that._selfRevealGesture._promise.cancel();
-                            finished = true;
-                            var selectionHint = that._selectionHint;
-                            that._selectionHint = null;
-                            return swipeHide().then(function () {
-                                itemBox.style[transformNames.scriptName] = "";
-                                cleanUp(selectionHint);
-                            });
-                        };
-
-                        this._prepareItem(this._site.pressedEntity, itemBox, selected);
-                        this._showSelectionHintCheckmark();
-
-                        this._pointerTriggeredSRG = true;
-                        this._selfRevealGesture = {
-                            finishAnimation: finishAnimation,
-                            _promise: swipeReveal().
-                                then(swipeHide).
-                                then(function () {
-                                    if (!finished) {
-                                        that._hideSelectionHintCheckmark();
-                                        cleanUp();
-                                        that._selfRevealGesture = null;
-                                    }
-                                })
-                        };
-                    }
-                },
-
-                // This function is overridden by internal teams to remove a tooltip on SRG completion - treat this function as a public API for the sake of function name/parameter changes
-                _endSelfRevealGesture: function ItemEventsHandler_endSelfRevealGesture() {
-                    if (this._selfRevealGesture) {
-                        this._selfRevealGesture.finishAnimation();
-                        this._selfRevealGesture = null;
-                    }
-                },
-
-                _prepareItem: function ItemEventsHandler_prepareItem(pressedEntity, pressedElement, selected) {
-                    if (pressedEntity.type === _UI.ObjectType.groupHeader) {
-                        return;
-                    }
-
-                    var that = this,
-                        site = this._site,
-                        pressedIndex = pressedEntity.index;
-
-                    function addSwipeClass(container) {
-                        if (!that._swipeClassTracker[uniqueID(container)]) {
-                            _ElementUtilities.addClass(container, _Constants._swipeClass);
-                            that._swipeClassTracker[uniqueID(container)] = 1;
-                        } else {
-                            that._swipeClassTracker[uniqueID(container)]++;
-                        }
-                    }
-
-                    if (!selected) {
-                        (this._animations[pressedIndex] || Promise.wrap()).then(function () {
-                            if (!site.isZombie() && pressedEntity.type === _UI.ObjectType.item && site.pressedEntity.index !== -1) {
-                                pressedIndex = site.pressedEntity.index;
-
-                                var pressedElement = site.itemAtIndex(pressedIndex),
-                                    itemBox = site.itemBoxAtIndex(pressedIndex),
-                                    container = site.containerAtIndex(pressedIndex);
-
-                                addSwipeClass(container);
-
-                                if (!_ElementUtilities._isSelectionRendered(itemBox)) {
-                                    ItemEventsHandler.renderSelection(itemBox, pressedElement, true, container);
-
-                                    _ElementUtilities.removeClass(itemBox, _Constants._selectedClass);
-                                    _ElementUtilities.removeClass(container, _Constants._selectedClass);
-
-                                    var nodes = itemBox.querySelectorAll(_ElementUtilities._selectionPartsSelector);
-                                    for (var i = 0, len = nodes.length; i < len; i++) {
-                                        nodes[i].style.opacity = 0;
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        var container = site.containerAtIndex(pressedIndex);
-                        addSwipeClass(container);
-                    }
-                },
-
-                _clearItem: function ItemEventsHandler_clearItem(pressedEntity, selected) {
-                    if (pressedEntity.type !== _UI.ObjectType.item) {
-                        return;
-                    }
-
-                    var that = this,
-                        site = this._site,
-                        container = site.containerAtIndex(pressedEntity.index),
-                        itemBox = site.itemBoxAtIndex(pressedEntity.index),
-                        element = site.itemAtIndex(pressedEntity.index);
-
-                    function removeSwipeClass(container) {
-                        var refCount = --that._swipeClassTracker[uniqueID(container)];
-                        if (!refCount) {
-                            delete that._swipeClassTracker[uniqueID(container)];
-                            _ElementUtilities.removeClass(container, _Constants._swipeClass);
-                            return true;
-                        }
-                        return false;
-                    }
-
-                    function removeSwipeFromItemsBlock(container) {
-                        var itemsBlock = container.parentNode;
-                        if (itemsBlock && _ElementUtilities.hasClass(itemsBlock, _Constants._itemsBlockClass)) {
-                            removeSwipeClass(itemsBlock);
-                        }
-                    }
-
-                    if (container && itemBox && element) {
-                        var doneSwiping = removeSwipeClass(container);
-                        removeSwipeFromItemsBlock(container);
-                        if (doneSwiping) {
-                            ItemEventsHandler.renderSelection(itemBox, element, selected, true, container);
-                        }
-                    }
-                },
-
-                _animateSelectionChange: function ItemEventsHandler_animateSelectionChange(select, includeCheckmark) {
-                    var that = this,
-                        pressedContainer = this._site.pressedContainer,
-                        pressedItemBox = this._site.pressedItemBox;
-
-                    function toggleClasses() {
-                        var classOperation = select ? "addClass" : "removeClass";
-                        _ElementUtilities[classOperation](pressedItemBox, _Constants._selectedClass);
-                        _ElementUtilities[classOperation](pressedContainer, _Constants._selectedClass);
-                        if (that._selectionHint) {
-                            var hintCheckMark = getElementWithClass(that._selectionHint, _Constants._selectionHintClass);
-                            if (hintCheckMark) {
-                                _ElementUtilities[classOperation](hintCheckMark, _Constants._revealedClass);
-                            }
-                        }
-                    }
-
-                    this._swipeBehaviorSelectionChanged = true;
-                    this.swipeBehaviorSelected = select;
-
-                    var elementsToShowHide = _ElementUtilities._getElementsByClasses(this._site.pressedItemBox, [_Constants._selectionBorderClass, _Constants._selectionBackgroundClass]);
-
-                    if (!select || includeCheckmark) {
-                        elementsToShowHide = elementsToShowHide.concat(_ElementUtilities._getElementsByClasses(this._site.pressedItemBox, [_Constants._selectionCheckmarkBackgroundClass, _Constants._selectionCheckmarkClass]));
-                    }
-
-                    _WriteProfilerMark("WinJS.UI._ItemEventsHandler:" + (select ? "hitSelectThreshold" : "hitUnselectThreshold") + ",info");
-
-                    this._applyUIInBatches(function () {
-                        _WriteProfilerMark("WinJS.UI._ItemEventsHandler:" + (select ? "apply" : "remove") + "SelectionVisual,info");
-                        var opacity = (select ? 1 : 0);
-                        for (var i = 0; i < elementsToShowHide.length; i++) {
-                            elementsToShowHide[i].style.opacity = opacity;
-                        }
-
-                        toggleClasses();
-                    });
-                },
-
-                _showSelectionHintCheckmark: function ItemEventsHandler_showSelectionHintCheckmark() {
-                    if (this._selectionHint) {
-                        var hintCheckMark = getElementWithClass(this._selectionHint, _Constants._selectionHintClass);
-                        if (hintCheckMark) {
-                            hintCheckMark.style.display = 'block';
-                        }
-                    }
-                },
-
-                _hideSelectionHintCheckmark: function ItemEventsHandler_hideSelectionHintCheckmark() {
-                    if (this._selectionHint) {
-                        var hintCheckMark = getElementWithClass(this._selectionHint, _Constants._selectionHintClass);
-                        if (hintCheckMark) {
-                            hintCheckMark.style.display = 'none';
-                        }
-                    }
-                },
-
-                _addSelectionHint: function ItemEventsHandler_addSelectionHint() {
-                    if (this._site.pressedEntity.type === _UI.ObjectType.groupHeader) {
-                        return;
-                    }
-
-                    var selectionHint,
-                        site = this._site;
-
-                    if (site.customFootprintParent) {
-                        selectionHint = this._selectionHint = _Global.document.createElement("div");
-                        selectionHint.className = _Constants._containerClass;
-
-                        var that = this;
-                        site.getItemPosition(this._site.pressedEntity).then(function (pos) {
-                            if (!site.isZombie() && that._selectionHint && that._selectionHint === selectionHint) {
-                                var style = selectionHint.style;
-                                var cssText = ";position:absolute;" +
-                                    (site.rtl() ? "right:" : "left:") + pos.left + "px;top:" +
-                                    pos.top + "px;width:" + pos.contentWidth + "px;height:" + pos.contentHeight + "px";
-                                style.cssText += cssText;
-                                site.customFootprintParent.insertBefore(that._selectionHint, that._site.pressedItemBox);
-                            }
-                        }, function () {
-                            // Swallow errors in case data source changes
-                        });
-                    } else {
-                        selectionHint = this._selectionHint = this._site.pressedContainer;
-                    }
-
-                    if (!this._selectionHintTracker[uniqueID(selectionHint)]) {
-                        _ElementUtilities.addClass(selectionHint, _Constants._footprintClass);
-
-                        if (!site.selection._isIncluded(this._site.pressedEntity.index)) {
-                            var element = _Global.document.createElement("div");
-                            element.className = _Constants._selectionHintClass;
-                            element.textContent = _Constants._SELECTION_CHECKMARK;
-                            element.style.display = 'none';
-                            this._selectionHint.insertBefore(element, this._selectionHint.firstElementChild);
-                        }
-
-                        this._selectionHintTracker[uniqueID(selectionHint)] = 1;
-                    } else {
-                        this._selectionHintTracker[uniqueID(selectionHint)]++;
-                    }
-                },
-
-                _removeSelectionHint: function ItemEventsHandler_removeSelectionHint(selectionHint) {
-                    if (selectionHint) {
-                        var refCount = --this._selectionHintTracker[uniqueID(selectionHint)];
-                        if (!refCount) {
-                            delete this._selectionHintTracker[uniqueID(selectionHint)];
-
-                            if (!this._site.customFootprintParent) {
-                                _ElementUtilities.removeClass(selectionHint, _Constants._footprintClass);
-                                var hintCheckMark = getElementWithClass(selectionHint, _Constants._selectionHintClass);
-                                if (hintCheckMark) {
-                                    hintCheckMark.parentNode.removeChild(hintCheckMark);
-                                }
-                            } else if (selectionHint.parentNode) {
-                                selectionHint.parentNode.removeChild(selectionHint);
-                            }
-                        }
-                    }
                 },
 
                 _releasedElement: function ItemEventsHandler_releasedElement(eventObject) {
@@ -9850,13 +9336,6 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                                 that._pressedElement = value;
                             }
                         },
-
-                        swipeBehavior: {
-                            enumerable: true,
-                            get: function () {
-                                return site._swipeBehavior;
-                            }
-                        },
                         eventHandlerRoot: {
                             enumerable: true,
                             get: function () {
@@ -9904,12 +9383,6 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                             enumerable: true,
                             get: function () {
                                 return site._selection;
-                            }
-                        },
-                        horizontal: {
-                            enumerable: true,
-                            get: function () {
-                                return site._horizontal();
                             }
                         },
                         customFootprintParent: {
@@ -10042,7 +9515,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                     var itemIndex = entity.index;
                     var site = this.site;
                     var item = this.site._view.items.itemAt(itemIndex);
-                    if (site._selectionAllowed() && (site._selectOnTap() || site._swipeBehavior === _UI.SwipeBehavior.select) && !(item && _ElementUtilities.hasClass(item, _Constants._nonSelectableClass))) {
+                    if (site._selectionAllowed() && site._selectOnTap() && !(item && _ElementUtilities.hasClass(item, _Constants._nonSelectableClass))) {
                         var selected = site._selection._isIncluded(itemIndex),
                             single = !site._multiSelection(),
                             newSelection = site._selection._cloneSelection();
@@ -10131,10 +9604,6 @@ define('WinJS/Controls/ListView/_BrowseMode',[
 
                 _resetPointerDownState: function SelectionMode_resetPointerDownState() {
                     this._itemEventsHandler.resetPointerDownState();
-                },
-
-                onMSManipulationStateChanged: function (eventObject) {
-                    this._itemEventsHandler.onMSManipulationStateChanged(eventObject);
                 },
 
                 onPointerDown: function SelectionMode_onPointerDown(eventObject) {
@@ -10723,7 +10192,6 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                 onKeyDown: function SelectionMode_onKeyDown(eventObject) {
                     var that = this,
                         site = this.site,
-                        swipeEnabled = site._swipeBehavior === _UI.SwipeBehavior.select,
                         view = site._view,
                         oldEntity = site._selection._getFocused(),
                         handled = true,
@@ -10947,13 +10415,9 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                                     }
                                     this._fireInvokeEvent(oldEntity, element);
                                 }
-                            } else if (oldEntity.type !== _UI.ObjectType.groupHeader &&
-                                    ((eventObject.ctrlKey && keyCode === Key.enter) ||
-                                    (swipeEnabled && eventObject.shiftKey && keyCode === Key.F10) ||
-                                    (swipeEnabled && keyCode === Key.menu) ||
-                                    keyCode === Key.space)) {
-                                // Swipe emulation
-                                this._itemEventsHandler.handleSwipeBehavior(oldEntity.index);
+                            } else if (oldEntity.type !== _UI.ObjectType.groupHeader && ((eventObject.ctrlKey && keyCode === Key.enter) || keyCode === Key.space)) {
+                                // TODO: See if this actually selected before
+                                this._itemEventsHandler.toggleSelectionIfAllowed(oldEntity.index);
                                 site._changeFocus(oldEntity, true, ctrlKeyDown, false, true);
                             } else if (keyCode === Key.escape && site._selection.count() > 0) {
                                 site._selection._pivot = _Constants._INVALID_INDEX;
@@ -11165,6 +10629,12 @@ define('WinJS/Controls/ListView/_ErrorMessages',[
 
         maxRowsIsDeprecated: {
             get: function () { return "GridLayout.maxRows may be altered or unavailable in future versions. Instead, use the maximumRowsOrColumns property."; }
+        },
+        swipeOrientationDeprecated: {
+            get: function () { return "Invalid configuration: swipeOrientation is deprecated. The control will default this property to 'none'"; }
+        },
+        swipeBehaviorDeprecated: {
+            get: function () { return "Invalid configuration: swipeBehavior is deprecated. The control will default this property to 'none'"; }
         }
     });
 
@@ -16839,24 +16309,14 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
                         that._listView._writeProfilerMark("_realizeItems_appendedItemsToDom,StartTM");
                         if (that._listView._isZombie()) { return; }
 
-                        function updateSwipeable(itemData, element) {
-                            if (!itemData.updatedSwipeableAttribute && (that._listView.itemsDraggable || that._listView.itemsReorderable || that._listView._swipeable)) {
+                        function updateDraggable(itemData, element) {
+                            if (!itemData.updatedDraggableAttribute && (that._listView.itemsDraggable || that._listView.itemsReorderable)) {
                                 itemData.itemsManagerRecord.renderComplete.done(function () {
                                     if (that._realizePass === currentPass) {
-                                        var dragDisabledOnItem = _ElementUtilities.hasClass(element, _Constants._nonDraggableClass),
-                                            selectionDisabledOnItem = _ElementUtilities.hasClass(element, _Constants._nonSelectableClass),
-                                            dragEnabled = (that._listView.itemsDraggable || that._listView.itemsReorderable),
-                                            swipeSelectEnabled = (that._listView._selectionAllowed() && that._listView._swipeBehavior === _UI.SwipeBehavior.select);
-                                        if (dragEnabled && !dragDisabledOnItem) {
+                                        if (!_ElementUtilities.hasClass(element, _Constants._nonDraggableClass)) {
                                             itemData.itemBox.draggable = true;
                                         }
-
-                                        if (that._listView._swipeable && ((dragEnabled && !swipeSelectEnabled && dragDisabledOnItem) ||
-                                            (swipeSelectEnabled && !dragEnabled && selectionDisabledOnItem) ||
-                                            (dragDisabledOnItem && selectionDisabledOnItem))) {
-                                            _ElementUtilities.addClass(itemData.itemBox, _Constants._nonSwipeableClass);
-                                        }
-                                        itemData.updatedSwipeableAttribute = true;
+                                        itemData.updatedDraggableAttribute = true;
                                     }
                                 });
                             }
@@ -16888,7 +16348,7 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
                                     that._listView._currentMode().renderDragSourceOnRealizedItem(itemIndex, itemBox);
                                 }
 
-                                updateSwipeable(itemData, element, itemBox);
+                                updateDraggable(itemData, element);
 
                                 var container = that.getContainer(itemIndex);
                                 if (itemBox.parentNode !== container) {
@@ -20196,9 +19656,6 @@ define('WinJS/Controls/ListView',[
                 /// </returns>
                 /// </signature>
                 element = element || _Global.document.createElement("div");
-                if (_ElementUtilities._supportsTouchActionCrossSlide) {
-                    element.classList.add(_Constants._listViewSupportsCrossSlideClass);
-                }
 
                 this._id = element.id || "";
                 this._writeProfilerMark("constructor,StartTM");
@@ -20260,11 +19717,7 @@ define('WinJS/Controls/ListView',[
                 this._selectionMode = _UI.SelectionMode.multi;
                 this._tap = _UI.TapBehavior.invokeOnly;
                 this._groupHeaderTap = _UI.GroupHeaderTapBehavior.invoke;
-                this._swipeBehavior = _UI.SwipeBehavior.select;
                 this._mode = new _BrowseMode._SelectionMode(this);
-
-                // Call after swipeBehavior and modes are set
-                this._setSwipeClass();
 
                 this._groups = new _GroupsContainer._NoGroups(this);
                 this._updateItemsAriaRoles();
@@ -20477,7 +19930,6 @@ define('WinJS/Controls/ListView',[
                                 this._selectionMode = newMode;
                                 this._element.setAttribute("aria-multiselectable", this._multiSelection());
                                 this._updateItemsAriaRoles();
-                                this._setSwipeClass();
                                 this._configureSelectionMode();
                                 return;
                             }
@@ -20523,14 +19975,16 @@ define('WinJS/Controls/ListView',[
                 /// The swipe gesture can select the swiped items or it can
                 /// have no effect on the current selection.
                 /// <compatibleWith platform="Windows" minVersion="8.0"/>
+                /// <deprecated type="deprecate">
+                /// swipeBehavior is deprecated. The control will not use this property.
+                /// </deprecated>
                 /// </field>
                 swipeBehavior: {
                     get: function () {
-                        return this._swipeBehavior;
+                        return "none";
                     },
-                    set: function (swipeBehavior) {
-                        this._swipeBehavior = swipeBehavior;
-                        this._setSwipeClass();
+                    set: function (value) {
+                        _ElementUtilities._deprecated(_ErrorMessages.swipeBehaviorDeprecated);
                     }
                 },
 
@@ -20899,7 +20353,7 @@ define('WinJS/Controls/ListView',[
                         }
                         if (this._dragSource !== value) {
                             this._dragSource = value;
-                            this._setSwipeClass();
+                            this._setDraggable();
                         }
                     }
                 },
@@ -20919,7 +20373,7 @@ define('WinJS/Controls/ListView',[
                         }
                         if (this._reorderable !== value) {
                             this._reorderable = value;
-                            this._setSwipeClass();
+                            this._setDraggable();
                         }
                     }
                 },
@@ -21150,12 +20604,31 @@ define('WinJS/Controls/ListView',[
                 },
 
                 _configureSelectionMode: function () {
-                    if (_BaseUtils.isPhone) {
-                        if (this.tapBehavior === _UI.TapBehavior.toggleSelect && this.selectionMode === _UI.SelectionMode.multi) {
-                            _ElementUtilities.addClass(this._canvas, _Constants._selectionModeClass);
-                        } else {
-                            _ElementUtilities.removeClass(this._canvas, _Constants._selectionModeClass);
+                    var selectionModeClass = _Constants._selectionModeClass,
+                        hidingSelectionModeClass = _Constants._hidingSelectionMode;
+                    if (this.tapBehavior === _UI.TapBehavior.toggleSelect && this.selectionMode === _UI.SelectionMode.multi) {
+                        _ElementUtilities.addClass(this._canvas, selectionModeClass);
+                        _ElementUtilities.removeClass(this._canvas, hidingSelectionModeClass);
+                    } else {
+                        if (_ElementUtilities.hasClass(this._canvas, selectionModeClass)) {
+                            var that = this;
+                            var animationCompleteHandler = function (e) {
+                                var isAnimationCompleteEvent = (e && e.animationName && e.animationName.indexOf(_Constants._hidingSelectionModeAnimationName) !== -1);
+                                if (isAnimationCompleteEvent || !e) {
+                                    _ElementUtilities._removeEventListener(that._canvas, "animationEnd", animationCompleteHandler, false);
+                                    _ElementUtilities.removeClass(that._canvas, hidingSelectionModeClass);
+                                }
+                            };
+
+                            _Global.setTimeout(function () {
+                                _Global.setTimeout(function () {
+                                    animationCompleteHandler();
+                                }, _Constants._hidingSelectionModeAnimationTimeout);
+                            }, 50);
+                            _ElementUtilities._addEventListener(this._canvas, "animationEnd", animationCompleteHandler, false);
+                            _ElementUtilities.addClass(this._canvas, hidingSelectionModeClass);
                         }
+                        _ElementUtilities.removeClass(this._canvas, selectionModeClass);
                     }
                 },
 
@@ -21620,8 +21093,7 @@ define('WinJS/Controls/ListView',[
                         modeHandler("DragEnter"),
                         modeHandler("DragLeave"),
                         modeHandler("Drop"),
-                        modeHandler("ContextMenu"),
-                        modeHandler("MSManipulationStateChanged", true, true)
+                        modeHandler("ContextMenu")
                     ];
                     events.forEach(function (eventHandler) {
                         _ElementUtilities._addEventListener(that._viewport, eventHandler.name, eventHandler.handler, !!eventHandler.capture);
@@ -22643,42 +22115,11 @@ define('WinJS/Controls/ListView',[
                     return this._mode;
                 },
 
-                _setSwipeClass: function ListView_setSwipeClass() {
-                    // We apply an -ms-touch-action style to block panning and swiping from occurring at the same time. It is
-                    // possible to pan in the margins between items and on lists without the swipe ability.
-                    // Phone does not support swipe; therefore, we don't add them swipeable CSS class.
-                    if (!_BaseUtils.isPhone && ((this._currentMode() instanceof _BrowseMode._SelectionMode && this._selectionAllowed() && this._swipeBehavior === _UI.SwipeBehavior.select) ||
-                        this._dragSource || this._reorderable)) {
-                        this._swipeable = true;
-                        _ElementUtilities.addClass(this._element, _Constants._swipeableClass);
-                    } else {
-                        this._swipeable = false;
-                        _ElementUtilities.removeClass(this._element, _Constants._swipeableClass);
-                    }
-                    var dragEnabled = (this.itemsDraggable || this.itemsReorderable),
-                        swipeSelectEnabled = (this._selectionAllowed() && this._swipeBehavior === _UI.SwipeBehavior.select),
-                        swipeEnabled = this._swipeable;
-
+                _setDraggable: function ListView_setDraggable() {
+                    var dragEnabled = (this.itemsDraggable || this.itemsReorderable);
                     this._view.items.each(function (index, item, itemData) {
                         if (itemData.itemBox) {
-                            var dragDisabledOnItem = _ElementUtilities.hasClass(item, _Constants._nonDraggableClass),
-                                selectionDisabledOnItem = _ElementUtilities.hasClass(item, _Constants._nonSelectableClass),
-                                nonSwipeable = _ElementUtilities.hasClass(itemData.itemBox, _Constants._nonSwipeableClass);
-                            itemData.itemBox.draggable = (dragEnabled && !dragDisabledOnItem);
-                            if (!swipeEnabled && nonSwipeable) {
-                                _ElementUtilities.removeClass(itemData.itemBox, _Constants._nonSwipeableClass);
-                            } else if (swipeEnabled) {
-                                var makeNonSwipeable = (dragEnabled && !swipeSelectEnabled && dragDisabledOnItem) ||
-                                                        (swipeSelectEnabled && !dragEnabled && selectionDisabledOnItem) ||
-                                                        (dragDisabledOnItem && selectionDisabledOnItem);
-                                if (makeNonSwipeable && !nonSwipeable) {
-                                    _ElementUtilities.addClass(itemData.itemBox, _Constants._nonSwipeableClass);
-                                } else if (!makeNonSwipeable && nonSwipeable) {
-                                    _ElementUtilities.removeClass(itemData.itemBox, _Constants._nonSwipeableClass);
-                                }
-                            }
-                            var makeNonSelectable = _BaseUtils.isPhone && selectionDisabledOnItem;
-                            _ElementUtilities[makeNonSelectable ? "addClass" : "removeClass"](itemData.itemBox, _Constants._nonSelectableClass);
+                            itemData.itemBox.draggable = (dragEnabled && !_ElementUtilities.hasClass(item, _Constants._nonDraggableClass));
                         }
                     });
                 },
@@ -23131,7 +22572,7 @@ define('WinJS/Controls/ListView',[
                     }
 
                     this._view.items.each(function (index, element, itemData) {
-                        if (itemData.itemBox && !_ElementUtilities.hasClass(itemData.itemBox, _Constants._swipeClass)) {
+                        if (itemData.itemBox) {
                             var selected = selectAll || !!selectionMap[index];
                             _ItemEventsHandler._ItemEventsHandler.renderSelection(itemData.itemBox, element, selected, true);
                             if (itemData.container) {
@@ -27866,13 +27307,13 @@ define('WinJS/Controls/ItemContainer',[
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
         /// <field>
         /// <summary locid="WinJS.UI.ItemContainer">
-        /// Defines an item that can be pressed, swiped, and dragged.
+        /// Defines an item that can be pressed, selected, and dragged.
         /// </summary>
         /// </field>
         /// <icon src="ui_winjs.ui.itemcontainer.12x12.png" width="12" height="12" />
         /// <icon src="ui_winjs.ui.itemcontainer.16x16.png" width="16" height="16" />
         /// <htmlSnippet supportsContent="true"><![CDATA[
-        /// <div data-win-control="WinJS.UI.ItemContainer" data-win-options="{swipeBehavior: 'select'}">HTML content</div>
+        /// <div data-win-control="WinJS.UI.ItemContainer" data-win-options="{selected: true}">HTML content</div>
         /// ]]></htmlSnippet>
         /// <event name="invoked" bubbles="true" locid="WinJS.UI.ItemContainer_e:invoked">Raised when the user taps or clicks the item.</event>
         /// <event name="selectionchanging" bubbles="true" locid="WinJS.UI.ItemContainer_e:selectionchanging">Raised before the item is selected or deselected.</event>
@@ -27886,7 +27327,9 @@ define('WinJS/Controls/ItemContainer',[
         /// <resource type="css" src="//WinJS.3.1/css/ui-dark.css" shared="true" />
         ItemContainer: _Base.Namespace._lazy(function () {
             var strings = {
-                get duplicateConstruction() { return "Invalid argument: Controls may only be instantiated one time for each DOM element"; }
+                get duplicateConstruction() { return "Invalid argument: Controls may only be instantiated one time for each DOM element"; },
+                get swipeOrientationDeprecated() { return "Invalid configuration: swipeOrientation is deprecated. The control will default this property to 'none'"; },
+                get swipeBehaviorDeprecated() { return "Invalid configuration: swipeBehavior is deprecated. The control will default this property to 'none'"; }
             };
 
             var ItemContainer = _Base.Class.define(function ItemContainer_ctor(element, options) {
@@ -27927,8 +27370,6 @@ define('WinJS/Controls/ItemContainer',[
                 this._pressedEntity = { type: _UI.ObjectType.item, index: _Constants._INVALID_INDEX };
 
                 this.tapBehavior = _UI.TapBehavior.invokeOnly;
-                this.swipeOrientation = _UI.Orientation.vertical;
-                this.swipeBehavior = _UI.SwipeBehavior.select;
 
                 _ElementUtilities.addClass(this.element, ItemContainer._ClassName.itemContainer + " " + _Constants._containerClass);
 
@@ -28011,12 +27452,6 @@ define('WinJS/Controls/ItemContainer',[
                             return that.element;
                         }
                     },
-                    swipeBehavior: {
-                        enumerable: true,
-                        get: function () {
-                            return that._swipeBehavior;
-                        }
-                    },
                     selectionMode: {
                         enumerable: true,
                         get: function () {
@@ -28054,12 +27489,6 @@ define('WinJS/Controls/ItemContainer',[
                             return that._selection;
                         }
                     },
-                    horizontal: {
-                        enumerable: true,
-                        get: function () {
-                            return that._swipeOrientation === _UI.Orientation.vertical;
-                        }
-                    },
                     customFootprintParent: {
                         enumerable: true,
                         get: function () {
@@ -28085,7 +27514,6 @@ define('WinJS/Controls/ItemContainer',[
                     };
                 }
                 var events = [
-                    eventHandler("MSManipulationStateChanged", true, true),
                     eventHandler("PointerDown"),
                     eventHandler("Click"),
                     eventHandler("PointerUp"),
@@ -28151,22 +27579,17 @@ define('WinJS/Controls/ItemContainer',[
 
                 /// <field type="String" oamOptionsDatatype="WinJS.UI.Orientation" locid="WinJS.UI.ItemContainer.swipeOrientation" helpKeyword="WinJS.UI.ItemContainer.swipeOrientation">
                 /// Gets or sets the swipe orientation of the ItemContainer control.
-                /// The default value is "vertical".
+                /// The default value is "none".
+                /// <deprecated type="deprecate">
+                /// swipeOrientation is deprecated. The control will not use this property.
+                /// </deprecated>
                 /// </field>
                 swipeOrientation: {
                     get: function () {
-                        return this._swipeOrientation;
+                        return "none";
                     },
                     set: function (value) {
-                        if (value === _UI.Orientation.vertical) {
-                            _ElementUtilities.removeClass(this.element, ItemContainer._ClassName.horizontal);
-                            _ElementUtilities.addClass(this.element, ItemContainer._ClassName.vertical);
-                        } else {
-                            value = _UI.Orientation.horizontal;
-                            _ElementUtilities.removeClass(this.element, ItemContainer._ClassName.vertical);
-                            _ElementUtilities.addClass(this.element, ItemContainer._ClassName.horizontal);
-                        }
-                        this._swipeOrientation = value;
+                        _ElementUtilities._deprecated(strings.swipeOrientationDeprecated);
                     }
                 },
 
@@ -28191,16 +27614,18 @@ define('WinJS/Controls/ItemContainer',[
                 /// <field type="String" oamOptionsDatatype="WinJS.UI.SwipeBehavior" locid="WinJS.UI.ItemContainer.swipeBehavior" helpKeyword="WinJS.UI.ItemContainer.swipeBehavior">
                 /// Gets or sets how the ItemContainer control reacts to the swipe interaction.
                 /// The swipe gesture can select the item or it can have no effect on the current selection.
-                /// Possible values: "select", "none". The default value is: "select".
+                /// Possible values: "none".
                 /// <compatibleWith platform="Windows" minVersion="8.1"/>
+                /// <deprecated type="deprecate">
+                /// swipeBehavior is deprecated. The control will not use this property.
+                /// </deprecated>
                 /// </field>
                 swipeBehavior: {
                     get: function () {
-                        return this._swipeBehavior;
+                        return "none";
                     },
                     set: function (value) {
-                        this._swipeBehavior = value;
-                        this._setSwipeClass();
+                        _ElementUtilities._deprecated(strings.swipeBehaviorDeprecated);
                     }
                 },
 
@@ -28219,7 +27644,6 @@ define('WinJS/Controls/ItemContainer',[
                             this._setDirectionClass();
                             this._selectionMode = _UI.SelectionMode.single;
                         }
-                        this._setSwipeClass();
                         this._setAriaRole();
                     }
                 },
@@ -28353,8 +27777,7 @@ define('WinJS/Controls/ItemContainer',[
                 _onKeyDown: function ItemContainer_onKeyDown(eventObject) {
                     if (!this._itemEventsHandler._isInteractive(eventObject.target)) {
                         var Key = _ElementUtilities.Key,
-                            keyCode = eventObject.keyCode,
-                            swipeEnabled = this._swipeBehavior === _UI.SwipeBehavior.select;
+                            keyCode = eventObject.keyCode;
 
                         var handled = false;
                         if (!eventObject.ctrlKey && keyCode === Key.enter) {
@@ -28364,10 +27787,7 @@ define('WinJS/Controls/ItemContainer',[
                             }
                             this._fireInvokeEvent();
                             handled = true;
-                        } else if (eventObject.ctrlKey && keyCode === Key.enter ||
-                            (swipeEnabled && eventObject.shiftKey && keyCode === Key.F10) ||
-                            (swipeEnabled && keyCode === Key.menu) ||
-                            keyCode === Key.space) {
+                        } else if (eventObject.ctrlKey && keyCode === Key.enter || keyCode === Key.space) {
                             if (!this.selectionDisabled) {
                                 this.selected = !this.selected;
                                 handled = _ElementUtilities._setActive(this.element);
@@ -28450,26 +27870,12 @@ define('WinJS/Controls/ItemContainer',[
                     }
                 },
 
-                _setSwipeClass: function ItemContainer_setSwipeClass() {
-                    if (_BaseUtils.isPhone) {
-                        // Cross-slide is disabled on phone
-                        return;
-                    }
-                    // We apply an -ms-touch-action style to block panning and swiping from occurring at the same time.
-                    if ((this._swipeBehavior === _UI.SwipeBehavior.select && this._selectionMode !== _UI.SelectionMode.none) || this._draggable) {
-                        _ElementUtilities.addClass(this._element, _Constants._swipeableClass);
-                    } else {
-                        _ElementUtilities.removeClass(this._element, _Constants._swipeableClass);
-                    }
-                },
-
                 _updateDraggableAttribute: function ItemContainer_updateDraggableAttribute() {
-                    this._setSwipeClass();
                     this._itemBox.setAttribute("draggable", this._draggable);
                 },
 
                 _verifySelectionAllowed: function ItemContainer_verifySelectionAllowed() {
-                    if (this._selectionMode !== _UI.SelectionMode.none && (this._tapBehavior === _UI.TapBehavior.toggleSelect || this._swipeBehavior === _UI.SwipeBehavior.select)) {
+                    if (this._selectionMode !== _UI.SelectionMode.none && this._tapBehavior === _UI.TapBehavior.toggleSelect) {
                         var canSelect = this._selection.fireSelectionChanging();
                         return {
                             canSelect: canSelect,
