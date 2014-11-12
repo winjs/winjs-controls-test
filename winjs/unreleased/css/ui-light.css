@@ -1026,6 +1026,9 @@ select::-ms-expand {
   margin-bottom: -2px;
   font-size: 20px;
 }
+select[multiple] {
+  padding: 0 0 0 12px;
+}
 option {
   font-size: 15px;
   font-weight: 400;
@@ -5435,6 +5438,10 @@ select[multiple] option {
 select[multiple] option:hover {
   color: #000000;
 }
+select[multiple] option:checked {
+  color: #ffffff;
+  background-color: #0078d7;
+}
 input[type=range] {
   background-color: transparent;
 }
@@ -6364,6 +6371,10 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 }
 .win-ui-dark select[multiple] option:hover {
   color: #ffffff;
+}
+.win-ui-dark select[multiple] option:checked {
+  color: #ffffff;
+  background-color: #0078d7;
 }
 .win-ui-dark input[type=range] {
   background-color: transparent;
