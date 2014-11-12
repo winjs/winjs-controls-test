@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.11 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.12 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.11 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.12 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -5809,6 +5809,7 @@ define('WinJS/Utilities/_ElementUtilities',[
             var pointerEventObject = new PointerEventProxy(eventObject, {
                 pointerType: _MSPointerEvent.MSPOINTER_TYPE_TOUCH,
                 pointerId: touchObject.identifier,
+                isPrimary: i === 0,
                 screenX: touchObject.screenX,
                 screenY: touchObject.screenY,
                 clientX: touchObject.clientX,
@@ -5830,6 +5831,7 @@ define('WinJS/Utilities/_ElementUtilities',[
     function mouseEventTranslator(callback, eventObject) {
         eventObject.pointerType = _MSPointerEvent.MSPOINTER_TYPE_MOUSE;
         eventObject.pointerId = -1;
+        eventObject.isPrimary = true;
         return callback(eventObject);
     }
 
