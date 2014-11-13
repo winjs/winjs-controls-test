@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.12 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.13 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.12 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.13 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -37131,6 +37131,10 @@ define('WinJS/Controls/ListView/_Layouts',[
                     nestedFlexTooSmall: flexRoot.firstElementChild.offsetWidth < expectedWidth
                 };
             }
+
+            // Signal ListView's own measurement operation. 
+            // ListView always needs an opportunity to measure, even if layout cannot.
+            site.readyToMeasure();
 
             // Clean up the DOM
             site.viewport.removeChild(surface);
