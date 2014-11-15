@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.13 ui.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.15 ui.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.13 ui.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.15 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -35063,6 +35063,7 @@ define('WinJS/Controls/Pivot',[
                 this._headersContainerElement.addEventListener("keydown", this._headersKeyDown.bind(this));
                 this._element.appendChild(this._headersContainerElement);
                 this._element.addEventListener('click', this._elementClickedHandler.bind(this));
+                _ElementUtilities._addEventListener(this._element, "pointermove", this._elementPointerMoveHandler.bind(this));
                 _ElementUtilities._addEventListener(this._element, "pointerdown", this._elementPointerDownHandler.bind(this));
                 _ElementUtilities._addEventListener(this._element, "pointerup", this._elementPointerUpHandler.bind(this));
                 _ElementUtilities._addEventListener(this._headersContainerElement, "pointerenter", this._showNavButtons.bind(this));
@@ -35819,14 +35820,15 @@ define('WinJS/Controls/Pivot',[
                     }
                 },
 
+                _elementPointerMoveHandler: function pivot_elementPointerMoveHandler(e) {
+                    // This prevents Chrome's history navigation swipe gestures.
+                    e.preventDefault();
+                },
+
                 _elementPointerDownHandler: function pivot_elementPointerDownHandler(e) {
                     if (supportsSnap) {
                         return;
                     }
-
-                    // This prevents Chrome's history navigation swipe gestures.
-                    e.preventDefault();
-
                     this._elementPointerDownPoint = { x: e.clientX, y: e.clientY, type: e.pointerType || "mouse", time: Date.now(), inHeaders: this._headersContainerElement.contains(e.target) };
                 },
 
@@ -46306,7 +46308,7 @@ define('WinJS/Controls/AutoSuggestBox',[
                     _ElementUtilities._addEventListener(this._inputElement, "pointerdown", this._inputPointerDownHandler.bind(this));
                     this._updateInputElementAriaLabel();
                     this._element.appendChild(this._inputElement);
-                    var context = this._inputElement.msGetInputContext && this._inputElement.msGetInputContext();
+                    var context = this._tryGetInputContext();
                     if (context) {
                         context.addEventListener("MSCandidateWindowShow", this._msCandidateWindowShowHandler.bind(this));
                         context.addEventListener("MSCandidateWindowHide", this._msCandidateWindowHideHandler.bind(this));
@@ -46418,7 +46420,7 @@ define('WinJS/Controls/AutoSuggestBox',[
 
                 _addFlyoutIMEPaddingIfRequired: function asb_addFlyoutIMEPaddingIfRequired() {
                     // Check if we have InputContext APIs
-                    var context = this._inputElement.msGetInputContext && this._inputElement.msGetInputContext();
+                    var context = this._tryGetInputContext();
                     if (!context) {
                         return;
                     }
@@ -46606,19 +46608,21 @@ define('WinJS/Controls/AutoSuggestBox',[
                         var compositionLength = 0;
                         var queryTextPrefix = "";
                         var queryTextSuffix = "";
-                        if (createFilled && this._inputElement.msGetInputContext && this._inputElement.msGetInputContext().getCompositionAlternatives) {
-                            var context = this._inputElement.msGetInputContext();
-                            compositionAlternatives = context.getCompositionAlternatives();
-                            compositionStartOffset = context.compositionStartOffset;
-                            compositionLength = context.compositionEndOffset - context.compositionStartOffset;
+                        if (createFilled) {
+                            var context = this._tryGetInputContext();
+                            if (context && context.getCompositionAlternatives) {
+                                compositionAlternatives = context.getCompositionAlternatives();
+                                compositionStartOffset = context.compositionStartOffset;
+                                compositionLength = context.compositionEndOffset - context.compositionStartOffset;
 
-                            if ((this._inputElement.value !== this._prevQueryText) || (this._prevCompositionLength === 0) || (compositionLength > 0)) {
-                                queryTextPrefix = this._inputElement.value.substring(0, compositionStartOffset);
-                                queryTextSuffix = this._inputElement.value.substring(compositionStartOffset + compositionLength);
-                            } else {
-                                // composition ended, but alternatives have been kept, need to reuse the previous query prefix/suffix, but still report to the client that the composition has ended (start & length of composition of 0)
-                                queryTextPrefix = this._inputElement.value.substring(0, this._prevCompositionStart);
-                                queryTextSuffix = this._inputElement.value.substring(this._prevCompositionStart + this._prevCompositionLength);
+                                if ((this._inputElement.value !== this._prevQueryText) || (this._prevCompositionLength === 0) || (compositionLength > 0)) {
+                                    queryTextPrefix = this._inputElement.value.substring(0, compositionStartOffset);
+                                    queryTextSuffix = this._inputElement.value.substring(compositionStartOffset + compositionLength);
+                                } else {
+                                    // composition ended, but alternatives have been kept, need to reuse the previous query prefix/suffix, but still report to the client that the composition has ended (start & length of composition of 0)
+                                    queryTextPrefix = this._inputElement.value.substring(0, this._prevCompositionStart);
+                                    queryTextSuffix = this._inputElement.value.substring(this._prevCompositionStart + this._prevCompositionLength);
+                                }
                             }
                         }
                         linguisticDetails = createQueryLinguisticDetails(compositionAlternatives, compositionStartOffset, compositionLength, queryTextPrefix, queryTextSuffix);
@@ -46672,6 +46676,18 @@ define('WinJS/Controls/AutoSuggestBox',[
                     if (this._suggestionManager) {
                         this._suggestionManager.addToHistory(this._inputElement.value, this._lastKeyPressLanguage);
                     }
+                },
+
+                _tryGetInputContext: function asb_tryGetInputContext() {
+                    // On WP, msGetInputContext is defined but throws when invoked
+                    if (this._inputElement.msGetInputContext) {
+                        try {
+                            return this._inputElement.msGetInputContext();
+                        } catch (e) {
+                            return null;
+                        }
+                    }
+                    return null;
                 },
 
                 _updateInputElementAriaLabel: function asb_updateInputElementAriaLabel() {
@@ -47277,6 +47293,7 @@ define('WinJS/Controls/AutoSuggestBox',[
         })
     });
 });
+
 
 define('require-style!less/styles-searchbox',[],function(){});
 
