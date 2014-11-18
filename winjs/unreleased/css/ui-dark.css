@@ -3864,59 +3864,139 @@ Menu control.
   min-height: 46px;
   /* 44px -  2px in border = 46px */
   max-height: calc(100% - 26px);
-  max-width: none;
-}
-.win-menu {
-  /* Set explicitly in case our parent has different alignment, like appbar overflow. */
-}
-.win-menu:lang(ar),
-.win-menu:lang(dv),
-.win-menu:lang(fa),
-.win-menu:lang(he),
-.win-menu:lang(ku-Arab),
-.win-menu:lang(pa-Arab),
-.win-menu:lang(prs),
-.win-menu:lang(ps),
-.win-menu:lang(sd-Arab),
-.win-menu:lang(syr),
-.win-menu:lang(ug),
-.win-menu:lang(ur),
-.win-menu:lang(qps-plocm) {
-  text-align: right;
+  min-width: 136px;
+  max-width: 456px;
 }
 /*
 Menu commands.
 */
 .win-menu button.win-command {
   display: block;
-  padding: 10px 20px 12px 20px;
+  padding-top: 11px;
+  padding-bottom: 13px;
   min-height: 44px;
   margin-left: 0;
   margin-right: 0;
-  float: none;
   text-align: left;
-  width: 100%;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.333;
 }
-.win-menu button.win-command:lang(ar),
-.win-menu button.win-command:lang(dv),
-.win-menu button.win-command:lang(fa),
-.win-menu button.win-command:lang(he),
-.win-menu button.win-command:lang(ku-Arab),
-.win-menu button.win-command:lang(pa-Arab),
-.win-menu button.win-command:lang(prs),
-.win-menu button.win-command:lang(ps),
-.win-menu button.win-command:lang(sd-Arab),
-.win-menu button.win-command:lang(syr),
-.win-menu button.win-command:lang(ug),
-.win-menu button.win-command:lang(ur),
-.win-menu button.win-command:lang(qps-plocm) {
-  text-align: right;
-}
 .win-menu button.win-command:focus {
   outline: none;
+}
+.win-menu button.win-command .win-menucommand-liner {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: none;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  width: 100%;
+}
+.win-menu button.win-command .win-menucommand-liner .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner .win-flyouticon {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: none;
+  visibility: hidden;
+  font-size: 16px;
+  font-family: "Segoe UI Symbol", "Symbols";
+}
+.win-menu button.win-command .win-menucommand-liner .win-toggleicon {
+  margin-left: 12px;
+}
+.win-menu button.win-command .win-menucommand-liner .win-toggleicon::before {
+  content: "\E0E7";
+}
+.win-menu button.win-command .win-menucommand-liner .win-flyouticon {
+  margin-left: 12px;
+  margin-right: 16px;
+}
+.win-menu button.win-command .win-menucommand-liner .win-flyouticon::before {
+  content: "\E26B";
+}
+.win-menu button.win-command .win-menucommand-liner .win-label {
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  font-size: 15px;
+  line-height: inherit;
+  min-width: 112px;
+  max-width: none;
+  white-space: nowrap;
+  text-overflow: clip;
+  margin: 0px;
+  padding: 0px 12px;
+}
+.win-menu button.win-command .win-menucommand-liner:lang(ar),
+.win-menu button.win-command .win-menucommand-liner:lang(dv),
+.win-menu button.win-command .win-menucommand-liner:lang(fa),
+.win-menu button.win-command .win-menucommand-liner:lang(he),
+.win-menu button.win-command .win-menucommand-liner:lang(ku-Arab),
+.win-menu button.win-command .win-menucommand-liner:lang(pa-Arab),
+.win-menu button.win-command .win-menucommand-liner:lang(prs),
+.win-menu button.win-command .win-menucommand-liner:lang(ps),
+.win-menu button.win-command .win-menucommand-liner:lang(sd-Arab),
+.win-menu button.win-command .win-menucommand-liner:lang(syr),
+.win-menu button.win-command .win-menucommand-liner:lang(ug),
+.win-menu button.win-command .win-menucommand-liner:lang(ur),
+.win-menu button.win-command .win-menucommand-liner:lang(qps-plocm) {
+  text-align: right;
+}
+.win-menu button.win-command .win-menucommand-liner:lang(ar) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(dv) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(fa) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(he) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(ku-Arab) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(pa-Arab) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(prs) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(ps) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(sd-Arab) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(syr) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(ug) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(ur) .win-toggleicon,
+.win-menu button.win-command .win-menucommand-liner:lang(qps-plocm) .win-toggleicon {
+  margin-left: 0px;
+  margin-right: 12px;
+}
+.win-menu button.win-command .win-menucommand-liner:lang(ar) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(dv) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(fa) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(he) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(ku-Arab) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(pa-Arab) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(prs) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(ps) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(sd-Arab) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(syr) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(ug) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(ur) .win-flyouticon,
+.win-menu button.win-command .win-menucommand-liner:lang(qps-plocm) .win-flyouticon {
+  margin-left: 16px;
+  margin-right: 12px;
+}
+.win-menu button.win-command .win-menucommand-liner:lang(ar) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(dv) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(fa) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(he) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(ku-Arab) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(pa-Arab) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(prs) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(ps) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(sd-Arab) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(syr) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(ug) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(ur) .win-flyouticon::before,
+.win-menu button.win-command .win-menucommand-liner:lang(qps-plocm) .win-flyouticon::before {
+  content: "\E26C";
 }
 .win-menu hr.win-command {
   display: block;
@@ -3927,35 +4007,15 @@ Menu commands.
   margin: 9px 20px 10px 20px;
 }
 /*
-Menu toggle buttons.
+Menu toggle and flyout commands.
 */
-.win-menu-toggle button.win-command::before {
-  font-family: "Segoe UI Symbol", "Symbols";
-  content: "\E0E7";
-  visibility: hidden;
-  padding-left: 0px;
-  padding-right: 12px;
+.win-menu-containstogglecommand button.win-command .win-menucommand-liner .win-toggleicon,
+.win-menu-containsflyoutcommand button.win-command .win-menucommand-liner .win-flyouticon {
+  display: inline-block;
 }
-.win-menu-toggle button[aria-checked=true].win-command::before {
-  /* Display a checkbox if aria-checked is set */
+.win-menu-containstogglecommand button.win-command-toggle[aria-checked=true] .win-menucommand-liner .win-toggleicon,
+.win-menu-containsflyoutcommand button.win-command-flyout .win-menucommand-liner .win-flyouticon {
   visibility: visible;
-}
-.win-menu-toggle button.win-command:lang(ar)::before,
-.win-menu-toggle button.win-command:lang(dv)::before,
-.win-menu-toggle button.win-command:lang(fa)::before,
-.win-menu-toggle button.win-command:lang(he)::before,
-.win-menu-toggle button.win-command:lang(ku-Arab)::before,
-.win-menu-toggle button.win-command:lang(pa-Arab)::before,
-.win-menu-toggle button.win-command:lang(prs)::before,
-.win-menu-toggle button.win-command:lang(ps)::before,
-.win-menu-toggle button.win-command:lang(sd-Arab)::before,
-.win-menu-toggle button.win-command:lang(syr)::before,
-.win-menu-toggle button.win-command:lang(ug)::before,
-.win-menu-toggle button.win-command:lang(ur)::before,
-.win-menu-toggle button.win-command:lang(qps-plocm)::before {
-  padding-right: 0;
-  padding-left: 12px;
-  float: right;
 }
 /*
 Grippers in touch selection do not dissapear when focus moves to an element outside of the selection range and they are always drawn on a layer above all HTML elemements.
