@@ -11321,7 +11321,7 @@ define('WinJS/Utilities/_KeyboardBehavior',[
     './_Control',
     './_ElementUtilities',
     './_TabContainer'
-    ], function KeyboardBehaviorInit(exports, _Global, _Base, _Control, _ElementUtilities, _TabContainer) {
+], function KeyboardBehaviorInit(exports, _Global, _Base, _Control, _ElementUtilities, _TabContainer) {
     "use strict";
 
     // not supported in WebWorker
@@ -11344,7 +11344,7 @@ define('WinJS/Utilities/_KeyboardBehavior',[
     }, true);
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
-        _keyboardSeenLast : {
+        _keyboardSeenLast: {
             get: function _keyboardSeenLast_get() {
                 return _keyboardSeenLast;
             },
@@ -11518,8 +11518,6 @@ define('WinJS/Utilities/_KeyboardBehavior',[
                         if (_ElementUtilities._matchesSelector(ev.target, ".win-interactive, .win-interactive *")) {
                             return;
                         }
-                        var blockScrolling = false;
-
                         var newIndex = this.currentIndex;
                         var maxIndex = this._element.children.length - 1;
 
@@ -11529,13 +11527,11 @@ define('WinJS/Utilities/_KeyboardBehavior',[
 
                         var targetIndex = this.getAdjacent && this.getAdjacent(newIndex, ev.keyCode);
                         if (+targetIndex === targetIndex) {
-                            blockScrolling = true;
                             newIndex = targetIndex;
                         } else {
                             var modFixedSize = newIndex % this.fixedSize;
 
                             if (ev.keyCode === leftStr) {
-                                blockScrolling = true;
                                 if (this.fixedDirection === _KeyboardBehavior.FixedDirection.width) {
                                     if (modFixedSize !== 0) {
                                         newIndex--;
@@ -11546,7 +11542,6 @@ define('WinJS/Utilities/_KeyboardBehavior',[
                                     }
                                 }
                             } else if (ev.keyCode === rightStr) {
-                                blockScrolling = true;
                                 if (this.fixedDirection === _KeyboardBehavior.FixedDirection.width) {
                                     if (modFixedSize !== this.fixedSize - 1) {
                                         newIndex++;
@@ -11557,7 +11552,6 @@ define('WinJS/Utilities/_KeyboardBehavior',[
                                     }
                                 }
                             } else if (ev.keyCode === Key.upArrow) {
-                                blockScrolling = true;
                                 if (this.fixedDirection === _KeyboardBehavior.FixedDirection.height) {
                                     if (modFixedSize !== 0) {
                                         newIndex--;
@@ -11568,7 +11562,6 @@ define('WinJS/Utilities/_KeyboardBehavior',[
                                     }
                                 }
                             } else if (ev.keyCode === Key.downArrow) {
-                                blockScrolling = true;
                                 if (this.fixedDirection === _KeyboardBehavior.FixedDirection.height) {
                                     if (modFixedSize !== this.fixedSize - 1) {
                                         newIndex++;
@@ -11579,15 +11572,9 @@ define('WinJS/Utilities/_KeyboardBehavior',[
                                     }
                                 }
                             } else if (ev.keyCode === Key.home) {
-                                blockScrolling = true;
                                 newIndex = 0;
                             } else if (ev.keyCode === Key.end) {
-                                blockScrolling = true;
                                 newIndex = this._element.children.length - 1;
-                            } else if (ev.keyCode === Key.pageUp) {
-                                blockScrolling = true;
-                            } else if (ev.keyCode === Key.pageDown) {
-                                blockScrolling = true;
                             }
                         }
 
@@ -11600,9 +11587,7 @@ define('WinJS/Utilities/_KeyboardBehavior',[
                             if (ev.keyCode === leftStr || ev.keyCode === rightStr || ev.keyCode === Key.upArrow || ev.keyCode === Key.downArrow) {
                                 ev.stopPropagation();
                             }
-                        }
 
-                        if (blockScrolling) {
                             ev.preventDefault();
                         }
                     }

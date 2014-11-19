@@ -10377,24 +10377,29 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                         } else if (!eventObject.altKey) {
                             if (this._keyboardNavigationHandlers[keyCode]) {
                                 this._keyboardNavigationHandlers[keyCode](oldEntity).then(function (newEntity) {
-                                    var clampToBounds = that._keyboardNavigationHandlers[keyCode].clampToBounds;
-                                    if (newEntity.type !== _UI.ObjectType.groupHeader && eventObject.shiftKey && site._selectionAllowed() && site._multiSelection()) {
-                                        // Shift selection should work when shift or shift+ctrl are depressed
-                                        if (site._selection._pivot === _Constants._INVALID_INDEX) {
-                                            site._selection._pivot = oldEntity.index;
-                                        }
-                                        setNewFocus(newEntity, true, clampToBounds).then(function (newEntity) {
-                                            if (newEntity.index !== _Constants._INVALID_INDEX) {
-                                                var firstIndex = Math.min(newEntity.index, site._selection._pivot),
-                                                    lastIndex = Math.max(newEntity.index, site._selection._pivot),
-                                                    additive = (eventObject.ctrlKey || site._tap === _UI.TapBehavior.toggleSelect);
-                                                that._selectRange(firstIndex, lastIndex, additive);
+                                    if (newEntity.index !== oldEntity.index || newEntity.type !== oldEntity.type) {
+                                        var clampToBounds = that._keyboardNavigationHandlers[keyCode].clampToBounds;
+                                        if (newEntity.type !== _UI.ObjectType.groupHeader && eventObject.shiftKey && site._selectionAllowed() && site._multiSelection()) {
+                                            // Shift selection should work when shift or shift+ctrl are depressed
+                                            if (site._selection._pivot === _Constants._INVALID_INDEX) {
+                                                site._selection._pivot = oldEntity.index;
                                             }
-                                        });
+                                            setNewFocus(newEntity, true, clampToBounds).then(function (newEntity) {
+                                                if (newEntity.index !== _Constants._INVALID_INDEX) {
+                                                    var firstIndex = Math.min(newEntity.index, site._selection._pivot),
+                                                        lastIndex = Math.max(newEntity.index, site._selection._pivot),
+                                                        additive = (eventObject.ctrlKey || site._tap === _UI.TapBehavior.toggleSelect);
+                                                    that._selectRange(firstIndex, lastIndex, additive);
+                                                }
+                                            });
+                                        } else {
+                                            site._selection._pivot = _Constants._INVALID_INDEX;
+                                            setNewFocus(newEntity, false, clampToBounds);
+                                        }
                                     } else {
-                                        site._selection._pivot = _Constants._INVALID_INDEX;
-                                        setNewFocus(newEntity, false, clampToBounds);
+                                        handled = false;
                                     }
+
                                 });
                             } else if (!eventObject.ctrlKey && keyCode === Key.enter) {
                                 var element = oldEntity.type === _UI.ObjectType.groupHeader ? site._groups.group(oldEntity.index).header : site._view.items.itemBoxAt(oldEntity.index);
@@ -26759,23 +26764,37 @@ define('WinJS/Controls/FlipView',[
                             if (that._isHorizontal) {
                                 switch (event.keyCode) {
                                     case Key.leftArrow:
-                                        (that._rtl ? that.next() : that.previous());
-                                        handled = true;
+                                        if (!that._rtl && that.currentPage > 0) {
+                                            that.previous();
+                                            handled = true;
+                                        } else if (that._rtl && that.currentPage < that._pageManager._cachedSize - 1) {
+                                            that.next();
+                                            handled = true;
+                                        }
                                         break;
 
                                     case Key.pageUp:
-                                        that.previous();
-                                        handled = true;
+                                        if (that.currentPage > 0) {
+                                            that.previous();
+                                            handled = true;
+                                        }
                                         break;
 
                                     case Key.rightArrow:
-                                        (that._rtl ? that.previous() : that.next());
-                                        handled = true;
+                                        if (!that._rtl && that.currentPage < that._pageManager._cachedSize - 1) {
+                                            that.next();
+                                            handled = true;
+                                        } else if (that._rtl && that.currentPage > 0) {
+                                            that.previous();
+                                            handled = true;
+                                        }
                                         break;
 
                                     case Key.pageDown:
-                                        that.next();
-                                        handled = true;
+                                        if (that.currentPage < that._pageManager._cachedSize - 1) {
+                                            that.next();
+                                            handled = true;
+                                        }
                                         break;
 
                                         // Prevent scrolling pixel by pixel, but let the event bubble up
@@ -26789,14 +26808,18 @@ define('WinJS/Controls/FlipView',[
                                 switch (event.keyCode) {
                                     case Key.upArrow:
                                     case Key.pageUp:
-                                        that.previous();
-                                        handled = true;
+                                        if (that.currentPage > 0) {
+                                            that.previous();
+                                            handled = true;
+                                        }
                                         break;
 
                                     case Key.downArrow:
                                     case Key.pageDown:
-                                        that.next();
-                                        handled = true;
+                                        if (that.currentPage < that._pageManager._cachedSize - 1) {
+                                            that.next();
+                                            handled = true;
+                                        }
                                         break;
 
                                     case Key.space:
@@ -29949,6 +29972,7 @@ define('WinJS/Controls/BackButton',[
             // Navigates back when (alt + left) or BrowserBack keys are released.
             if ((event.keyCode === Key.leftArrow && event.altKey && !event.shiftKey && !event.ctrlKey) || (event.keyCode === Key.browserBack)) {
                 Navigation.back();
+                event.preventDefault();
             }
         }
 
@@ -31890,24 +31914,36 @@ define('WinJS/Controls/Rating',[
 
                             break;
                         case Key.leftArrow: // Arrow Left
-                            if (rtlString === "rtl") {
+                            if (rtlString === "rtl" && this.userRating < this.maxRating - 1) {
                                 this._incrementRating();
-                            } else {
+                            } else if (rtlString !== "rtl" && this.userRating > 0) {
                                 this._decrementRating();
+                            } else {
+                                handled = false;
                             }
                             break;
                         case Key.upArrow: // Arrow Up
-                            this._incrementRating();
+                            if (this.userRating < this.maxRating - 1) {
+                                this._incrementRating();
+                            } else {
+                                handled = false;
+                            }
                             break;
                         case Key.rightArrow: // Arrow Right
-                            if (rtlString === "rtl") {
+                            if (rtlString === "rtl" && this.userRating > 0) {
                                 this._decrementRating();
-                            } else {
+                            } else if (rtlString !== "rtl" && this.userRating < this.maxRating - 1) {
                                 this._incrementRating();
+                            } else {
+                                handled = false;
                             }
                             break;
                         case Key.downArrow: // Arrow Down
-                            this._decrementRating();
+                            if (this.userRating > 0) {
+                                this._decrementRating();
+                            } else {
+                                handled = false;
+                            }
                             break;
                         default:
                             var number = 0;
@@ -35815,8 +35851,10 @@ define('WinJS/Controls/Pivot',[
 
                     if (e.keyCode === Keys.leftArrow || e.keyCode === Keys.pageUp) {
                         this._rtl ? this._goNext() : this._goPrevious();
+                        e.preventDefault();
                     } else if (e.keyCode === Keys.rightArrow || e.keyCode === Keys.pageDown) {
                         this._rtl ? this._goPrevious() : this._goNext();
+                        e.preventDefault();
                     }
                 },
 
@@ -36378,7 +36416,7 @@ define('WinJS/Controls/Hub',[
     './Hub/_Section',
     'require-style!less/styles-hub',
     'require-style!less/colors-hub'
-    ], function hubInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Promise, _Signal, Scheduler, _Control, _ElementUtilities, _Hoverable, _UI, _Section) {
+], function hubInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Promise, _Signal, Scheduler, _Control, _ElementUtilities, _Hoverable, _UI, _Section) {
     "use strict";
 
     _Base.Namespace.define("WinJS.UI", {
@@ -37498,7 +37536,7 @@ define('WinJS/Controls/Hub',[
                     var leftKey = this._rtl ? Key.rightArrow : Key.leftArrow;
                     var rightKey = this._rtl ? Key.leftArrow : Key.rightArrow;
 
-                        if (ev.keyCode === Key.upArrow || ev.keyCode === Key.downArrow || ev.keyCode === Key.leftArrow || ev.keyCode === Key.rightArrow || ev.keyCode === Key.pageUp || ev.keyCode === Key.pageDown) {
+                    if (ev.keyCode === Key.upArrow || ev.keyCode === Key.downArrow || ev.keyCode === Key.leftArrow || ev.keyCode === Key.rightArrow || ev.keyCode === Key.pageUp || ev.keyCode === Key.pageDown) {
                         var headerTabStopElement = this._findHeaderTabStop(ev.target);
                         if (headerTabStopElement && !this._isHeaderInteractive(ev.target)) {
                             var currentSection = this.sections.indexOf(headerTabStopElement.parentElement.parentElement.winControl);
@@ -37537,9 +37575,8 @@ define('WinJS/Controls/Hub',[
                                 } else {
                                     this._scrollToSection(targetSectionIndex, true);
                                 }
+                                ev.preventDefault();
                             }
-
-                            ev.preventDefault();
                         }
                     } else if (ev.keyCode === Key.home || ev.keyCode === Key.end) {
                         // Home/End scroll to start/end and leave focus where it is.
@@ -43095,7 +43132,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                     }
                 }
 
-                if (targetCommand) {
+                if (targetCommand && targetCommand !== _Global.document.activeElement) {
                     targetCommand.focus();
                     ev.preventDefault();
                 }
@@ -43881,7 +43918,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     }
                 }
 
-                if (targetCommand) {
+                if (targetCommand && targetCommand !== _Global.document.activeElement) {
                     targetCommand.focus();
                     // Prevent default so that the browser doesn't also evaluate the keydown event on the newly focused element.
                     event.preventDefault();
@@ -52959,6 +52996,7 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
                 }
             }
             eventSrc.dispatchEvent(EventNames.focusChanged, { previousFocusElement: activeElement, keyCode: keyCode });
+            return true;
         } else {
             // No focus target was found; if we are inside an IFRAME, notify the parent that focus is exiting this IFRAME
             // Note on coordinates: When signaling exit, do NOT transform the coordinates into the parent's coordinate system.
@@ -52975,8 +53013,10 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
                     referenceRect: refRect
                 };
                 _Global.parent.postMessage(message, "*");
+                return true;
             }
         }
+        return false;
 
         // Nested Helpers
         function updateHistoryRect(direction, result) {
@@ -53302,8 +53342,9 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
             var key = keys[i];
             var keyMappings = exports.autoFocusMappings[key];
             if (keyMappings.indexOf(e.keyCode) >= 0) {
-                e.preventDefault();
-                _autoFocus(key, e.keyCode);
+                if (_autoFocus(key, e.keyCode)) {
+                    e.preventDefault();
+                }
                 return;
             }
         }
