@@ -1,13 +1,13 @@
 ﻿/*!
   Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-  Build: 3.1.0.winjs.2014.11.19
-  Version: WinJS.3.1
+  Build: 4.0.0.winjs.2014.11.19
+  Version: WinJS.4.0
 */
 
 (function (global) {
     global.strings = global.strings || {};
 
-    var appxVersion = "WinJS.3.1";
+    var appxVersion = "WinJS.4.0";
     var developerPrefix = "Developer.";
     if (appxVersion.indexOf(developerPrefix) === 0) {
         appxVersion = appxVersion.substring(developerPrefix.length);
