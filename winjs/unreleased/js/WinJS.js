@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.18 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.19 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.18 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.3.1 3.1.0.winjs.2014.11.19 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -73523,6 +73523,7 @@ define('WinJS/Controls/SearchBox',[
                 searchBoxSuggestionQuery: "win-searchbox-suggestion-query",
                 searchBoxSuggestionSeparator: "win-searchbox-suggestion-separator",
                 searchBoxButtonInputFocus: "win-searchbox-button-input-focus",
+                searchBoxButtonDisabled: "win-searchbox-button-disabled"
             };
 
             var EventName = {
@@ -73622,17 +73623,20 @@ define('WinJS/Controls/SearchBox',[
                     this._buttonElement.tabIndex = -1;
                     this._buttonElement.classList.add(ClassName.searchBoxButton);
                     this._buttonElement.addEventListener("click", this._buttonClickHandler.bind(this));
+                    _ElementUtilities._addEventListener(this._buttonElement, "pointerdown", this._buttonPointerDownHandler.bind(this));
                     this.element.appendChild(this._buttonElement);
                 },
 
                 _disableControl: function SearchBox_disableControl() {
                     AutoSuggestBox.AutoSuggestBox.prototype._disableControl.call(this);
                     this._buttonElement.disabled = true;
+                    this._buttonElement.classList.add(ClassName.searchBoxButtonDisabled);
                 },
 
                 _enableControl: function SearchBox_enableControl() {
                     AutoSuggestBox.AutoSuggestBox.prototype._enableControl.call(this);
                     this._buttonElement.disabled = false;
+                    this._buttonElement.classList.remove(ClassName.searchBoxButtonDisabled);
                 },
 
                 _renderSuggestion: function SearchBox_renderSuggestion(suggestion) {
@@ -73664,6 +73668,11 @@ define('WinJS/Controls/SearchBox',[
                 },
 
                 // Event Handlers
+                _buttonPointerDownHandler: function SearchBox_buttonPointerDownHandler(e) {
+                    this._inputElement.focus();
+                    e.preventDefault();
+                },
+
                 _buttonClickHandler: function SearchBox_buttonClickHandler(event) {
                     this._inputElement.focus();
                     this._submitQuery(this._inputElement.value, true /*fillLinguisticDetails*/, event);

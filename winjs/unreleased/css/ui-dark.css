@@ -6071,14 +6071,16 @@ button.win-command:disabled:active .win-label {
   background-color: rgba(0, 120, 215, 0.9);
 }
 .win-searchbox-button {
-  color: rgba(0, 0, 0, 0.6);
-}
-.win-searchbox-button:active {
-  background-color: #000000;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.6);
 }
 .win-searchbox-button-input-focus {
-  background-color: #4617b4;
+  color: rgba(0, 0, 0, 0.4);
+}
+.win-searchbox-button.win-searchbox-button:not(.win-searchbox-button-disabled):hover {
+  color: #0078d7;
+}
+.win-searchbox-button.win-searchbox-button:not(.win-searchbox-button-disabled):hover:active {
+  background-color: #0078d7;
   color: #ffffff;
 }
 .win-navbarcontainer-pageindicator {
@@ -6235,11 +6237,12 @@ html.win-hoverable .win-autosuggestbox-suggestion-query:hover {
 html.win-hoverable .win-autosuggestbox-suggestion-selected:hover {
   background-color: rgba(0, 120, 215, 0.8);
 }
-html.win-hoverable .win-searchbox-button[disabled=false]:hover {
-  background-color: #5f37be;
+html.win-hoverable .win-searchbox-button:not(.win-searchbox-button-disabled):hover {
+  color: #0078d7;
 }
-html.win-hoverable .win-searchbox-button-input-focus:hover {
-  background-color: #5f37be;
+html.win-hoverable .win-searchbox-button:not(.win-searchbox-button-disabled):hover:active {
+  background-color: #0078d7;
+  color: #ffffff;
 }
 html.win-hoverable .win-navbarcontainer-pageindicator:hover {
   background-color: rgba(255, 255, 255, 0.6);
@@ -7007,12 +7010,14 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 .win-ui-light .win-searchbox-button {
   color: rgba(0, 0, 0, 0.6);
 }
-.win-ui-light .win-searchbox-button:active {
-  background-color: #000000;
-  color: #ffffff;
-}
 .win-ui-light .win-searchbox-button-input-focus {
-  background-color: #4617b4;
+  color: rgba(0, 0, 0, 0.4);
+}
+.win-ui-light .win-searchbox-button.win-searchbox-button:not(.win-searchbox-button-disabled):hover {
+  color: #0078d7;
+}
+.win-ui-light .win-searchbox-button.win-searchbox-button:not(.win-searchbox-button-disabled):hover:active {
+  background-color: #0078d7;
   color: #ffffff;
 }
 .win-ui-light .win-navbarcontainer-pageindicator {
@@ -7169,11 +7174,12 @@ html.win-hoverable .win-ui-light .win-autosuggestbox-suggestion-query:hover {
 html.win-hoverable .win-ui-light .win-autosuggestbox-suggestion-selected:hover {
   background-color: rgba(0, 120, 215, 0.6);
 }
-html.win-hoverable .win-ui-light .win-searchbox-button[disabled=false]:hover {
-  background-color: #5f37be;
+html.win-hoverable .win-ui-light .win-searchbox-button:not(.win-searchbox-button-disabled):hover {
+  color: #0078d7;
 }
-html.win-hoverable .win-ui-light .win-searchbox-button-input-focus:hover {
-  background-color: #5f37be;
+html.win-hoverable .win-ui-light .win-searchbox-button:not(.win-searchbox-button-disabled):hover:active {
+  background-color: #0078d7;
+  color: #ffffff;
 }
 html.win-hoverable .win-ui-light .win-navbarcontainer-pageindicator:hover {
   background-color: rgba(0, 0, 0, 0.44);
