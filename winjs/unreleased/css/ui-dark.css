@@ -5851,7 +5851,7 @@ button.win-hub-section-header-tabstop.win-hub-section-header-interactive:-ms-key
   outline: none;
 }
 hr.win-command {
-  background-color: #7b7b7b;
+  background-color: rgba(255, 255, 255, 0.4);
 }
 div.win-command,
 button.win-command {
@@ -5873,7 +5873,7 @@ div.win-command.win-command.win-keyboard:hover:focus {
 }
 button.win-command.win-command:enabled:hover:active,
 button.win-command.win-command:enabled:active {
-  background-color: #808080;
+  background-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
 button:enabled:hover:active .win-commandimage,
@@ -5882,7 +5882,7 @@ button:enabled:active .win-commandimage {
 }
 button:disabled .win-commandimage,
 button:disabled:active .win-commandimage {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.2);
 }
 button[aria-checked=true]:enabled .win-label,
 button[aria-checked=true]:enabled .win-commandimage,
@@ -5908,7 +5908,7 @@ button[aria-checked=true].win-command:after {
   box-sizing: content-box;
 }
 button.win-command:enabled:-ms-keyboard-active {
-  background-color: #808080;
+  background-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
 button[aria-checked=true].win-command:enabled:hover:active {
@@ -5921,16 +5921,16 @@ button.win-command:disabled:hover:active {
 }
 button.win-command:disabled .win-label,
 button.win-command:disabled:active .win-label {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.2);
 }
 .win-appbar,
 .win-appbar {
-  background-color: #2b2b2b;
-  border-color: #2b2b2b;
+  background-color: #1f1f1f;
+  border-color: #1f1f1f;
 }
 .win-appbar.win-menulayout .win-toolbar,
 .win-appbar.win-menulayout .win-toolbar {
-  background-color: #2b2b2b;
+  background-color: #1f1f1f;
 }
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton,
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton {
@@ -5958,7 +5958,7 @@ button.win-command:disabled:active .win-label {
 }
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton:disabled .win-appbar-ellipsis,
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton:disabled .win-appbar-ellipsis {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.2);
 }
 .win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
 .win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
@@ -5968,7 +5968,7 @@ button.win-command:disabled:active .win-label {
 .win-appbar.win-appbar-showing button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
 .win-appbar.win-appbar-shown button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
 .win-appbar.win-appbar-shown button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active {
-  background-color: #808080;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 .win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active .win-appbar-ellipsis,
 .win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active .win-appbar-ellipsis,
@@ -5999,7 +5999,7 @@ button.win-command:disabled:active .win-label {
 }
 .win-menu button.win-command.win-command:enabled:hover:active,
 .win-menu button[aria-checked=true].win-command.win-command:enabled:hover:active {
-  background-color: #666666;
+  background-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
 .win-menu button[aria-checked=true].win-command:after,
@@ -6012,7 +6012,7 @@ button.win-command:disabled:active .win-label {
 .win-menu button:disabled:active,
 .win-menu button:disabled:active {
   background-color: transparent;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.2);
 }
 .win-toolbar,
 .win-toolbar {
@@ -6180,7 +6180,7 @@ html.win-hoverable.win-appbar.win-appbar-showing button.win-appbar-invokebutton:
 html.win-hoverable .win-appbar.win-appbar-showing button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable.win-appbar.win-appbar-shown button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-appbar.win-appbar-shown button.win-appbar-invokebutton:enabled:hover {
-  background-color: #555555;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 html.win-hoverable.win-appbar.win-appbar-showing button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
 html.win-hoverable .win-appbar.win-appbar-showing button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
@@ -6192,7 +6192,7 @@ html.win-hoverable.win-appbar.win-appbar-hiding button.win-appbar-invokebutton:e
 html.win-hoverable .win-appbar.win-appbar-hiding button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable.win-appbar.win-appbar-hidden button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-appbar.win-appbar-hidden button.win-appbar-invokebutton:enabled:hover {
-  background-color: #555555;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 html.win-hoverable.win-appbar.win-appbar-hiding button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
 html.win-hoverable .win-appbar.win-appbar-hiding button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
@@ -6201,14 +6201,14 @@ html.win-hoverable .win-appbar.win-appbar-hidden button.win-appbar-invokebutton:
   color: #ffffff;
 }
 html.win-hoverable button.win-command:enabled:hover {
-  background-color: #555555;
+  background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 html.win-hoverable button.win-command:enabled:hover .win-commandglyph {
   color: #ffffff;
 }
 html.win-hoverable .win-menu button.win-command:enabled:hover {
-  background-color: #333333;
+  background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 html.win-hoverable button[aria-checked=true].win-command:hover {
@@ -6788,7 +6788,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   outline: none;
 }
 .win-ui-light hr.win-command {
-  background-color: #7b7b7b;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .win-ui-light div.win-command,
 .win-ui-light button.win-command {
@@ -6810,7 +6810,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 }
 .win-ui-light button.win-command.win-command:enabled:hover:active,
 .win-ui-light button.win-command.win-command:enabled:active {
-  background-color: #8a8a8a;
+  background-color: rgba(0, 0, 0, 0.2);
   color: #000000;
 }
 .win-ui-light button:enabled:hover:active .win-commandimage,
@@ -6819,7 +6819,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 }
 .win-ui-light button:disabled .win-commandimage,
 .win-ui-light button:disabled:active .win-commandimage {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-light button[aria-checked=true]:enabled .win-label,
 .win-ui-light button[aria-checked=true]:enabled .win-commandimage,
@@ -6845,7 +6845,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   box-sizing: content-box;
 }
 .win-ui-light button.win-command:enabled:-ms-keyboard-active {
-  background-color: #8a8a8a;
+  background-color: rgba(0, 0, 0, 0.2);
   color: #000000;
 }
 .win-ui-light button[aria-checked=true].win-command:enabled:hover:active {
@@ -6858,7 +6858,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 }
 .win-ui-light button.win-command:disabled .win-label,
 .win-ui-light button.win-command:disabled:active .win-label {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-light.win-appbar,
 .win-ui-light .win-appbar {
@@ -6895,7 +6895,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 }
 .win-ui-light.win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton:disabled .win-appbar-ellipsis,
 .win-ui-light .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton:disabled .win-appbar-ellipsis {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-light.win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
 .win-ui-light .win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
@@ -6905,7 +6905,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 .win-ui-light .win-appbar.win-appbar-showing button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
 .win-ui-light.win-appbar.win-appbar-shown button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active,
 .win-ui-light .win-appbar.win-appbar-shown button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active {
-  background-color: #8a8a8a;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-light.win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active .win-appbar-ellipsis,
 .win-ui-light .win-appbar.win-appbar-hiding button.win-appbar-invokebutton.win-appbar-invokebutton:enabled:hover:active .win-appbar-ellipsis,
@@ -6936,7 +6936,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 }
 .win-ui-light .win-menu button.win-command.win-command:enabled:hover:active,
 .win-ui-light .win-menu button[aria-checked=true].win-command.win-command:enabled:hover:active {
-  background-color: #999999;
+  background-color: rgba(0, 0, 0, 0.2);
   color: #000000;
 }
 .win-ui-light.win-menu button[aria-checked=true].win-command:after,
@@ -6949,7 +6949,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 .win-ui-light.win-menu button:disabled:active,
 .win-ui-light .win-menu button:disabled:active {
   background-color: transparent;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-light.win-toolbar,
 .win-ui-light .win-toolbar {
@@ -7117,7 +7117,7 @@ html.win-hoverable .win-ui-light.win-appbar.win-appbar-showing button.win-appbar
 html.win-hoverable .win-ui-light .win-appbar.win-appbar-showing button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-ui-light.win-appbar.win-appbar-shown button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-ui-light .win-appbar.win-appbar-shown button.win-appbar-invokebutton:enabled:hover {
-  background-color: #b8b8b8;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 html.win-hoverable .win-ui-light.win-appbar.win-appbar-showing button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
 html.win-hoverable .win-ui-light .win-appbar.win-appbar-showing button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
@@ -7129,7 +7129,7 @@ html.win-hoverable .win-ui-light.win-appbar.win-appbar-hiding button.win-appbar-
 html.win-hoverable .win-ui-light .win-appbar.win-appbar-hiding button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-ui-light.win-appbar.win-appbar-hidden button.win-appbar-invokebutton:enabled:hover,
 html.win-hoverable .win-ui-light .win-appbar.win-appbar-hidden button.win-appbar-invokebutton:enabled:hover {
-  background-color: #b8b8b8;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 html.win-hoverable .win-ui-light.win-appbar.win-appbar-hiding button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
 html.win-hoverable .win-ui-light .win-appbar.win-appbar-hiding button.win-appbar-invokebutton:enabled:hover .win-appbar-ellipsis,
@@ -7138,14 +7138,14 @@ html.win-hoverable .win-ui-light .win-appbar.win-appbar-hidden button.win-appbar
   color: #000000;
 }
 html.win-hoverable .win-ui-light button.win-command:enabled:hover {
-  background-color: #b8b8b8;
+  background-color: rgba(0, 0, 0, 0.1);
   color: #000000;
 }
 html.win-hoverable .win-ui-light button.win-command:enabled:hover .win-commandglyph {
   color: #000000;
 }
 html.win-hoverable .win-ui-light .win-menu button.win-command:enabled:hover {
-  background-color: #cccccc;
+  background-color: rgba(0, 0, 0, 0.1);
   color: #000000;
 }
 html.win-hoverable .win-ui-light button[aria-checked=true].win-command:hover {
