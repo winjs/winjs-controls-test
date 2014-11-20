@@ -42591,7 +42591,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Command"], function(require, exports, _MenuCommandBase) {
+define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../ToolBar/_Constants", "../Menu/_Command"], function(require, exports, _Constants, _MenuCommandBase) {
     var _MenuCommand = (function (_super) {
         __extends(_MenuCommand, _super);
         function _MenuCommand(isAttachedMode, element, options) {
@@ -42603,7 +42603,23 @@ define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Co
         }
         _MenuCommand.prototype._handleClick = function (event) {
             this._beforeOnClick && this._beforeOnClick(event);
-            _super.prototype._handleClick.call(this, event);
+            var command = this;
+
+            if (command.type === _Constants.typeToggle) {
+                command.selected = !command.selected;
+            } else if (command.type === _Constants.typeFlyout && command.flyout) {
+                var flyout = command.flyout;
+                if (!flyout.show) {
+                    flyout = flyout.winControl;
+                }
+                if (flyout && flyout.show) {
+                    flyout.show(this.element, "right");
+                }
+            }
+
+            if (command.onclick) {
+                command.onclick(event);
+            }
         };
         return _MenuCommand;
     })(_MenuCommandBase.MenuCommand);
