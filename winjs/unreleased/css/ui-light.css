@@ -6071,7 +6071,7 @@ button.win-command:disabled:active .win-label {
   background-color: rgba(0, 120, 215, 0.7);
 }
 .win-searchbox-button {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.4);
 }
 .win-searchbox-button-input-focus {
   color: rgba(0, 0, 0, 0.4);
@@ -7008,7 +7008,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   background-color: rgba(0, 120, 215, 0.9);
 }
 .win-ui-dark .win-searchbox-button {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.4);
 }
 .win-ui-dark .win-searchbox-button-input-focus {
   color: rgba(0, 0, 0, 0.4);
