@@ -160,6 +160,12 @@ window.addEventListener('load', function()
             imgHack.onerror = function() { addJavascript(version, iframe); };
             imgHack.src = style.href;
           }
+
+          // Add base stylesheet
+          var style = iframe.contentDocument.createElement('link');
+          style.rel = 'stylesheet';
+          style.href = '../style-iframe.css';
+          iframe.contentDocument.head.appendChild(style);
         };
 
       })(iframe);
