@@ -5392,6 +5392,9 @@ input[type=radio]::-ms-check {
   border-color: rgba(255, 255, 255, 0.8);
   background-color: transparent;
 }
+input[type=radio]:hover::-ms-check {
+  border-color: #ffffff;
+}
 input[type=radio]:checked::-ms-check {
   border-color: #0078d7;
 }
@@ -6328,6 +6331,9 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   color: rgba(0, 0, 0, 0.8);
   border-color: rgba(0, 0, 0, 0.8);
   background-color: transparent;
+}
+.win-ui-light input[type=radio]:hover::-ms-check {
+  border-color: #000000;
 }
 .win-ui-light input[type=radio]:checked::-ms-check {
   border-color: #0078d7;
