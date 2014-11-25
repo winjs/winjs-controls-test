@@ -1006,10 +1006,11 @@ input[type=file]::-ms-browse {
 select {
   min-width: 296px;
   min-height: 32px;
-  border: none;
   padding: 5px 12px 7px 12px;
   margin: 8px 0;
   outline: 0;
+  border-style: solid;
+  border-width: 2px;
   background-clip: border-box;
   box-sizing: border-box;
   font-size: 15px;
@@ -5464,6 +5465,7 @@ button[type=submit] {
 select {
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 select::-ms-expand {
   color: #ffffff;
@@ -6404,6 +6406,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 .win-ui-light select {
   color: #000000;
   background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-light select::-ms-expand {
   color: #000000;
