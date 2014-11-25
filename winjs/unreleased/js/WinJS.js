@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.11.24 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.11.25 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.11.24 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.11.25 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -58611,7 +58611,7 @@ define('WinJS/Controls/ToggleSwitch',[
                         this._dragX = Math.max(2, this._dragX);
 
                         // Calculate if this pointermove constitutes switching to drag mode
-                        if (!this._dragging && Math.abs(this._dragX - this._dragXStart) > 3) {
+                        if (!this._dragging && Math.abs(localMouseX - this._dragXStart) > 3) {
                             this._dragging = true;
                             _ElementUtilities.addClass(this._domElement, classDragging);
                         }
