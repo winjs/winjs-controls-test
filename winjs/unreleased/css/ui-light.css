@@ -6155,7 +6155,7 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected:hove
 html.win-hoverable .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-track {
   border-color: #000000;
 }
-html.win-hoverable .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
+html.win-hoverable .win-toggleswitch:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
   background-color: #000000;
 }
 html.win-hoverable button:hover.win-semanticzoom-button {
@@ -7095,7 +7095,7 @@ html.win-hoverable .win-ui-dark .win-itemcontainer.win-selectionstylefilled.win-
 html.win-hoverable .win-ui-dark .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-track {
   border-color: #ffffff;
 }
-html.win-hoverable .win-ui-dark .win-toggleswitch-off:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
+html.win-hoverable .win-ui-dark .win-toggleswitch:not(.win-toggleswitch-disabled):not(.win-toggleswitch-pressed) .win-toggleswitch-clickregion:hover .win-toggleswitch-thumb {
   background-color: #ffffff;
 }
 html.win-hoverable .win-ui-dark button:hover.win-semanticzoom-button {
