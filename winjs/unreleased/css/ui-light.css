@@ -4728,12 +4728,12 @@ Hide clear button in search box control.
 }
 .win-navbar .win-appbar-invokebutton {
   width: 32px;
-  height: 25px;
+  min-height: 0;
+  height: 24px;
   bottom: 0;
 }
 .win-navbar .win-appbar-invokebutton .win-appbar-ellipsis {
   width: 32px;
-  height: 25px;
   top: 5px;
 }
 .win-navbarcontainer {
@@ -4760,7 +4760,7 @@ Hide clear button in search box control.
   height: 0;
 }
 .win-navbarcontainer-horizontal .win-navbarcontainer-viewport {
-  padding: 15px 0 20px 0;
+  padding: 20px 0;
   overflow-x: auto;
   overflow-y: hidden;
   overflow: -moz-scrollbars-none;
@@ -4770,10 +4770,9 @@ Hide clear button in search box control.
   touch-action: pan-x;
 }
 .win-navbarcontainer-vertical .win-navbarcontainer-viewport {
-  padding: 10px 0;
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 250px;
+  max-height: 216px;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   touch-action: pan-y;
 }
@@ -4791,10 +4790,13 @@ Hide clear button in search box control.
   -webkit-align-content: flex-start;
   align-content: flex-start;
 }
+.win-navbarcontainer-vertical .win-navbarcontainer-surface {
+  padding: 12px 0;
+}
 .win-navbarcontainer-navarrow {
   position: absolute;
   z-index: 2;
-  top: 0;
+  top: 24px;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -4808,9 +4810,8 @@ Hide clear button in search box control.
   -webkit-justify-content: center;
   justify-content: center;
   font-family: "Segoe UI Symbol", "Symbols";
-  height: 50px;
-  width: 17px;
-  margin: 20px 0;
+  height: calc(100% - 48px);
+  width: 20px;
   font-size: 16pt;
   overflow: hidden;
 }
@@ -4819,14 +4820,14 @@ Hide clear button in search box control.
 }
 .win-navbarcontainer-navleft {
   left: 0;
-  margin-right: 8px;
+  margin-right: 2px;
 }
 .win-navbarcontainer-navleft::before {
   content: '\E0E2';
 }
 .win-navbarcontainer-navright {
   right: 0;
-  margin-left: 8px;
+  margin-left: 2px;
 }
 .win-navbarcontainer-navright::before {
   content: '\E0E3';
@@ -4843,21 +4844,23 @@ Hide clear button in search box control.
   flex: 0 0 auto;
 }
 .win-navbarcontainer-horizontal .win-navbarcommand {
-  margin: 5px;
-  width: 210px;
+  margin: 4px;
+  width: 192px;
 }
 .win-navbarcontainer-vertical .win-navbarcommand {
-  margin: 10px 30px;
+  margin: 4px 24px;
 }
 .win-navbarcommand-button {
-  -ms-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
+  -ms-flex: 1 1 0%;
+  -webkit-flex: 1 1 0%;
+  flex: 1 1 0%;
   position: relative;
 }
 .win-navbarcommand-button-content {
   position: relative;
-  padding: 5px 10px;
+  height: 48px;
+  padding-left: 16px;
+  padding-right: 16px;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -4868,22 +4871,16 @@ Hide clear button in search box control.
 }
 .win-navbarcommand-icon {
   font-family: "Segoe UI Symbol", "Symbols";
-  height: 24px;
-  width: 24px;
-  font-size: 24px;
+  height: 16px;
+  width: 16px;
+  font-size: 13px;
   margin-left: 0;
-  margin-right: 10px;
-  margin-top: 8px;
+  margin-right: 16px;
+  margin-top: 16px;
   /* Center icon vertically */
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 .win-navbarcommand-icon:lang(ar),
 .win-navbarcommand-icon:lang(dv),
@@ -4899,31 +4896,27 @@ Hide clear button in search box control.
 .win-navbarcommand-icon:lang(ur),
 .win-navbarcommand-icon:lang(qps-plocm) {
   margin-right: 0;
-  margin-left: 10px;
+  margin-left: 16px;
 }
 .win-navbarcommand-label {
-  -ms-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
+  -ms-flex: 1 1 0%;
+  -webkit-flex: 1 1 0%;
+  flex: 1 1 0%;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 11pt;
-  margin: 10px 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+  margin-top: 13px;
+  margin-bottom: 15px;
 }
 .win-navbarcommand-splitbutton {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  width: 40px;
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 48px;
   font-family: "Segoe UI Symbol", "Symbols";
-  font-size: 11pt;
+  font-size: 16px;
   margin-right: 0;
   margin-left: 2px;
   position: relative;
@@ -4946,6 +4939,16 @@ Hide clear button in search box control.
 }
 .win-navbarcommand-splitbutton::before {
   content: '\E019';
+  pointer-events: none;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  line-height: 46px;
+  border: 1px dotted transparent;
 }
 .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened::before {
   content: '\E018';
@@ -6092,36 +6095,41 @@ button.win-command:disabled:active .win-label {
   color: #ffffff;
 }
 .win-navbarcontainer-pageindicator {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .win-navbarcontainer-pageindicator-current {
-  background-color: rgba(0, 0, 0, 0.66);
-}
-.win-navbarcontainer-pageindicator.win-navbarcontainer-pageindicator:hover:active {
-  background-color: rgba(0, 0, 0, 0.58);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 .win-navbarcontainer-navarrow {
-  background-color: #e7e7e7;
-  color: #5c5c5c;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.8);
 }
 .win-navbarcontainer-navarrow.win-navbarcontainer-navarrow:hover:active {
-  background-color: #5d5d5d;
-  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 .win-navbarcommand-button,
 .win-navbarcommand-splitbutton {
-  background-color: rgba(0, 0, 0, 0.09);
+  background-color: rgba(0, 0, 0, 0.1);
   color: #000000;
-}
-.win-navbarcommand-button.win-keyboard:focus,
-.win-navbarcommand-splitbutton.win-keyboard:focus {
-  outline: 2px solid #000000;
 }
 .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened,
 .win-navbarcommand-button.win-pressed,
 .win-navbarcommand-splitbutton.win-pressed {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.28);
+}
+.win-navbarcommand-button.win-keyboard:focus::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border: 1px dotted #000000;
+}
+.win-navbarcommand-splitbutton.win-keyboard:focus::before {
+  border-color: #000000;
 }
 .win-contentdialog-dialog {
   background-color: #e6e6e6;
@@ -6252,22 +6260,17 @@ html.win-hoverable .win-searchbox-button:not(.win-searchbox-button-disabled):hov
   background-color: #0078d7;
   color: #ffffff;
 }
-html.win-hoverable .win-navbarcontainer-pageindicator:hover {
-  background-color: rgba(0, 0, 0, 0.44);
-}
 html.win-hoverable .win-navbarcontainer-navarrow:hover {
-  background-color: #dadada;
-  color: #000000;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 html.win-hoverable .win-navbarcommand-button:hover,
 html.win-hoverable .win-navbarcommand-splitbutton:hover {
-  background-color: rgba(199, 199, 199, 0.31);
+  background-color: rgba(0, 0, 0, 0.19);
 }
 html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover,
 html.win-hoverable .win-navbarcommand-button.win-pressed:hover,
 html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.28);
 }
 .win-ui-dark body {
   background-color: #000000;
@@ -7033,36 +7036,41 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   color: #ffffff;
 }
 .win-ui-dark .win-navbarcontainer-pageindicator {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 .win-ui-dark .win-navbarcontainer-pageindicator-current {
-  background-color: rgba(255, 255, 255, 0.8);
-}
-.win-ui-dark .win-navbarcontainer-pageindicator.win-navbarcontainer-pageindicator:hover:active {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 .win-ui-dark .win-navbarcontainer-navarrow {
-  background-color: #4a4a4a;
-  color: #1e1e1e;
+  background-color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.8);
 }
 .win-ui-dark .win-navbarcontainer-navarrow.win-navbarcontainer-navarrow:hover:active {
-  background-color: #1e1e1e;
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 .win-ui-dark .win-navbarcommand-button,
 .win-ui-dark .win-navbarcommand-splitbutton {
-  background-color: rgba(255, 255, 255, 0.11);
+  background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-}
-.win-ui-dark .win-navbarcommand-button.win-keyboard:focus,
-.win-ui-dark .win-navbarcommand-splitbutton.win-keyboard:focus {
-  outline: 2px solid #ffffff;
 }
 .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened,
 .win-ui-dark .win-navbarcommand-button.win-pressed,
 .win-ui-dark .win-navbarcommand-splitbutton.win-pressed {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: rgba(255, 255, 255, 0.28);
+}
+.win-ui-dark .win-navbarcommand-button.win-keyboard:focus::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border: 1px dotted #ffffff;
+}
+.win-ui-dark .win-navbarcommand-splitbutton.win-keyboard:focus::before {
+  border-color: #ffffff;
 }
 .win-ui-dark .win-contentdialog-dialog {
   background-color: #1f1f1f;
@@ -7193,22 +7201,17 @@ html.win-hoverable .win-ui-dark .win-searchbox-button:not(.win-searchbox-button-
   background-color: #0078d7;
   color: #ffffff;
 }
-html.win-hoverable .win-ui-dark .win-navbarcontainer-pageindicator:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-}
 html.win-hoverable .win-ui-dark .win-navbarcontainer-navarrow:hover {
-  background-color: #cacaca;
-  color: #000000;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 html.win-hoverable .win-ui-dark .win-navbarcommand-button:hover,
 html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton:hover {
-  background-color: rgba(255, 255, 255, 0.22);
+  background-color: rgba(0, 0, 0, 0.19);
 }
 html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover,
 html.win-hoverable .win-ui-dark .win-navbarcommand-button.win-pressed:hover,
 html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-pressed:hover {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: rgba(0, 0, 0, 0.28);
 }
 @media (-ms-high-contrast) {
   .win-overlay {
