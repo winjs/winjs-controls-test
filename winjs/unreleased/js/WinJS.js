@@ -12293,7 +12293,7 @@ define('WinJS/Utilities',[
 
     //wrapper module
 });
-define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", "../Core/_Base", "../Core/_BaseUtils", "../Utilities/_ElementUtilities", "../Core/_Events", "../ControlProcessor/_OptionsParser"], function(require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
+define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Global", "../Core/_Base", "../Core/_BaseUtils", "../Utilities/_ElementUtilities", "../Core/_Events", "../ControlProcessor/_OptionsParser"], function(require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
     "use strict";
 
     var AttributeNames = {
@@ -12305,11 +12305,11 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
     };
 
     var CrossDomainMessageConstants = {
-        messageDataProperty: "msWinJSAutoFocusControlMessage",
+        messageDataProperty: "msWinJSDFocusControlMessage",
         register: "register",
         unregister: "unregister",
-        autoFocusEnter: "autoFocusEnter",
-        autoFocusExit: "autoFocusExit"
+        dFocusEnter: "dFocusEnter",
+        dFocusExit: "dFocusExit"
     };
 
     var DirectionNames = {
@@ -12340,7 +12340,7 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
         percentInHistoryShadowWeight: 100000
     };
 
-    exports.autoFocusMappings = {
+    exports.directionalFocusMappings = {
         left: [_ElementUtilities.Key.leftArrow],
         right: [_ElementUtilities.Key.rightArrow],
         up: [_ElementUtilities.Key.upArrow],
@@ -12367,51 +12367,51 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
     }
     exports.moveFocus = moveFocus;
 
-    function enableAutoFocus() {
-        if (!_autoFocusEnabled) {
+    function enableDirectionalFocus() {
+        if (!_dFocusEnabled) {
             _Global.document.addEventListener("keydown", _handleKeyEvent);
-            _autoFocusEnabled = true;
+            _dFocusEnabled = true;
         }
     }
-    exports.enableAutoFocus = enableAutoFocus;
+    exports.enableDirectionalFocus = enableDirectionalFocus;
 
-    function disableAutoFocus() {
-        if (_autoFocusEnabled) {
+    function disableDirectionalFocus() {
+        if (_dFocusEnabled) {
             _Global.document.removeEventListener("keydown", _handleKeyEvent);
-            _autoFocusEnabled = false;
+            _dFocusEnabled = false;
         }
     }
-    exports.disableAutoFocus = disableAutoFocus;
+    exports.disableDirectionalFocus = disableDirectionalFocus;
 
     // Privates
-    var _autoFocusEnabled = false;
-    var _lastAutoFocusTarget;
-    var _cachedLastAutoFocusTargetRect;
+    var _dFocusEnabled = false;
+    var _lastTarget;
+    var _cachedLastTargetRect;
     var _historyRect;
     var _afEnabledFrames = [];
-    function _autoFocus(direction, keyCode, referenceRect) {
-        // If focus has moved since the last AutoFocus movement, scrolling occured, or an explicit
+    function _dFocus(direction, keyCode, referenceRect) {
+        // If focus has moved since the last DirectionalFocus movement, scrolling occured, or an explicit
         // reference rectangle was given to us, then we invalidate the history rectangle.
-        if (referenceRect || _Global.document.activeElement !== _lastAutoFocusTarget) {
+        if (referenceRect || _Global.document.activeElement !== _lastTarget) {
             _historyRect = null;
-            _lastAutoFocusTarget = null;
-            _cachedLastAutoFocusTargetRect = null;
-        } else if (_lastAutoFocusTarget && _cachedLastAutoFocusTargetRect) {
-            var lastTargetRect = _lastAutoFocusTarget.getBoundingClientRect();
-            if (lastTargetRect.left !== _cachedLastAutoFocusTargetRect.left || lastTargetRect.top !== _cachedLastAutoFocusTargetRect.top) {
+            _lastTarget = null;
+            _cachedLastTargetRect = null;
+        } else if (_lastTarget && _cachedLastTargetRect) {
+            var lastTargetRect = _lastTarget.getBoundingClientRect();
+            if (lastTargetRect.left !== _cachedLastTargetRect.left || lastTargetRect.top !== _cachedLastTargetRect.top) {
                 _historyRect = null;
-                _lastAutoFocusTarget = null;
-                _cachedLastAutoFocusTargetRect = null;
+                _lastTarget = null;
+                _cachedLastTargetRect = null;
             }
         }
 
         var activeElement = _Global.document.activeElement;
-        var lastAutoFocusTarget = _lastAutoFocusTarget;
+        var lastTarget = _lastTarget;
 
         var result = _findNextFocusElementInternal(direction, {
             focusRoot: exports.focusRoot,
             historyRect: _historyRect,
-            referenceElement: _lastAutoFocusTarget,
+            referenceElement: _lastTarget,
             referenceRect: referenceRect
         });
 
@@ -12423,8 +12423,8 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
             } else {
                 updateHistoryRect(direction, result);
             }
-            _lastAutoFocusTarget = result.target;
-            _cachedLastAutoFocusTargetRect = result.targetRect;
+            _lastTarget = result.target;
+            _cachedLastTargetRect = result.targetRect;
 
             if (result.target.tagName === "IFRAME") {
                 var index = _afEnabledFrames.lastIndexOf(result.target.contentWindow);
@@ -12440,7 +12440,7 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
 
                     var message = {};
                     message[CrossDomainMessageConstants.messageDataProperty] = {
-                        type: CrossDomainMessageConstants.autoFocusEnter,
+                        type: CrossDomainMessageConstants.dFocusEnter,
                         direction: direction,
                         referenceRect: refRect
                     };
@@ -12460,7 +12460,7 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
 
                 var message = {};
                 message[CrossDomainMessageConstants.messageDataProperty] = {
-                    type: CrossDomainMessageConstants.autoFocusExit,
+                    type: CrossDomainMessageConstants.dFocusExit,
                     direction: direction,
                     referenceRect: refRect
                 };
@@ -12691,8 +12691,8 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
 
             if ((!referenceElement && !referenceRect) || (referenceElement && referenceElement.tabIndex === -1) || (referenceElement && !referenceElement.parentNode)) {
                 // Note: We need to check to make sure 'parentNode' is not null otherwise there is a case
-                // where _lastAutoFocusTarget is defined, but calling getBoundingClientRect will throw a native exception.
-                // This case happens if the innerHTML of the parent of the _lastAutoFocusTarget is set to "".
+                // where _lastTarget is defined, but calling getBoundingClientRect will throw a native exception.
+                // This case happens if the innerHTML of the parent of the _lastTarget is set to "".
                 // If no valid reference is supplied, we'll use _Global.document.activeElement unless it's the body
                 if (_Global.document.activeElement !== _Global.document.body) {
                     referenceElement = _Global.document.activeElement;
@@ -12721,7 +12721,7 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
             }
 
             if (elementTagName === "IFRAME" && _afEnabledFrames.indexOf(element.contentWindow) === -1) {
-                // Skip IFRAMEs without compatible AutoFocus implementation
+                // Skip IFRAMEs without compatible DirectionalFocus implementation
                 return false;
             }
 
@@ -12788,13 +12788,13 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
             return;
         }
 
-        var keys = Object.keys(exports.autoFocusMappings);
+        var keys = Object.keys(exports.directionalFocusMappings);
         for (var i = 0; i < keys.length; i++) {
             // Note: key is 'left', 'right', 'up', or 'down'
             var key = keys[i];
-            var keyMappings = exports.autoFocusMappings[key];
+            var keyMappings = exports.directionalFocusMappings[key];
             if (keyMappings.indexOf(e.keyCode) >= 0) {
-                if (_autoFocus(key, e.keyCode)) {
+                if (_dFocus(key, e.keyCode)) {
                     e.preventDefault();
                 }
                 return;
@@ -12820,15 +12820,15 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
                 }
                 break;
 
-            case CrossDomainMessageConstants.autoFocusEnter:
+            case CrossDomainMessageConstants.dFocusEnter:
                 // The coordinates stored in data.refRect are already in this frame's coordinate system.
-                // When we get this message we will force-enable AutoFocus to support scenarios where
-                // websites running WinJS are put into an IFRAME and the parent frame has AutoFocus enabled.
-                exports.enableAutoFocus();
-                _autoFocus(data.direction, -1, data.referenceRect);
+                // When we get this message we will force-enable DirectionalFocus to support scenarios where
+                // websites running WinJS are put into an IFRAME and the parent frame has DirectionalFocus enabled.
+                exports.enableDirectionalFocus();
+                _dFocus(data.direction, -1, data.referenceRect);
                 break;
 
-            case CrossDomainMessageConstants.autoFocusExit:
+            case CrossDomainMessageConstants.dFocusExit:
                 var iframe = _getIFrameFromWindow(e.source);
                 if (_Global.document.activeElement !== iframe) {
                     break;
@@ -12839,14 +12839,14 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
                 var refRect = data.referenceRect;
                 refRect.left += iframe.offsetLeft;
                 refRect.top += iframe.offsetTop;
-                _autoFocus(data.direction, -1, refRect);
+                _dFocus(data.direction, -1, refRect);
                 break;
         }
     });
 
     _Global.document.addEventListener("DOMContentLoaded", function () {
         if (_ElementUtilities.hasWinRT && _Global["Windows"] && _Global["Windows"]["Xbox"]) {
-            exports.enableAutoFocus();
+            exports.enableDirectionalFocus();
         }
 
         // If we are running within an iframe, we send a registration message to the parent window
@@ -12862,7 +12862,7 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
 
     // Publish to WinJS namespace
     var toPublish = {
-        autoFocusMappings: exports.autoFocusMappings,
+        directionalFocusMappings: exports.directionalFocusMappings,
         focusRoot: {
             get: function () {
                 return exports.focusRoot;
@@ -12871,16 +12871,16 @@ define('WinJS/Utilities/_AutoFocus',["require", "exports", "../Core/_Global", ".
                 exports.focusRoot = value;
             }
         },
-        enableAutoFocus: exports.enableAutoFocus,
-        disableAutoFocus: exports.disableAutoFocus,
+        enableDirectionalFocus: exports.enableDirectionalFocus,
+        disableDirectionalFocus: exports.disableDirectionalFocus,
         findNextFocusElement: exports.findNextFocusElement,
         moveFocus: exports.moveFocus,
-        _autoFocus: _autoFocus
+        _dFocus: _dFocus
     };
     toPublish = _BaseUtils._merge(toPublish, _Events.eventMixin);
     toPublish["_listeners"] = {};
     var eventSrc = toPublish;
-    _Base.Namespace.define("WinJS.UI.AutoFocus", toPublish);
+    _Base.Namespace.define("WinJS.UI.DirectionalFocus", toPublish);
 });
 
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
@@ -78876,7 +78876,7 @@ define('WinJS',[
     'WinJS/_Signal',
     'WinJS/Scheduler',
     'WinJS/Utilities',
-    'WinJS/Utilities/_AutoFocus',
+    'WinJS/Utilities/_DirectionalFocus',
     'WinJS/Fragments',
     'WinJS/Application',
     'WinJS/Navigation',
