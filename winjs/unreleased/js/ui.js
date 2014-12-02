@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.11.27 ui.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.2 ui.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.11.27 ui.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.2 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -37887,6 +37887,7 @@ define('WinJS/Controls/AppBar/_Constants',[
         menuCommandButtonClass: "win-command-button",
         menuCommandToggleClass: "win-command-toggle",
         menuCommandFlyoutClass: "win-command-flyout",
+        menuCommandFlyoutActivatedClass: "win-command-flyout-activated",
         menuCommandSeparatorClass: "win-command-separator",
         _menuCommandInvokedEvent: "_invoked", // Private event
         menuClass: "win-menu",
@@ -39828,7 +39829,7 @@ define('WinJS/Controls/Flyout',[
                         this.collapseAll(true);
                     }
                 },
-            });
+            });                  
 
             var Flyout = _Base.Class.derive(_Overlay._Overlay, function Flyout_ctor(element, options) {
                 /// <signature helpKeyword="WinJS.UI.Flyout.Flyout">
@@ -40148,25 +40149,27 @@ define('WinJS/Controls/Flyout',[
 
                         Flyout._cascadeManager.appendFlyout(this);
 
-                        // Store what had focus before showing the Flyout.
-                        // This must happen after we hide all other flyouts so that we store the correct element.
+                        // Store what had focus before showing the Flyout. This must happen after we've appended this 
+                        // Flyout to the cascade and subsequently triggered other branches of cascading flyouts to 
+                        // collapse, so that focus has already been restored to the correct element by the previous 
+                        // branch before we try to record it here.
                         this._previousFocus = _Global.document.activeElement;
+
+                        if (!_ElementUtilities.hasClass(this.element, _Constants.menuClass)) {
+                            // Put focus on the first child in the Flyout
+                            this._focusOnFirstFocusableElementOrThis();
+                        } else {
+                            // Make sure the menu has focus, but don't show a focus rect
+                            _Overlay._Overlay._trySetActive(this._element);
+                        }
                     }
                 },
 
                 _endShow: function Flyout_endShow() {
                     // Remember if the IHM was up since we may need to hide it when the flyout hides.
-                    // This check needs to happen after the IHM has a chance to hide itself after we force hide
-                    // all other visible Flyouts.
+                    // This check needs to happen after we've hidden any other visible flyouts from 
+                    // the cascasde as a result of showing this flyout.
                     this._keyboardWasUp = _Overlay._Overlay._keyboardInfo._visible;
-
-                    if (!_ElementUtilities.hasClass(this.element, _Constants.menuClass)) {
-                        // Put focus on the first child in the Flyout
-                        this._focusOnFirstFocusableElementOrThis();
-                    } else {
-                        // Make sure the menu has focus, but don't show a focus rect
-                        _Overlay._Overlay._trySetActive(this._element);
-                    }
                 },
 
                 _isLightDismissible: function Flyout_isLightDismissible() {
@@ -40636,6 +40639,7 @@ define('WinJS/Controls/Flyout',[
                          && (this === _Global.document.activeElement)) {
                         event.preventDefault();
                         event.stopPropagation();
+                        this.winControl._keyboardInvoked = true;
                         this.winControl.hide();
                     } else if (event.shiftKey && event.keyCode === Key.tab
                           && this === _Global.document.activeElement
@@ -40660,6 +40664,7 @@ define('WinJS/Controls/Flyout',[
                     // Else focus is only moving between elements in the flyout.
                     // Doesn't need to be handled by cascadeManager.
                 },
+
 
                 // Create and add a new first div as the first child
                 _addFirstDiv: function Flyout_addFirstDiv() {
@@ -41645,11 +41650,12 @@ define('WinJS/Controls/Menu/_Command',[
     '../../Core/_Base',
     '../../Core/_ErrorFromName',
     '../../Core/_Resources',
+    '../../Promise',
     '../../Utilities/_Control',
     '../../Utilities/_ElementUtilities',
     '../AppBar/_Constants',
     '../Flyout/_Overlay'
-], function menuCommandInit(exports, _Global, _Base, _ErrorFromName, _Resources, _Control, _ElementUtilities, _Constants, _Overlay) {
+], function menuCommandInit(exports, _Global, _Base, _ErrorFromName, _Resources, Promise, _Control, _ElementUtilities, _Constants, _Overlay) {
     "use strict";
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
@@ -41677,7 +41683,7 @@ define('WinJS/Controls/Menu/_Command',[
                 get badButtonElement() { return "Invalid argument: For a button, toggle, or flyout command, the element must be null or a button element"; }
             };
 
-            return _Base.Class.define(function MenuCommand_ctor(element, options) {
+            var MenuCommand = _Base.Class.define(function MenuCommand_ctor(element, options) {
                 /// <signature helpKeyword="WinJS.UI.AppBarCommand.MenuCommand">
                 /// <summary locid="WinJS.UI.MenuCommand.constructor">
                 /// Creates a new MenuCommand object.
@@ -41863,6 +41869,7 @@ define('WinJS/Controls/Menu/_Command',[
                         return flyout;
                     },
                     set: function (value) {
+
                         // Need to update aria-owns with the new ID.
                         var id = value;
                         if (id && typeof id !== "string") {
@@ -41883,6 +41890,10 @@ define('WinJS/Controls/Menu/_Command',[
                         }
                         if (typeof id === "string") {
                             this._element.setAttribute("aria-owns", id);
+                        }
+
+                        if (this._flyout !== value) {
+                            MenuCommand._deactivateFlyoutCommand(this);
                         }
 
                         // Remember it
@@ -41924,7 +41935,11 @@ define('WinJS/Controls/Menu/_Command',[
                         return !!this._element.disabled;
                     },
                     set: function (value) {
-                        this._element.disabled = !!value;
+                        value = !!value;
+                        if (value && this.type === _Constants.typeFlyout) {
+                            MenuCommand._deactivateFlyoutCommand(this);
+                        }
+                        this._element.disabled = value;
                     }
                 },
 
@@ -41945,6 +41960,9 @@ define('WinJS/Controls/Menu/_Command',[
 
                         var style = this._element.style;
                         if (value) {
+                            if (this.type === _Constants.typeFlyout) {
+                                MenuCommand._deactivateFlyoutCommand(this);
+                            }
                             style.visibility = "hidden";
                             style.display = "none";
                         } else {
@@ -42062,7 +42080,6 @@ define('WinJS/Controls/Menu/_Command',[
                     this._flyoutSpan = this._labelSpan.nextElementSibling;
 
                 },
-
                 _sendEvent: function MenuCommand_sendEvent(eventName, detail) {
                     if (!this._disposed) {
                         var event = _Global.document.createEvent("CustomEvent");
@@ -42071,17 +42088,25 @@ define('WinJS/Controls/Menu/_Command',[
                     }
                 },
 
-                _handleClick: function MenuCommand_handleClick(clickEvent) {
-                    var that = this;
-                    function delegateClick() {
-                        that.onclick(clickEvent);
-                    }
+                _invoke: function MenuCommand_invoke(event) {
+                    if (!this.hidden && !this.disabled && !this._disposed) {
+                        if (this._type === _Constants.typeToggle) {
+                            this.selected = !this.selected;
+                        } else if (this._type === _Constants.typeFlyout) {
+                            MenuCommand._activateFlyoutCommand(this);
+                        }
 
-                    //Bubble private 'invoked' event to Menu
-                    this._sendEvent(_Constants._menuCommandInvokedEvent, {
-                        command: this,
-                        delegate: this.onclick ? delegateClick : null
-                    });
+                        if (event && event.type === "click" && this.onclick) {
+                            this.onclick(event);
+                        }
+
+                        // Bubble private 'invoked' event to Menu
+                        this._sendEvent(_Constants._menuCommandInvokedEvent, { command: this });
+                    }
+                },
+
+                _handleClick: function MenuCommand_handleClick(event) {
+                    this._invoke(event);
                 },
 
                 _handleKeyDown: function MenuCommand_handleKeyDown(event) {
@@ -42090,14 +42115,69 @@ define('WinJS/Controls/Menu/_Command',[
                         rightKey = rtl ? Key.leftArrow : Key.rightArrow;
 
                     if (event.keyCode === rightKey && this.type === _Constants.typeFlyout) {
-                        // Bubble private 'invoked' event to Menu
-                        this._sendEvent(_Constants._menuCommandInvokedEvent, { command: this });
+                        this._invoke(event);
 
                         // Prevent the page from scrolling
                         event.preventDefault();
                     }
                 },
+            }, {
+                // Statics
+                _activateFlyoutCommand: function MenuCommand_activateFlyoutCommand(menuCommand) {
+                    // Activates the associated Flyout command and returns a promise once complete.
+                    // A command is considered to be activated once the proper CSS class has been applied and its associated flyout has begun to show.
+                    return new Promise(function (c, e) {
+                        menuCommand = menuCommand.winControl || menuCommand;
+                        var subFlyout = menuCommand.flyout;
+                        // Flyout may not have processAll'd, so this may be a DOM object
+                        if (subFlyout && subFlyout.hidden && subFlyout.show) {
+                            _ElementUtilities.addClass(menuCommand.element, _Constants.menuCommandFlyoutActivatedClass);
+
+                            // Remove activation class from the command if the flyout is ever hidden.
+                            subFlyout.addEventListener("beforehide", function beforeHide() {
+                                subFlyout.removeEventListener("beforehide", beforeHide, false);
+                                _ElementUtilities.removeClass(menuCommand.element, _Constants.menuCommandFlyoutActivatedClass);
+                            }, false);
+
+                            subFlyout.addEventListener("beforeshow", function beforeShow() {
+                                subFlyout.removeEventListener("beforeshow", beforeShow, false);
+                                // We are considered activated once we start showing the flyout.
+                                c();
+                            }, false);
+
+                            subFlyout.show(menuCommand, "right");
+                        } else {
+                            // Could not change command to activated state.
+                            e();
+                        }
+                    });
+                },
+
+                _deactivateFlyoutCommand: function MenuCommand_deactivateFlyoutCommand(menuCommand) {
+                    // Deactivates the associated Flyout command and returns a promise once complete.
+                    // A command is considered to be deactivated once the proper CSS class has been applied and its associated flyout has begun to hide. 
+                    return new Promise(function (c) {
+                        menuCommand = menuCommand.winControl || menuCommand;
+                        _ElementUtilities.removeClass(menuCommand.element, _Constants.menuCommandFlyoutActivatedClass);
+
+                        var subFlyout = menuCommand.flyout;
+                        // Flyout may not have processAll'd, so this may be a DOM object
+                        if (subFlyout && !subFlyout.hidden && subFlyout.hide) {
+
+                            subFlyout.addEventListener("beforehide", function beforeHide() {
+                                subFlyout.removeEventListener("beforehide", beforeHide, false);
+                                c();
+                            }, false);
+
+                            subFlyout.hide();
+                        } else {
+                            // subFlyout does not need to be hidden.
+                            c();
+                        }
+                    });
+                },
             });
+            return MenuCommand;
         })
     });
 
@@ -42153,17 +42233,6 @@ define('WinJS/Controls/Menu',[
                 get requiresCommands() { return "Invalid argument: commands must not be empty"; },
                 get nullCommand() { return "Invalid argument: command must not be null"; },
             };
-
-            function invokeSubFlyout(menuCommand) {
-                var subFlyout = menuCommand._flyout;
-                if (subFlyout) {
-                    // Flyout may not have processAll'd, so this may be a DOM object
-                    subFlyout = subFlyout.winControl || subFlyout;
-                    if (subFlyout && subFlyout.show) {
-                        subFlyout.show(menuCommand, "right");
-                    }
-                }
-            }
 
             function isCommandInMenu(object) {
                 // Verifies that we have a menuCommand element and that it is in a Menu.
@@ -42223,7 +42292,6 @@ define('WinJS/Controls/Menu',[
                 this._element.addEventListener(_Constants._menuCommandInvokedEvent, this._handleCommandInvoked.bind(this), false);
                 this._element.addEventListener("mouseover", this._handleMouseOver.bind(this), false);
                 this._element.addEventListener("mouseout", this._handleMouseOut.bind(this), false);
-                //this._handleMouseMoveBound = this._handleMouseMove.bind(this);
 
                 // Attach our css class
                 _ElementUtilities.addClass(this._element, _Constants.menuClass);
@@ -42462,27 +42530,35 @@ define('WinJS/Controls/Menu',[
                     }
                 },
 
+                _handleFocusIn: function Menu_handleFocusIn(event) {
+                    // Menu focuses commands on mouseover. We need to handle cases involving activated flyout commands 
+                    // to ensure that mousing over different commands in a menu closes that command's sub flyout.
+                    var target = event.target;
+                    if (isCommandInMenu(target)) {
+                        var command = target.winControl;
+                        if (_ElementUtilities.hasClass(command.element, _Constants.menuCommandFlyoutActivatedClass)) {
+                            // If it's an activated 'flyout' typed command, move focus onto the command's subFlyout.
+                            // We expect this will collapse all decendant Flyouts of the subFlyout from the cascade.
+                            command.flyout.element.focus();
+                        } else {
+                            // Deactivate any currently activated command in the Menu to subsequently trigger all subFlyouts descendants to collapse.
+                            var activatedSiblingCommand = this.element.querySelector("." + _Constants.menuCommandFlyoutActivatedClass);
+                            if (activatedSiblingCommand) {
+                                _Command.MenuCommand._deactivateFlyoutCommand(activatedSiblingCommand);
+                            }
+                        }
+                    } else if (target === this.element) {
+                        // The Menu itself is receiving focus. Rely on the Flyout base implementation to notify the cascadeManager.
+                        // We expect this will only happen when other Menu event handling code causes the Menu to focus itself.
+                        Flyout.Flyout.prototype._handleFocusIn.call(this, event);
+                    }
+                },
+
                 _handleCommandInvoked: function Menu_handleCommandInvoked(event) {
+                    // Menu hides when invoking a command commits an action, not when a subFlyout is invoked.
                     var command = event.detail.command;
-                    if (isCommandInMenu(command)) {
-
-                        var shouldHide = true;
-
-                        if (command._type === _Constants.typeToggle) {
-                            command.selected = !command.selected;
-                        } else if (command._type === _Constants.typeFlyout && command._flyout) {
-                            invokeSubFlyout(command);
-                            shouldHide = false;
-                        }
-
-                        if (event.delegate) {
-                            event.delegate();
-                        }
-
-                        if (shouldHide) {
-                            this.hide();
-                        }
-
+                    if (command._type !== _Constants.typeFlyout) {
+                        this._hide();
                     }
                 },
 
@@ -42495,12 +42571,14 @@ define('WinJS/Controls/Menu',[
 
                         if (target.focus) {
                             target.focus();
+                            // remove keyboard focus rect since focus has been triggered by mouse over.
+                            _ElementUtilities.removeClass(target, "win-keyboard");
 
                             if (command.type === _Constants.typeFlyout && command.flyout && command.flyout.hidden) {
                                 this._hoverPromise = this._hoverPromise || Promise.timeout(_Constants.menuCommandHoverDelay).then(
                                     function () {
                                         if (!that.hidden && !that._disposed) {
-                                            invokeSubFlyout(command);
+                                            command._invoke(event);
                                         }
                                         that._hoverPromise = null;
                                     },
@@ -42508,15 +42586,7 @@ define('WinJS/Controls/Menu',[
                                         that._hoverPromise = null;
                                     });
                             }
-
-                            this.element.addEventListener("mousemove", this._handleMouseMoveBound, false);
                         }
-                    }
-                },
-
-                _handleMouseMove: function Menu_handleMouseMove() {
-                    if (this && this.element && this.element.focus && this.element !== _Global.document.activeElement) {
-                        this.element.focus();
                     }
                 },
 
@@ -42530,7 +42600,6 @@ define('WinJS/Controls/Menu',[
                         if (this._hoverPromise) {
                             this._hoverPromise.cancel();
                         }
-                        this.element.removeEventListener("mousemove", this._handleMouseMoveBound, false);
                     }
                 },
 
@@ -42599,7 +42668,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../ToolBar/_Constants", "../Menu/_Command"], function(require, exports, _Constants, _MenuCommandBase) {
+define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Command"], function(require, exports, _MenuCommandBase) {
     var _MenuCommand = (function (_super) {
         __extends(_MenuCommand, _super);
         function _MenuCommand(isAttachedMode, element, options) {
@@ -42611,23 +42680,7 @@ define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../ToolBar/
         }
         _MenuCommand.prototype._handleClick = function (event) {
             this._beforeOnClick && this._beforeOnClick(event);
-            var command = this;
-
-            if (command.type === _Constants.typeToggle) {
-                command.selected = !command.selected;
-            } else if (command.type === _Constants.typeFlyout && command.flyout) {
-                var flyout = command.flyout;
-                if (!flyout.show) {
-                    flyout = flyout.winControl;
-                }
-                if (flyout && flyout.show) {
-                    flyout.show(this.element, "right");
-                }
-            }
-
-            if (command.onclick) {
-                command.onclick(event);
-            }
+            _super.prototype._handleClick.call(this, event);
         };
         return _MenuCommand;
     })(_MenuCommandBase.MenuCommand);

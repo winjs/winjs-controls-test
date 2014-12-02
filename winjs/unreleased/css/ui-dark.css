@@ -3879,6 +3879,7 @@ Menu commands.
   margin-left: 0;
   margin-right: 0;
   text-align: left;
+  width: 100%;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.333;
@@ -5908,15 +5909,15 @@ button[aria-checked=true].win-command:after {
   height: 100%;
   width: 100%;
   background-color: #0078d7;
-  border: 1px solid #0078d7;
-  content: "";
-  top: -1px;
-  /* -1px to account for the focus rect border */
-  left: -1px;
-  /* -1px to account for the focus rect border */
+  opacity: 0.6;
   z-index: -1;
-  opacity: 0.7;
   box-sizing: content-box;
+  content: "";
+  /* We want this pseudo element to cover the border of its parent. */
+  /* Put a 1px border on this element to make it larger and then set its top/left to -1px.*/
+  border: 1px solid #0078d7;
+  top: -1px;
+  left: -1px;
 }
 button.win-command:enabled:-ms-keyboard-active {
   background-color: rgba(255, 255, 255, 0.2);
@@ -6012,6 +6013,22 @@ button.win-command:disabled:active .win-label {
 .win-menu button[aria-checked=true].win-command.win-command:enabled:hover:active {
   background-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
+}
+.win-menu button.win-command-flyout-activated:after,
+.win-menu button.win-command-flyout-activated:after {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #0078d7;
+  opacity: 0.6;
+  content: "";
+  z-index: -1;
+  box-sizing: content-box;
+  /* We want this pseudo element to cover the border of its parent. */
+  /* Put a 1px border on this element to make it larger and then set its top/left to -1px.*/
+  border: #0078d7 1px solid;
+  top: -1px;
+  left: -1px;
 }
 .win-menu button[aria-checked=true].win-command:after,
 .win-menu button[aria-checked=true].win-command:after {
@@ -6234,7 +6251,7 @@ html.win-hoverable button:enabled[aria-checked=true].win-command:hover:after {
   opacity: 0.8;
 }
 html.win-hoverable button:enabled[aria-checked=true].win-command:hover:active:after {
-  opacity: 1;
+  opacity: 0.9;
 }
 html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover,
 html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover,
@@ -6849,15 +6866,15 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   height: 100%;
   width: 100%;
   background-color: #0078d7;
-  border: 1px solid #0078d7;
-  content: "";
-  top: -1px;
-  /* -1px to account for the focus rect border */
-  left: -1px;
-  /* -1px to account for the focus rect border */
+  opacity: 0.4;
   z-index: -1;
-  opacity: 0.7;
   box-sizing: content-box;
+  content: "";
+  /* We want this pseudo element to cover the border of its parent. */
+  /* Put a 1px border on this element to make it larger and then set its top/left to -1px.*/
+  border: 1px solid #0078d7;
+  top: -1px;
+  left: -1px;
 }
 .win-ui-light button.win-command:enabled:-ms-keyboard-active {
   background-color: rgba(0, 0, 0, 0.2);
@@ -6953,6 +6970,22 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
 .win-ui-light .win-menu button[aria-checked=true].win-command.win-command:enabled:hover:active {
   background-color: rgba(0, 0, 0, 0.2);
   color: #000000;
+}
+.win-ui-light.win-menu button.win-command-flyout-activated:after,
+.win-ui-light .win-menu button.win-command-flyout-activated:after {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #0078d7;
+  opacity: 0.4;
+  content: "";
+  z-index: -1;
+  box-sizing: content-box;
+  /* We want this pseudo element to cover the border of its parent. */
+  /* Put a 1px border on this element to make it larger and then set its top/left to -1px.*/
+  border: #0078d7 1px solid;
+  top: -1px;
+  left: -1px;
 }
 .win-ui-light.win-menu button[aria-checked=true].win-command:after,
 .win-ui-light .win-menu button[aria-checked=true].win-command:after {
@@ -7172,10 +7205,10 @@ html.win-hoverable .win-ui-light button[aria-checked=true].win-command:hover {
   background-color: transparent;
 }
 html.win-hoverable .win-ui-light button:enabled[aria-checked=true].win-command:hover:after {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 html.win-hoverable .win-ui-light button:enabled[aria-checked=true].win-command:hover:active:after {
-  opacity: 1;
+  opacity: 0.7;
 }
 html.win-hoverable .win-ui-light.win-toolbar button.win-toolbar-overflowbutton:hover,
 html.win-hoverable .win-ui-light .win-toolbar button.win-toolbar-overflowbutton:hover,
@@ -7264,15 +7297,15 @@ html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-pressed:hove
     height: 100%;
     width: 100%;
     background-color: ButtonText;
-    border: 1px solid ButtonText;
-    content: "";
-    top: -1px;
-    /* -1px to account for the focus rect border */
-    left: -1px;
-    /* -1px to account for the focus rect border */
-    z-index: -1;
     opacity: 1;
+    z-index: -1;
     box-sizing: content-box;
+    content: "";
+    /* We want this pseudo element to cover the border of its parent. */
+    /* Put a 1px border on this element to make it larger and then set its top/left to -1px.*/
+    border: 1px solid ButtonText;
+    top: -1px;
+    left: -1px;
   }
   button.win-command:enabled:-ms-keyboard-active {
     background-color: ButtonText;
@@ -7368,6 +7401,22 @@ html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-pressed:hove
   .win-menu button[aria-checked=true].win-command.win-command:enabled:hover:active {
     background-color: ButtonText;
     color: ButtonFace;
+  }
+  .win-menu button.win-command-flyout-activated:after,
+  .win-menu button.win-command-flyout-activated:after {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: ButtonText;
+    opacity: 0.6;
+    content: "";
+    z-index: -1;
+    box-sizing: content-box;
+    /* We want this pseudo element to cover the border of its parent. */
+    /* Put a 1px border on this element to make it larger and then set its top/left to -1px.*/
+    border: ButtonText 1px solid;
+    top: -1px;
+    left: -1px;
   }
   .win-menu button[aria-checked=true].win-command:after,
   .win-menu button[aria-checked=true].win-command:after {
