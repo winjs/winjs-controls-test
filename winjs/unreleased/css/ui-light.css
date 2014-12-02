@@ -5947,9 +5947,13 @@ button.win-command:disabled:active .win-label {
   background-color: #e6e6e6;
   border-color: #e6e6e6;
 }
+.win-appbar.win-menulayout .win-appbar-menu,
+.win-appbar.win-menulayout .win-appbar-menu,
+.win-appbar.win-menulayout .win-appbar-toolbarcontainer,
+.win-appbar.win-menulayout .win-appbar-toolbarcontainer,
 .win-appbar.win-menulayout .win-toolbar,
 .win-appbar.win-menulayout .win-toolbar {
-  background-color: #e6e6e6;
+  background-color: inherit;
 }
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton,
 .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton {
@@ -6904,9 +6908,13 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   background-color: #1f1f1f;
   border-color: #1f1f1f;
 }
+.win-ui-dark.win-appbar.win-menulayout .win-appbar-menu,
+.win-ui-dark .win-appbar.win-menulayout .win-appbar-menu,
+.win-ui-dark.win-appbar.win-menulayout .win-appbar-toolbarcontainer,
+.win-ui-dark .win-appbar.win-menulayout .win-appbar-toolbarcontainer,
 .win-ui-dark.win-appbar.win-menulayout .win-toolbar,
 .win-ui-dark .win-appbar.win-menulayout .win-toolbar {
-  background-color: #1f1f1f;
+  background-color: inherit;
 }
 .win-ui-dark.win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton,
 .win-ui-dark .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton {
@@ -7335,9 +7343,13 @@ html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-pressed:hover
     background-color: ButtonFace;
     border-color: Highlight;
   }
+  .win-appbar.win-menulayout .win-appbar-menu,
+  .win-appbar.win-menulayout .win-appbar-menu,
+  .win-appbar.win-menulayout .win-appbar-toolbarcontainer,
+  .win-appbar.win-menulayout .win-appbar-toolbarcontainer,
   .win-appbar.win-menulayout .win-toolbar,
   .win-appbar.win-menulayout .win-toolbar {
-    background-color: ButtonFace;
+    background-color: inherit;
   }
   .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton,
   .win-appbar button.win-appbar-invokebutton.win-appbar-invokebutton {
