@@ -25109,11 +25109,10 @@ define('WinJS/Pages/_BasePage',[
                     //
                     this.renderComplete.then(callComplete, callComplete);
 
-                    this.readyComplete = this.renderComplete.then(function () {
+                    this.renderComplete.then(function () {
                         return parentedPromise;
                     }).then(function Pages_ready() {
                         that.ready(element, options);
-                        return that;
                     }).then(
                         null,
                         function Pages_error(err) {
@@ -25317,12 +25316,12 @@ define('WinJS/Pages',[
         /// A promise that is fulfilled when the specified element is parented to the final document.
         /// </param>
         /// <returns type="WinJS.Promise" locid="WinJS.UI.Pages.render_returnValue">
-        /// A promise that is fulfilled when the page is done rendering and is ready
+        /// A promise that is fulfilled when the page is done rendering
         /// </returns>
         /// </signature>
         var Ctor = get(uri);
         var control = new Ctor(element, options, null, parentedPromise);
-        return control.readyComplete;
+        return control.renderComplete;
     }
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI.Pages", {
