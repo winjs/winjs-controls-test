@@ -52918,7 +52918,7 @@ define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], funct
     });
 });
 
-define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Global", "../Core/_Base", "../Core/_BaseUtils", "../Utilities/_ElementUtilities", "../Core/_Events", "../ControlProcessor/_OptionsParser"], function(require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
+define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../Core/_Base", "../Core/_BaseUtils", "../Utilities/_ElementUtilities", "../Core/_Events", "../ControlProcessor/_OptionsParser"], function(require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
     "use strict";
 
     var AttributeNames = {
@@ -52930,7 +52930,7 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
     };
 
     var CrossDomainMessageConstants = {
-        messageDataProperty: "msWinJSDFocusControlMessage",
+        messageDataProperty: "msWinJSXYFocusControlMessage",
         register: "register",
         unregister: "unregister",
         dFocusEnter: "dFocusEnter",
@@ -52965,7 +52965,7 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
         percentInHistoryShadowWeight: 100000
     };
 
-    exports.directionalFocusMappings = {
+    exports.keyCodeMap = {
         left: [_ElementUtilities.Key.leftArrow],
         right: [_ElementUtilities.Key.rightArrow],
         up: [_ElementUtilities.Key.upArrow],
@@ -52992,21 +52992,21 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
     }
     exports.moveFocus = moveFocus;
 
-    function enableDirectionalFocus() {
+    function enableXYFocus() {
         if (!_dFocusEnabled) {
             _Global.document.addEventListener("keydown", _handleKeyEvent);
             _dFocusEnabled = true;
         }
     }
-    exports.enableDirectionalFocus = enableDirectionalFocus;
+    exports.enableXYFocus = enableXYFocus;
 
-    function disableDirectionalFocus() {
+    function disableXYFocus() {
         if (_dFocusEnabled) {
             _Global.document.removeEventListener("keydown", _handleKeyEvent);
             _dFocusEnabled = false;
         }
     }
-    exports.disableDirectionalFocus = disableDirectionalFocus;
+    exports.disableXYFocus = disableXYFocus;
 
     // Privates
     var _dFocusEnabled = false;
@@ -53015,7 +53015,7 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
     var _historyRect;
     var _afEnabledFrames = [];
     function _dFocus(direction, keyCode, referenceRect) {
-        // If focus has moved since the last DirectionalFocus movement, scrolling occured, or an explicit
+        // If focus has moved since the last XYFocus movement, scrolling occured, or an explicit
         // reference rectangle was given to us, then we invalidate the history rectangle.
         if (referenceRect || _Global.document.activeElement !== _lastTarget) {
             _historyRect = null;
@@ -53346,7 +53346,7 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
             }
 
             if (elementTagName === "IFRAME" && _afEnabledFrames.indexOf(element.contentWindow) === -1) {
-                // Skip IFRAMEs without compatible DirectionalFocus implementation
+                // Skip IFRAMEs without compatible XYFocus implementation
                 return false;
             }
 
@@ -53413,11 +53413,11 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
             return;
         }
 
-        var keys = Object.keys(exports.directionalFocusMappings);
+        var keys = Object.keys(exports.keyCodeMap);
         for (var i = 0; i < keys.length; i++) {
             // Note: key is 'left', 'right', 'up', or 'down'
             var key = keys[i];
-            var keyMappings = exports.directionalFocusMappings[key];
+            var keyMappings = exports.keyCodeMap[key];
             if (keyMappings.indexOf(e.keyCode) >= 0) {
                 if (_dFocus(key, e.keyCode)) {
                     e.preventDefault();
@@ -53447,9 +53447,9 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
 
             case CrossDomainMessageConstants.dFocusEnter:
                 // The coordinates stored in data.refRect are already in this frame's coordinate system.
-                // When we get this message we will force-enable DirectionalFocus to support scenarios where
-                // websites running WinJS are put into an IFRAME and the parent frame has DirectionalFocus enabled.
-                exports.enableDirectionalFocus();
+                // When we get this message we will force-enable XYFocus to support scenarios where
+                // websites running WinJS are put into an IFRAME and the parent frame has XYFocus enabled.
+                exports.enableXYFocus();
                 _dFocus(data.direction, -1, data.referenceRect);
                 break;
 
@@ -53471,7 +53471,7 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
 
     _Global.document.addEventListener("DOMContentLoaded", function () {
         if (_ElementUtilities.hasWinRT && _Global["Windows"] && _Global["Windows"]["Xbox"]) {
-            exports.enableDirectionalFocus();
+            exports.enableXYFocus();
         }
 
         // If we are running within an iframe, we send a registration message to the parent window
@@ -53487,7 +53487,7 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
 
     // Publish to WinJS namespace
     var toPublish = {
-        directionalFocusMappings: exports.directionalFocusMappings,
+        keyCodeMap: exports.keyCodeMap,
         focusRoot: {
             get: function () {
                 return exports.focusRoot;
@@ -53496,8 +53496,8 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
                 exports.focusRoot = value;
             }
         },
-        enableDirectionalFocus: exports.enableDirectionalFocus,
-        disableDirectionalFocus: exports.disableDirectionalFocus,
+        enableXYFocus: exports.enableXYFocus,
+        disableXYFocus: exports.disableXYFocus,
         findNextFocusElement: exports.findNextFocusElement,
         moveFocus: exports.moveFocus,
         _dFocus: _dFocus
@@ -53505,7 +53505,7 @@ define('WinJS/Utilities/_DirectionalFocus',["require", "exports", "../Core/_Glob
     toPublish = _BaseUtils._merge(toPublish, _Events.eventMixin);
     toPublish["_listeners"] = {};
     var eventSrc = toPublish;
-    _Base.Namespace.define("WinJS.UI.DirectionalFocus", toPublish);
+    _Base.Namespace.define("WinJS.UI.XYFocus", toPublish);
 });
 
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
@@ -53537,7 +53537,7 @@ define('ui',[
     'WinJS/Controls/ContentDialog',
     'WinJS/Controls/ToolBar',
     'WinJS/Controls/SplitView',
-    'WinJS/Utilities/_DirectionalFocus'
+    'WinJS/Utilities/_XYFocus'
     ], function (_WinJS) {
     "use strict";
 
