@@ -25109,10 +25109,11 @@ define('WinJS/Pages/_BasePage',[
                     //
                     this.renderComplete.then(callComplete, callComplete);
 
-                    this.renderComplete.then(function () {
+                    this.readyComplete = this.renderComplete.then(function () {
                         return parentedPromise;
                     }).then(function Pages_ready() {
                         that.ready(element, options);
+                        return that;
                     }).then(
                         null,
                         function Pages_error(err) {
@@ -25321,7 +25322,12 @@ define('WinJS/Pages',[
         /// </signature>
         var Ctor = get(uri);
         var control = new Ctor(element, options, null, parentedPromise);
-        return control.renderComplete;
+        return control.renderComplete.then(null, function (err) {
+            return Promise.wrapError({
+                error: err,
+                page: control
+            });
+        });
     }
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI.Pages", {
