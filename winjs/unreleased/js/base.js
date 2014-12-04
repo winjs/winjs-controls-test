@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.3 base.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.4 base.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.3 base.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.4 base.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -25109,10 +25109,11 @@ define('WinJS/Pages/_BasePage',[
                     //
                     this.renderComplete.then(callComplete, callComplete);
 
-                    this.renderComplete.then(function () {
+                    this.readyComplete = this.renderComplete.then(function () {
                         return parentedPromise;
                     }).then(function Pages_ready() {
                         that.ready(element, options);
+                        return that;
                     }).then(
                         null,
                         function Pages_error(err) {
@@ -25316,12 +25317,12 @@ define('WinJS/Pages',[
         /// A promise that is fulfilled when the specified element is parented to the final document.
         /// </param>
         /// <returns type="WinJS.Promise" locid="WinJS.UI.Pages.render_returnValue">
-        /// A promise that is fulfilled when the page is done rendering
+        /// A promise that is fulfilled when the page is done rendering and is ready
         /// </returns>
         /// </signature>
         var Ctor = get(uri);
         var control = new Ctor(element, options, null, parentedPromise);
-        return control.renderComplete;
+        return control.readyComplete;
     }
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI.Pages", {
