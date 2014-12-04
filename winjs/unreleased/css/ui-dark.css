@@ -3036,54 +3036,34 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
 .win-hub-viewport {
   height: 100%;
   width: 100%;
-  /* Allow win-hub-surface margin/padding right to work */
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
   -ms-scroll-snap-type: proximity;
 }
 .win-hub-horizontal .win-hub-viewport {
   overflow-x: auto;
   overflow-y: hidden;
+  white-space: nowrap;
 }
 .win-hub-vertical .win-hub-viewport {
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
 }
 .win-hub-surface {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
+  display: inline-block;
 }
 .win-hub-vertical .win-hub-surface {
   width: 100%;
   padding: 15px 0;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
 }
 .win-hub-horizontal .win-hub-surface {
   height: 100%;
   padding: 0 80px;
 }
 .win-hub-section {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
+  display: inline-block;
   padding: 0 40px;
+  vertical-align: top;
+  white-space: normal;
 }
 .win-hub-horizontal .win-hub-section {
   height: 100%;
@@ -3099,12 +3079,10 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   margin-top: 1px;
 }
 .win-hub-section-header {
-  -ms-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
   margin: 4px 0;
   font-size: 20pt;
   text-align: left;
+  height: 51px;
 }
 .win-hub-section-header:lang(ar),
 .win-hub-section-header:lang(dv),
@@ -3190,7 +3168,6 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   outline: none;
 }
 .win-hub-section-header-content {
-  display: inline-block;
   -ms-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
@@ -3241,13 +3218,8 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   font-family: "Segoe UI Symbol", "Symbols";
   content: "\E26C";
 }
-.win-hub-section-content {
-  -ms-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
 .win-hub-horizontal .win-hub-section-content {
-  height: calc(100% - 44px);
+  height: calc(100% - 228px);
 }
 .win-hub-vertical .win-hub-section-content {
   width: 100%;
