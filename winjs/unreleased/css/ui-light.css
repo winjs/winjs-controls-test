@@ -6139,10 +6139,15 @@ button.win-command:disabled:active .win-label {
   background-color: rgba(0, 0, 0, 0.1);
   color: #000000;
 }
-.win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened,
 .win-navbarcommand-button.win-pressed,
 .win-navbarcommand-splitbutton.win-pressed {
   background-color: rgba(0, 0, 0, 0.28);
+}
+.win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened {
+  background-color: rgba(0, 120, 215, 0.4);
+}
+.win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened.win-pressed {
+  background-color: rgba(0, 120, 215, 0.7);
 }
 .win-navbarcommand-button.win-keyboard:focus::before {
   content: "";
@@ -6294,10 +6299,15 @@ html.win-hoverable .win-navbarcommand-button:hover,
 html.win-hoverable .win-navbarcommand-splitbutton:hover {
   background-color: rgba(0, 0, 0, 0.19);
 }
-html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover,
-html.win-hoverable .win-navbarcommand-button.win-pressed:hover,
-html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
+html.win-hoverable .win-navbarcommand-button:hover.win-pressed,
+html.win-hoverable .win-navbarcommand-splitbutton:hover.win-pressed {
   background-color: rgba(0, 0, 0, 0.28);
+}
+html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover {
+  background-color: rgba(0, 120, 215, 0.6);
+}
+html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover.win-pressed {
+  background-color: rgba(0, 120, 215, 0.7);
 }
 .win-ui-dark body {
   background-color: #000000;
@@ -7100,10 +7110,15 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-pressed:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
-.win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened,
 .win-ui-dark .win-navbarcommand-button.win-pressed,
 .win-ui-dark .win-navbarcommand-splitbutton.win-pressed {
   background-color: rgba(255, 255, 255, 0.28);
+}
+.win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened {
+  background-color: rgba(0, 120, 215, 0.6);
+}
+.win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened.win-pressed {
+  background-color: rgba(0, 120, 215, 0.9);
 }
 .win-ui-dark .win-navbarcommand-button.win-keyboard:focus::before {
   content: "";
@@ -7255,10 +7270,15 @@ html.win-hoverable .win-ui-dark .win-navbarcommand-button:hover,
 html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton:hover {
   background-color: rgba(0, 0, 0, 0.19);
 }
-html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover,
-html.win-hoverable .win-ui-dark .win-navbarcommand-button.win-pressed:hover,
-html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-pressed:hover {
+html.win-hoverable .win-ui-dark .win-navbarcommand-button:hover.win-pressed,
+html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton:hover.win-pressed {
   background-color: rgba(0, 0, 0, 0.28);
+}
+html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover {
+  background-color: rgba(0, 120, 215, 0.6);
+}
+html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover.win-pressed {
+  background-color: rgba(0, 120, 215, 0.7);
 }
 @media (-ms-high-contrast) {
   .win-overlay {
