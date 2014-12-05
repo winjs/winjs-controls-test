@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.4 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.5 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.4 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.5 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -22005,7 +22005,7 @@ define('WinJS/BindingTemplate',[
         /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.Binding.Template"><div>Place content here</div></div>]]></htmlSnippet>
         /// <icon src="base_winjs.ui.template.12x12.png" width="12" height="12" />
         /// <icon src="base_winjs.ui.template.16x16.png" width="16" height="16" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Template: _Base.Namespace._lazy(function () {
             function interpretedRender(template, dataContext, container) {
@@ -25952,7 +25952,7 @@ define('WinJS/Controls/HtmlControl',[
         /// <icon src="base_winjs.ui.htmlcontrol.12x12.png" width="12" height="12" />
         /// <icon src="base_winjs.ui.htmlcontrol.16x16.png" width="16" height="16" />
         /// <htmlSnippet><![CDATA[<div data-win-control="WinJS.UI.HtmlControl" data-win-options="{ uri: 'somePage.html' }"></div>]]></htmlSnippet>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         HtmlControl: _Base.Class.define(function HtmlControl_ctor(element, options, complete) {
             /// <signature helpKeyword="WinJS.UI.HtmlControl.HtmlControl">
@@ -45514,8 +45514,7 @@ define('WinJS/Controls/ListView',[
         /// <part name="selectioncheckmark" class="win-selectioncheckmark" locid="WinJS.UI.ListView_part:selectioncheckmark">A selection checkmark.</part>
         /// <part name="groupHeader" class="win-groupheader" locid="WinJS.UI.ListView_part:groupHeader">The header of a group.</part>
         /// <part name="progressbar" class="win-progress" locid="WinJS.UI.ListView_part:progressbar">The progress indicator of the ListView.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         ListView: _Base.Namespace._lazy(function () {
             var AffectedRange = _Base.Class.define(function () {
@@ -52026,8 +52025,7 @@ define('WinJS/Controls/FlipView',[
         /// <part name="rightNavigationButton" class="win-navright" locid="WinJS.UI.FlipView_part:rightNavigationButton">The right navigation button.</part>
         /// <part name="topNavigationButton" class="win-navtop" locid="WinJS.UI.FlipView_part:topNavigationButton">The top navigation button.</part>
         /// <part name="bottomNavigationButton" class="win-navbottom" locid="WinJS.UI.FlipView_part:bottomNavigationButton">The bottom navigation button.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         FlipView: _Base.Namespace._lazy(function () {
 
@@ -53304,8 +53302,7 @@ define('WinJS/Controls/ItemContainer',[
         /// <part name="selectionbackground" class="win-selectionbackground" locid="WinJS.UI.ItemContainer_part:selectionbackground">The background of a selection checkmark.</part>
         /// <part name="selectioncheckmark" class="win-selectioncheckmark" locid="WinJS.UI.ItemContainer_part:selectioncheckmark">A selection checkmark.</part>
         /// <part name="focusedoutline" class="win-focusedoutline" locid="WinJS.UI.ItemContainer_part:focusedoutline">Used to display an outline when the main container has keyboard focus.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         ItemContainer: _Base.Namespace._lazy(function () {
             var strings = {
@@ -54040,8 +54037,7 @@ define('WinJS/Controls/Repeater',[
         /// <icon src="ui_winjs.ui.repeater.16x16.png" width="16" height="16" />
         /// <htmlSnippet><![CDATA[<div data-win-control="WinJS.UI.Repeater"></div>]]></htmlSnippet>
         /// <part name="repeater" class="win-repeater" locid="WinJS.UI.Repeater_part:repeater">The Repeater control itself</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Repeater: _Base.Namespace._lazy(function () {
 
@@ -54554,8 +54550,7 @@ define('WinJS/Controls/DatePicker',[
         /// <icon src="ui_winjs.ui.datepicker.16x16.png" width="16" height="16" />
         /// <htmlSnippet><![CDATA[<div data-win-control="WinJS.UI.DatePicker"></div>]]></htmlSnippet>
         /// <event name="change" locid="WinJS.UI.DatePicker_e:change">Occurs when the current date changes.</event>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         DatePicker: _Base.Namespace._lazy(function () {
             // Constants definition
@@ -55311,8 +55306,7 @@ define('WinJS/Controls/TimePicker',[
         /// <icon src="ui_winjs.ui.timepicker.16x16.png" width="16" height="16" />
         /// <htmlSnippet><![CDATA[<div data-win-control="WinJS.UI.TimePicker"></div>]]></htmlSnippet>
         /// <event name="change" locid="WinJS.UI.TimePicker_e:change">Occurs when the time changes.</event>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         TimePicker: _Base.Namespace._lazy(function () {
             // Constants definition
@@ -55975,8 +55969,7 @@ define('WinJS/Controls/BackButton',[
         /// <htmlSnippet><![CDATA[<button data-win-control="WinJS.UI.BackButton"></button>]]></htmlSnippet>
         /// <part name="BackButton" class="win-navigation-backbutton" locid="WinJS.UI.BackButton_part:BackButton">The BackButton control itself</part>
         /// <part name="BackArrowGlyph" class="win-back" locid="WinJS.UI.BackButton_part:BackArrowGlyph">The Back Arrow glyph</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         BackButton: _Base.Namespace._lazy(function () {
             // Statics
@@ -56165,8 +56158,7 @@ define('WinJS/Controls/Tooltip',[
         /// <event name="beforeclose" bubbles="false" locid="WinJS.UI.Tooltip_e:beforeclose">Raised when the tooltip is about to become hidden.</event>
         /// <event name="closed" bubbles="false" locid="WinJS.UI.Tooltip_e:close">Raised when the tooltip is hidden.</event>
         /// <part name="tooltip" class="win-tooltip" locid="WinJS.UI.Tooltip_e:tooltip">The entire Tooltip control.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Tooltip: _Base.Namespace._lazy(function () {
             var lastCloseTime = 0;
@@ -57128,8 +57120,7 @@ define('WinJS/Controls/Rating',[
         /// <part name="tentative-full" class="win-star win-tentative win-full" locid="WinJS.UI.Rating_part:tentative-full">The full star when the Rating control shows the tentative rating.</part>
         /// <part name="disabled-empty" class="win-star win-disabled win-empty" locid="WinJS.UI.Rating_part:disabled-empty">The empty star when the control is disabled.</part>
         /// <part name="disabled-full" class="win-star win-disabled win-full" locid="WinJS.UI.Rating_part:disabled-full">The full star when the control is disabled.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Rating: _Base.Namespace._lazy(function () {
             var createEvent = _Events._createEventProperty;
@@ -58286,8 +58277,7 @@ define('WinJS/Controls/ToggleSwitch',[
             /// <part name="title" class="win-toggleswitch-header" locid="WinJS.UI.ToggleSwitch_part:title">The main text for the ToggleSwitch control.</part>
             /// <part name="label-on" class="win-toggleswitch-value" locid="WinJS.UI.ToggleSwitch_part:label-on">The text for when the switch is on.</part>
             /// <part name="label-off" class="win-toggleswitch-value" locid="WinJS.UI.ToggleSwitch_part:label-off:">The text for when the switch is off.</part>
-            /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-            /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+            /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
             /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
             ToggleSwitch: _Base.Namespace._lazy(function () {
 
@@ -58672,8 +58662,7 @@ define('WinJS/Controls/SemanticZoom',[
         /// <icon src="ui_winjs.ui.semanticzoom.16x16.png" width="16" height="16" />
         /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.UI.SemanticZoom"><div class="zoomedInContainer" data-win-control="WinJS.UI.ListView"></div><div class="zoomedOutContainer" data-win-control="WinJS.UI.ListView"></div></div>]]></htmlSnippet>
         /// <part name="semanticZoom" class="win-semanticzoom" locid="WinJS.UI.SemanticZoom_part:semanticZoom">The entire SemanticZoom control.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         SemanticZoom: _Base.Namespace._lazy(function () {
             var browserStyleEquivalents = _BaseUtils._browserStyleEquivalents;
@@ -60244,8 +60233,7 @@ define('WinJS/Controls/Pivot/_Item',[
         /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.UI.PivotItem" data-win-options="{header: 'PivotItem Header'}">PivotItem Content</div>]]></htmlSnippet>
         /// <part name="pivotitem" class="win-pivot-item" locid="WinJS.UI.PivotItem_part:pivotitem">The entire PivotItem control.</part>
         /// <part name="content" class="win-pivot-item-content" locid="WinJS.UI.PivotItem_part:content">The content region of the PivotItem.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         PivotItem: _Base.Namespace._lazy(function () {
             var strings = {
@@ -60452,8 +60440,7 @@ define('WinJS/Controls/Pivot',[
         /// <part name="pivot" class="win-pivot" locid="WinJS.UI.Pivot_part:pivot">The entire Pivot control.</part>
         /// <part name="title" class="win-pivot-title" locid="WinJS.UI.Pivot_part:title">The title for the Pivot control.</part>
         /// <part name="header" class="win-pivot-header" locid="WinJS.UI.Pivot_part:header">A header of a Pivot Item.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Pivot: _Base.Namespace._lazy(function () {
             var PT_MOUSE = _ElementUtilities._MSPointerEvent.MSPOINTER_TYPE_MOUSE || "mouse";
@@ -62140,8 +62127,7 @@ define('WinJS/Controls/Hub/_Section',[
         /// <part name="headercontent" class="win-hub-section-header-content" locid="WinJS.UI.HubSection_part:headercontent">The content region of the header region of the HubSection.</part>
         /// <part name="headerchevron" class="win-hub-section-header-chevron" locid="WinJS.UI.HubSection_part:headerchevron">The chevron region of the header region of the HubSection.</part>
         /// <part name="content" class="win-hub-section-content" locid="WinJS.UI.HubSection_part:content">The content region of the HubSection.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         HubSection: _Base.Namespace._lazy(function () {
             var strings = {
@@ -62394,8 +62380,7 @@ define('WinJS/Controls/Hub',[
         /// <part name="progress" class="win-hub-progress" locid="WinJS.UI.Hub_part:progress">The progress indicator for the Hub.</part>
         /// <part name="viewport" class="win-hub-viewport" locid="WinJS.UI.Hub_part:viewport">The viewport of the Hub.</part>
         /// <part name="surface" class="win-hub-surface" locid="WinJS.UI.Hub_part:surface">The scrollable region of the Hub.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Hub: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -63496,7 +63481,7 @@ define('WinJS/Controls/Hub',[
                     if (this._isInteractive(ev.target)) {
                         return;
                     }
-                    
+
                     var leftKey = this._rtl ? Key.rightArrow : Key.leftArrow;
                     var rightKey = this._rtl ? Key.leftArrow : Key.rightArrow;
 
@@ -65656,8 +65641,7 @@ define('WinJS/Controls/Flyout',[
         /// <event name="beforehide" locid="WinJS.UI.Flyout_e:beforehide">Raised just before hiding a flyout.</event>
         /// <event name="afterhide" locid="WinJS.UI.Flyout_e:afterhide">Raised immediately after a flyout is fully hidden.</event>
         /// <part name="flyout" class="win-flyout" locid="WinJS.UI.Flyout_part:flyout">The Flyout control itself.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Flyout: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -65686,12 +65670,12 @@ define('WinJS/Controls/Flyout',[
                     // PRECONDITION: this.reentrancyLock must be false. appendFlyout should only be called from baseFlyoutShow() which is the function responsible for preventing reentrancy.
                     _Log.log && this.reentrancyLock && _Log.log('_CascadeManager is attempting to append a Flyout through reentrancy.', "winjs _CascadeManager", "error");
 
-                    // IF the anchor element for flyoutToAdd is contained within another flyout, 
+                    // IF the anchor element for flyoutToAdd is contained within another flyout,
                     // && that flyout is currently in the cascadingStack, consider that flyout to be the parent of flyoutToAdd:
                     //  Remove from the cascadingStack, any subflyout descendants of the parent flyout.
                     // ELSE flyoutToAdd isn't anchored to any of the Flyouts in the existing cascade
                     //  Collapse the entire cascadingStack to start a new cascade.
-                    // FINALLY: 
+                    // FINALLY:
                     //  add flyoutToAdd to the end of the cascading stack. Monitor it for events.
                     var indexOfParentFlyout = this.indexOfElement(flyoutToAdd._currentAnchor);
                     if (indexOfParentFlyout >= 0) {
@@ -65706,7 +65690,7 @@ define('WinJS/Controls/Flyout',[
                 collapseFlyout: function _CascadeManager_collapseFlyout(flyout) {
                     // Removes flyout param and its subflyout descendants from the _cascadingStack.
                     if (!this.reentrancyLock && flyout && this.indexOf(flyout) >= 0) {
-                        this.reentrancyLock = true; 
+                        this.reentrancyLock = true;
 
                         var subFlyout;
                         while (this.length && flyout !== subFlyout) {
@@ -65770,7 +65754,7 @@ define('WinJS/Controls/Flyout',[
                         target = event.target;
 
                     if (event.keyCode === leftKey) {
-                        // Left key press in a SubFlyout will close that subFlyout and any subFlyouts cascading from it. 
+                        // Left key press in a SubFlyout will close that subFlyout and any subFlyouts cascading from it.
                         var index = this.indexOfElement(target);
                         if (index >= 1) {
                             var subFlyout = this.getAt(index);
@@ -65785,7 +65769,7 @@ define('WinJS/Controls/Flyout',[
                         this.collapseAll(true);
                     }
                 },
-            });                  
+            });
 
             var Flyout = _Base.Class.derive(_Overlay._Overlay, function Flyout_ctor(element, options) {
                 /// <signature helpKeyword="WinJS.UI.Flyout.Flyout">
@@ -66105,9 +66089,9 @@ define('WinJS/Controls/Flyout',[
 
                         Flyout._cascadeManager.appendFlyout(this);
 
-                        // Store what had focus before showing the Flyout. This must happen after we've appended this 
-                        // Flyout to the cascade and subsequently triggered other branches of cascading flyouts to 
-                        // collapse, so that focus has already been restored to the correct element by the previous 
+                        // Store what had focus before showing the Flyout. This must happen after we've appended this
+                        // Flyout to the cascade and subsequently triggered other branches of cascading flyouts to
+                        // collapse, so that focus has already been restored to the correct element by the previous
                         // branch before we try to record it here.
                         this._previousFocus = _Global.document.activeElement;
 
@@ -66123,7 +66107,7 @@ define('WinJS/Controls/Flyout',[
 
                 _endShow: function Flyout_endShow() {
                     // Remember if the IHM was up since we may need to hide it when the flyout hides.
-                    // This check needs to happen after we've hidden any other visible flyouts from 
+                    // This check needs to happen after we've hidden any other visible flyouts from
                     // the cascasde as a result of showing this flyout.
                     this._keyboardWasUp = _Overlay._Overlay._keyboardInfo._visible;
                 },
@@ -66610,7 +66594,7 @@ define('WinJS/Controls/Flyout',[
                     if (!this.element.contains(event.relatedTarget)) {
                         Flyout._cascadeManager.handleFocusIntoFlyout(event);
                     }
-                    // Else focus is only moving between elements in the flyout. 
+                    // Else focus is only moving between elements in the flyout.
                     // Doesn't need to be handled by cascadeManager.
                 },
                 _handleFocusOut: function Flyout_handleFocusOut(event) {
@@ -66948,8 +66932,7 @@ define('WinJS/Controls/AppBar/_Command',[
         /// <part name="appBarCommandIcon" class="win-commandicon" locid="WinJS.UI.AppBarCommand_part:appBarCommandIcon">The AppBarCommand's icon box.</part>
         /// <part name="appBarCommandImage" class="win-commandimage" locid="WinJS.UI.AppBarCommand_part:appBarCommandImage">The AppBarCommand's icon's image formatting.</part>
         /// <part name="appBarCommandLabel" class="win-label" locid="WinJS.UI.AppBarCommand_part:appBarCommandLabel">The AppBarCommand's label</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         AppBarCommand: _Base.Namespace._lazy(function () {
 
@@ -67197,11 +67180,11 @@ define('WinJS/Controls/AppBar/_Command',[
                     },
                     set: function (value) {
                         if (value === undefined || (typeof value === "number" && value >= 0)) {
-                            this._priority = value; 
+                            this._priority = value;
                         } else {
                             throw new _ErrorFromName("WinJS.UI.AppBarCommand.BadPriority", _Resources._formatString(strings.badPriority, "AppBarCommand"));
                         }
-                        
+
                     }
                 },
 
@@ -67626,8 +67609,7 @@ define('WinJS/Controls/Menu/_Command',[
         /// <icon src="ui_winjs.ui.menucommand.16x16.png" width="16" height="16" />
         /// <htmlSnippet><![CDATA[<button data-win-control="WinJS.UI.MenuCommand" data-win-options="{type:'button',label:'Button'}"></button>]]></htmlSnippet>
         /// <part name="MenuCommand" class="win-command" locid="WinJS.UI.MenuCommand_name">The MenuCommand control itself</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         MenuCommand: _Base.Namespace._lazy(function () {
 
@@ -68111,7 +68093,7 @@ define('WinJS/Controls/Menu/_Command',[
 
                 _deactivateFlyoutCommand: function MenuCommand_deactivateFlyoutCommand(menuCommand) {
                     // Deactivates the associated Flyout command and returns a promise once complete.
-                    // A command is considered to be deactivated once the proper CSS class has been applied and its associated flyout has begun to hide. 
+                    // A command is considered to be deactivated once the proper CSS class has been applied and its associated flyout has begun to hide.
                     return new Promise(function (c) {
                         menuCommand = menuCommand.winControl || menuCommand;
                         _ElementUtilities.removeClass(menuCommand.element, _Constants.menuCommandFlyoutActivatedClass);
@@ -68178,8 +68160,7 @@ define('WinJS/Controls/Menu',[
         /// <event name="beforehide" locid="WinJS.UI.Menu_e:beforehide">Raised just before hiding a menu.</event>
         /// <event name="afterhide" locid="WinJS.UI.Menu_e:afterhide">Raised immediately after a menu is fully hidden.</event>
         /// <part name="menu" class="win-menu" locid="WinJS.UI.Menu_part:menu">The Menu control itself</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Menu: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -68394,8 +68375,8 @@ define('WinJS/Controls/Menu',[
                     // Call flyout show
                     this._baseFlyoutShow(anchor, placement, alignment);
 
-                    // We need to adjust MenuCommand layouts based on the various types of 
-                    // commands visible in our Menu, but only after we send the beforeshow 
+                    // We need to adjust MenuCommand layouts based on the various types of
+                    // commands visible in our Menu, but only after we send the beforeshow
                     // event, so the developer has a chance to show or hide more commands.
                     // Flyout's _findPosition will make that call.
                 },
@@ -68487,7 +68468,7 @@ define('WinJS/Controls/Menu',[
                 },
 
                 _handleFocusIn: function Menu_handleFocusIn(event) {
-                    // Menu focuses commands on mouseover. We need to handle cases involving activated flyout commands 
+                    // Menu focuses commands on mouseover. We need to handle cases involving activated flyout commands
                     // to ensure that mousing over different commands in a menu closes that command's sub flyout.
                     var target = event.target;
                     if (isCommandInMenu(target)) {
@@ -68681,8 +68662,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
     /// <part name="toolbar" class="win-toolbar" locid="WinJS.UI.ToolBar_part:toolbar">The entire ToolBar control.</part>
     /// <part name="toolbar-overflowbutton" class="win-toolbar-overflowbutton" locid="WinJS.UI.ToolBar_part:ToolBar-overflowbutton">The toolbar overflow button.</part>
     /// <part name="toolbar-overflowarea" class="win-toolbar-overflowarea" locid="WinJS.UI.ToolBar_part:ToolBar-overflowarea">The container for toolbar commands that overflow.</part>
-    /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-    /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+    /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
     /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
     var ToolBar = (function () {
         function ToolBar(element, options) {
@@ -70419,8 +70399,7 @@ define('WinJS/Controls/AppBar',[
         /// <event name="afterhide" locid="WinJS.UI.AppBar_e:afterhide">Raised immediately after the AppBar is fully hidden.</event>
         /// <part name="appbar" class="win-commandlayout" locid="WinJS.UI.AppBar_part:appbar">The AppBar control itself.</part>
         /// <part name="appBarCustom" class="win-appbar" locid="WinJS.UI.AppBar_part:appBarCustom">Style for a custom layout AppBar.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         AppBar: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -71198,7 +71177,7 @@ define('WinJS/Controls/AppBar',[
                             if (!_Overlay._Overlay._ElementWithFocusPreviousToAppBar) {
                                 _storePreviousFocus(_Global.document.activeElement);
                             }
-                            
+
                             this._layout.setFocusOnShow();
                         }
                     }
@@ -72298,8 +72277,7 @@ define('WinJS/Controls/AutoSuggestBox',[
         /// <part name="autosuggestbox-suggestion-result" class="win-autosuggestbox-suggestion-result" locid="WinJS.UI.AutoSuggestBox_part:Suggestion_Result">Styles the result type suggestion.</part>
         /// <part name="autosuggestbox-suggestion-selected" class="win-autosuggestbox-suggestion-selected" locid="WinJS.UI.AutoSuggestBox_part:Suggestion_Selected">Styles the currently selected suggestion.</part>
         /// <part name="autosuggestbox-suggestion-separator" class="win-autosuggestbox-suggestion-separator" locid="WinJS.UI.AutoSuggestBox_part:Suggestion_Separator">Styles the separator type suggestion.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         AutoSuggestBox: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -73617,8 +73595,7 @@ define('WinJS/Controls/SearchBox',[
         /// <part name="searchbox-suggestion-selected" class="win-searchbox-suggestion-selected" locid="WinJS.UI.SearchBox_part:Suggestion_Selected">
         /// Styles the currently selected suggestion.
         /// </part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         SearchBox: _Base.Namespace._lazy(function () {
 
@@ -73902,8 +73879,7 @@ define('WinJS/Controls/SettingsFlyout',[
         /// <event name="beforehide" locid="WinJS.UI.SettingsFlyout_e:beforehide">Raised just before hiding a SettingsFlyout.</event>
         /// <event name="afterhide" locid="WinJS.UI.SettingsFlyout_e:afterhide">Raised immediately after a SettingsFlyout is fully hidden.</event>
         /// <part name="settings" class="win-settingsflyout" locid="WinJS.UI.SettingsFlyout_part:settings">The SettingsFlyout control itself.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         SettingsFlyout: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -74604,8 +74580,7 @@ define('WinJS/Controls/NavBar/_Command',[
         /// <part name="splitbutton" class="win-navbarcommand-splitbutton" locid="WinJS.UI.NavBarCommand_part:splitbutton">Styles the split button in a NavBarCommand</part>
         /// <part name="icon" class="win-navbarcommand-icon" locid="WinJS.UI.NavBarCommand_part:icon">Styles the icon in the main button of a NavBarCommand.</part>
         /// <part name="label" class="win-navbarcommand-label" locid="WinJS.UI.NavBarCommand_part:label">Styles the label in the main button of a NavBarCommand.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         NavBarCommand: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -75004,8 +74979,7 @@ define('WinJS/Controls/NavBar/_Container',[
         /// <part name="navigationArrow" class="win-navbarcontainer-navarrow" locid="WinJS.UI.NavBarContainer_part:navigationArrow">Styles left and right navigation arrows.</part>
         /// <part name="leftNavigationArrow" class="win-navbarcontainer-navleft" locid="WinJS.UI.NavBarContainer_part:leftNavigationArrow">Styles the left navigation arrow.</part>
         /// <part name="rightNavigationArrow" class="win-navbarcontainer-navright" locid="WinJS.UI.NavBarContainer_part:rightNavigationArrow">Styles the right navigation arrow.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         NavBarContainer: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
@@ -76398,8 +76372,7 @@ define('WinJS/Controls/NavBar',[
         /// <event name="afterhide" locid="WinJS.UI.NavBar_e:afterhide">Raised immediately after the NavBar is fully hidden.</event>
         /// <event name="childrenprocessed" locid="WinJS.UI.NavBar_e:childrenprocessed">Fired when children of NavBar control have been processed from a WinJS.UI.processAll call.</event>
         /// <part name="navbar" class="win-navbar" locid="WinJS.UI.NavBar_part:navbar">Styles the entire NavBar.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         NavBar: _Base.Namespace._lazy(function () {
             var childrenProcessedEventName = "childrenprocessed";
@@ -76609,8 +76582,7 @@ define('WinJS/Controls/ViewBox',[
         /// <icon src="ui_winjs.ui.viewbox.12x12.png" width="12" height="12" />
         /// <icon src="ui_winjs.ui.viewbox.16x16.png" width="16" height="16" />
         /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.UI.ViewBox"><div>ViewBox</div></div>]]></htmlSnippet>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         ViewBox: _Base.Namespace._lazy(function () {
 
@@ -76826,8 +76798,7 @@ define('WinJS/Controls/ContentDialog',[
         /// <part name="contentdialog-commands" class="win-contentdialog-commands" locid="WinJS.UI.ContentDialog_part:contentdialog-commands">The element which contains the dialog's primary and secondary commands.</part>
         /// <part name="contentdialog-primarycommand" class="win-contentdialog-primarycommand" locid="WinJS.UI.ContentDialog_part:contentdialog-primarycommand">The dialog's primary button.</part>
         /// <part name="contentdialog-secondarycommand" class="win-contentdialog-secondarycommand" locid="WinJS.UI.ContentDialog_part:contentdialog-secondarycommand">The dialog's secondary button.</part>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         ContentDialog: _Base.Namespace._lazy(function () {
             var Strings = {
@@ -78302,8 +78273,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
     /// <part name="splitview" class="win-splitview" locid="WinJS.UI.SplitView_part:splitview">The entire SplitView control.</part>
     /// <part name="splitview-pane" class="win-splitview-pane" locid="WinJS.UI.SplitView_part:splitview-pane">The element which hosts the SplitView's pane.</part>
     /// <part name="splitview-content" class="win-splitview-content" locid="WinJS.UI.SplitView_part:splitview-content">The element which hosts the SplitView's content.</part>
-    /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
-    /// <resource type="javascript" src="//WinJS.4.0/js/ui.js" shared="true" />
+    /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
     /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
     var SplitView = (function () {
         function SplitView(element, options) {
@@ -78921,6 +78891,11 @@ define('WinJS',[
     'WinJS/Controls/SplitView'
     ], function (_WinJS) {
     "use strict";
+
+    _WinJS.Namespace.define("WinJS.Utilities", {
+        _require: require,
+        _define: define
+    });
 
     return _WinJS;
 });
