@@ -5112,7 +5112,9 @@ define('WinJS/Core/_BaseUtils',[
         _traceAsyncOperationStarting: _Trace._traceAsyncOperationStarting,
         _traceAsyncOperationCompleted: _Trace._traceAsyncOperationCompleted,
         _traceAsyncCallbackStarting: _Trace._traceAsyncCallbackStarting,
-        _traceAsyncCallbackCompleted: _Trace._traceAsyncCallbackCompleted
+        _traceAsyncCallbackCompleted: _Trace._traceAsyncCallbackCompleted,
+
+        _version: "4.0.0"
     });
 
     _Base.Namespace._moduleDefine(exports, "WinJS", {
