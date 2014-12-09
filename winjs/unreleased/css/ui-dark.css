@@ -5230,66 +5230,66 @@ Hide clear button in search box control.
 }
 .win-splitview.win-splitview-pane-shown.win-splitview-placementtop .win-splitview-pane,
 .win-splitview.win-splitview-pane-shown.win-splitview-placementbottom .win-splitview-pane {
-  height: 320px;
+  height: 60px;
 }
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementtop .win-splitview-panewrapper {
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementtop .win-splitview-panewrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
 }
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementbottom .win-splitview-panewrapper {
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementbottom .win-splitview-panewrapper {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
 }
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft .win-splitview-panewrapper {
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft .win-splitview-panewrapper {
   position: absolute;
   top: 0;
   left: 0;
   right: auto;
   height: 100%;
 }
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ar) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(dv) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(fa) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(he) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ku-Arab) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(pa-Arab) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(prs) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ps) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(sd-Arab) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(syr) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ug) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(ur) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementleft:lang(qps-plocm) .win-splitview-panewrapper {
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(ar) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(dv) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(fa) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(he) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(ku-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(pa-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(prs) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(ps) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(sd-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(syr) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(ug) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(ur) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementleft:lang(qps-plocm) .win-splitview-panewrapper {
   position: absolute;
   top: 0;
   left: auto;
   right: 0;
   height: 100%;
 }
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright .win-splitview-panewrapper {
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright .win-splitview-panewrapper {
   position: absolute;
   top: 0;
   left: auto;
   right: 0;
   height: 100%;
 }
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ar) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(dv) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(fa) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(he) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ku-Arab) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(pa-Arab) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(prs) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ps) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(sd-Arab) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(syr) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ug) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(ur) .win-splitview-panewrapper,
-.win-splitview.win-splitview-pane-shown.win-splitview-overlaymode.win-splitview-placementright:lang(qps-plocm) .win-splitview-panewrapper {
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(ar) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(dv) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(fa) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(he) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(ku-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(pa-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(prs) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(ps) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(sd-Arab) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(syr) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(ug) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(ur) .win-splitview-panewrapper,
+.win-splitview.win-splitview-pane-shown.win-splitview-showndisplayoverlay.win-splitview-placementright:lang(qps-plocm) .win-splitview-panewrapper {
   position: absolute;
   top: 0;
   left: 0;
@@ -5301,13 +5301,16 @@ Hide clear button in search box control.
 }
 .win-splitview.win-splitview-pane-hidden.win-splitview-placementtop .win-splitview-pane,
 .win-splitview.win-splitview-pane-hidden.win-splitview-placementbottom .win-splitview-pane {
-  height: 0;
+  height: 24px;
 }
 .win-splitview.win-splitview-pane-hidden.win-splitview-placementleft .win-splitview-pane,
 .win-splitview.win-splitview-pane-hidden.win-splitview-placementright .win-splitview-pane {
-  width: 0;
+  width: 48px;
 }
-.win-splitview.win-splitview-inlinemode .win-splitview-paneplaceholder {
+.win-splitview.win-splitview-pane-hidden.win-splitview-hiddendisplaynone .win-splitview-pane {
+  display: none;
+}
+.win-splitview.win-splitview-showndisplayinline .win-splitview-paneplaceholder {
   display: none;
 }
 body {
