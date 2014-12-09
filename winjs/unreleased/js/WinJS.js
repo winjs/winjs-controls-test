@@ -62110,7 +62110,7 @@ define('WinJS/Controls/Hub/_Section',[
     '../../Utilities/_Dispose',
     '../../Utilities/_ElementUtilities',
     '../../Utilities/_KeyboardBehavior'
-    ], function hubSectionInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Resources, ControlProcessor, Promise, _Control, _Dispose, _ElementUtilities, _KeyboardBehavior) {
+], function hubSectionInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Resources, ControlProcessor, Promise, _Control, _Dispose, _ElementUtilities, _KeyboardBehavior) {
     "use strict";
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
@@ -62171,9 +62171,9 @@ define('WinJS/Controls/Hub/_Section',[
                 this._headerElement.className = HubSection._ClassName.hubSectionHeader;
                 this._headerElement.innerHTML =
                     '<button type="button" role="link" class="' + HubSection._ClassName.hubSectionInteractive + ' ' + HubSection._ClassName.hubSectionHeaderTabStop + '">' +
-                        '<div class="' +  HubSection._ClassName.hubSectionHeaderWrapper + '" tabindex="-1">' +
-                            '<h2 class="' + HubSection._ClassName.hubSectionHeaderContent + ' ' + HubSection._Constants.ellipsisTypeClassName + ' ' + HubSection._Constants.xLargeTypeClassName + '"></h2>' +
-                            '<span class="' + HubSection._ClassName.hubSectionHeaderChevron + ' ' + HubSection._Constants.ellipsisTypeClassName + ' ' + HubSection._Constants.xLargeTypeClassName + '"></span>' +
+                        '<div class="' + HubSection._ClassName.hubSectionHeaderWrapper + '" tabindex="-1">' +
+                            '<h2 class="' + HubSection._ClassName.hubSectionHeaderContent + ' ' + HubSection._Constants.ellipsisTypeClassName + ' ' + HubSection._Constants.mediumTypeClassName + '"></h2>' +
+                            '<span class="' + HubSection._ClassName.hubSectionHeaderChevron + ' ' + HubSection._Constants.ellipsisTypeClassName + ' ' + HubSection._Constants.mediumTypeClassName + '"></span>' +
                         '</div>' +
                     '</button>';
                 this._headerTabStopElement = this._headerElement.firstElementChild;
@@ -62309,7 +62309,7 @@ define('WinJS/Controls/Hub/_Section',[
                 },
                 _Constants: {
                     ellipsisTypeClassName: "win-type-ellipsis",
-                    xLargeTypeClassName: "win-type-x-large"
+                    mediumTypeClassName: "win-type-medium"
                 },
                 isDeclarativeControlContainer: _BaseUtils.markSupportedForProcessing(function (section, callback) {
                     if (callback === ControlProcessor.processAll) {
