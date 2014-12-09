@@ -66093,8 +66093,8 @@ define('WinJS/Controls/Flyout',[
 
                         // Store what had focus before showing the Flyout. This must happen after we've appended this
                         // Flyout to the cascade and subsequently triggered other branches of cascading flyouts to
-                        // collapse, so that focus has already been restored to the correct element by the previous
-                        // branch before we try to record it here.
+                        // collapse. Ensures that focus has already been restored to the correct element by the 
+                        // previous branch before we try to record it here.
                         this._previousFocus = _Global.document.activeElement;
 
                         if (!_ElementUtilities.hasClass(this.element, _Constants.menuClass)) {
@@ -68079,7 +68079,7 @@ define('WinJS/Controls/Menu/_Command',[
                 // Statics
                 _activateFlyoutCommand: function MenuCommand_activateFlyoutCommand(menuCommand) {
                     // Activates the associated Flyout command and returns a promise once complete.
-                    // A command is considered to be activated once the proper CSS class has been applied and its associated flyout has begun to show.
+                    // A command is considered to be activated once the proper CSS class has been applied and its associated flyout has finished showing.
                     return new Promise(function (c, e) {
                         menuCommand = menuCommand.winControl || menuCommand;
                         var subFlyout = menuCommand.flyout;
@@ -68093,8 +68093,8 @@ define('WinJS/Controls/Menu/_Command',[
                                 _ElementUtilities.removeClass(menuCommand.element, _Constants.menuCommandFlyoutActivatedClass);
                             }, false);
 
-                            subFlyout.addEventListener("beforeshow", function beforeShow() {
-                                subFlyout.removeEventListener("beforeshow", beforeShow, false);
+                            subFlyout.addEventListener("aftershow", function afterShow() {
+                                subFlyout.removeEventListener("aftershow", afterShow, false);
                                 // We are considered activated once we start showing the flyout.
                                 c();
                             }, false);
@@ -68109,7 +68109,7 @@ define('WinJS/Controls/Menu/_Command',[
 
                 _deactivateFlyoutCommand: function MenuCommand_deactivateFlyoutCommand(menuCommand) {
                     // Deactivates the associated Flyout command and returns a promise once complete.
-                    // A command is considered to be deactivated once the proper CSS class has been applied and its associated flyout has begun to hide.
+                    // A command is considered to be deactivated once the proper CSS class has been applied and its associated flyout has finished hiding. 
                     return new Promise(function (c) {
                         menuCommand = menuCommand.winControl || menuCommand;
                         _ElementUtilities.removeClass(menuCommand.element, _Constants.menuCommandFlyoutActivatedClass);
@@ -68118,8 +68118,8 @@ define('WinJS/Controls/Menu/_Command',[
                         // Flyout may not have processAll'd, so this may be a DOM object
                         if (subFlyout && !subFlyout.hidden && subFlyout.hide) {
 
-                            subFlyout.addEventListener("beforehide", function beforeHide() {
-                                subFlyout.removeEventListener("beforehide", beforeHide, false);
+                            subFlyout.addEventListener("afterhide", function afterHide() {
+                                subFlyout.removeEventListener("afterhide", afterHide, false);
                                 c();
                             }, false);
 
