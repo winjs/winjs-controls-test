@@ -12299,7 +12299,8 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
     "use strict";
 
     var AttributeNames = {
-        focusOverride: "data-win-focus"
+        focusOverride: "data-win-xyfocus",
+        focusOverrideLegacy: "data-win-focus"
     };
 
     var ClassNames = {
@@ -12370,28 +12371,28 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
     exports.moveFocus = moveFocus;
 
     function enableXYFocus() {
-        if (!_dFocusEnabled) {
+        if (!_xyFocusEnabled) {
             _Global.document.addEventListener("keydown", _handleKeyEvent);
-            _dFocusEnabled = true;
+            _xyFocusEnabled = true;
         }
     }
     exports.enableXYFocus = enableXYFocus;
 
     function disableXYFocus() {
-        if (_dFocusEnabled) {
+        if (_xyFocusEnabled) {
             _Global.document.removeEventListener("keydown", _handleKeyEvent);
-            _dFocusEnabled = false;
+            _xyFocusEnabled = false;
         }
     }
     exports.disableXYFocus = disableXYFocus;
 
     // Privates
-    var _dFocusEnabled = false;
+    var _xyFocusEnabled = false;
     var _lastTarget;
     var _cachedLastTargetRect;
     var _historyRect;
     var _afEnabledFrames = [];
-    function _dFocus(direction, keyCode, referenceRect) {
+    function _xyFocus(direction, keyCode, referenceRect) {
         // If focus has moved since the last XYFocus movement, scrolling occured, or an explicit
         // reference rectangle was given to us, then we invalidate the history rectangle.
         if (referenceRect || _Global.document.activeElement !== _lastTarget) {
@@ -12527,7 +12528,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
 
         // Handle override
         if (refObj.element) {
-            var manualOverrideOptions = refObj.element.getAttribute(AttributeNames.focusOverride);
+            var manualOverrideOptions = refObj.element.getAttribute(AttributeNames.focusOverride) || refObj.element.getAttribute(AttributeNames.focusOverrideLegacy);
             if (manualOverrideOptions) {
                 var parsedOptions = _OptionsParser.optionsParser(manualOverrideOptions);
 
@@ -12733,7 +12734,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
             }
 
             var style = getComputedStyle(element);
-            if (element.tabIndex === -1 || style.display === "none" || style.visibility === "hidden" || element.disabled) {
+            if (element.getAttribute("tabIndex") === "-1" || style.display === "none" || style.visibility === "hidden" || element.disabled) {
                 // Skip elements that are hidden
                 // Note: We don't check for opacity === 0, because the browser cannot tell us this value accurately.
                 return false;
@@ -12796,7 +12797,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
             var key = keys[i];
             var keyMappings = exports.keyCodeMap[key];
             if (keyMappings.indexOf(e.keyCode) >= 0) {
-                if (_dFocus(key, e.keyCode)) {
+                if (_xyFocus(key, e.keyCode)) {
                     e.preventDefault();
                 }
                 return;
@@ -12827,7 +12828,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
                 // When we get this message we will force-enable XYFocus to support scenarios where
                 // websites running WinJS are put into an IFRAME and the parent frame has XYFocus enabled.
                 exports.enableXYFocus();
-                _dFocus(data.direction, -1, data.referenceRect);
+                _xyFocus(data.direction, -1, data.referenceRect);
                 break;
 
             case CrossDomainMessageConstants.dFocusExit:
@@ -12841,7 +12842,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
                 var refRect = data.referenceRect;
                 refRect.left += iframe.offsetLeft;
                 refRect.top += iframe.offsetTop;
-                _dFocus(data.direction, -1, refRect);
+                _xyFocus(data.direction, -1, refRect);
                 break;
         }
     });
@@ -12877,7 +12878,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
         disableXYFocus: exports.disableXYFocus,
         findNextFocusElement: exports.findNextFocusElement,
         moveFocus: exports.moveFocus,
-        _dFocus: _dFocus
+        _xyFocus: _xyFocus
     };
     toPublish = _BaseUtils._merge(toPublish, _Events.eventMixin);
     toPublish["_listeners"] = {};
