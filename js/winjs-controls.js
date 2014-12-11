@@ -96,7 +96,7 @@ window.addEventListener('load', function()
     // Test if single file version exists
     var mainJSFile = iframe.contentDocument.createElement('script');
     var xhr = new XMLHttpRequest();
-    xhr.open('HEAD', versions[version] + 'js/WinJS.js', false);
+    xhr.open('HEAD', versions[version].replace('../', '') + 'js/WinJS.js', false);
     xhr.send();
     if (xhr.status !== 404)
       mainJSFile.src = versions[version] + 'js/WinJS.js';
