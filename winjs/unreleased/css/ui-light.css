@@ -2635,7 +2635,6 @@ button.win-navigation-backbutton:enabled:hover:active {
 }
 .win-toggleswitch .win-toggleswitch-header {
   max-width: 470px;
-  width: 22em;
   margin-bottom: 14px;
   margin-top: 22px;
   font-size: 15px;
@@ -2698,12 +2697,16 @@ button.win-navigation-backbutton:enabled:hover:active {
   transition: none;
 }
 .win-toggleswitch.win-toggleswitch-off .win-toggleswitch-value-on {
-  height: 0;
   visibility: hidden;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
 }
 .win-toggleswitch.win-toggleswitch-on .win-toggleswitch-value-off {
-  height: 0;
   visibility: hidden;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
 }
 .win-toggleswitch.win-toggleswitch-on .win-toggleswitch-thumb {
   left: 18px;

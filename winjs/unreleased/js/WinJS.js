@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.10 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.11 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.10 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.11 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -58377,8 +58377,9 @@ define('WinJS/Controls/ToggleSwitch',[
                     // Add listeners
                     this._domElement.addEventListener('keydown', this._keyDownHandler.bind(this));
                     _ElementUtilities._addEventListener(this._clickElement, 'pointerdown', this._pointerDownHandler.bind(this));
-                    _ElementUtilities._globalListener.addEventListener(this._domElement, 'pointermove', this._pointerMoveHandler.bind(this));
-                    _ElementUtilities._globalListener.addEventListener(this._domElement, 'pointerup', this._pointerUpHandler.bind(this));
+                    _ElementUtilities._addEventListener(this._clickElement, 'pointercancel', this._pointerCancelHandler.bind(this));
+                    this._boundPointerMove = this._pointerMoveHandler.bind(this);
+                    this._boundPointerUp = this._pointerUpHandler.bind(this);
 
                     // Need mutation observer to listen for aria checked change
                     this._mutationObserver = new _ElementUtilities._MutationObserver(this._ariaChangedHandler.bind(this));
@@ -58537,7 +58538,7 @@ define('WinJS/Controls/ToggleSwitch',[
 
                     },
                     _pointerDownHandler: function ToggleSwitch_pointerDown(e) {
-                        if (this.disabled) {
+                        if (this.disabled || this._mousedown) {
                             return;
                         }
 
@@ -58548,6 +58549,18 @@ define('WinJS/Controls/ToggleSwitch',[
                         this._dragX = this._dragXStart;
                         this._dragging = false;
                         _ElementUtilities.addClass(this._domElement, classPressed);
+
+                        _ElementUtilities._globalListener.addEventListener(this._domElement, 'pointermove', this._boundPointerMove, true);
+                        _ElementUtilities._globalListener.addEventListener(this._domElement, 'pointerup', this._boundPointerUp, true);
+                        if (e.pointerType === _ElementUtilities._MSPointerEvent.MSPOINTER_TYPE_TOUCH) {
+                            _ElementUtilities._setPointerCapture(this._domElement, e.pointerId);
+                        }
+                    },
+                    _pointerCancelHandler: function ToggleSwitch_pointerCancel(e) {
+                        this._resetPressedState();
+                        if (e.pointerType === _ElementUtilities._MSPointerEvent.MSPOINTER_TYPE_TOUCH) {
+                            _ElementUtilities._releasePointerCapture(this._domElement, e.pointerId);
+                        }
                     },
                     _pointerUpHandler: function ToggleSwitch_pointerUp(e) {
                         if (this.disabled) {
@@ -58578,9 +58591,7 @@ define('WinJS/Controls/ToggleSwitch',[
                         }
 
                         // Reset tracking variables and intermediate styles
-                        this._mousedown = false;
-                        this._thumbElement.style.left = '';
-                        _ElementUtilities.removeClass(this._domElement, classPressed);
+                        this._resetPressedState();
                     },
                     _pointerMoveHandler: function ToggleSwitch_pointerMove(e) {
                         if (this.disabled) {
@@ -58615,6 +58626,13 @@ define('WinJS/Controls/ToggleSwitch',[
                         }
 
                         this._thumbElement.style.left = this._dragX + 'px';
+                    },
+                    _resetPressedState: function ToggleSwitch_resetPressedState() {
+                        this._mousedown = false;
+                        this._thumbElement.style.left = '';
+                        _ElementUtilities.removeClass(this._domElement, classPressed);
+                        _ElementUtilities._globalListener.removeEventListener(this._domElement, 'pointermove', this._boundPointerMove, true);
+                        _ElementUtilities._globalListener.removeEventListener(this._domElement, 'pointerup', this._boundPointerUp, true);
                     }
                 });
 
