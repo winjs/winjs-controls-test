@@ -62,10 +62,10 @@ window.addEventListener('load', function()
   //
   var versions =
   {
-    'unreleased': '/winjs/unreleased/',
+    'unreleased': '../winjs/unreleased/',
     '3.0(CDN)': '//cdnjs.cloudflare.com/ajax/libs/winjs/3.0.0/',
-    '2.1': '/winjs/2.1/',
-    '2.0': '/winjs/2.0/',
+    '2.1': '../winjs/2.1/',
+    '2.0': '../winjs/2.0/',
     'none': ''
   };
 
