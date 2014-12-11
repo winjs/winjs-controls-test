@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+</head>
+
+<body>
+  <script>
+    var splitView;
+
+    function initialize()
+    {
+      splitView = document.querySelector('.win-splitview').winControl;
+    }
+
+    function togglePane()
+    {
+      if (splitView.paneHidden)
+        splitView.showPane();
+      else
+        splitView.hidePane();
+    }
+  </script>
+
+  <style>
+    .hamburger
+    {
+      font-size: 24px;
+    }
+  </style>
+
+  <div data-win-control='WinJS.UI.SplitView'>
+    <div class='pane'>
+      <div class='hamburger' onclick='togglePane();'>&#9776;</div>
+    </div>
+
+    <div class='content'>
+      <div>Some content</div>
+    </div>
+  </div>
+
+</body>
+
+</html>
