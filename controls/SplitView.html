@@ -25,19 +25,92 @@
   </script>
 
   <style>
+    body, html
+    {
+      padding: 0;
+      margin: 0;
+    }
+
     .hamburger
     {
       font-size: 24px;
     }
   </style>
 
-  <div data-win-control='WinJS.UI.SplitView'>
+  <div data-win-control='WinJS.UI.SplitView' data-win-options='{shownDisplayMode: "inline", paneHidden: false}'>
     <div class='pane'>
       <div class='hamburger' onclick='togglePane();'>&#9776;</div>
+      <div data-win-control='WinJS.UI.ToggleSwitch'></div>
     </div>
 
     <div class='content'>
-      <div>Some content</div>
+      <div data-win-control='WinJS.UI.Pivot'>
+        <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 1"}'>
+          <button>Push button</button>
+          <input type='button' value='Push button'/>
+          <input type='submit' value='Submit button'/>
+          <input type='reset' value='Reset button'/>
+        </div>
+
+        <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 2"}'>
+          <div>
+            <input type='checkbox' id='checkbox1' />
+            <label for='checkbox1'>checkbox rest state</label>
+            <br />
+            <input type='checkbox' id='checkbox2' checked />
+            <label for='checkbox2'>checkbox checked state</label>
+            <br />
+            <input type='checkbox' id='checkbox3' />
+            <label for='checkbox3'>checkbox indeterminate state</label>
+            <br />
+
+            <input type='checkbox' disabled='true' id='checkbox4' />
+            <label for='checkbox4'>checkbox disabled</label>
+            <br />
+            <input type='checkbox' disabled='true' id='checkbox5' checked />
+            <label for='checkbox5'>checkbox disabled checked</label>
+            <br />
+            <input type='checkbox' disabled='true' id='checkbox6' />
+            <label for='checkbox6'>checkbox indeterminate state</label>
+            <br />
+          </div>
+          <div>
+            <input type='radio' name='radiogroup1' id='radio1' />
+            <label for='radio1'>radio rest state</label>
+            <br />
+            <input type='radio' name='radiogroup1' id='radio2' checked />
+            <label for='radio2'>radio checked state</label>
+            <br />
+
+            <input type='radio' name='radiogroup2' disabled='true' id='radio4' />
+            <label for='radio4'>radio disabled</label>
+            <br />
+            <input type='radio' name='radiogroup2' disabled='true' id='radio5' checked />
+            <label for='radio5'>radio disabled checked</label>
+          </div>
+        </div>
+
+        <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 3"}'>
+          <h3>text box</h3>
+          <input type='text' placeholder='Sample text' />
+          <h3>password box</h3>
+          <input type='password' />
+
+          <h3>tet area</h3>
+          <textarea></textarea>
+        </div>
+
+        <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 5"}'>
+          <div data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: "Sample title text"}'></div>
+          <div data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: "Sample title text", disabled: true}'></div>
+        </div>
+
+        <div data-win-control='WinJS.UI.PivotItem' data-win-options='{header: "Section 6"}'>
+          <input type='range' />
+          <input type='range' disabled='true' />
+        </div>
+
+      </div>
     </div>
   </div>
 
