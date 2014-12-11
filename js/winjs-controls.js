@@ -93,16 +93,19 @@ window.addEventListener('load', function()
   //
   function addJavascript(version, iframe)
   {
-    // Add javascript
-    var base = iframe.contentDocument.createElement('script');
-    var ui = iframe.contentDocument.createElement('script');
-    base.src = versions[version] + 'js/base.js';
-    ui.src = versions[version] + 'js/ui.js';
-    base.async = false;
-    ui.async = false;
+    // Test if single file version exists
+    var mainJSFile = iframe.contentDocument.createElement('script');
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', versions[version] + 'js/WinJS.js', false);
+    xhr.send();
+    if (xhr.status !== 404)
+      mainJSFile.src = versions[version] + 'js/WinJS.js';
+    else
+      mainJSFile.src = versions[version] + 'js/ui.js';
 
-    // Run WinJS
-    ui.onload = function()
+    // Initialize WinJS when the main script loads
+    mainJSFile.async = false;
+    mainJSFile.onload = function()
     {
       if (!iframe.contentWindow.WinJS)
       {
@@ -120,8 +123,16 @@ window.addEventListener('load', function()
         iframe.contentWindow.initialize();
     };
 
-    iframe.contentDocument.head.appendChild(base);
-    iframe.contentDocument.head.appendChild(ui);
+    // Add base.js if main file is ui.js
+    if (xhr.status === 404)
+    {
+      var base = iframe.contentDocument.createElement('script');
+      base.src = versions[version] + 'js/base.js';
+      base.async = false;
+      iframe.contentDocument.head.appendChild(base);
+    }
+
+    iframe.contentDocument.head.appendChild(mainJSFile);
   }
 
   //
@@ -212,4 +223,3 @@ window.addEventListener('load', function()
   var src = document.querySelector('a[href="' + initialUrl + '"]').getAttribute('data-link');
   update(src, parts[0], parts[1]);
 });
-
