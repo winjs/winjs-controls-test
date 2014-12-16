@@ -58545,7 +58545,7 @@ define('WinJS/Controls/ToggleSwitch',[
                         e.preventDefault();
 
                         this._mousedown = true;
-                        this._dragXStart = e.pageX - this._trackElement.offsetLeft;
+                        this._dragXStart = e.pageX - this._trackElement.getBoundingClientRect().left;
                         this._dragX = this._dragXStart;
                         this._dragging = false;
                         _ElementUtilities.addClass(this._domElement, classPressed);
@@ -58578,9 +58578,11 @@ define('WinJS/Controls/ToggleSwitch',[
 
                         // If the thumb is being dragged, pick a new value based on what the thumb
                         // was closest to
+                        var trackRect = this._trackElement.getBoundingClientRect();
+                        var thumbRect = this._thumbElement.getBoundingClientRect();
                         var isRTL = _Global.getComputedStyle(this._domElement).direction === 'rtl';
                         if (this._dragging) {
-                            var maxX = this._trackElement.offsetWidth - this._thumbElement.offsetWidth;
+                            var maxX = trackRect.width - thumbRect.width;
                             this.checked = isRTL ? this._dragX < maxX / 2 : this._dragX >= maxX / 2;
                             this._dragging = false;
                             _ElementUtilities.removeClass(this._domElement, classDragging);
@@ -58607,16 +58609,18 @@ define('WinJS/Controls/ToggleSwitch',[
                         e.preventDefault();
 
                         // Get pointer x coord relative to control
-                        var localMouseX = e.pageX - this._trackElement.offsetLeft;
+                        var trackRect = this._trackElement.getBoundingClientRect();
+                        var localMouseX = e.pageX - trackRect.left;
 
                         // Not dragging if mouse is outside track
-                        if (localMouseX > this._trackElement.offsetWidth) {
+                        if (localMouseX > trackRect.width) {
                             return;
                         }
 
                         // Calculate a position for the thumb
-                        var maxX = this._trackElement.offsetWidth - this._thumbElement.offsetWidth - 6;
-                        this._dragX = Math.min(maxX, localMouseX - this._thumbElement.offsetWidth / 2);
+                        var thumbRect = this._thumbElement.getBoundingClientRect();
+                        var maxX = trackRect.width - thumbRect.width - 6;
+                        this._dragX = Math.min(maxX, localMouseX - thumbRect.width / 2);
                         this._dragX = Math.max(2, this._dragX);
 
                         // Calculate if this pointermove constitutes switching to drag mode
@@ -58644,6 +58648,7 @@ define('WinJS/Controls/ToggleSwitch',[
         });
     }
 );
+
 
 define('require-style!less/styles-semanticzoom',[],function(){});
 
