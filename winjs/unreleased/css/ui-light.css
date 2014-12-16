@@ -3499,9 +3499,9 @@ AppBar
 .win-appbar.win-menulayout.win-appbar-hiding .win-appbar-invokebutton {
   visibility: hidden;
 }
-.win-appbar.win-menulayout.win-appbar-showing .win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowbutton,
-.win-appbar.win-menulayout.win-appbar-shown .win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowbutton,
-.win-appbar.win-menulayout.win-appbar-hiding .win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowbutton {
+.win-appbar.win-menulayout.win-appbar-showing .win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowbutton,
+.win-appbar.win-menulayout.win-appbar-shown .win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowbutton,
+.win-appbar.win-menulayout.win-appbar-hiding .win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowbutton {
   visibility: visible;
 }
 .win-appbar .win-appbar-invokebutton {
@@ -4278,17 +4278,17 @@ Settings Pane
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
 }
-.win-toolbar.win-toolbar-flyoutmenu {
+.win-toolbar.win-toolbar-showndisplayreduced {
   min-width: 68px;
   /* enough for one primary command */
 }
-.win-toolbar.win-toolbar-flyoutmenu > .win-toolbar-overflowarea {
+.win-toolbar.win-toolbar-showndisplayreduced > .win-toolbar-overflowarea {
   display: none;
 }
-.win-toolbar.win-toolbar-inlinemenu {
+.win-toolbar.win-toolbar-showndisplayfull {
   min-width: 320px;
 }
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea {
+.win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowarea {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -4302,11 +4302,11 @@ Settings Pane
   overflow-y: auto;
   padding: 0;
 }
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea.win-menu {
+.win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowarea.win-menu {
   max-width: inherit;
   /* Turn off max-width styles from .win-menu */
 }
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea button.win-command {
+.win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowarea button.win-command {
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -4319,14 +4319,14 @@ Settings Pane
   overflow: hidden;
   width: auto;
 }
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowarea hr.win-command {
+.win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowarea hr.win-command {
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   height: 2px;
   margin: 6px 12px 4px 12px;
 }
-.win-toolbar.win-toolbar-inlinemenu .win-toolbar-overflowbutton {
+.win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowbutton {
   min-height: 24px;
   visibility: hidden;
 }

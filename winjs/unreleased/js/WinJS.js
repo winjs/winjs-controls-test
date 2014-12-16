@@ -66698,14 +66698,20 @@ define('WinJS/Controls/ToolBar/_Constants',["require", "exports"], function(requ
     exports.ellipsisCssClass = "win-toolbar-ellipsis";
     exports.overflowAreaCssClass = "win-toolbar-overflowarea";
     exports.overflowContentFlyoutCssClass = "win-toolbar-contentflyout";
-    exports.flyoutMenuCssClass = "win-toolbar-flyoutmenu";
-    exports.inlineMenuCssClass = "win-toolbar-inlinemenu";
+    exports.shownDisplayReducedCssClass = "win-toolbar-showndisplayreduced";
+    exports.shownDisplayFullCssClass = "win-toolbar-showndisplayfull";
     exports.emptyToolBarCssClass = "win-toolbar-empty";
     exports.menuCssClass = "win-menu";
     exports.menuContainsToggleCommandClass = "win-menu-containstogglecommand";
     exports.menuContainsFlyoutCommandClass = "win-menu-containsflyoutcommand";
 
     exports.contentMenuCommandDefaultLabel = "Custom content";
+
+    // Constants for shownDisplayModes
+    exports.shownDisplayModes = {
+        full: "full",
+        reduced: "reduced"
+    };
 
     // Constants for commands
     exports.typeSeparator = "separator";
@@ -68759,10 +68765,13 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
 
             this._setupTree();
 
-            if (!options.data) {
+            if (!options.data || !options.shownDisplayMode) {
                 // Shallow copy object so we can modify it.
                 options = _BaseUtils._shallowCopy(options);
-                options.data = this._getDataFromDOMElements();
+
+                // Set defaults
+                options.data = options.data || this._getDataFromDOMElements();
+                options.shownDisplayMode = options.shownDisplayMode || _Constants.shownDisplayModes.reduced;
             }
 
             _Control.setOptions(this, options);
@@ -68805,35 +68814,35 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             configurable: true
         });
 
-        Object.defineProperty(ToolBar.prototype, "inlineMenu", {
-            /// <field type="Boolean" locid="WinJS.UI.ToolBar.inlineMenu" helpKeyword="WinJS.UI.ToolBar.inlineMenu">
-            /// Indicates whether the commands that overflow should be displayed in an inline menu or not
+        Object.defineProperty(ToolBar.prototype, "shownDisplayMode", {
+            /// <field type="String" defaultValue="reduced" isAdvanced="true">
+            /// Gets/Sets how ToolBar will display overflow commands while shown. Values are "reduced" and "full".
             /// </field>
             get: function () {
-                return !!this._inlineMenu;
+                return this._shownDisplayMode;
             },
             set: function (value) {
-                this._writeProfilerMark("set_inlineMenu,info");
+                this._writeProfilerMark("set_shownDisplayMode,info");
 
-                value = !!value;
-                if (value === this._inlineMenu) {
+                if (value === this._shownDisplayMode) {
                     return;
                 }
 
-                this._inlineMenu = value;
-
-                if (!value) {
-                    _ElementUtilities.addClass(this.element, _Constants.flyoutMenuCssClass);
-                    _ElementUtilities.removeClass(this.element, _Constants.inlineMenuCssClass);
-                } else {
-                    _ElementUtilities.addClass(this.element, _Constants.inlineMenuCssClass);
-                    _ElementUtilities.removeClass(this.element, _Constants.flyoutMenuCssClass);
+                if (value === _Constants.shownDisplayModes.full) {
+                    this._shownDisplayMode = _Constants.shownDisplayModes.full;
+                    _ElementUtilities.addClass(this.element, _Constants.shownDisplayFullCssClass);
+                    _ElementUtilities.removeClass(this.element, _Constants.shownDisplayReducedCssClass);
                     if (!this._inlineOverflowArea) {
                         this._inlineOverflowArea = _Global.document.createElement("div");
                         _ElementUtilities.addClass(this._inlineOverflowArea, _Constants.overflowAreaCssClass);
                         _ElementUtilities.addClass(this._inlineOverflowArea, _Constants.menuCssClass);
                         this.element.appendChild(this._inlineOverflowArea);
                     }
+                } else {
+                    // 'reduced' is default
+                    this._shownDisplayMode = _Constants.shownDisplayModes.reduced;
+                    _ElementUtilities.addClass(this.element, _Constants.shownDisplayReducedCssClass);
+                    _ElementUtilities.removeClass(this.element, _Constants.shownDisplayFullCssClass);
                 }
                 if (!this._initializing) {
                     this._positionCommands();
@@ -68846,7 +68855,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
         Object.defineProperty(ToolBar.prototype, "extraClass", {
             /// <field type="String" locid="WinJS.UI.ToolBar.extraClass" helpKeyword="WinJS.UI.ToolBar.extraClass">
             /// Gets or sets the extra CSS class that is applied to the host DOM element, and the corresponding
-            /// overflow menu created by the ToolBar when its inlineMenu property is false.
+            /// overflow menu created by the ToolBar when its shownDisplayMode property is 'reduced'.
             /// </field>
             get: function () {
                 return this._extraClass;
@@ -68959,7 +68968,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 }
             });
             this._overflowButtonWidth = _ElementUtilities.getTotalWidth(this._overflowButton);
-            _ElementUtilities.addClass(this.element, _Constants.flyoutMenuCssClass);
+            _ElementUtilities.addClass(this.element, _Constants.shownDisplayReducedCssClass);
         };
 
         ToolBar.prototype._getFocusableElementsInfo = function () {
@@ -68969,7 +68978,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 focusedIndex: -1
             };
             var elementsInReach = Array.prototype.slice.call(this._mainActionArea.children);
-            if (this.inlineMenu && _Global.getComputedStyle(this._inlineOverflowArea).visibility !== "hidden") {
+            if (this.shownDisplayMode === _Constants.shownDisplayModes.full && _Global.getComputedStyle(this._inlineOverflowArea).visibility !== "hidden") {
                 elementsInReach = elementsInReach.concat(Array.prototype.slice.call(this._inlineOverflowArea.children));
             }
 
@@ -69170,7 +69179,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
 
                         case Key.end:
                             var index = focusableElementsInfo.elements.length - 1;
-                            if (!this.inlineMenu && this._isElementFocusable(this._overflowButton)) {
+                            if (this.shownDisplayMode === _Constants.shownDisplayModes.reduced && this._isElementFocusable(this._overflowButton)) {
                                 // In detached mode, the end key goes to the last command, not the overflow button,
                                 // which is the last element when it is visible.
                                 index = Math.max(0, index - 1);
@@ -69262,9 +69271,9 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             for (var i = 0, len = sortedCommandsInfo.length; i < len; i++) {
                 availableWidth -= sortedCommandsInfo[i].width;
 
-                // The overflow button needs space if there are secondary commands, inlineMenu is on,
+                // The overflow button needs space if there are secondary commands, shownDisplayMode is 'full',
                 // or we are not evaluating the last command.
-                overflowButtonSpace = (this.inlineMenu || hasSecondaryCommands || (i < len - 1) ? this._overflowButtonWidth : 0);
+                overflowButtonSpace = (this.shownDisplayMode === _Constants.shownDisplayModes.full || hasSecondaryCommands || (i < len - 1) ? this._overflowButtonWidth : 0);
 
                 if (availableWidth - overflowButtonSpace < 0) {
                     maxPriority = sortedCommandsInfo[i].priority - 1;
@@ -69386,7 +69395,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
 
         ToolBar.prototype._getMenuCommand = function (command) {
             var _this = this;
-            var menuCommand = new _ToolBarMenuCommand._MenuCommand(this.inlineMenu, null, {
+            var menuCommand = new _ToolBarMenuCommand._MenuCommand(this.shownDisplayMode === _Constants.shownDisplayModes.full, null, {
                 label: command.label,
                 type: (command.type === _Constants.typeContent ? _Constants.typeFlyout : command.type) || _Constants.typeButton,
                 disabled: command.disabled,
@@ -69423,7 +69432,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
         };
 
         ToolBar.prototype._setupOverflowArea = function (additionalCommands) {
-            if (this.inlineMenu) {
+            if (this.shownDisplayMode === _Constants.shownDisplayModes.full) {
                 // Inline menu mode always has the overflow button hidden
                 this._overflowButton.style.display = "";
 
@@ -69461,7 +69470,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             // Add separator between primary and secondary command if applicable
             var secondaryCommandsLength = this._secondaryCommands.length;
             if (additionalCommands.length > 0 && secondaryCommandsLength > 0) {
-                var separator = new _ToolBarMenuCommand._MenuCommand(this.inlineMenu, null, {
+                var separator = new _ToolBarMenuCommand._MenuCommand(this.shownDisplayMode === _Constants.shownDisplayModes.full, null, {
                     type: _Constants.typeSeparator
                 });
                 this._inlineOverflowArea.appendChild(separator.element);
@@ -70275,7 +70284,9 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 },
 
                 _animationComplete: function _AppBarMenuLayout_animationComplete() {
-                    this._animating = false;
+                    if (!this._disposed) {
+                        this._animating = false;
+                    }
                 },
 
                 _createToolBar: function _AppBarMenuLayout_createToolBar(commands) {
@@ -70290,7 +70301,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
 
                     this._toolbar = new ToolBar.ToolBar(this._toolbarEl, {
                         data: new BindingList.List(this._originalCommands),
-                        inlineMenu: true
+                        shownDisplayMode: 'full',
                     });
 
                     var that = this;
@@ -70310,21 +70321,23 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 },
 
                 _positionToolBar: function _AppBarMenuLayout_positionToolBar() {
-                    this._writeProfilerMark("_positionToolBar,info");
+                    if (!this._disposed) {
+                        this._writeProfilerMark("_positionToolBar,info");
 
-                    var menuOffset = this._toolbarEl.offsetHeight - ((this._isMinimal() && !this._isBottom()) ? 0 : this.appBarEl.offsetHeight);
-                    var toolbarOffset = this._toolbarEl.offsetHeight - (this._isMinimal() ? 0 : this.appBarEl.offsetHeight);
+                        var menuOffset = this._toolbarEl.offsetHeight - ((this._isMinimal() && !this._isBottom()) ? 0 : this.appBarEl.offsetHeight);
+                        var toolbarOffset = this._toolbarEl.offsetHeight - (this._isMinimal() ? 0 : this.appBarEl.offsetHeight);
 
-                    // Ensure that initial position is correct
-                    this._toolbarContainer.style[this._tranformNames.scriptName] = "";
-                    this._menu.style[this._tranformNames.scriptName] = "";
-                    this._toolbarEl.style[this._tranformNames.scriptName] = "";
+                        // Ensure that initial position is correct
+                        this._toolbarContainer.style[this._tranformNames.scriptName] = "";
+                        this._menu.style[this._tranformNames.scriptName] = "";
+                        this._toolbarEl.style[this._tranformNames.scriptName] = "";
 
-                    this._toolbarContainer.style[this._tranformNames.scriptName] = "translateY(0px)";
-                    this._menu.style[this._tranformNames.scriptName] = "translateY(-" + menuOffset + 'px)';
-                    this._toolbarEl.style[this._tranformNames.scriptName] = "translateY(" + toolbarOffset + 'px)';
+                        this._toolbarContainer.style[this._tranformNames.scriptName] = "translateY(0px)";
+                        this._menu.style[this._tranformNames.scriptName] = "translateY(-" + menuOffset + 'px)';
+                        this._toolbarEl.style[this._tranformNames.scriptName] = "translateY(" + toolbarOffset + 'px)';
 
-                    this._initialized = true;
+                        this._initialized = true;
+                    }
                 },
 
                 _animateToolBarEntrance: function _AppBarMenuLayout_animateToolBarEntrance() {
