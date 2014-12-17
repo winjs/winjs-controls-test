@@ -913,6 +913,8 @@ button[type=submit] {
   padding: 4px 8px;
   border-width: 2px;
   background-clip: border-box;
+  border-radius: 0;
+  -webkit-appearance: none;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.333;
@@ -1012,6 +1014,7 @@ select {
   border-width: 2px;
   background-clip: border-box;
   box-sizing: border-box;
+  border-radius: 0;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.333;
