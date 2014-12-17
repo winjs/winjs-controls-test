@@ -1008,7 +1008,8 @@ input[type=file]::-ms-browse {
   line-height: 1.333;
 }
 select {
-  min-width: 296px;
+  min-width: 56px;
+  max-width: 368px;
   min-height: 32px;
   margin: 8px 0;
   outline: 0;
@@ -1033,6 +1034,7 @@ select::-ms-expand {
 }
 select[multiple] {
   padding: 0 0 0 12px;
+  vertical-align: bottom;
 }
 option {
   font-size: 15px;
@@ -1042,8 +1044,10 @@ option {
 progress {
   width: 180px;
   height: 4px;
-  border-style: none;
   -webkit-appearance: none;
+}
+progress:not(:indeterminate) {
+  border-style: none;
 }
 progress::-ms-fill {
   border-style: none;
@@ -1116,6 +1120,8 @@ input[type=range] {
   -webkit-appearance: none;
   width: 280px;
   height: 22px;
+  padding-top: 17px;
+  padding-bottom: 32px;
 }
 input[type=range]::-ms-track {
   height: 2px;
@@ -5413,12 +5419,14 @@ input[type=radio]:disabled::-ms-check {
 }
 progress {
   color: #0078d7;
+}
+progress:not(:indeterminate) {
   background-color: rgba(255, 255, 255, 0.2);
 }
 progress::-webkit-progress-value {
   background-color: #0078d7;
 }
-progress::-moz-progress-bar {
+progress:not(:indeterminate)::-moz-progress-bar {
   background-color: #0078d7;
 }
 progress.win-ring {
@@ -6384,12 +6392,14 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 }
 .win-ui-light progress {
   color: #0078d7;
+}
+.win-ui-light progress:not(:indeterminate) {
   background-color: rgba(0, 0, 0, 0.2);
 }
 .win-ui-light progress::-webkit-progress-value {
   background-color: #0078d7;
 }
-.win-ui-light progress::-moz-progress-bar {
+.win-ui-light progress:not(:indeterminate)::-moz-progress-bar {
   background-color: #0078d7;
 }
 .win-ui-light progress.win-ring {
