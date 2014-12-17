@@ -825,11 +825,6 @@ select,
 option {
   font-family: "Segoe UI", "Segoe WP", "sans-serif", "Segoe UI Symbol", "Symbols";
 }
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
 input[type=text],
 input[type=password],
 input[type=email],
