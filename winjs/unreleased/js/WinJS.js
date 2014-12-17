@@ -12400,7 +12400,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
             _lastTarget = null;
             _cachedLastTargetRect = null;
         } else if (_lastTarget && _cachedLastTargetRect) {
-            var lastTargetRect = _lastTarget.getBoundingClientRect();
+            var lastTargetRect = _toIRect(_lastTarget.getBoundingClientRect());
             if (lastTargetRect.left !== _cachedLastTargetRect.left || lastTargetRect.top !== _cachedLastTargetRect.top) {
                 _historyRect = null;
                 _lastTarget = null;
@@ -12692,7 +12692,7 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
             var refElement;
             var refRect;
 
-            if ((!referenceElement && !referenceRect) || (referenceElement && referenceElement.tabIndex === -1) || (referenceElement && !referenceElement.parentNode)) {
+            if ((!referenceElement && !referenceRect) || (referenceElement && !referenceElement.parentNode)) {
                 // Note: We need to check to make sure 'parentNode' is not null otherwise there is a case
                 // where _lastTarget is defined, but calling getBoundingClientRect will throw a native exception.
                 // This case happens if the innerHTML of the parent of the _lastTarget is set to "".
