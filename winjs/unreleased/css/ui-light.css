@@ -5196,6 +5196,18 @@ Hide clear button in search box control.
   /* 4px of space between each command */
   white-space: nowrap;
 }
+.win-clickeater {
+  background-color: transparent;
+  width: 110%;
+  height: 110%;
+  left: -5%;
+  top: -5%;
+  position: fixed;
+  touch-action: none;
+  outline: 1px solid Purple;
+  /*Necessary to block passthrough over webviews*/
+  -ms-high-contrast-adjust: none;
+}
 .win-splitview {
   position: relative;
   width: 100%;
