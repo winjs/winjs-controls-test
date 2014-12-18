@@ -5246,12 +5246,18 @@ Hide clear button in search box control.
   flex: 0 0 auto;
   overflow: hidden;
 }
-.win-splitview .win-splitview-content {
+.win-splitview .win-splitview-contentwrapper {
+  position: relative;
   z-index: 0;
-  -ms-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
+  -ms-flex: 1 1 0%;
+  -webkit-flex: 1 1 0%;
+  flex: 1 1 0%;
   overflow: hidden;
+}
+.win-splitview .win-splitview-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 .win-splitview.win-splitview-pane-shown.win-splitview-placementleft .win-splitview-pane,
 .win-splitview.win-splitview-pane-shown.win-splitview-placementright .win-splitview-pane {

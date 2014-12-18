@@ -78414,6 +78414,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         paneShown: "win-splitview-pane-shown",
         _panePlaceholder: "win-splitview-paneplaceholder",
         _paneWrapper: "win-splitview-panewrapper",
+        _contentWrapper: "win-splitview-contentwrapper",
         // placement
         _placementLeft: "win-splitview-placementleft",
         _placementRight: "win-splitview-placementright",
@@ -79073,6 +79074,16 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             var panePlaceholderEl = _Global.document.createElement("div");
             panePlaceholderEl.className = ClassNames._panePlaceholder;
 
+            // contentWrapper is an extra element we need to allow heights to be specified as percentages (e.g. height: 100%)
+            // for elements within the content area. It works around this Chrome bug:
+            //   Issue 428049: 100% height doesn't work on child of a definite-flex-basis flex item (in vertical flex container)
+            //   https://code.google.com/p/chromium/issues/detail?id=428049
+            // The workaround is that putting a position: absolute element (_dom.content) within the flex item (_dom.contentWrapper)
+            // allows percentage heights to work within the absolutely positioned element (_dom.content).
+            var contentWrapperEl = _Global.document.createElement("div");
+            contentWrapperEl.className = ClassNames._contentWrapper;
+            contentWrapperEl.appendChild(contentEl);
+
             root["winControl"] = this;
             _ElementUtilities.addClass(root, ClassNames.splitView);
             _ElementUtilities.addClass(root, "win-disposable");
@@ -79082,7 +79093,8 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 pane: paneEl,
                 paneWrapper: paneWrapperEl,
                 panePlaceholder: panePlaceholderEl,
-                content: contentEl
+                content: contentEl,
+                contentWrapper: contentWrapperEl
             };
         };
 
@@ -79102,11 +79114,11 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         };
 
         SplitView.prototype._setContentRect = function (contentRect) {
-            var contentStyle = this._dom.content.style;
-            contentStyle.left = contentRect.left + "px";
-            contentStyle.top = contentRect.top + "px";
-            contentStyle.height = contentRect.contentHeight + "px";
-            contentStyle.width = contentRect.contentWidth + "px";
+            var contentWrapperStyle = this._dom.contentWrapper.style;
+            contentWrapperStyle.left = contentRect.left + "px";
+            contentWrapperStyle.top = contentRect.top + "px";
+            contentWrapperStyle.height = contentRect.contentHeight + "px";
+            contentWrapperStyle.width = contentRect.contentWidth + "px";
         };
 
         // Overridden by tests.
@@ -79118,8 +79130,8 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             paneWrapperStyle.height = paneRect.totalHeight + "px";
             paneWrapperStyle.width = paneRect.totalWidth + "px";
 
-            var contentStyle = this._dom.content.style;
-            contentStyle.position = "absolute";
+            var contentWrapperStyle = this._dom.contentWrapper.style;
+            contentWrapperStyle.position = "absolute";
             this._setContentRect(contentRect);
         };
 
@@ -79133,13 +79145,13 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             paneWrapperStyle.width = "";
             paneWrapperStyle[transformNames.scriptName] = "";
 
-            var contentStyle = this._dom.content.style;
-            contentStyle.position = "";
-            contentStyle.left = "";
-            contentStyle.top = "";
-            contentStyle.height = "";
-            contentStyle.width = "";
-            contentStyle[transformNames.scriptName] = "";
+            var contentWrapperStyle = this._dom.contentWrapper.style;
+            contentWrapperStyle.position = "";
+            contentWrapperStyle.left = "";
+            contentWrapperStyle.top = "";
+            contentWrapperStyle.height = "";
+            contentWrapperStyle.width = "";
+            contentWrapperStyle[transformNames.scriptName] = "";
 
             var paneStyle = this._dom.pane.style;
             paneStyle.height = "";
@@ -79295,7 +79307,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
                     var contentAnimation = Promise.timeout(fadeInDelay).then(function () {
                         _this._setContentRect(shownContentRect);
-                        return fadeIn(_this._dom.content);
+                        return fadeIn(_this._dom.contentWrapper);
                     });
 
                     return Promise.join([contentAnimation, playPaneAnimation()]);
@@ -79342,7 +79354,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
                     var contentAnimation = Promise.timeout(fadeInDelay).then(function () {
                         _this._setContentRect(hiddenContentRect);
-                        return fadeIn(_this._dom.content);
+                        return fadeIn(_this._dom.contentWrapper);
                     });
 
                     return Promise.join([contentAnimation, playPaneAnimation()]);
@@ -79363,9 +79375,9 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 if (paneShouldBeFirst) {
                     this._dom.root.appendChild(this._dom.panePlaceholder);
                     this._dom.root.appendChild(this._dom.paneWrapper);
-                    this._dom.root.appendChild(this._dom.content);
+                    this._dom.root.appendChild(this._dom.contentWrapper);
                 } else {
-                    this._dom.root.appendChild(this._dom.content);
+                    this._dom.root.appendChild(this._dom.contentWrapper);
                     this._dom.root.appendChild(this._dom.paneWrapper);
                     this._dom.root.appendChild(this._dom.panePlaceholder);
                 }
