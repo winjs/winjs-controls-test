@@ -68817,7 +68817,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
         });
 
         Object.defineProperty(ToolBar.prototype, "shownDisplayMode", {
-            /// <field type="String" defaultValue="reduced" isAdvanced="true">
+            /// <field type="String" defaultValue="reduced" locid="WinJS.UI.ToolBar.shownDisplayMode" helpKeyword="WinJS.UI.ToolBar.shownDisplayMode" isAdvanced="true">
             /// Gets/Sets how ToolBar will display overflow commands while shown. Values are "reduced" and "full".
             /// </field>
             get: function () {
