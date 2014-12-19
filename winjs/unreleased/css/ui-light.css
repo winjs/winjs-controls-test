@@ -2920,6 +2920,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   height: 48px;
   touch-action: none;
   -ms-touch-action: none;
+  outline: 0;
 }
 .win-pivot .win-pivot-header {
   font-size: 15px;
@@ -2932,6 +2933,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   height: 30px;
   border: 0;
   padding: 0;
+  outline: 0;
   margin: 13px 12px 15px 12px;
 }
 .win-pivot button.win-pivot-header,
