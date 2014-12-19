@@ -12343,19 +12343,30 @@ define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../
         percentInHistoryShadowWeight: 100000
     };
 
+    /**
+    * Gets the mapping object that maps keycodes to XYFocus actions.
+    **/
     exports.keyCodeMap = {
         left: [_ElementUtilities.Key.leftArrow],
         right: [_ElementUtilities.Key.rightArrow],
         up: [_ElementUtilities.Key.upArrow],
         down: [_ElementUtilities.Key.downArrow]
     };
+
+    /**
+    * Gets or sets the focus root when invoking XYFocus APIs.
+    **/
     exports.focusRoot;
+
+    
 
     function findNextFocusElement(direction, options) {
         var result = _findNextFocusElementInternal(direction, options);
         return result ? result.target : null;
     }
     exports.findNextFocusElement = findNextFocusElement;
+
+    
 
     function moveFocus(direction, options) {
         var result = exports.findNextFocusElement(direction, options);
