@@ -3748,9 +3748,6 @@ AppBar menu layout
 .win-menulayout .win-toolbar {
   max-width: 100vw;
 }
-.win-menulayout .win-toolbar:not(.win-toolbar-empty) .win-toolbar-actionarea {
-  min-height: 48px;
-}
 .win-menulayout.win-appbar-compact button.win-command .win-label {
   display: none;
   visibility: hidden;
@@ -4291,6 +4288,12 @@ Settings Pane
   -webkit-align-items: flex-start;
   align-items: flex-start;
 }
+.win-toolbar .win-toolbar-actionarea .win-toolbar-spacer {
+  visibility: hidden;
+  height: 48px;
+  /* height of a primary command with no label */
+  width: 0px;
+}
 .win-toolbar .win-toolbar-actionarea .win-command,
 .win-toolbar .win-toolbar-actionarea .win-toolbar-overflowbutton {
   -ms-flex: 0 0 auto;
@@ -4306,6 +4309,9 @@ Settings Pane
 }
 .win-toolbar.win-toolbar-showndisplayfull {
   min-width: 320px;
+}
+.win-toolbar.win-toolbar-showndisplayfull .win-toolbar-actionarea .win-toolbar-overflowbutton {
+  visibility: hidden;
 }
 .win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowarea {
   display: -ms-flexbox;
@@ -4345,18 +4351,12 @@ Settings Pane
   height: 2px;
   margin: 6px 12px 4px 12px;
 }
-.win-toolbar.win-toolbar-showndisplayfull .win-toolbar-overflowbutton {
-  min-height: 24px;
-  visibility: hidden;
-}
 .win-toolbar.win-toolbar-empty .win-toolbar-overflowbutton {
   display: none;
 }
 .win-toolbar .win-toolbar-overflowbutton {
   width: 32px;
   /* 30px + 2px border */
-  min-height: 48px;
-  /* height of a command without labels */
   margin: 0px;
   padding: 0px;
   border: 1px dotted;

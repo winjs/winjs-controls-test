@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.19 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.20 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.19 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.20 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -66708,6 +66708,7 @@ define('WinJS/Controls/ToolBar/_Constants',["require", "exports"], function(requ
     exports.controlCssClass = "win-toolbar";
     exports.actionAreaCssClass = "win-toolbar-actionarea";
     exports.overflowButtonCssClass = "win-toolbar-overflowbutton";
+    exports.spacerCssClass = "win-toolbar-spacer";
     exports.ellipsisCssClass = "win-toolbar-ellipsis";
     exports.overflowAreaCssClass = "win-toolbar-overflowarea";
     exports.overflowContentFlyoutCssClass = "win-toolbar-contentflyout";
@@ -68969,6 +68970,10 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             _ElementUtilities._reparentChildren(this.element, this._mainActionArea);
             this.element.appendChild(this._mainActionArea);
 
+            this._spacer = _Global.document.createElement("div");
+            _ElementUtilities.addClass(this._spacer, _Constants.spacerCssClass);
+            this._mainActionArea.appendChild(this._spacer);
+
             this._overflowButton = _Global.document.createElement("button");
             this._overflowButton.tabIndex = 0;
             this._overflowButton.innerHTML = "<span class='" + _Constants.ellipsisCssClass + "'></span>";
@@ -69075,7 +69080,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 child = this._mainActionArea.children[i];
                 if (child.style.display !== "none" || (child["winControl"] && child["winControl"].section === "secondary")) {
                     currentElements.push(child);
-                    if (dataElements.indexOf(child) === -1 && child !== this._overflowButton) {
+                    if (dataElements.indexOf(child) === -1 && child !== this._overflowButton && child !== this._spacer) {
                         deletedElements.push(child);
                     }
                 }
