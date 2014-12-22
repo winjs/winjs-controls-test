@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.20 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.22 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.20 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.22 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -60087,7 +60087,6 @@ define('WinJS/Controls/SemanticZoom',[
                 _setVisibility: function () {
                     function setVisibility(element, isVisible) {
                         element.style.visibility = (isVisible ? "visible" : "hidden");
-                        element.style.zIndex = (isVisible ? "1" : "0");
                     }
                     setVisibility(this._opticalViewportIn, !this._zoomedOut || _BaseUtils.isPhone);
                     setVisibility(this._opticalViewportOut, this._zoomedOut);
