@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.22 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.23 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.22 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.23 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -6478,7 +6478,7 @@ define('WinJS/Utilities/_ElementUtilities',[
         _zoomToDuration: _zoomToDuration,
 
         _zoomTo: function _zoomTo(element, args) {
-            if (element.msZoomTo) {
+            if (this._supportsSnapPoints) {
                 element.msZoomTo(args);
             } else {
                 // Schedule to ensure that we're not running from within an event handler. For example, if running
