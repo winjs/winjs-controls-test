@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.23 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.24 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.23 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.24 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -7610,6 +7610,31 @@ define('WinJS/Utilities/_ElementUtilities',[
             }
 
             return highestTabIndex;
+        },
+
+        _hasCursorKeysBehaviors: function Utilities_hasCursorKeysBehaviors(element) {
+            if (element.tagName === "SELECT" ||
+                element.tagName === "TEXTAREA") {
+                return true;
+            }
+            if (element.tagName === "INPUT") {
+                return element.type === "" ||
+                    element.type === "date" ||
+                    element.type === "datetime" ||
+                    element.type === "datetime-local" ||
+                    element.type === "email" ||
+                    element.type === "month" ||
+                    element.type === "number" ||
+                    element.type === "password" ||
+                    element.type === "range" ||
+                    element.type === "search" ||
+                    element.type === "tel" ||
+                    element.type === "text" ||
+                    element.type === "time" ||
+                    element.type === "url" ||
+                    element.type === "week";
+            }
+            return false;
         },
 
         _reparentChildren: function (originalParent, destinationParent) {
@@ -63511,7 +63536,7 @@ define('WinJS/Controls/Hub',[
                     }
                 },
                 _keyDownHandler: function hub_keyDownHandler(ev) {
-                    if (this._isInteractive(ev.target)) {
+                    if (this._isInteractive(ev.target) || _ElementUtilities._hasCursorKeysBehaviors(ev.target)) {
                         return;
                     }
 
