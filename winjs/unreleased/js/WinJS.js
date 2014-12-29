@@ -6479,7 +6479,7 @@ define('WinJS/Utilities/_ElementUtilities',[
         _zoomToDuration: _zoomToDuration,
 
         _zoomTo: function _zoomTo(element, args) {
-            if (this._supportsSnapPoints) {
+            if (this._supportsSnapPoints && element.msZoomTo) {
                 element.msZoomTo(args);
             } else {
                 // Schedule to ensure that we're not running from within an event handler. For example, if running
