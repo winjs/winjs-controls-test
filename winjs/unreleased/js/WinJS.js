@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.24 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.29 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.24 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.29 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -6018,7 +6018,8 @@ define('WinJS/Utilities/_ElementUtilities',[
                 // prevent multiple events from firing when nesting observers
                 evt.stopPropagation();
 
-                if (this._attributeFilter.length && this._attributeFilter.indexOf(evt.attrName) === -1) {
+                var attrName = evt.attrName;
+                if (this._attributeFilter.length && this._attributeFilter.indexOf(attrName) === -1) {
                     return;
                 }
 
@@ -6027,7 +6028,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                     return;
                 }
 
-                var attrName = evt.attrName;
+                var isAriaMutation = attrName.indexOf("aria") >= 0;
 
                 // DOM mutation events use different naming for this attribute
                 if (attrName === 'tabindex') {
@@ -6040,7 +6041,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                     attributeName: attrName
                 });
 
-                if (this._observerCount === 1) {
+                if (this._observerCount === 1 && !isAriaMutation) {
                     this._dispatchEvent();
                 } else if (this._scheduled === false) {
                     this._scheduled = true;
