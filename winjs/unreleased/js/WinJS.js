@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.29 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.5 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.29 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.5 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -12103,14 +12103,14 @@ define('WinJS/Utilities/_UI',[
             /// This value represents a ListView group header.
             /// </field>
             groupHeader: "groupHeader",
-            /// <field locid="WinJS.UI.ListView.ObjectType.listHeader" helpKeyword="WinJS.UI.ObjectType.listHeader">
+            /// <field locid="WinJS.UI.ListView.ObjectType.header" helpKeyword="WinJS.UI.ObjectType.header">
             /// This value represents the ListView's header.
             /// </field>
-            listHeader: "listHeader",
-            /// <field locid="WinJS.UI.ListView.ObjectType.listFooter" helpKeyword="WinJS.UI.ObjectType.listFooter">
+            header: "header",
+            /// <field locid="WinJS.UI.ListView.ObjectType.footer" helpKeyword="WinJS.UI.ObjectType.footer">
             /// This value represents the ListView's footer.
             /// </field>
-            listFooter: "listFooter",
+            footer: "footer",
         },
 
         /// <field locid="WinJS.UI.ListView.SelectionMode" helpKeyword="WinJS.UI.SelectionMode">
@@ -33489,8 +33489,8 @@ define('WinJS/Controls/ItemContainer/_Constants',[
     members._verticalClass = "win-vertical";
     members._scrollableClass = "win-surface";
     members._itemsContainerClass = "win-itemscontainer";
-    members._listHeaderContainerClass = "win-listheadercontainer";
-    members._listFooterContainerClass = "win-listfootercontainer";
+    members._listHeaderContainerClass = "win-headercontainer";
+    members._listFooterContainerClass = "win-footercontainer";
     members._padderClass = "win-itemscontainer-padder";
     members._proxyClass = "_win-proxy";
     members._itemClass = "win-item";
@@ -35405,17 +35405,17 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                     this._keyboardNavigationHandlers[Key.pageUp] = createArrowHandler(Key.pageUp, true);
                     this._keyboardNavigationHandlers[Key.pageDown] = createArrowHandler(Key.pageDown, true);
                     this._keyboardNavigationHandlers[Key.home] = function (oldFocus) {
-                        if (that.site._listHeader && (oldFocus.type === _UI.ObjectType.groupHeader || oldFocus.type === _UI.ObjectType.listFooter)) {
-                            return Promise.wrap({ type: _UI.ObjectType.listHeader, index: 0 });
+                        if (that.site._header && (oldFocus.type === _UI.ObjectType.groupHeader || oldFocus.type === _UI.ObjectType.footer)) {
+                            return Promise.wrap({ type: _UI.ObjectType.header, index: 0 });
                         }
 
 
-                        return Promise.wrap({ type: (oldFocus.type !== _UI.ObjectType.listFooter ? oldFocus.type : _UI.ObjectType.groupHeader), index: 0 });
+                        return Promise.wrap({ type: (oldFocus.type !== _UI.ObjectType.footer ? oldFocus.type : _UI.ObjectType.groupHeader), index: 0 });
                     };
                     this._keyboardNavigationHandlers[Key.end] = function (oldFocus) {
-                        if (that.site._listFooter && (oldFocus.type === _UI.ObjectType.groupHeader || oldFocus.type === _UI.ObjectType.listHeader)) {
-                            return Promise.wrap({ type: _UI.ObjectType.listFooter, index: 0 });
-                        } else if (oldFocus.type === _UI.ObjectType.groupHeader || oldFocus.type === _UI.ObjectType.listHeader) {
+                        if (that.site._footer && (oldFocus.type === _UI.ObjectType.groupHeader || oldFocus.type === _UI.ObjectType.header)) {
+                            return Promise.wrap({ type: _UI.ObjectType.footer, index: 0 });
+                        } else if (oldFocus.type === _UI.ObjectType.groupHeader || oldFocus.type === _UI.ObjectType.header) {
                             return Promise.wrap({ type: _UI.ObjectType.groupHeader, index: site._groups.length() - 1 });
                         } else {
                             // Get the index of the last container
@@ -36449,7 +36449,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                 },
 
                 onTabEntered: function (eventObject) {
-                    if (this.site._groups.length() === 0 && !this.site._hasListHeaderOrFooter) {
+                    if (this.site._groups.length() === 0 && !this.site._hasHeaderOrFooter) {
                         return;
                     }
 
@@ -36469,7 +36469,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
 
                         // We tabbed into the ListView
                         focused.index = (focused.index === _Constants._INVALID_INDEX ? 0 : focused.index);
-                        if (forward || !(this.site._supportsGroupHeaderKeyboarding || this.site._hasListHeaderOrFooter)) {
+                        if (forward || !(this.site._supportsGroupHeaderKeyboarding || this.site._hasHeaderOrFooter)) {
                             // We tabbed into the ListView from before the ListView, so focus should go to items
                             var entity = { type: _UI.ObjectType.item };
                             if (focused.type === _UI.ObjectType.groupHeader) {
@@ -36487,7 +36487,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                         } else {
                             // We tabbed into the ListView from after the ListView, focus should go to headers
                             var entity = { type: _UI.ObjectType.groupHeader };
-                            if (this.site._hasListHeaderOrFooter) {
+                            if (this.site._hasHeaderOrFooter) {
                                 if (this.site._lastFocusedElementInGroupTrack.type === _UI.ObjectType.groupHeader && this.site._supportsGroupHeaderKeyboarding) {
                                     entity.index = site._groups.groupFromItem(focused.index);
                                     if (dispatchKeyboardNavigating(site._element, focused, entity)) {
@@ -36517,7 +36517,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                 },
 
                 onTabExiting: function (eventObject) {
-                    if (!this.site._hasListHeaderOrFooter && (!this.site._supportsGroupHeaderKeyboarding || this.site._groups.length() === 0)) {
+                    if (!this.site._hasHeaderOrFooter && (!this.site._supportsGroupHeaderKeyboarding || this.site._groups.length() === 0)) {
                         return;
                     }
 
@@ -36531,8 +36531,8 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                             // Tabbing and we were focusing an item, go to headers.
                             // If we last saw focus in the header track on the layout header/footer, we'll move focus back to there first. Otherwise, we'll let the group header take it.
                             var lastType = this.site._lastFocusedElementInGroupTrack.type;
-                            if (lastType === _UI.ObjectType.listHeader || lastType === _UI.ObjectType.listFooter || !this.site._supportsGroupHeaderKeyboarding) {
-                                var entity = { type: (lastType === _UI.ObjectType.item ? _UI.ObjectType.listHeader : lastType), index: 0 };
+                            if (lastType === _UI.ObjectType.header || lastType === _UI.ObjectType.footer || !this.site._supportsGroupHeaderKeyboarding) {
+                                var entity = { type: (lastType === _UI.ObjectType.item ? _UI.ObjectType.header : lastType), index: 0 };
                             } else {
                                 var entity = { type: _UI.ObjectType.groupHeader, index: site._groups.groupFromItem(focused.index) };
                             }
@@ -36549,7 +36549,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                         if (focused.type === _UI.ObjectType.groupHeader) {
                             targetIndex = site._groupFocusCache.getIndexForGroup(focused.index);
                         } else {
-                            targetIndex = (focused.type === _UI.ObjectType.listHeader ? 0 : site._view.lastItemIndex());
+                            targetIndex = (focused.type === _UI.ObjectType.header ? 0 : site._view.lastItemIndex());
                         }
                         var entity = { type: _UI.ObjectType.item, index: targetIndex };
                         if (dispatchKeyboardNavigating(site._element, focused, entity)) {
@@ -38248,26 +38248,26 @@ define('WinJS/Controls/ListView/_Layouts',[
                         if (currentItem.type === _UI.ObjectType.groupHeader) {
                             itemIndex = that._groups[currentItem.index].startIndex;
                         } else {
-                            itemIndex = (currentItem.type === _UI.ObjectType.listHeader ? 0 : that._groups[that._groups.length - 1].count - 1);
+                            itemIndex = (currentItem.type === _UI.ObjectType.header ? 0 : that._groups[that._groups.length - 1].count - 1);
                         }
                         currentItem = { type: _UI.ObjectType.item, index: itemIndex };
-                    }else if (currentItem.type === _UI.ObjectType.listHeader && adjustedKey === Key.rightArrow) {
-                        return { type: (that._groupsEnabled ? _UI.ObjectType.groupHeader : _UI.ObjectType.listFooter), index: 0 };
-                    } else if (currentItem.type === _UI.ObjectType.listFooter && adjustedKey === Key.leftArrow) {
-                        return { type: (that._groupsEnabled ? _UI.ObjectType.groupHeader : _UI.ObjectType.listHeader), index: 0 };
+                    }else if (currentItem.type === _UI.ObjectType.header && adjustedKey === Key.rightArrow) {
+                        return { type: (that._groupsEnabled ? _UI.ObjectType.groupHeader : _UI.ObjectType.footer), index: 0 };
+                    } else if (currentItem.type === _UI.ObjectType.footer && adjustedKey === Key.leftArrow) {
+                        return { type: (that._groupsEnabled ? _UI.ObjectType.groupHeader : _UI.ObjectType.header), index: 0 };
                     } else if (currentItem.type === _UI.ObjectType.groupHeader) {
                         if (adjustedKey === Key.leftArrow) {
                             var desiredIndex = currentItem.index - 1;
-                            desiredIndex = (that._site.listHeader ? desiredIndex : Math.max(0, desiredIndex));
+                            desiredIndex = (that._site.header ? desiredIndex : Math.max(0, desiredIndex));
                             return {
-                                type: (desiredIndex > -1 ? _UI.ObjectType.groupHeader : _UI.ObjectType.listHeader),
+                                type: (desiredIndex > -1 ? _UI.ObjectType.groupHeader : _UI.ObjectType.header),
                                 index: (desiredIndex > -1 ? desiredIndex : 0)
                             };
                         } else if (adjustedKey === Key.rightArrow) {
                             var desiredIndex = currentItem.index + 1;
-                            desiredIndex = (that._site.listHeader ? desiredIndex : Math.min(that._groups.length - 1, currentItem.index + 1));
+                            desiredIndex = (that._site.header ? desiredIndex : Math.min(that._groups.length - 1, currentItem.index + 1));
                             return { 
-                                type: (desiredIndex >= that._groups.length ? _UI.ObjectType.listHeader : _UI.ObjectType.groupHeader),
+                                type: (desiredIndex >= that._groups.length ? _UI.ObjectType.header : _UI.ObjectType.groupHeader),
                                 index: (desiredIndex >= that._groups.length ? 0 : desiredIndex)
                             };
                         }
@@ -40242,8 +40242,8 @@ define('WinJS/Controls/ListView/_Layouts',[
                                     containerSizeLoaded: false
                                 };
 
-                                if (site.listHeader) {
-                                    sizes[(horizontal ? "layoutOriginX" : "layoutOriginY")] += _ElementUtilities[(horizontal ? "getTotalWidth" : "getTotalHeight")](site.listHeader);
+                                if (site.header) {
+                                    sizes[(horizontal ? "layoutOriginX" : "layoutOriginY")] += _ElementUtilities[(horizontal ? "getTotalWidth" : "getTotalHeight")](site.header);
                                 }
 
                                 if (groupsEnabled) {
@@ -43340,7 +43340,7 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
                 // Update the ARIA attributes on item that are needed so that Narrator can announce it.
                 // item must be in the items container.
                 updateAriaForAnnouncement: function VirtualizeContentsView_updateAriaForAnnouncement(item, count) {
-                    if (item === this._listView.listHeader || item === this._listView.listFooter) {
+                    if (item === this._listView.header || item === this._listView.footer) {
                         return;
                     }
 
@@ -43964,7 +43964,7 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
 
                 waitForEntityPosition: function VirtualizeContentsView_waitForEntityPosition(entity) {
                     var that = this;
-                    if (entity.type === _UI.ObjectType.listHeader || entity.type === _UI.ObjectType.listFooter) {
+                    if (entity.type === _UI.ObjectType.header || entity.type === _UI.ObjectType.footer) {
                         // Headers and footers are always laid out by the ListView as soon as it gets them, so there's nothing to wait on
                         return Promise.wrap();
                     }
@@ -46088,23 +46088,23 @@ define('WinJS/Controls/ListView',[
                     }
                 },
 
-                /// <field type="HTMLElement" domElement="true" locid="WinJS.UI.ListView.listHeader" helpKeyword="WinJS.UI.ListView.listHeader">
+                /// <field type="HTMLElement" domElement="true" locid="WinJS.UI.ListView.header" helpKeyword="WinJS.UI.ListView.header">
                 /// Gets or sets the header to display at the start of the ListView.
                 /// </field>
-                listHeader: {
+                header: {
                     get: function () {
-                        return this._listHeader;
+                        return this._header;
                     },
                     set: function (newHeader) {
-                        _ElementUtilities.empty(this._listHeaderContainer);
-                        this._listHeader = newHeader;
+                        _ElementUtilities.empty(this._headerContainer);
+                        this._header = newHeader;
                         if (newHeader) {
-                            this._listHeader.tabIndex = this._tabIndex;
-                            this._listHeaderContainer.appendChild(newHeader);
+                            this._header.tabIndex = this._tabIndex;
+                            this._headerContainer.appendChild(newHeader);
                         }
 
                         var currentFocus = this._selection._getFocused();
-                        if (currentFocus.type === _UI.ObjectType.listHeader) {
+                        if (currentFocus.type === _UI.ObjectType.header) {
                             var targetEntity = currentFocus;
                             if (!newHeader) {
                                 targetEntity = { type: _UI.ObjectType.item, index: 0 };
@@ -46117,26 +46117,27 @@ define('WinJS/Controls/ListView',[
                             }
                         }
                         this.recalculateItemPosition();
+                        this._raiseHeaderFooterVisibilityEvent();
                     }
                 },
 
-                /// <field type="HTMLElement" domElement="true" locid="WinJS.UI.ListView.listFooter" helpKeyword="WinJS.UI.ListView.listFooter">
+                /// <field type="HTMLElement" domElement="true" locid="WinJS.UI.ListView.footer" helpKeyword="WinJS.UI.ListView.footer">
                 /// Gets or sets the footer to display at the end of the ListView.
                 /// </field>
-                listFooter: {
+                footer: {
                     get: function () {
-                        return this._listFooter;
+                        return this._footer;
                     },
                     set: function (newFooter) {
-                        _ElementUtilities.empty(this._listFooterContainer);
-                        this._listFooter = newFooter;
+                        _ElementUtilities.empty(this._footerContainer);
+                        this._footer = newFooter;
                         if (newFooter) {
-                            this._listFooter.tabIndex = this._tabIndex;
-                            this._listFooterContainer.appendChild(newFooter);
+                            this._footer.tabIndex = this._tabIndex;
+                            this._footerContainer.appendChild(newFooter);
                         }
 
                         var currentFocus = this._selection._getFocused();
-                        if (currentFocus.type === _UI.ObjectType.listFooter) {
+                        if (currentFocus.type === _UI.ObjectType.footer) {
                             var targetEntity = currentFocus;
                             if (!newFooter) {
                                 targetEntity = { type: _UI.ObjectType.item, index: 0 };
@@ -46149,6 +46150,7 @@ define('WinJS/Controls/ListView',[
                             }
                         }
                         this.recalculateItemPosition();
+                        this._raiseHeaderFooterVisibilityEvent();
                     }
                 },
 
@@ -46311,8 +46313,8 @@ define('WinJS/Controls/ListView',[
                             });
                         } else {
                             var element;
-                            if (data.type === _UI.ObjectType.listHeader || data.type === _UI.ObjectType.listFooter) {
-                                element = (data.type === _UI.ObjectType.listHeader ? this._listHeader : this._listFooter);
+                            if (data.type === _UI.ObjectType.header || data.type === _UI.ObjectType.footer) {
+                                element = (data.type === _UI.ObjectType.header ? this._header : this._footer);
                                 setItemFocused(element, !!element, { type: data.type, index: data.index });
                             } else if (data.index !== undefined) {
                                 if (data.type === _UI.ObjectType.groupHeader) {
@@ -46653,17 +46655,17 @@ define('WinJS/Controls/ListView',[
                     }
                 },
 
-                _hasListHeaderOrFooter: {
+                _hasHeaderOrFooter: {
                     get: function () {
-                        return !!(this._listHeader || this._listFooter);
+                        return !!(this._header || this._footer);
                     }
                 },
 
                 _getHeaderOrFooterFromElement: function (element) {
-                    if (this._listHeader && this._listHeader.contains(element)) {
-                        return this._listHeader;
-                    } else if (this._listFooter && this._listFooter.contains(element)) {
-                        return this._listFooter;
+                    if (this._header && this._header.contains(element)) {
+                        return this._header;
+                    } else if (this._footer && this._footer.contains(element)) {
+                        return this._footer;
                     }
 
                     return null;
@@ -46858,6 +46860,7 @@ define('WinJS/Controls/ListView',[
                         this._view.refresh(functorWrapper);
                     } else {
                         this._view.onScroll(functorWrapper);
+                        this._raiseHeaderFooterVisibilityEvent();
                     }
                 },
 
@@ -46941,11 +46944,11 @@ define('WinJS/Controls/ListView',[
                        '<div aria-hidden="true" style="position:absolute;left:50%;top:50%;width:0px;height:0px;" tabindex="-1"></div>';
 
                     this._viewport = this._element.firstElementChild;
-                    this._listHeaderContainer = this._viewport.firstElementChild;
-                    _ElementUtilities.addClass(this._listHeaderContainer, _Constants._listHeaderContainerClass);
-                    this._canvas = this._listHeaderContainer.nextElementSibling;
-                    this._listFooterContainer = this._canvas.nextElementSibling;
-                    _ElementUtilities.addClass(this._listFooterContainer, _Constants._listFooterContainerClass);
+                    this._headerContainer = this._viewport.firstElementChild;
+                    _ElementUtilities.addClass(this._headerContainer, _Constants._listHeaderContainerClass);
+                    this._canvas = this._headerContainer.nextElementSibling;
+                    this._footerContainer = this._canvas.nextElementSibling;
+                    _ElementUtilities.addClass(this._footerContainer, _Constants._listFooterContainerClass);
                     this._canvasProxy = this._canvas.firstElementChild;
                     // The deleteWrapper div is used to maintain the scroll width (after delete(s)) until the animation is done
                     this._deleteWrapper = this._canvas.nextElementSibling;
@@ -47031,7 +47034,7 @@ define('WinJS/Controls/ListView',[
                     } else if (entity.type === _UI.ObjectType.groupHeader) {
                         this._focusRequest = this._groups.requestHeader(entity.index);
                     } else {
-                        this._focusRequest = Promise.wrap(entity.type === _UI.ObjectType.listHeader ? this._listHeader : this._listFooter);
+                        this._focusRequest = Promise.wrap(entity.type === _UI.ObjectType.header ? this._header : this._footer);
                     }
                     this._focusRequest.then(setFocusOnItemImpl);
                 },
@@ -48018,16 +48021,16 @@ define('WinJS/Controls/ListView',[
                                 return that._groups.length();
                             }
                         },
-                        listHeader: {
+                        header: {
                             enumerable: true,
                             get: function () {
-                                return that.listHeader;
+                                return that.header;
                             }
                         },
-                        listFooter: {
+                        footer: {
                             enumerable: true,
                             get: function () {
-                                return that.listFooter;
+                                return that.footer;
                             }
                         }
                     });
@@ -48104,8 +48107,8 @@ define('WinJS/Controls/ListView',[
                     this._selection._setFocused({ type: _UI.ObjectType.item, index: 0 });
                     this._lastFocusedElementInGroupTrack = { type: _UI.ObjectType.item, index: -1 };
 
-                    this._listHeaderContainer.style.opacity = 0;
-                    this._listFooterContainer.style.opacity = 0;
+                    this._headerContainer.style.opacity = 0;
+                    this._footerContainer.style.opacity = 0;
                     this._horizontalLayout = this._initializeLayout();
                     this._resetLayoutOrientation(hadPreviousLayout);
 
@@ -48196,7 +48199,7 @@ define('WinJS/Controls/ListView',[
                             winItem = null;
                         if (element) {
                             entity.index = 0;
-                            entity.type = (element === this._listHeader ? _UI.ObjectType.listHeader : _UI.ObjectType.listFooter);
+                            entity.type = (element === this._header ? _UI.ObjectType.header : _UI.ObjectType.footer);
                             this._lastFocusedElementInGroupTrack = entity;
                         } else {
                             element = this._groups.headerFrom(event.target);
@@ -48356,8 +48359,8 @@ define('WinJS/Controls/ListView',[
                                 that._view.items.each(function (index, item) {
                                     item.tabIndex = newTabIndex;
                                 });
-                                that._listHeader && (that._listHeader.tabIndex = newTabIndex);
-                                that._listFooter && (that._listFooter.tabIndex = newTabIndex);
+                                that._header && (that._header.tabIndex = newTabIndex);
+                                that._footer && (that._footer.tabIndex = newTabIndex);
                                 that._tabIndex = newTabIndex;
                                 that._tabManager.tabIndex = newTabIndex;
                                 that._element.tabIndex = -1;
@@ -48498,8 +48501,8 @@ define('WinJS/Controls/ListView',[
                         that._element.dispatchEvent(visibilityEvent);
                     };
 
-                    var headerInView = this._listHeader && elementInViewport(this._listHeaderContainer);
-                    var footerInView = this._listFooter && elementInViewport(this._listFooterContainer);
+                    var headerInView = (!!this._header && elementInViewport(this._headerContainer));
+                    var footerInView = (!!this._footer && elementInViewport(this._footerContainer));
 
                     if (this._headerFooterVisibilityStatus.headerVisible !== headerInView) {
                         this._headerFooterVisibilityStatus.headerVisible = headerInView;
@@ -48688,7 +48691,7 @@ define('WinJS/Controls/ListView',[
                     if (focused.type === _UI.ObjectType.groupHeader) {
                         focused = { type: _UI.ObjectType.item, index: this._groups.group(focused.index).startIndex };
                     } else if (focused.type !== _UI.ObjectType.item) {
-                        focused = { type: _UI.ObjectType.item, index: (focused.type === _UI.ObjectType.listHeader ? 0 : this._cachedCount) };
+                        focused = { type: _UI.ObjectType.item, index: (focused.type === _UI.ObjectType.header ? 0 : this._cachedCount) };
                     }
 
                     if (typeof focused.index !== "number") {
@@ -48973,7 +48976,7 @@ define('WinJS/Controls/ListView',[
                         targetItem = group && group.header;
                     } else {
                         this._lastFocusedElementInGroupTrack = newFocus;
-                        targetItem = (newFocus.type === _UI.ObjectType.listFooter ? this._listFooter : this._listHeader);
+                        targetItem = (newFocus.type === _UI.ObjectType.footer ? this._footer : this._header);
                     }
                     this._unsetFocusOnItem(!!targetItem);
                     this._hasKeyboardFocus = true;
@@ -49007,13 +49010,13 @@ define('WinJS/Controls/ListView',[
                             var group = this._groups.group(newFocus.index);
                             targetItem = group && group.header;
                             break;
-                        case _UI.ObjectType.listHeader:
+                        case _UI.ObjectType.header:
                             this._lastFocusedElementInGroupTrack = newFocus;
-                            targetItem = this._listHeader;
+                            targetItem = this._header;
                             break;
-                        case _UI.ObjectType.listFooter:
+                        case _UI.ObjectType.footer:
                             this._lastFocusedElementInGroupTrack = newFocus;
-                            targetItem = this._listFooter;
+                            targetItem = this._footer;
                             break;
                     }
                     this._unsetFocusOnItem(!!targetItem);
@@ -49022,7 +49025,7 @@ define('WinJS/Controls/ListView',[
                 },
 
                 _drawFocusRectangle: function (item) {
-                    if (item === this._listHeader || item === this._listFooter) {
+                    if (item === this._header || item === this._footer) {
                         return;
                     }
                     if (_ElementUtilities.hasClass(item, _Constants._headerClass)) {
@@ -49040,7 +49043,7 @@ define('WinJS/Controls/ListView',[
                 },
 
                 _clearFocusRectangle: function (item) {
-                    if (!item || this._isZombie() || item === this._listHeader || item === this._listFooter) {
+                    if (!item || this._isZombie() || item === this._header || item === this._footer) {
                         return;
                     }
 
@@ -49199,8 +49202,8 @@ define('WinJS/Controls/ListView',[
                     this._raiseHeaderFooterVisibilityEvent();
                     function resetViewOpacity() {
                         that._canvas.style.opacity = 1;
-                        that._listHeaderContainer.style.opacity = 1;
-                        that._listFooterContainer.style.opacity = 1;
+                        that._headerContainer.style.opacity = 1;
+                        that._footerContainer.style.opacity = 1;
                         if (overflowStyle) {
                             animatedElement.style[overflowStyle.scriptName] = "";
                         }
@@ -49234,18 +49237,18 @@ define('WinJS/Controls/ListView',[
                         if (overflowStyle) {
                             animatedElement.style[overflowStyle.scriptName] = "none";
                         }
-                        this._listHeaderContainer.style.opacity = 1;
-                        this._listFooterContainer.style.opacity = 1;
+                        this._headerContainer.style.opacity = 1;
+                        this._footerContainer.style.opacity = 1;
                         this._waitingEntranceAnimationPromise = eventDetails.animationPromise.then(function () {
                             if (!that._isZombie()) {
                                 that._canvas.style.opacity = 1;
                                 var animatedElements = [animatedElement];
                                 if (animatedElement !== that._viewport) {
-                                    if (that._listHeader) {
-                                        animatedElements.push(that._listHeaderContainer);
+                                    if (that._header) {
+                                        animatedElements.push(that._headerContainer);
                                     }
-                                    if (that._listFooter) {
-                                        animatedElements.push(that._listFooterContainer);
+                                    if (that._footer) {
+                                        animatedElements.push(that._footerContainer);
                                     }
                                 }
 
@@ -49430,13 +49433,13 @@ define('WinJS/Controls/ListView',[
                             case _UI.ObjectType.groupHeader:
                                 container = that._view._getHeaderContainer(entity.index);
                                 break;
-                            case _UI.ObjectType.listHeader:
+                            case _UI.ObjectType.header:
                                 alreadyCorrectedForCanvasMargins = true;
-                                container = that._listHeaderContainer;
+                                container = that._headerContainer;
                                 break;
-                            case _UI.ObjectType.listFooter:
+                            case _UI.ObjectType.footer:
                                 alreadyCorrectedForCanvasMargins = true;
-                                container = that._listFooterContainer;
+                                container = that._footerContainer;
                                 break;
                         }
 
@@ -49528,13 +49531,13 @@ define('WinJS/Controls/ListView',[
                     } else if (type === _UI.ObjectType.groupHeader) {
                         return (this._headerMargins ? this._headerMargins : (this._headerMargins = calculateMargins(_Constants._headerContainerClass)));
                     } else {
-                        if (!this._listHeaderFooterMargins) {
-                            this._listHeaderFooterMargins = {
+                        if (!this._headerFooterMargins) {
+                            this._headerFooterMargins = {
                                 headerMargins: calculateMargins(_Constants._listHeaderContainerClass),
                                 footerMargins: calculateMargins(_Constants._listFooterContainerClass)
                             };
                         }
-                        return this._listHeaderFooterMargins[(type === _UI.ObjectType.listHeader? "headerMargins" : "footerMargins")];
+                        return this._headerFooterMargins[(type === _UI.ObjectType.header? "headerMargins" : "footerMargins")];
                     }
                 },
 
@@ -49558,7 +49561,7 @@ define('WinJS/Controls/ListView',[
                 },
 
                 _ensureFirstColumnRange: function ListView_ensureFirstColumnRange(type) {
-                    if (type === _UI.ObjectType.listHeader || type === _UI.ObjectType.listFooter) {
+                    if (type === _UI.ObjectType.header || type === _UI.ObjectType.footer) {
                         // No corrections are necessary for the layout header or footer, since they exist outside of the canvas
                         return Promise.wrap();
                     }
@@ -49574,7 +49577,7 @@ define('WinJS/Controls/ListView',[
                 },
 
                 _correctRangeInFirstColumn: function ListView_correctRangeInFirstColumn(range, type) {
-                    if (type === _UI.ObjectType.listHeader || type === _UI.ObjectType.listFooter) {
+                    if (type === _UI.ObjectType.header || type === _UI.ObjectType.footer) {
                         // No corrections are necessary for the layout header or footer, since they exist outside of the canvas
                         return range;
                     }
