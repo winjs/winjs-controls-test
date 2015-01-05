@@ -69722,13 +69722,13 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 },
                 commandsInOrder: {
                     get: function _AppBarBaseLayout_get_commandsInOrder() {
-                        // Gets a DOM ordered Array of the AppBarCommand elements in the AppBar.
-                        var commands = this.appBarEl.querySelectorAll("." + _Constants.appBarCommandClass);
+                        // Get a DOM ordered collection of the AppBarCommand elements in the AppBar.
+                        var commandElements = this.appBarEl.querySelectorAll("." + _Constants.appBarCommandClass);
 
-                        // Needs to be an array, in case these are getting passed to a new layout.
-                        // The new layout will invoke the AppBar._layoutCommands, and it expects an
-                        // Array.
-                        return Array.prototype.slice.call(commands);
+                        // Return an array of AppBarCommand objects.
+                        return Array.prototype.map.call(commandElements, function (commandElement) {
+                            return commandElement.winControl;
+                        });
                     }
                 },
                 connect: function _AppBarBaseLayout_connect(appBarEl) {
@@ -69847,10 +69847,10 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 this._commandLayoutsInit(appBarEl);
             }, {
                 commandsInOrder: {
-                    get: function () {
-                        return this._commandsInOriginalOrder.filter(function (command) {
+                    get: function _AppBarCommandsLayout_get_commandsInOrder() {
+                        return this._originalCommands.filter(function (command) {
                             // Make sure the element is still in the AppBar.
-                            return this.appBarEl.contains(command);
+                            return this.appBarEl.contains(command.element);
                         }, this);
                     }
                 },
@@ -69862,13 +69862,13 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     _ElementUtilities.empty(this._secondaryCommands);
 
                     // Keep track of the order we receive the commands in.
-                    this._commandsInOriginalOrder = [];
+                    this._originalCommands = [];
 
                     // Layout commands
                     for (var i = 0, len = commands.length; i < len; i++) {
                         var command = this.sanitizeCommand(commands[i]);
 
-                        this._commandsInOriginalOrder.push(command.element);
+                        this._originalCommands.push(command);
 
                         if ("primary" === command.section || "global" === command.section) {
                             this._primaryCommands.appendChild(command._element);
@@ -70138,6 +70138,11 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 this._animationCompleteBound = this._animationComplete.bind(this);
                 this._positionToolBarBound = this._positionToolBar.bind(this);
             }, {
+                commandsInOrder: {
+                    get: function _AppBarMenuLayout_get_commandsInOrder() {
+                        return this._originalCommands;
+                    }
+                },
                 layout: function _AppBarMenuLayout_layout(commands) {
                     this._writeProfilerMark("layout,info");
 
@@ -71155,21 +71160,17 @@ define('WinJS/Controls/AppBar',[
                     /// The command found, an array of commands if more than one have the same ID, or null if no command is found.
                     /// </returns>
                     /// </signature>
-                    var commands = this.element.querySelectorAll("#" + id);
-                    var newCommands = [];
-                    for (var count = 0, len = commands.length; count < len; count++) {
-                        if (commands[count].winControl) {
-                            newCommands.push(commands[count].winControl);
-                        }
-                    }
-
-                    if (newCommands.length === 1) {
-                        return newCommands[0];
-                    } else if (newCommands.length === 0) {
+                    var commands = this._layout.commandsInOrder.filter(function (command) {
+                        return command.id === id || command.element.id === id;
+                    });
+                    
+                    if (commands.length === 1) {
+                        return commands[0];
+                    } else if (commands.length === 0) {
                         return null;
                     }
 
-                    return newCommands;
+                    return commands;
                 },
 
                 showCommands: function (commands) {
