@@ -51745,6 +51745,9 @@ define('WinJS/Controls/FlipView/_PageManager',[
                 },
 
                 _setItemStart: function (flipPage, newValue) {
+                    if (newValue === undefined) {
+                        return;
+                    }
 
                     if (this._isHorizontal) {
                         flipPage.pageRoot.style.left = (this._rtl ? -newValue : newValue) + "px";
