@@ -837,6 +837,7 @@ textarea,
   -ms-user-select: element;
   border-style: solid;
   border-width: 2px;
+  border-radius: 0;
   margin: 8px 0px;
   width: 296px;
   min-width: 64px;
