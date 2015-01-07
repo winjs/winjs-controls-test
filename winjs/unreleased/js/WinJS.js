@@ -68578,6 +68578,11 @@ define('WinJS/Controls/Menu',[
                 },
 
                 _handleCommandInvoked: function Menu_handleCommandInvoked(event) {
+                    if (this._hoverPromise) {
+                        // Prevent pending duplicate invoke triggered via hover.
+                        this._hoverPromise.cancel();
+                    }
+
                     // Menu hides when invoking a command commits an action, not when a subFlyout is invoked.
                     var command = event.detail.command;
                     if (command._type !== _Constants.typeFlyout) {
@@ -68695,15 +68700,15 @@ define('WinJS/Controls/ToolBar/_MenuCommand',["require", "exports", "../Menu/_Co
     var _MenuCommand = (function (_super) {
         __extends(_MenuCommand, _super);
         function _MenuCommand(isAttachedMode, element, options) {
-            if (options && options.beforeOnClick) {
-                this._beforeOnClick = options.beforeOnClick;
+            if (options && options.beforeInvoke) {
+                this._beforeInvoke = options.beforeInvoke;
             }
             this._isAttachedMode = isAttachedMode;
             _super.call(this, element, options);
         }
-        _MenuCommand.prototype._handleClick = function (event) {
-            this._beforeOnClick && this._beforeOnClick(event);
-            _super.prototype._handleClick.call(this, event);
+        _MenuCommand.prototype._invoke = function (event) {
+            this._beforeInvoke && this._beforeInvoke(event);
+            _super.prototype._invoke.call(this, event);
         };
         return _MenuCommand;
     })(_MenuCommandBase.MenuCommand);
@@ -69449,7 +69454,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                 type: (command.type === _Constants.typeContent ? _Constants.typeFlyout : command.type) || _Constants.typeButton,
                 disabled: command.disabled,
                 flyout: command.flyout,
-                beforeOnClick: function () {
+                beforeInvoke: function () {
                     // Save the command that was selected
                     _this._chosenCommand = (menuCommand["_originalToolBarCommand"]);
 
@@ -69481,6 +69486,32 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
         };
 
         ToolBar.prototype._setupOverflowArea = function (additionalCommands) {
+            var _this = this;
+            // Set up special flyout for "content" typed commands in the overflow area.
+            var isCustomContent = function (command) {
+                return command.type === _Constants.typeContent;
+            };
+            var customContent = additionalCommands.filter(isCustomContent);
+            if (customContent.length === 0) {
+                customContent = this._secondaryCommands.filter(isCustomContent);
+            }
+
+            if (customContent.length > 0 && !this._customContentFlyout) {
+                var mainFlyout = _Global.document.createElement("div");
+                this._customContentContainer = _Global.document.createElement("div");
+                _ElementUtilities.addClass(this._customContentContainer, _Constants.overflowContentFlyoutCssClass);
+                mainFlyout.appendChild(this._customContentContainer);
+                this._customContentFlyout = new _Flyout.Flyout(mainFlyout);
+                _Global.document.body.appendChild(this._customContentFlyout.element);
+                this._customContentFlyout.onbeforeshow = function () {
+                    _ElementUtilities.empty(_this._customContentContainer);
+                    _ElementUtilities._reparentChildren(_this._chosenCommand.element, _this._customContentContainer);
+                };
+                this._customContentFlyout.onafterhide = function () {
+                    _ElementUtilities._reparentChildren(_this._customContentContainer, _this._chosenCommand.element);
+                };
+            }
+
             if (this.shownDisplayMode === _Constants.shownDisplayModes.full) {
                 // Inline menu mode always has the overflow button hidden
                 this._overflowButton.style.display = "";
@@ -69547,30 +69578,6 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
         ToolBar.prototype._setupOverflowAreaDetached = function (additionalCommands) {
             var _this = this;
             this._writeProfilerMark("_setupOverflowAreaDetached,info");
-
-            var isCustomContent = function (command) {
-                return command.type === _Constants.typeContent;
-            };
-            var customContent = additionalCommands.filter(isCustomContent);
-            if (customContent.length === 0) {
-                customContent = this._secondaryCommands.filter(isCustomContent);
-            }
-
-            if (customContent.length > 0 && !this._customContentFlyout) {
-                var mainFlyout = _Global.document.createElement("div");
-                this._customContentContainer = _Global.document.createElement("div");
-                _ElementUtilities.addClass(this._customContentContainer, _Constants.overflowContentFlyoutCssClass);
-                mainFlyout.appendChild(this._customContentContainer);
-                this._customContentFlyout = new _Flyout.Flyout(mainFlyout);
-                _Global.document.body.appendChild(this._customContentFlyout.element);
-                this._customContentFlyout.onbeforeshow = function () {
-                    _ElementUtilities.empty(_this._customContentContainer);
-                    _ElementUtilities._reparentChildren(_this._chosenCommand.element, _this._customContentContainer);
-                };
-                this._customContentFlyout.onafterhide = function () {
-                    _ElementUtilities._reparentChildren(_this._customContentContainer, _this._chosenCommand.element);
-                };
-            }
 
             if (!this._menu) {
                 this._menu = new Menu.Menu();
