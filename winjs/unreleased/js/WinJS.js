@@ -11673,11 +11673,12 @@ define('WinJS/Utilities/_KeyboardBehavior',[
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Utilities/_SafeHtml',[
     'exports',
+    '../Core/_WinJS',
     '../Core/_Global',
     '../Core/_Base',
     '../Core/_ErrorFromName',
     '../Core/_Resources'
-    ], function safeHTMLInit(exports, _Global, _Base, _ErrorFromName, _Resources) {
+    ], function safeHTMLInit(exports, _WinJS, _Global, _Base, _ErrorFromName, _Resources) {
     "use strict";
 
 
@@ -11753,7 +11754,12 @@ define('WinJS/Utilities/_SafeHtml',[
             /// </param>
             /// </signature>
             msApp.execUnsafeLocalFunction(function () {
-                element.innerHTML = text;
+                try {
+                    _WinJS._execUnsafe = true;
+                    element.innerHTML = text;
+                } finally {
+                    _WinJS._execUnsafe = false;
+                }
             });
         };
         setOuterHTMLUnsafe = function (element, text) {
@@ -11770,7 +11776,12 @@ define('WinJS/Utilities/_SafeHtml',[
             /// </param>
             /// </signature>
             msApp.execUnsafeLocalFunction(function () {
-                element.outerHTML = text;
+                try {
+                    _WinJS._execUnsafe = true;
+                    element.outerHTML = text;
+                } finally {
+                    _WinJS._execUnsafe = false;
+                }
             });
         };
         insertAdjacentHTMLUnsafe = function (element, position, text) {
@@ -11790,7 +11801,12 @@ define('WinJS/Utilities/_SafeHtml',[
             /// </param>
             /// </signature>
             msApp.execUnsafeLocalFunction(function () {
-                element.insertAdjacentHTML(position, text);
+                try {
+                    _WinJS._execUnsafe = true;
+                    element.insertAdjacentHTML(position, text);
+                } finally {
+                    _WinJS._execUnsafe = false;
+                }
             });
         };
     } else if (_Global.msIsStaticHTML) {
