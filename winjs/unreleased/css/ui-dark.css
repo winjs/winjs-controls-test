@@ -5210,6 +5210,7 @@ Hide clear button in search box control.
 .win-splitview .win-splitview-panewrapper {
   position: relative;
   z-index: 1;
+  outline: none;
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;

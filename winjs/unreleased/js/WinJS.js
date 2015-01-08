@@ -78004,6 +78004,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
     var LightDismissableElement = (function () {
         function LightDismissableElement(args) {
             this.element = args.element;
+            this.element.tabIndex = args.tabIndex;
             this.onLightDismiss = args.onLightDismiss;
 
             // Allow the caller to override the default implementations of our ILightDismissable methods.
@@ -78669,6 +78670,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
 
                         _this.splitView._dismissable = new _LightDismissService.LightDismissableElement({
                             element: _this.splitView._dom.paneWrapper,
+                            tabIndex: -1,
                             onLightDismiss: function () {
                                 _this.splitView.hidePane();
                             }
