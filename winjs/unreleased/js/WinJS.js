@@ -16186,6 +16186,8 @@ define('WinJS/Animations',[
         var diff = args.anchorTrailingEdge ? args.to.total - args.from.total : args.from.total - args.to.total;
         var translate = args.dimension === "width" ? "translateX" : "translateY";
         var size = args.dimension;
+        var duration = args.duration || 367;
+        var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
     
         // Set up
         elementClipper.style[size] = args.to.total + "px";
@@ -16199,8 +16201,8 @@ define('WinJS/Animations',[
         
         // Animate
         var transition = {
-            duration: 367,
-            timing: "cubic-bezier(0.1, 0.9, 0.2, 1)",
+            duration: duration,
+            timing: timing,
             to: ""
         };
         return Promise.join([
@@ -16212,6 +16214,8 @@ define('WinJS/Animations',[
     function shrinkTransition(elementClipper, element, args) {
         var diff = args.anchorTrailingEdge ? args.from.total - args.to.total : args.to.total - args.from.total;
         var translate = args.dimension === "width" ? "translateX" : "translateY";
+        var duration = args.duration || 367;
+        var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
     
         // Set up
         elementClipper.style[transformNames.scriptName] = "";
@@ -16223,8 +16227,8 @@ define('WinJS/Animations',[
     
         // Animate
         var transition = {
-            duration: 367,
-            timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
+            duration: duration,
+            timing: timing
         };
         var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + diff + "px)" });
         var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -diff + "px)" });
@@ -18024,6 +18028,8 @@ define('WinJS/Animations',[
         //     from/to are objects of the form { content: number; total: number; }. "content" is the
         //     width/height of *element*'s content box (e.g. getContentWidth). "total" is the width/height
         //     of *element*'s margin box (e.g. getTotalWidth).
+        //   - duration: The CSS transition duration property.
+        //   - timing: The CSS transition timing property.
         //   - dimension: The dimension on which *element* is resizing. Either "width" or "height".
         //   - anchorTrailingEdge: During the resize animation, one edge will move and the other edge will
         //     remain where it is. This flag specifies which edge is anchored (i.e. won't move).
@@ -63866,7 +63872,6 @@ define('WinJS/Controls/AppBar/_Constants',[
         hiddenClass: "win-appbar-hidden",
         minimalClass: "win-appbar-minimal",
         menuContainerClass: "win-appbar-menu",
-        toolbarContainerClass: "win-appbar-toolbarcontainer",
 
         // Constants for AppBar placement
         appBarPlacementTop: "top",
@@ -69686,6 +69691,7 @@ define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], functio
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Layouts',[
     'exports',
+    '../../Animations',
     '../../Animations/_TransitionAnimation',
     '../../BindingList',
     '../../Core/_BaseUtils',
@@ -69703,7 +69709,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
     '../../Utilities/_ElementUtilities',
     './_Command',
     './_Constants'
-], function appBarLayoutsInit(exports, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, ToolBar, _ToolBarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
+], function appBarLayoutsInit(exports, Animations, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, ToolBar, _ToolBarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
     "use strict";
 
     // AppBar will use this when AppBar.layout property is set to "custom"
@@ -70179,12 +70185,8 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     }
                     this.appBarEl.appendChild(this._menu);
 
-                    this._toolbarContainer = _Global.document.createElement("div");
-                    _ElementUtilities.addClass(this._toolbarContainer, _Constants.toolbarContainerClass);
-                    this._menu.appendChild(this._toolbarContainer);
-
                     this._toolbarEl = _Global.document.createElement("div");
-                    this._toolbarContainer.appendChild(this._toolbarEl);
+                    this._menu.appendChild(this._toolbarEl);
 
                     this._createToolBar(commands);
                 },
@@ -70274,9 +70276,9 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 },
 
                 setFocusOnShow: function _AppBarMenuLayout_setFocusOnShow() {
-                    // Make sure the toolbarContainer (used for clipping during the resize animation)
+                    // Make sure the menu (used for clipping during the resize animation)
                     // doesn't scroll when we give focus to the AppBar.
-                    this.appBarEl.winControl._setFocusToAppBar(true, this._toolbarContainer);
+                    this.appBarEl.winControl._setFocusToAppBar(true, this._menu);
                 },
 
                 _updateData: function _AppBarMenuLayout_updateData(data) {
@@ -70382,19 +70384,6 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 _positionToolBar: function _AppBarMenuLayout_positionToolBar() {
                     if (!this._disposed) {
                         this._writeProfilerMark("_positionToolBar,info");
-
-                        var menuOffset = this._toolbarEl.offsetHeight - ((this._isMinimal() && !this._isBottom()) ? 0 : this.appBarEl.offsetHeight);
-                        var toolbarOffset = this._toolbarEl.offsetHeight - (this._isMinimal() ? 0 : this.appBarEl.offsetHeight);
-
-                        // Ensure that initial position is correct
-                        this._toolbarContainer.style[this._tranformNames.scriptName] = "";
-                        this._menu.style[this._tranformNames.scriptName] = "";
-                        this._toolbarEl.style[this._tranformNames.scriptName] = "";
-
-                        this._toolbarContainer.style[this._tranformNames.scriptName] = "translateY(0px)";
-                        this._menu.style[this._tranformNames.scriptName] = "translateY(-" + menuOffset + 'px)';
-                        this._toolbarEl.style[this._tranformNames.scriptName] = "translateY(" + toolbarOffset + 'px)';
-
                         this._initialized = true;
                     }
                 },
@@ -70407,28 +70396,39 @@ define('WinJS/Controls/AppBar/_Layouts',[
                         this._toolbar.forceLayout();
                         this._positionToolBar();
                     }
-
                     var heightVisible = this._isMinimal() ? 0 : this.appBarEl.offsetHeight;
-                    var animation1, animation2;
                     if (this._isBottom()) {
-                        animation1 = this._executeTranslate(this._toolbarContainer, "translateY(" + (this._toolbarContainer.offsetHeight - heightVisible) + "px)");
-                        animation2 = this._executeTranslate(this._toolbarEl, "translateY(" + -(this._toolbarContainer.offsetHeight - heightVisible) + "px)");
+                        // Bottom AppBar Animation
+                        var offsetTop = this._menu.offsetHeight - heightVisible;
+                        return this._executeTranslate(this._menu, "translateY(" + -offsetTop + "px)");
                     } else {
-                        animation1 = this._executeTranslate(this._toolbarContainer, "translateY(" + (this._toolbarContainer.offsetHeight - heightVisible) + "px)");
-                        animation2 = this._executeTranslate(this._toolbarEl, "translateY(0px)");
+                        // Top AppBar Animation
+                        return Animations._resizeTransition(this._menu, this._toolbarEl, {
+                            from: { content: heightVisible, total: heightVisible },
+                            to: { content: this._menu.offsetHeight, total: this._menu.offsetHeight },
+                            dimension: "height",
+                            duration: 400,
+                            timing: "ease-in",
+                        });
                     }
-                    return Promise.join([animation1, animation2]);
                 },
 
                 _animateToolBarExit: function _AppBarMenuLayout_animateToolBarExit() {
                     this._writeProfilerMark("_animateToolBarExit,info");
 
                     var heightVisible = this._isMinimal() ? 0 : this.appBarEl.offsetHeight;
-                    var animation1 = this._executeTranslate(this._toolbarContainer, "translateY(0px)");
-                    var animation2 = this._executeTranslate(this._toolbarEl, "translateY(" + (this._toolbarContainer.offsetHeight - heightVisible) + "px)");
-                    var animation = Promise.join([animation1, animation2]);
-                    animation.then(this._positionToolBarBound, this._positionToolBarBound);
-                    return animation;
+                    if (this._isBottom()) {
+                        return this._executeTranslate(this._menu, "none");
+                    } else {
+                        // Top AppBar Animation
+                        return Animations._resizeTransition(this._menu, this._toolbarEl, {
+                            from: { content: this._menu.offsetHeight, total: this._menu.offsetHeight },
+                            to: { content: heightVisible, total: heightVisible },
+                            dimension: "height",
+                            duration: 400,
+                            timing: "ease-in",
+                        });
+                    }
                 },
 
                 _executeTranslate: function _AppBarMenuLayout_executeTranslate(element, value) {
@@ -71652,7 +71652,8 @@ define('WinJS/Controls/AppBar',[
                 _animatePositionChange: function AppBar_animatePositionChange(fromPosition, toPosition) {
                     // Determines and executes the proper transition between visible positions
 
-                    this._layout.positionChanging(fromPosition, toPosition);
+                    var layoutElementsAnimationPromise = this._layout.positionChanging(fromPosition, toPosition),
+                        appBarElementAnimationPromise;
 
                     // Get values in terms of pixels to perform animation.
                     var beginningVisiblePixelHeight = this._visiblePixels[fromPosition],
@@ -71673,11 +71674,13 @@ define('WinJS/Controls/AppBar',[
                     // Animate
                     if (endingVisiblePixelHeight > beginningVisiblePixelHeight) {
                         var fromOffset = { top: offsetTop + "px", left: "0px" };
-                        return Animations.showEdgeUI(this._element, fromOffset, { mechanism: "transition" });
+                        appBarElementAnimationPromise = Animations.showEdgeUI(this._element, fromOffset, { mechanism: "transition" });
                     } else {
                         var toOffset = { top: offsetTop + "px", left: "0px" };
-                        return Animations.hideEdgeUI(this._element, toOffset, { mechanism: "transition" });
+                        appBarElementAnimationPromise = Animations.hideEdgeUI(this._element, toOffset, { mechanism: "transition" });
                     }
+
+                    return Promise.join([layoutElementsAnimationPromise, appBarElementAnimationPromise]);
                 },
 
                 _checkDoNext: function AppBar_checkDoNext() {
