@@ -5238,6 +5238,7 @@ Hide clear button in search box control.
   flex-direction: column;
 }
 .win-splitview .win-splitview-panewrapper {
+  position: relative;
   z-index: 1;
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
