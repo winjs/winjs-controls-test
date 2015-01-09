@@ -69498,16 +69498,13 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
 
         ToolBar.prototype._setupOverflowArea = function (additionalCommands) {
             var _this = this;
-            // Set up special flyout for "content" typed commands in the overflow area.
+            // Set up custom flyout for "content" typed commands in the overflow area.
             var isCustomContent = function (command) {
                 return command.type === _Constants.typeContent;
             };
-            var customContent = additionalCommands.filter(isCustomContent);
-            if (customContent.length === 0) {
-                customContent = this._secondaryCommands.filter(isCustomContent);
-            }
+            var hasCustomContent = additionalCommands.some(isCustomContent) || this._secondaryCommands.filter(isCustomContent);
 
-            if (customContent.length > 0 && !this._customContentFlyout) {
+            if (hasCustomContent && !this._customContentFlyout) {
                 var mainFlyout = _Global.document.createElement("div");
                 this._customContentContainer = _Global.document.createElement("div");
                 _ElementUtilities.addClass(this._customContentContainer, _Constants.overflowContentFlyoutCssClass);
