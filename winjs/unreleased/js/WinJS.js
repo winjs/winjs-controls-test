@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.9 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.12 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.9 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.12 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -12337,7 +12337,7 @@ define('WinJS/Utilities',[
 
     //wrapper module
 });
-define('WinJS/Utilities/_XYFocus',["require", "exports", "../Core/_Global", "../Core/_Base", "../Core/_BaseUtils", "../Utilities/_ElementUtilities", "../Core/_Events", "../ControlProcessor/_OptionsParser"], function(require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
+define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", "./Core/_BaseUtils", "./Utilities/_ElementUtilities", "./Core/_Events", "./ControlProcessor/_OptionsParser"], function(require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
     "use strict";
 
     var AttributeNames = {
@@ -79548,7 +79548,7 @@ define('WinJS',[
     'WinJS/_Signal',
     'WinJS/Scheduler',
     'WinJS/Utilities',
-    'WinJS/Utilities/_XYFocus',
+    'WinJS/XYFocus',
     'WinJS/Fragments',
     'WinJS/Application',
     'WinJS/Navigation',
