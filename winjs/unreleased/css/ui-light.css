@@ -5473,11 +5473,12 @@ select {
   border-color: rgba(0, 0, 0, 0.4);
 }
 select::-ms-expand {
-  color: #000000;
+  color: rgba(0, 0, 0, 0.8);
   background-color: transparent;
 }
 select:hover {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: #f2f2f2;
+  border-color: rgba(0, 0, 0, 0.6);
 }
 select:disabled {
   color: rgba(0, 0, 0, 0.2);
@@ -5485,9 +5486,11 @@ select:disabled {
 }
 select:disabled::-ms-expand {
   color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 option {
   color: #000000;
+  background-color: #f2f2f2;
 }
 option:checked {
   color: #ffffff;
@@ -5500,7 +5503,7 @@ option:active {
 }
 select[multiple] {
   border: none;
-  background-color: #e6e6e6;
+  background-color: #f2f2f2;
 }
 select[multiple] option {
   color: #000000;
@@ -5774,7 +5777,7 @@ html.win-hoverable .win-flipview .win-navbutton:hover {
 .win-tooltip {
   color: #000000;
   border-color: #cccccc;
-  background-color: #e6e6e6;
+  background-color: #f2f2f2;
 }
 .win-rating .win-star.win-user.win-full,
 .win-rating .win-star.win-user.win-full.win-disabled {
@@ -6083,7 +6086,7 @@ button.win-command:disabled:active .win-label {
   color: #a38bda;
 }
 .win-autosuggestbox-flyout {
-  background-color: #e6e6e6;
+  background-color: #f2f2f2;
   color: #000000;
 }
 .win-autosuggestbox-suggestion-selected {
@@ -6152,7 +6155,7 @@ button.win-command:disabled:active .win-label {
   border-color: #000000;
 }
 .win-contentdialog-dialog {
-  background-color: #e6e6e6;
+  background-color: #f2f2f2;
   outline-color: #0078d7;
 }
 .win-contentdialog-title {
@@ -6442,11 +6445,12 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   border-color: rgba(255, 255, 255, 0.4);
 }
 .win-ui-dark select::-ms-expand {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.8);
   background-color: transparent;
 }
 .win-ui-dark select:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: #2b2b2b;
+  border-color: rgba(255, 255, 255, 0.6);
 }
 .win-ui-dark select:disabled {
   color: rgba(255, 255, 255, 0.2);
@@ -6454,9 +6458,11 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 }
 .win-ui-dark select:disabled::-ms-expand {
   color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 .win-ui-dark option {
-  color: #000000;
+  color: #ffffff;
+  background-color: #2b2b2b;
 }
 .win-ui-dark option:checked {
   color: #ffffff;
@@ -6465,11 +6471,11 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark option:hover,
 .win-ui-dark option:active {
   background-color: rgba(0, 0, 0, 0.2);
-  color: #000000;
+  color: #ffffff;
 }
 .win-ui-dark select[multiple] {
   border: none;
-  background-color: #1f1f1f;
+  background-color: #2b2b2b;
 }
 .win-ui-dark select[multiple] option {
   color: #ffffff;
@@ -6743,7 +6749,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark .win-tooltip {
   color: #ffffff;
   border-color: #767676;
-  background-color: #1f1f1f;
+  background-color: #2b2b2b;
 }
 .win-ui-dark .win-rating .win-star.win-user.win-full,
 .win-ui-dark .win-rating .win-star.win-user.win-full.win-disabled {
@@ -7052,7 +7058,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   color: #a38bda;
 }
 .win-ui-dark .win-autosuggestbox-flyout {
-  background-color: #1f1f1f;
+  background-color: #2b2b2b;
   color: #ffffff;
 }
 .win-ui-dark .win-autosuggestbox-suggestion-selected {
@@ -7121,7 +7127,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   border-color: #ffffff;
 }
 .win-ui-dark .win-contentdialog-dialog {
-  background-color: #1f1f1f;
+  background-color: #2b2b2b;
   outline-color: #0078d7;
 }
 .win-ui-dark .win-contentdialog-title {
