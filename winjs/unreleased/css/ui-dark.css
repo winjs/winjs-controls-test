@@ -883,6 +883,7 @@ button[type=submit] {
   border-width: 2px;
   background-clip: border-box;
   border-radius: 0;
+  touch-action: manipulation;
   -webkit-appearance: none;
   font-size: 15px;
   font-weight: 400;
@@ -1153,6 +1154,7 @@ input[type=range].win-vertical:lang(qps-plocm) {
 a {
   text-decoration: none;
   cursor: pointer;
+  touch-action: manipulation;
 }
 img {
   border-style: none;
@@ -1680,7 +1682,8 @@ html.win-hoverable .win-itemcontainer.win-itembox.win-selected:hover::before {
 .win-listview .win-horizontal .win-structuralnodes.win-single-itemsblock.win-listlayout .win-itemscontainer.win-laidout .win-itemscontainer-padder,
 .win-listview .win-vertical .win-structuralnodes.win-single-itemsblock.win-gridlayout .win-uniformgridlayout.win-itemscontainer.win-laidout .win-itemscontainer-padder,
 .win-listview .win-horizontal .win-structuralnodes.win-single-itemsblock.win-gridlayout .win-uniformgridlayout.win-itemscontainer.win-laidout .win-itemscontainer-padder {
-  display: none;
+  height: 0;
+  width: 0;
 }
 .win-listview.win-groups .win-vertical .win-listlayout.win-headerpositionleft .win-itemscontainer,
 .win-listview.win-groups .win-vertical .win-listlayout.win-headerpositionleft .win-groupheadercontainer,
@@ -2828,6 +2831,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   width: 100%;
   overflow: hidden;
   -ms-scroll-limit-x-max: 0px;
+  touch-action: manipulation;
 }
 .win-pivot .win-pivot-navbutton {
   position: absolute;
@@ -4818,6 +4822,7 @@ Hide clear button in search box control.
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
+  touch-action: manipulation;
 }
 .win-navbarcontainer-horizontal .win-navbarcommand {
   margin: 4px;

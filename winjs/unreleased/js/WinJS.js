@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.20 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.23 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.20 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.23 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -44145,7 +44145,9 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
                         return [{ key: "-1", size: count }];
                     }
                 },
-
+                
+                // Overridden by tests.
+                // Tests should have _createChunk return true when they want _createContainers to stop creating containers.
                 _createChunk: function VirtualizeContentsView_createChunk(groups, count, chunkSize) {
                     var that = this;
 
@@ -44198,7 +44200,9 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
 
                     this._listView._writeProfilerMark("createChunk,StopTM");
                 },
-
+                
+                // Overridden by tests.
+                // Tests should have _createChunkWithBlocks return true when they want _createContainers to stop creating containers.
                 _createChunkWithBlocks: function VirtualizeContentsView_createChunkWithBlocks(groups, count, blockSize, chunkSize) {
                     var that = this;
                     this._listView._writeProfilerMark("createChunk,StartTM");
@@ -44413,6 +44417,8 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
                             chunkSize = Math.min(_VirtualizeContentsView._startupChunkSize, _VirtualizeContentsView._chunkSize);
                         var stop;
                         do {
+                            // Tests override _createChunk/_createChunkWithBlocks and take advantage of its boolean return value
+                            // to stop initial container creation after a certain number of containers have been created.
                             stop = blockSize ? that._createChunkWithBlocks(groups, count, blockSize, chunkSize) : that._createChunk(groups, count, chunkSize);
                         } while (_BaseUtils._now() < end && that.containers.length < count && !stop);
 
@@ -47658,7 +47664,7 @@ define('WinJS/Controls/ListView',[
                         var previousModifiedElementsHash = {};
                         this._modifiedElements = [];
                         this._countDifference += updater.countDifference;
-
+                        
                         for (i = 0; i < previousModifiedElements.length; i++) {
                             var modifiedElement = previousModifiedElements[i];
                             if (modifiedElement.newIndex === -1) {
@@ -47667,7 +47673,7 @@ define('WinJS/Controls/ListView',[
                                 previousModifiedElementsHash[modifiedElement.newIndex] = modifiedElement;
                             }
                         }
-
+                        
                         for (i = 0; i < updater.removed.length; i++) {
                             var removed = updater.removed[i];
                             var modifiedElement = previousModifiedElementsHash[removed.index];
@@ -47685,7 +47691,7 @@ define('WinJS/Controls/ListView',[
                             }
                             this._modifiedElements.push(modifiedElement);
                         }
-
+                        
                         var insertedKeys = Object.keys(this._insertedItems);
                         for (i = 0; i < insertedKeys.length; i++) {
                             this._modifiedElements.push({
@@ -47722,7 +47728,7 @@ define('WinJS/Controls/ListView',[
                             }
                         }
                         this._writeProfilerMark("_synchronize:update_modifiedElements,StopTM");
-
+                        
                         var previousIndices = Object.keys(previousModifiedElementsHash);
                         for (i = 0; i < previousIndices.length; i++) {
                             var key = previousIndices[i];
@@ -49181,22 +49187,18 @@ define('WinJS/Controls/ListView',[
                             }
                             var eventDetails = that._fireAnimationEvent(ListViewAnimationType.contentTransition);
                             that._firedAnimationEvent = true;
-                            var overflowStyle = _BaseUtils._browserStyleEquivalents["overflow-style"];
-                            var animatedElement = overflowStyle ? that._viewport : that._canvas;
                             if (!eventDetails.prevented) {
                                 that._fadingViewportOut = true;
-                                if (overflowStyle) {
-                                    animatedElement.style[overflowStyle.scriptName] = "none";
-                                }
-                                AnimationHelper.fadeOutElement(animatedElement).then(function () {
+                                that._viewport.style.overflow = "hidden";
+                                AnimationHelper.fadeOutElement(that._viewport).then(function () {
                                     if (that._isZombie()) { return; }
                                     that._fadingViewportOut = false;
-                                    animatedElement.style.opacity = 1.0;
+                                    that._viewport.style.opacity = 1.0;
                                     complete();
                                 });
                             } else {
                                 that._disableEntranceAnimation = true;
-                                animatedElement.style.opacity = 1.0;
+                                that._viewport.style.opacity = 1.0;
                                 complete();
                             }
                         }
@@ -49209,16 +49211,12 @@ define('WinJS/Controls/ListView',[
                         animationPromise: Promise.wrap()
                     };
                     var that = this;
-                    var overflowStyle = _BaseUtils._browserStyleEquivalents["overflow-style"];
-                    var animatedElement = overflowStyle ? this._viewport : this._canvas;
                     this._raiseHeaderFooterVisibilityEvent();
                     function resetViewOpacity() {
                         that._canvas.style.opacity = 1;
                         that._headerContainer.style.opacity = 1;
                         that._footerContainer.style.opacity = 1;
-                        if (overflowStyle) {
-                            animatedElement.style[overflowStyle.scriptName] = "";
-                        }
+                        that._viewport.style.overflow = "";
                         that._raiseHeaderFooterVisibilityEvent();
                     }
 
@@ -49246,30 +49244,17 @@ define('WinJS/Controls/ListView',[
                             this._waitingEntranceAnimationPromise.cancel();
                         }
                         this._canvas.style.opacity = 0;
-                        if (overflowStyle) {
-                            animatedElement.style[overflowStyle.scriptName] = "none";
-                        }
+                        this._viewport.style.overflow = "hidden";
                         this._headerContainer.style.opacity = 1;
                         this._footerContainer.style.opacity = 1;
                         this._waitingEntranceAnimationPromise = eventDetails.animationPromise.then(function () {
                             if (!that._isZombie()) {
                                 that._canvas.style.opacity = 1;
-                                var animatedElements = [animatedElement];
-                                if (animatedElement !== that._viewport) {
-                                    if (that._header) {
-                                        animatedElements.push(that._headerContainer);
-                                    }
-                                    if (that._footer) {
-                                        animatedElements.push(that._footerContainer);
-                                    }
-                                }
 
-                                return AnimationHelper.animateEntrance(animatedElements, firstTime).then(function () {
+                                return AnimationHelper.animateEntrance(that._viewport, firstTime).then(function () {
                                     if (!that._isZombie()) {
                                         that._waitingEntranceAnimationPromise = null;
-                                        if (overflowStyle) {
-                                            animatedElement.style[overflowStyle.scriptName] = "";
-                                        }
+                                        that._viewport.style.overflow = "";
                                     }
                                 });
                             }
@@ -49606,8 +49591,28 @@ define('WinJS/Controls/ListView',[
 
                 _updateContainers: function ListView_updateContainers(groups, count, containersDelta, modifiedElements) {
                     var that = this;
-
-                    var maxContainers = this._view.containers.length + (containersDelta > 0 ? containersDelta : 0);
+                    
+                    // If the ListView is still in the middle of asynchronously creating containers (i.e. createContainersWorker isn't done),
+                    // then we need to cap the number of containers we create here. Without the cap, we'll synchronously finish creating all
+                    // of the containers nullifying the responsiveness benefits of the asynchronous create containers worker. However, if
+                    // the worker has already finished, there's no need for the cap.
+                    var containerCountAfterEdits = this._view.containers.length + containersDelta;
+                    var asyncContainerCreationInProgress = containerCountAfterEdits < count;
+                    var maxContainers;
+                    if (asyncContainerCreationInProgress) {
+                        // Just create enough containers to handle the edits in the realized range. We need to create at least
+                        // this many containers so that we can play the edit animations.
+                        var countInsertedInRealizedRange = 0;
+                        for (var i = 0; i < modifiedElements.length; i++) {
+                            if (modifiedElements[i].oldIndex === -1) {
+                                countInsertedInRealizedRange++;
+                            }
+                        }
+                        maxContainers = this._view.containers.length + countInsertedInRealizedRange;
+                    } else {
+                        // Create enough containers for every item in the data source.
+                        maxContainers = count;
+                    }
 
                     var newTree = [];
                     var newKeyToGroupIndex = {};
