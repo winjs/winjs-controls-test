@@ -1152,7 +1152,7 @@ input[type=range].win-vertical:lang(qps-plocm) {
   writing-mode: bt-rl;
 }
 a {
-  text-decoration: none;
+  text-decoration: underline;
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -5373,6 +5373,7 @@ input[type=checkbox]:indeterminate::-ms-check {
   border-color: #0078d7;
 }
 input[type=checkbox]:checked::-ms-check {
+  color: #fff;
   background-color: #0078d7;
   border-color: transparent;
 }
@@ -5472,6 +5473,7 @@ button[type=submit]:disabled {
 }
 input[type=submit],
 button[type=submit] {
+  color: #fff;
   background-color: #0078d7;
 }
 select {
@@ -6345,6 +6347,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   border-color: #0078d7;
 }
 .win-ui-dark input[type=checkbox]:checked::-ms-check {
+  color: #fff;
   background-color: #0078d7;
   border-color: transparent;
 }
@@ -6444,6 +6447,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 }
 .win-ui-dark input[type=submit],
 .win-ui-dark button[type=submit] {
+  color: #fff;
   background-color: #0078d7;
 }
 .win-ui-dark select {
