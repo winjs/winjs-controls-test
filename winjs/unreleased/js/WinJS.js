@@ -12473,12 +12473,7 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
 
         if (result && _trySetFocus(result.target, keyCode)) {
             // A focus target was found
-            if (result.usedOverride) {
-                // Reset history since the override target could be anywhere
-                _historyRect = null;
-            } else {
-                updateHistoryRect(direction, result);
-            }
+            updateHistoryRect(direction, result);
             _lastTarget = result.target;
             _cachedLastTargetRect = result.targetRect;
 
@@ -12599,7 +12594,7 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
                         if (target === _Global.document.activeElement) {
                             return null;
                         }
-                        return { target: target, targetRect: _toIRect(target.getBoundingClientRect()), referenceRect: null, usedOverride: true };
+                        return { target: target, targetRect: _toIRect(target.getBoundingClientRect()), referenceRect: refObj.rect, usedOverride: true };
                     }
                 }
             }
