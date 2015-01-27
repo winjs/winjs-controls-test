@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.26 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.27 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.26 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.27 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -72376,6 +72376,23 @@ define('WinJS/Controls/AutoSuggestBox',[
 ], function autoSuggestBoxInit(exports, _Global, _WinRT, _Base, _ErrorFromName, _Events, _Resources, _Control, _ElementListUtilities, _ElementUtilities, _Hoverable, Animations, BindingList, Promise, Repeater, _SuggestionManagerShim) {
     "use strict";
 
+    var ClassNames = {
+        asb: "win-autosuggestbox",
+        asbDisabled: "win-autosuggestbox-disabled",
+        asbFlyout: "win-autosuggestbox-flyout",
+        asbFlyoutAbove: "win-autosuggestbox-flyout-above",
+        asbBoxFlyoutHighlightText: "win-autosuggestbox-flyout-highlighttext",
+        asbHitHighlightSpan: "win-autosuggestbox-hithighlight-span",
+        asbInput: "win-autosuggestbox-input",
+        asbInputFocus: "win-autosuggestbox-input-focus",
+        asbSuggestionQuery: "win-autosuggestbox-suggestion-query",
+        asbSuggestionResult: "win-autosuggestbox-suggestion-result",
+        asbSuggestionResultText: "win-autosuggestbox-suggestion-result-text",
+        asbSuggestionResultDetailedText: "win-autosuggestbox-suggestion-result-detailed-text",
+        asbSuggestionSelected: "win-autosuggestbox-suggestion-selected",
+        asbSuggestionSeparator: "win-autosuggestbox-suggestion-separator",
+    };
+
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
         /// <field>
         /// <summary locid="WinJS.UI.AutoSuggestBox">
@@ -72401,23 +72418,6 @@ define('WinJS/Controls/AutoSuggestBox',[
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         AutoSuggestBox: _Base.Namespace._lazy(function () {
             var Key = _ElementUtilities.Key;
-
-            var ClassNames = {
-                asb: "win-autosuggestbox",
-                asbDisabled: "win-autosuggestbox-disabled",
-                asbFlyout: "win-autosuggestbox-flyout",
-                asbFlyoutAbove: "win-autosuggestbox-flyout-above",
-                asbBoxFlyoutHighlightText: "win-autosuggestbox-flyout-highlighttext",
-                asbHitHighlightSpan: "win-autosuggestbox-hithighlight-span",
-                asbInput: "win-autosuggestbox-input",
-                asbInputFocus: "win-autosuggestbox-input-focus",
-                asbSuggestionQuery: "win-autosuggestbox-suggestion-query",
-                asbSuggestionResult: "win-autosuggestbox-suggestion-result",
-                asbSuggestionResultText: "win-autosuggestbox-suggestion-result-text",
-                asbSuggestionResultDetailedText: "win-autosuggestbox-suggestion-result-detailed-text",
-                asbSuggestionSelected: "win-autosuggestbox-suggestion-selected",
-                asbSuggestionSeparator: "win-autosuggestbox-suggestion-separator",
-            };
 
             var EventNames = {
                 querychanged: "querychanged",
@@ -73666,6 +73666,7 @@ define('WinJS/Controls/AutoSuggestBox',[
             return AutoSuggestBox;
         })
     });
+    exports.ClassNames = ClassNames;
 });
 
 
@@ -73722,10 +73723,17 @@ define('WinJS/Controls/SearchBox',[
             // Enums
             var ClassName = {
                 searchBox: "win-searchbox",
+                searchBoxDisabled: "win-searchbox-disabled",
                 searchBoxInput: "win-searchbox-input",
+                searchBoxInputFocus: "win-searchbox-input-focus",
                 searchBoxButton: "win-searchbox-button",
                 searchBoxFlyout: "win-searchbox-flyout",
+                searchBoxFlyoutHighlightText: "win-searchbox-flyout-highlighttext",
+                searchBoxHitHighlightSpan: "win-searchbox-hithighlight-span",
                 searchBoxSuggestionResult: "win-searchbox-suggestion-result",
+                searchBoxSuggestionResultText: "win-searchbox-suggestion-result-text",
+                searchBoxSuggestionResultDetailedText: "win-searchbox-suggestion-result-detailed-text",
+                searchBoxSuggestionSelected: "win-searchbox-suggestion-selected",
                 searchBoxSuggestionQuery: "win-searchbox-suggestion-query",
                 searchBoxSuggestionSeparator: "win-searchbox-suggestion-separator",
                 searchBoxButtonInputFocus: "win-searchbox-button-input-focus",
@@ -73837,12 +73845,14 @@ define('WinJS/Controls/SearchBox',[
                     AutoSuggestBox.AutoSuggestBox.prototype._disableControl.call(this);
                     this._buttonElement.disabled = true;
                     this._buttonElement.classList.add(ClassName.searchBoxButtonDisabled);
+                    this.element.classList.add(ClassName.searchBoxDisabled);
                 },
 
                 _enableControl: function SearchBox_enableControl() {
                     AutoSuggestBox.AutoSuggestBox.prototype._enableControl.call(this);
                     this._buttonElement.disabled = false;
                     this._buttonElement.classList.remove(ClassName.searchBoxButtonDisabled);
+                    this.element.classList.remove(ClassName.searchBoxDisabled);
                 },
 
                 _renderSuggestion: function SearchBox_renderSuggestion(suggestion) {
@@ -73854,11 +73864,36 @@ define('WinJS/Controls/SearchBox',[
                         render.classList.add(ClassName.searchBoxSuggestionSeparator);
                     } else {
                         render.classList.add(ClassName.searchBoxSuggestionResult);
+                        
+                        var resultText = render.querySelector("." + AutoSuggestBox.ClassNames.asbSuggestionResultText);
+                        resultText.classList.add(ClassName.searchBoxSuggestionResultText);
+
+                        var resultDetailText = render.querySelector("." + AutoSuggestBox.ClassNames.asbSuggestionResultDetailedText);
+                        resultDetailText.classList.add(ClassName.searchBoxSuggestionResultDetailedText);
+
+                        var spans = render.querySelectorAll("." + AutoSuggestBox.ClassNames.asbHitHighlightSpan);
+                        for (var i = 0, len = spans.length; i < len; i++) {
+                            spans[i].classList.add(ClassName.searchBoxHitHighlightSpan);
+                        }
+                        var highlightTexts = render.querySelectorAll("." + AutoSuggestBox.ClassNames.asbBoxFlyoutHighlightText);
+                        for (var i = 0, len = highlightTexts.length; i < len; i++) {
+                            highlightTexts[i].classList.add(ClassName.searchBoxFlyoutHighlightText);
+                        }
                     }
                     return render;
                 },
 
-                _shouldIgnoreInput: function asb_shouldIgnoreInput() {
+                _selectSuggestionAtIndex: function SearchBox_selectSuggestionAtIndex(indexToSelect) {
+                    // Overrides base class
+                    AutoSuggestBox.AutoSuggestBox.prototype._selectSuggestionAtIndex.call(this, indexToSelect);
+
+                    var currentSelected = this.element.querySelector("." + ClassName.searchBoxSuggestionSelected);
+                    currentSelected && currentSelected.classList.remove(ClassName.searchBoxSuggestionSelected);
+                    var newSelected = this.element.querySelector("." + AutoSuggestBox.ClassNames.asbSuggestionSelected);
+                    newSelected && newSelected.classList.add(ClassName.searchBoxSuggestionSelected);
+                },
+
+                _shouldIgnoreInput: function SearchBox_shouldIgnoreInput() {
                     // Overrides base class
                     var shouldIgnore = AutoSuggestBox.AutoSuggestBox.prototype._shouldIgnoreInput();
                     var isButtonDown = _ElementUtilities._matchesSelector(this._buttonElement, ":active");
@@ -73886,10 +73921,12 @@ define('WinJS/Controls/SearchBox',[
                 },
 
                 _searchboxInputBlurHandler: function SearchBox_inputBlurHandler() {
+                    _ElementUtilities.removeClass(this.element, ClassName.searchBoxInputFocus);
                     _ElementUtilities.removeClass(this._buttonElement, ClassName.searchBoxButtonInputFocus);
                 },
 
                 _searchboxInputFocusHandler: function SearchBox_inputFocusHandler() {
+                    _ElementUtilities.addClass(this.element, ClassName.searchBoxInputFocus);
                     _ElementUtilities.addClass(this._buttonElement, ClassName.searchBoxButtonInputFocus);
                 },
 
