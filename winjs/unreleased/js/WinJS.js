@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.27 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.5 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.1.27 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.5 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -25800,7 +25800,8 @@ define('WinJS/Pages/_BasePage',[
         abs: abs,
         define: Pages_define,
         get: get,
-        remove: remove
+        remove: remove,
+        viewMap: viewMap
     });
 
 });
@@ -25981,7 +25982,8 @@ define('WinJS/Pages',[
         define: Pages_define,
         get: get,
         _remove: _remove,
-        render: render
+        render: render,
+        _viewMap: _BasePage.viewMap
     });
 
 });
