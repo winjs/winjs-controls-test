@@ -1365,10 +1365,10 @@ h6 {
 }
 .win-listview .win-focusedoutline,
 .win-itemcontainer .win-focusedoutline {
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  left: -2px;
-  top: -2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  left: 2px;
+  top: 2px;
   position: absolute;
   z-index: 5;
   pointer-events: none;
@@ -5738,7 +5738,7 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container .wi
 }
 .win-listview .win-focusedoutline,
 .win-itemcontainer .win-focusedoutline {
-  outline: #000000 solid 2px;
+  outline: #000000 dashed 2px;
 }
 .win-listview .win-container.win-selected .win-selectionborder,
 .win-itemcontainer.win-container.win-selected .win-selectionborder,
@@ -6712,7 +6712,7 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 }
 .win-ui-dark .win-listview .win-focusedoutline,
 .win-ui-dark .win-itemcontainer .win-focusedoutline {
-  outline: #ffffff solid 2px;
+  outline: #ffffff dashed 2px;
 }
 .win-ui-dark .win-listview .win-container.win-selected .win-selectionborder,
 .win-ui-dark .win-itemcontainer.win-container.win-selected .win-selectionborder,
