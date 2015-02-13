@@ -59119,6 +59119,7 @@ define('WinJS/Controls/SemanticZoom',[
 
                 _createSemanticZoomButton: function () {
                     this._sezoButton = _Global.document.createElement("button");
+                    this._sezoButton.setAttribute("type", "button");
                     this._sezoButton.className = sezoButtonClass + " " + sezoButtonLocationClass;
                     this._sezoButton.tabIndex = -1;
                     this._sezoButton.style.visibility = "hidden";
@@ -60552,6 +60553,7 @@ define('WinJS/Controls/Pivot',[
                         var item = pivot._items.getAt(index);
 
                         var headerContainerEl = _Global.document.createElement("BUTTON");
+                        headerContainerEl.setAttribute("type", "button");
                         headerContainerEl.style.marginLeft = headerContainerEl.style.marginRight = headersStates.common.headerHorizontalMargin + "px";
                         _ElementUtilities.addClass(headerContainerEl, Pivot._ClassName.pivotHeader);
                         headerContainerEl._item = item;
@@ -60873,6 +60875,7 @@ define('WinJS/Controls/Pivot',[
 
                             // Create header track nav button elements
                             pivot._prevButton = _Global.document.createElement("button");
+                            pivot._prevButton.setAttribute("type", "button");
                             _ElementUtilities.addClass(pivot._prevButton, Pivot._ClassName.pivotNavButton);
                             _ElementUtilities.addClass(pivot._prevButton, Pivot._ClassName.pivotNavButtonPrev);
                             pivot._prevButton.addEventListener("click", function () {
@@ -60885,6 +60888,7 @@ define('WinJS/Controls/Pivot',[
                             pivot._prevButton.style.left = pivot._rtl ? "0px" : leadingSpace + "px";
 
                             pivot._nextButton = _Global.document.createElement("button");
+                            pivot._nextButton.setAttribute("type", "button");
                             _ElementUtilities.addClass(pivot._nextButton, Pivot._ClassName.pivotNavButton);
                             _ElementUtilities.addClass(pivot._nextButton, Pivot._ClassName.pivotNavButtonNext);
                             pivot._nextButton.addEventListener("click", function () {
@@ -68814,7 +68818,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
                     }
                 }
                 else {
-                    // 'reduced' is default 
+                    // 'reduced' is default
                     this._shownDisplayMode = _Constants.shownDisplayModes.reduced;
                     _ElementUtilities.addClass(this.element, _Constants.shownDisplayReducedCssClass);
                     _ElementUtilities.removeClass(this.element, _Constants.shownDisplayFullCssClass);
@@ -68918,6 +68922,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
             _ElementUtilities.addClass(this._spacer, _Constants.spacerCssClass);
             this._mainActionArea.appendChild(this._spacer);
             this._overflowButton = _Global.document.createElement("button");
+            this._overflowButton.setAttribute("type", "button");
             this._overflowButton.tabIndex = 0;
             this._overflowButton.innerHTML = "<span class='" + _Constants.ellipsisCssClass + "'></span>";
             _ElementUtilities.addClass(this._overflowButton, _Constants.overflowButtonCssClass);
@@ -70639,6 +70644,7 @@ define('WinJS/Controls/AppBar',[
                 // Add Invoke button.
                 this._invokeButton = _Global.document.createElement("button");
                 this._invokeButton.tabIndex = 0;
+                this._invokeButton.setAttribute("type", "button");
                 this._invokeButton.innerHTML = "<span class='" + _Constants.ellipsisClass + "'></span>";
                 _ElementUtilities.addClass(this._invokeButton, _Constants.invokeButtonClass);
                 this._element.appendChild(this._invokeButton);
@@ -70979,7 +70985,7 @@ define('WinJS/Controls/AppBar',[
                     var commands = this._layout.commandsInOrder.filter(function (command) {
                         return command.id === id || command.element.id === id;
                     });
-                    
+
                     if (commands.length === 1) {
                         return commands[0];
                     } else if (commands.length === 0) {
@@ -77401,9 +77407,9 @@ define('WinJS/Controls/ContentDialog',[
                             '<div class="' + ClassNames.title + '"></div>' +
                             '<div class="' + ClassNames._scroller + '"></div>' +
                             '<div class="' + ClassNames.commands + '">' +
-                                '<button class="' + ClassNames._commandSpacer + '"></button>' +
-                                '<button class="' + ClassNames.primaryCommand + '"></button>' +
-                                '<button class="' + ClassNames.secondaryCommand + '"></button>' +
+                                '<button type="button" class="' + ClassNames._commandSpacer + '"></button>' +
+                                '<button type="button" class="' + ClassNames.primaryCommand + '"></button>' +
+                                '<button type="button" class="' + ClassNames.secondaryCommand + '"></button>' +
                             '</div>' +
                         '</div>' +
                         '<div class="' + ClassNames._tabStop + '"></div>' +
