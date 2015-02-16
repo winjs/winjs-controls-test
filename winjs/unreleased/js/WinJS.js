@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.13 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.16 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.13 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.16 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -785,6 +785,8 @@ define('require-json!en-US/ui.resjson',{
     "backbuttonarialabel": "Back",
     "clearYourRating" : "Clear your rating",
     "closeOverlay" : "Close",
+	"commandingSurfaceAriaLabel": "CommandingSurface",
+    "commandingSurfaceOverflowButtonAriaLabel": "View more",
     "datePicker": "Date Picker",
     "flipViewPanningContainerAriaLabel": "Scrolling Container",
     "flyoutAriaLabel": "Flyout",
@@ -79262,6 +79264,790 @@ define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], funct
 });
 
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+define('WinJS/Controls/CommandingSurface/_Constants',["require", "exports"], function (require, exports) {
+    // CommandingSurface class names
+    exports.controlCssClass = "win-commandingsurface";
+    exports.actionAreaCssClass = "win-commandingsurface-actionarea";
+    exports.overflowButtonCssClass = "win-commandingsurface-overflowbutton";
+    exports.spacerCssClass = "win-commandingsurface-spacer";
+    exports.ellipsisCssClass = "win-commandingsurface-ellipsis";
+    exports.overflowAreaCssClass = "win-commandingsurface-overflowarea";
+    exports.overflowContentFlyoutCssClass = "win-commandingsurface-contentflyout";
+    exports.emptyCommandingSurfaceCssClass = "win-commandingsurface-empty";
+    exports.menuCssClass = "win-menu";
+    exports.menuContainsToggleCommandClass = "win-menu-containstogglecommand";
+    exports.menuContainsFlyoutCommandClass = "win-menu-containsflyoutcommand";
+    exports.contentMenuCommandDefaultLabel = "Custom content";
+    // Constants for commands
+    exports.typeSeparator = "separator";
+    exports.typeContent = "content";
+    exports.typeButton = "button";
+    exports.typeToggle = "toggle";
+    exports.typeFlyout = "flyout";
+});
+
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+define('WinJS/Controls/CommandingSurface/_MenuCommand',["require", "exports", "../Menu/_Command"], function (require, exports, _MenuCommandBase) {
+    var _MenuCommand = (function (_super) {
+        __extends(_MenuCommand, _super);
+        function _MenuCommand(element, options) {
+            if (options && options.beforeInvoke) {
+                this._beforeInvoke = options.beforeInvoke;
+            }
+            _super.call(this, element, options);
+        }
+        _MenuCommand.prototype._invoke = function (event) {
+            this._beforeInvoke && this._beforeInvoke(event);
+            _super.prototype._invoke.call(this, event);
+        };
+        return _MenuCommand;
+    })(_MenuCommandBase.MenuCommand);
+    exports._MenuCommand = _MenuCommand;
+});
+
+
+define('require-style!less/styles-commandingsurface',[],function(){});
+
+define('require-style!less/colors-commandingsurface',[],function(){});
+define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../CommandingSurface/_Constants", "../AppBar/_Command", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", "../../Core/_Resources", "../../Scheduler", "../CommandingSurface/_MenuCommand", "../../Core/_WriteProfilerMark"], function (require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, _Resources, Scheduler, _CommandingSurfaceMenuCommand, _WriteProfilerMark) {
+    require(["require-style!less/styles-commandingsurface"]);
+    require(["require-style!less/colors-commandingsurface"]);
+    "use strict";
+    var strings = {
+        get ariaLabel() {
+            return _Resources._getWinJSString("ui/commandingSurfaceAriaLabel").value;
+        },
+        get overflowButtonAriaLabel() {
+            return _Resources._getWinJSString("ui/commandingSurfaceOverflowButtonAriaLabel").value;
+        },
+        get badData() {
+            return "Invalid argument: The data property must an instance of a WinJS.Binding.List";
+        },
+        get mustContainCommands() {
+            return "The commandingSurface can only contain WinJS.UI.Command or WinJS.UI.AppBarCommand controls";
+        }
+    };
+    function diffElements(lhs, rhs) {
+        // Subtract array rhs from array lhs.
+        // Returns a new Array containing the subset of elements in lhs that are not also in rhs.
+        return lhs.filter(function (commandElement) {
+            return rhs.indexOf(commandElement) < 0;
+        });
+    }
+    /// <field>
+    /// <summary locid="WinJS.UI._CommandingSurface">
+    /// Represents a commandingSurface for displaying commands.
+    /// </summary>
+    /// </field>
+    /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.UI._CommandingSurface">
+    /// <button data-win-control="WinJS.UI.Command" data-win-options="{id:'',label:'example',icon:'back',type:'button',onclick:null,section:'primary'}"></button>
+    /// </div>]]></htmlSnippet>
+    /// <part name="commandingSurface" class="win-commandingSurface" locid="WinJS.UI._CommandingSurface_part:commandingSurface">The entire CommandingSurface control.</part>
+    /// <part name="commandingSurface-overflowbutton" class="win-commandingSurface-overflowbutton" locid="WinJS.UI._CommandingSurface_part:CommandingSurface-overflowbutton">The commandingSurface overflow button.</part>
+    /// <part name="commandingSurface-overflowarea" class="win-commandingsurface-overflowarea" locid="WinJS.UI._CommandingSurface_part:CommandingSurface-overflowarea">The container for commands that overflow.</part>
+    /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
+    /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
+    var _CommandingSurface = (function () {
+        function _CommandingSurface(element, options) {
+            /// <signature helpKeyword="WinJS.UI._CommandingSurface._CommandingSurface">
+            /// <summary locid="WinJS.UI._CommandingSurface.constructor">
+            /// Creates a new CommandingSurface control.
+            /// </summary>
+            /// <param name="element" type="HTMLElement" domElement="true" locid="WinJS.UI._CommandingSurface.constructor_p:element">
+            /// The DOM element that will host the control.
+            /// </param>
+            /// <param name="options" type="Object" locid="WinJS.UI._CommandingSurface.constructor_p:options">
+            /// The set of properties and values to apply to the new CommandingSurface control.
+            /// </param>
+            /// <returns type="WinJS.UI._CommandingSurface" locid="WinJS.UI._CommandingSurface.constructor_returnValue">
+            /// The new CommandingSurface control.
+            /// </returns>
+            /// </signature>
+            var _this = this;
+            if (options === void 0) { options = {}; }
+            this._measured = false;
+            this._initializing = true;
+            this._hoverable = _Hoverable.isHoverable; /* force dependency on hoverable module */
+            this._dataChangedEvents = ["itemchanged", "iteminserted", "itemmoved", "itemremoved", "reload"];
+            // Make sure there's an element
+            this._element = element || _Global.document.createElement("div");
+            // Attaching JS control to DOM element
+            this._element["winControl"] = this;
+            this._id = this._element.id || _ElementUtilities._uniqueID(this._element);
+            this._writeProfilerMark("constructor,StartTM");
+            if (!this._element.hasAttribute("tabIndex")) {
+                this._element.tabIndex = -1;
+            }
+            // Attach our css class.
+            _ElementUtilities.addClass(this._element, _Constants.controlCssClass);
+            this._disposed = false;
+            _ElementUtilities.addClass(this._element, "win-disposable");
+            // Make sure we have an ARIA role
+            var role = this._element.getAttribute("role");
+            if (!role) {
+                this._element.setAttribute("role", "menubar");
+            }
+            var label = this._element.getAttribute("aria-label");
+            if (!label) {
+                this._element.setAttribute("aria-label", strings.ariaLabel);
+            }
+            this._customContentCommandsWidth = {};
+            this._separatorWidth = 0;
+            this._standardCommandWidth = 0;
+            this._refreshBound = this._refresh.bind(this);
+            this._setupTree();
+            if (!options.data) {
+                // Shallow copy object so we can modify it.
+                options = _BaseUtils._shallowCopy(options);
+                // Set default
+                options.data = options.data || this._getDataFromDOMElements();
+            }
+            _Control.setOptions(this, options);
+            this._resizeHandlerBound = this._resizeHandler.bind(this);
+            _ElementUtilities._resizeNotifier.subscribe(this._element, this._resizeHandlerBound);
+            var initiallyParented = _Global.document.body.contains(this._element);
+            _ElementUtilities._addInsertedNotifier(this._element);
+            if (initiallyParented) {
+                this._measureCommands();
+                this._positionCommands();
+            }
+            else {
+                var nodeInsertedHandler = function () {
+                    _this._writeProfilerMark("_setupTree_WinJSNodeInserted:initiallyParented:" + initiallyParented + ",info");
+                    _this._element.removeEventListener("WinJSNodeInserted", nodeInsertedHandler, false);
+                    _this._measureCommands();
+                    _this._positionCommands();
+                };
+                this._element.addEventListener("WinJSNodeInserted", nodeInsertedHandler, false);
+            }
+            this.element.addEventListener('keydown', this._keyDownHandler.bind(this));
+            this._winKeyboard = new _KeyboardBehavior._WinKeyboard(this.element);
+            this._initializing = false;
+            this._writeProfilerMark("constructor,StopTM");
+            return this;
+        }
+        Object.defineProperty(_CommandingSurface.prototype, "element", {
+            /// <field type="HTMLElement" domElement="true" hidden="true" locid="WinJS.UI._CommandingSurface.element" helpKeyword="WinJS.UI._CommandingSurface.element">
+            /// Gets the DOM element that hosts the CommandingSurface.
+            /// </field>
+            get: function () {
+                return this._element;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(_CommandingSurface.prototype, "data", {
+            /// <field type="WinJS.Binding.List" locid="WinJS.UI._CommandingSurface.data" helpKeyword="WinJS.UI._CommandingSurface.data">
+            /// Gets or sets the Binding List of WinJS.UI.Command for the CommandingSurface.
+            /// </field>
+            get: function () {
+                return this._data;
+            },
+            set: function (value) {
+                this._writeProfilerMark("set_data,info");
+                if (value === this.data) {
+                    return;
+                }
+                if (!(value instanceof BindingList.List)) {
+                    throw new _ErrorFromName("WinJS.UI._CommandingSurface.BadData", strings.badData);
+                }
+                if (this._data) {
+                    this._removeDataListeners();
+                }
+                this._data = value;
+                this._addDataListeners();
+                this._dataUpdated();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        _CommandingSurface.prototype.dispose = function () {
+            /// <signature helpKeyword="WinJS.UI._CommandingSurface.dispose">
+            /// <summary locid="WinJS.UI._CommandingSurface.dispose">
+            /// Disposes this CommandingSurface.
+            /// </summary>
+            /// </signature>
+            if (this._disposed) {
+                return;
+            }
+            _ElementUtilities._resizeNotifier.unsubscribe(this._element, this._resizeHandlerBound);
+            if (this._customContentFlyout) {
+                this._customContentFlyout.dispose();
+                this._customContentFlyout.element.parentNode.removeChild(this._customContentFlyout.element);
+            }
+            _Dispose.disposeSubTree(this.element);
+            this._disposed = true;
+        };
+        _CommandingSurface.prototype.forceLayout = function () {
+            /// <signature helpKeyword="WinJS.UI._CommandingSurface.forceLayout">
+            /// <summary locid="WinJS.UI._CommandingSurface.forceLayout">
+            /// Forces the CommandingSurface to update its layout. Use this function when the window did not change size, but the container of the CommandingSurface changed size.
+            /// </summary>
+            /// </signature>
+            this._measureCommands();
+            this._positionCommands();
+        };
+        _CommandingSurface.prototype._writeProfilerMark = function (text) {
+            _WriteProfilerMark("WinJS.UI._CommandingSurface:" + this._id + ":" + text);
+        };
+        _CommandingSurface.prototype._setupTree = function () {
+            var _this = this;
+            this._writeProfilerMark("_setupTree,info");
+            this._primaryCommands = [];
+            this._secondaryCommands = [];
+            this._mainActionArea = _Global.document.createElement("div");
+            _ElementUtilities.addClass(this._mainActionArea, _Constants.actionAreaCssClass);
+            _ElementUtilities._reparentChildren(this.element, this._mainActionArea);
+            this.element.appendChild(this._mainActionArea);
+            this._spacer = _Global.document.createElement("div");
+            _ElementUtilities.addClass(this._spacer, _Constants.spacerCssClass);
+            this._mainActionArea.appendChild(this._spacer);
+            this._overflowButton = _Global.document.createElement("button");
+            this._overflowButton.tabIndex = 0;
+            this._overflowButton.innerHTML = "<span class='" + _Constants.ellipsisCssClass + "'></span>";
+            _ElementUtilities.addClass(this._overflowButton, _Constants.overflowButtonCssClass);
+            this._mainActionArea.appendChild(this._overflowButton);
+            this._overflowButton.addEventListener("click", function () {
+                _this._overflowArea.style.display = (_this._overflowArea.style.display === "none") ? "block" : "none";
+            });
+            this._overflowButtonWidth = _ElementUtilities.getTotalWidth(this._overflowButton);
+            if (!this._overflowArea) {
+                this._overflowArea = _Global.document.createElement("div");
+                this._overflowArea.style.display = "none";
+                _ElementUtilities.addClass(this._overflowArea, _Constants.overflowAreaCssClass);
+                _ElementUtilities.addClass(this._overflowArea, _Constants.menuCssClass);
+                this.element.appendChild(this._overflowArea);
+            }
+        };
+        _CommandingSurface.prototype._getFocusableElementsInfo = function () {
+            var _this = this;
+            var focusableCommandsInfo = {
+                elements: [],
+                focusedIndex: -1
+            };
+            var elementsInReach = Array.prototype.slice.call(this._mainActionArea.children);
+            var elementsInReach = Array.prototype.slice.call(this._mainActionArea.children);
+            if (this._overflowArea.style.display !== "none") {
+                elementsInReach = elementsInReach.concat(Array.prototype.slice.call(this._overflowArea.children));
+            }
+            elementsInReach.forEach(function (element) {
+                if (_this._isElementFocusable(element)) {
+                    focusableCommandsInfo.elements.push(element);
+                    if (element.contains(_Global.document.activeElement)) {
+                        focusableCommandsInfo.focusedIndex = focusableCommandsInfo.elements.length - 1;
+                    }
+                }
+            });
+            return focusableCommandsInfo;
+        };
+        _CommandingSurface.prototype._dataUpdated = function () {
+            var _this = this;
+            this._writeProfilerMark("_dataUpdated,info");
+            var changeInfo = this._getDataChangeInfo();
+            // Take a snapshot of the current state
+            var updateCommandAnimation = Animations._createUpdateListAnimation(changeInfo.added, changeInfo.deleted, changeInfo.affected);
+            // Remove current elements
+            changeInfo.currentElements.forEach(function (element) {
+                if (element.parentElement) {
+                    element.parentElement.removeChild(element);
+                }
+            });
+            // Add new elements in the right order.
+            changeInfo.newElements.forEach(function (element) {
+                _this._mainActionArea.appendChild(element);
+            });
+            if (this._overflowButton) {
+                // Ensure that the overflow button is the last element in the main action area
+                this._mainActionArea.appendChild(this._overflowButton);
+            }
+            this._primaryCommands = [];
+            this._secondaryCommands = [];
+            if (this.data.length > 0) {
+                _ElementUtilities.removeClass(this.element, _Constants.emptyCommandingSurfaceCssClass);
+                this.data.forEach(function (command) {
+                    if (command.section === "secondary") {
+                        _this._secondaryCommands.push(command);
+                    }
+                    else {
+                        _this._primaryCommands.push(command);
+                    }
+                });
+                if (!this._initializing) {
+                    this._measureCommands();
+                    this._positionCommands();
+                }
+            }
+            else {
+                this._setupOverflowArea([]);
+                _ElementUtilities.addClass(this.element, _Constants.emptyCommandingSurfaceCssClass);
+            }
+            // Execute the animation.
+            updateCommandAnimation.execute();
+        };
+        _CommandingSurface.prototype._getDataChangeInfo = function () {
+            var i = 0, len = 0;
+            var added = [];
+            var deleted = [];
+            var affected = [];
+            var currentShown = [];
+            var currentElements = [];
+            var newShown = [];
+            var newHidden = [];
+            var newElements = [];
+            Array.prototype.forEach.call(this._mainActionArea.querySelectorAll(".win-command"), function (commandElement) {
+                if (commandElement.style.display !== "none") {
+                    currentShown.push(commandElement);
+                }
+                currentElements.push(commandElement);
+            });
+            this.data.forEach(function (command) {
+                if (command.element.style.display !== "none") {
+                    newShown.push(command.element);
+                }
+                else {
+                    newHidden.push(command.element);
+                }
+                newElements.push(command.element);
+            });
+            deleted = diffElements(currentShown, newShown);
+            affected = diffElements(currentShown, deleted);
+            // "added" must also include the elements from "newHidden" to ensure that we continue 
+            // to animate any command elements that have underflowed back into the actionarea 
+            // as a part of this data change.
+            added = diffElements(newShown, currentShown).concat(newHidden);
+            return {
+                newElements: newElements,
+                currentElements: currentElements,
+                added: added,
+                deleted: deleted,
+                affected: affected,
+            };
+        };
+        _CommandingSurface.prototype._refresh = function () {
+            var _this = this;
+            if (!this._refreshPending) {
+                this._refreshPending = true;
+                // Batch calls to _dataUpdated
+                Scheduler.schedule(function () {
+                    if (_this._refreshPending && !_this._disposed) {
+                        _this._dataUpdated();
+                        _this._refreshPending = false;
+                    }
+                }, Scheduler.Priority.high, null, "WinJS.UI._CommandingSurface._refresh");
+            }
+        };
+        _CommandingSurface.prototype._addDataListeners = function () {
+            var _this = this;
+            this._dataChangedEvents.forEach(function (eventName) {
+                _this._data.addEventListener(eventName, _this._refreshBound, false);
+            });
+        };
+        _CommandingSurface.prototype._removeDataListeners = function () {
+            var _this = this;
+            this._dataChangedEvents.forEach(function (eventName) {
+                _this._data.removeEventListener(eventName, _this._refreshBound, false);
+            });
+        };
+        _CommandingSurface.prototype._isElementFocusable = function (element) {
+            var focusable = false;
+            if (element) {
+                var command = element["winControl"];
+                if (command) {
+                    focusable = command.element.style.display !== "none" && command.type !== _Constants.typeSeparator && !command.hidden && !command.disabled && (!command.firstElementFocus || command.firstElementFocus.tabIndex >= 0 || command.lastElementFocus.tabIndex >= 0);
+                }
+                else {
+                    // e.g. the overflow button
+                    focusable = element.style.display !== "none" && getComputedStyle(element).visibility !== "hidden" && element.tabIndex >= 0;
+                }
+            }
+            return focusable;
+        };
+        _CommandingSurface.prototype._isMainActionCommand = function (element) {
+            // Returns true if the element is a command in the main action area, false otherwise
+            return element && element["winControl"] && element.parentElement === this._mainActionArea;
+        };
+        _CommandingSurface.prototype._getLastElementFocus = function (element) {
+            if (this._isMainActionCommand(element)) {
+                // Only commands in the main action area support lastElementFocus
+                return element["winControl"].lastElementFocus;
+            }
+            else {
+                return element;
+            }
+        };
+        _CommandingSurface.prototype._getFirstElementFocus = function (element) {
+            if (this._isMainActionCommand(element)) {
+                // Only commands in the main action area support firstElementFocus
+                return element["winControl"].firstElementFocus;
+            }
+            else {
+                return element;
+            }
+        };
+        _CommandingSurface.prototype._keyDownHandler = function (ev) {
+            if (!ev.altKey) {
+                if (_ElementUtilities._matchesSelector(ev.target, ".win-interactive, .win-interactive *")) {
+                    return;
+                }
+                var Key = _ElementUtilities.Key;
+                var rtl = _Global.getComputedStyle(this._element).direction === "rtl";
+                var focusableElementsInfo = this._getFocusableElementsInfo();
+                var targetCommand;
+                if (focusableElementsInfo.elements.length) {
+                    switch (ev.keyCode) {
+                        case (rtl ? Key.rightArrow : Key.leftArrow):
+                        case Key.upArrow:
+                            var index = Math.max(0, focusableElementsInfo.focusedIndex - 1);
+                            targetCommand = this._getLastElementFocus(focusableElementsInfo.elements[index % focusableElementsInfo.elements.length]);
+                            break;
+                        case (rtl ? Key.leftArrow : Key.rightArrow):
+                        case Key.downArrow:
+                            var index = Math.min(focusableElementsInfo.focusedIndex + 1, focusableElementsInfo.elements.length - 1);
+                            targetCommand = this._getFirstElementFocus(focusableElementsInfo.elements[index]);
+                            break;
+                        case Key.home:
+                            var index = 0;
+                            targetCommand = this._getFirstElementFocus(focusableElementsInfo.elements[index]);
+                            break;
+                        case Key.end:
+                            var index = focusableElementsInfo.elements.length - 1;
+                            targetCommand = this._getLastElementFocus(focusableElementsInfo.elements[index]);
+                            break;
+                    }
+                }
+                if (targetCommand && targetCommand !== _Global.document.activeElement) {
+                    targetCommand.focus();
+                    ev.preventDefault();
+                }
+            }
+        };
+        _CommandingSurface.prototype._getDataFromDOMElements = function () {
+            this._writeProfilerMark("_getDataFromDOMElements,info");
+            ControlProcessor.processAll(this._mainActionArea, true);
+            var commands = [];
+            var childrenLength = this._mainActionArea.children.length;
+            var child;
+            for (var i = 0; i < childrenLength; i++) {
+                child = this._mainActionArea.children[i];
+                if (child["winControl"] && child["winControl"] instanceof _Command.AppBarCommand) {
+                    commands.push(child["winControl"]);
+                }
+                else if (!this._overflowButton) {
+                    throw new _ErrorFromName("WinJS.UI._CommandingSurface.MustContainCommands", strings.mustContainCommands);
+                }
+            }
+            return new BindingList.List(commands);
+        };
+        _CommandingSurface.prototype._resizeHandler = function () {
+            if (this.element.offsetWidth > 0) {
+                this._measureCommands(true);
+                this._positionCommands();
+            }
+        };
+        _CommandingSurface.prototype._commandUniqueId = function (command) {
+            return _ElementUtilities._uniqueID(command.element);
+        };
+        _CommandingSurface.prototype._getCommandsInfo = function () {
+            var width = 0;
+            var commands = [];
+            var priority = 0;
+            var currentAssignedPriority = 0;
+            for (var i = this._primaryCommands.length - 1; i >= 0; i--) {
+                var command = this._primaryCommands[i];
+                if (command.priority === undefined) {
+                    priority = currentAssignedPriority--;
+                }
+                else {
+                    priority = command.priority;
+                }
+                width = (command.element.style.display === "none" ? 0 : this._getCommandWidth(command));
+                commands.unshift({
+                    command: command,
+                    width: width,
+                    priority: priority
+                });
+            }
+            return commands;
+        };
+        _CommandingSurface.prototype._getPrimaryCommandsLocation = function (mainActionWidth) {
+            this._writeProfilerMark("_getCommandsLocation,info");
+            var mainActionCommands = [];
+            var overflowCommands = [];
+            var spaceLeft = mainActionWidth;
+            var overflowButtonSpace = 0;
+            var hasSecondaryCommands = this._secondaryCommands.length > 0;
+            var commandsInfo = this._getCommandsInfo();
+            var sortedCommandsInfo = commandsInfo.slice(0).sort(function (commandInfo1, commandInfo2) {
+                return commandInfo1.priority - commandInfo2.priority;
+            });
+            var maxPriority = Number.MAX_VALUE;
+            var availableWidth = mainActionWidth;
+            for (var i = 0, len = sortedCommandsInfo.length; i < len; i++) {
+                availableWidth -= sortedCommandsInfo[i].width;
+                // The overflow button needs space if there are secondary commands, or we are not evaluating the last command.
+                overflowButtonSpace = (hasSecondaryCommands || (i < len - 1) ? this._overflowButtonWidth : 0);
+                if (availableWidth - overflowButtonSpace < 0) {
+                    maxPriority = sortedCommandsInfo[i].priority - 1;
+                    break;
+                }
+            }
+            commandsInfo.forEach(function (commandInfo) {
+                if (commandInfo.priority <= maxPriority) {
+                    mainActionCommands.push(commandInfo.command);
+                }
+                else {
+                    overflowCommands.push(commandInfo.command);
+                }
+            });
+            return {
+                mainArea: mainActionCommands,
+                overflowArea: overflowCommands
+            };
+        };
+        _CommandingSurface.prototype._getCommandWidth = function (command) {
+            if (command.type === _Constants.typeContent) {
+                return this._customContentCommandsWidth[this._commandUniqueId(command)];
+            }
+            else if (command.type === _Constants.typeSeparator) {
+                return this._separatorWidth;
+            }
+            else {
+                return this._standardCommandWidth;
+            }
+        };
+        _CommandingSurface.prototype._measureCommands = function (skipIfMeasured) {
+            var _this = this;
+            if (skipIfMeasured === void 0) { skipIfMeasured = false; }
+            this._writeProfilerMark("_measureCommands,info");
+            if (this._disposed || !_Global.document.body.contains(this._element) || this.element.offsetWidth === 0) {
+                return;
+            }
+            if (!skipIfMeasured) {
+                this._customContentCommandsWidth = {};
+                this._separatorWidth = 0;
+                this._standardCommandWidth = 0;
+            }
+            this._primaryCommands.forEach(function (command) {
+                if (!command.element.parentElement) {
+                    _this._mainActionArea.appendChild(command.element);
+                }
+                // Ensure that the element we are measuring does not have display: none (e.g. it was just added, and it
+                // will be animated in)
+                var originalDisplayStyle = command.element.style.display;
+                command.element.style.display = "";
+                if (command.type === _Constants.typeContent && !_this._customContentCommandsWidth[_this._commandUniqueId(command)]) {
+                    _this._customContentCommandsWidth[_this._commandUniqueId(command)] = _ElementUtilities.getTotalWidth(command.element);
+                }
+                else if (command.type === _Constants.typeSeparator) {
+                    if (!_this._separatorWidth) {
+                        _this._separatorWidth = _ElementUtilities.getTotalWidth(command.element);
+                    }
+                }
+                else {
+                    // Button, toggle, flyout command types have the same width
+                    if (!_this._standardCommandWidth) {
+                        _this._standardCommandWidth = _ElementUtilities.getTotalWidth(command.element);
+                    }
+                }
+                // Restore the original display style
+                command.element.style.display = originalDisplayStyle;
+            });
+            if (this._overflowButton && !this._overflowButtonWidth) {
+                this._overflowButtonWidth = _ElementUtilities.getTotalWidth(this._overflowButton);
+            }
+            this._measured = true;
+        };
+        _CommandingSurface.prototype._positionCommands = function () {
+            this._writeProfilerMark("_positionCommands,StartTM");
+            if (this._disposed || !this._measured) {
+                this._writeProfilerMark("_positionCommands,StopTM");
+                return;
+            }
+            if (this._overflowButton) {
+                // Ensure that the overflow button is the last element in the main action area
+                this._mainActionArea.appendChild(this._overflowButton);
+            }
+            this._primaryCommands.forEach(function (command) {
+                command.element.style.display = (command.hidden ? "none" : "");
+            });
+            var mainActionWidth = _ElementUtilities.getContentWidth(this.element);
+            var commandsLocation = this._getPrimaryCommandsLocation(mainActionWidth);
+            this._hideSeparatorsIfNeeded(commandsLocation.mainArea);
+            // Primary commands that will be mirrored in the overflow area should be hidden so
+            // that they are not visible in the main action area.
+            commandsLocation.overflowArea.forEach(function (command) {
+                command.element.style.display = "none";
+            });
+            // The secondary commands in the the main action area should be hidden since they are always
+            // mirrored as new elements in the overflow area.
+            this._secondaryCommands.forEach(function (command) {
+                command.element.style.display = "none";
+            });
+            this._setupOverflowArea(commandsLocation.overflowArea);
+            this._writeProfilerMark("_positionCommands,StopTM");
+        };
+        _CommandingSurface.prototype._getMenuCommand = function (command) {
+            var _this = this;
+            var menuCommand = new _CommandingSurfaceMenuCommand._MenuCommand(null, {
+                label: command.label,
+                type: (command.type === _Constants.typeContent ? _Constants.typeFlyout : command.type) || _Constants.typeButton,
+                disabled: command.disabled,
+                flyout: command.flyout,
+                beforeInvoke: function () {
+                    // Save the command that was selected
+                    _this._chosenCommand = (menuCommand["_originalCommandingSurfaceCommand"]);
+                    // If this WinJS.UI.MenuCommand has type: toggle, we should also toggle the value of the original WinJS.UI.Command
+                    if (_this._chosenCommand.type === _Constants.typeToggle) {
+                        _this._chosenCommand.selected = !_this._chosenCommand.selected;
+                    }
+                }
+            });
+            if (command.selected) {
+                menuCommand.selected = true;
+            }
+            if (command.extraClass) {
+                menuCommand.extraClass = command.extraClass;
+            }
+            if (command.type === _Constants.typeContent) {
+                if (!menuCommand.label) {
+                    menuCommand.label = _Constants.contentMenuCommandDefaultLabel;
+                }
+                menuCommand.flyout = this._customContentFlyout;
+            }
+            else {
+                menuCommand.onclick = command.onclick;
+            }
+            menuCommand["_originalCommandingSurfaceCommand"] = command;
+            return menuCommand;
+        };
+        _CommandingSurface.prototype._setupOverflowArea = function (additionalCommands) {
+            var _this = this;
+            this._writeProfilerMark("_setupOverflowArea,info");
+            // Set up custom flyout for "content" typed commands in the overflow area. 
+            var isCustomContent = function (command) {
+                return command.type === _Constants.typeContent;
+            };
+            var hasCustomContent = additionalCommands.some(isCustomContent) || this._secondaryCommands.some(isCustomContent);
+            if (hasCustomContent && !this._customContentFlyout) {
+                var mainFlyout = _Global.document.createElement("div");
+                this._customContentContainer = _Global.document.createElement("div");
+                _ElementUtilities.addClass(this._customContentContainer, _Constants.overflowContentFlyoutCssClass);
+                mainFlyout.appendChild(this._customContentContainer);
+                this._customContentFlyout = new _Flyout.Flyout(mainFlyout);
+                _Global.document.body.appendChild(this._customContentFlyout.element);
+                this._customContentFlyout.onbeforeshow = function () {
+                    _ElementUtilities.empty(_this._customContentContainer);
+                    _ElementUtilities._reparentChildren(_this._chosenCommand.element, _this._customContentContainer);
+                };
+                this._customContentFlyout.onafterhide = function () {
+                    _ElementUtilities._reparentChildren(_this._customContentContainer, _this._chosenCommand.element);
+                };
+            }
+            var showOverflowButton = (additionalCommands.length > 0 || this._secondaryCommands.length > 0);
+            this._overflowButton.style.display = showOverflowButton ? "" : "none";
+            // Populate the overflowArea with MenuCommands
+            _ElementUtilities.empty(this._overflowArea);
+            var hasToggleCommands = false, hasFlyoutCommands = false, menuCommands = [];
+            // Add primary commands that have overflowed. 
+            additionalCommands.forEach(function (command) {
+                if (command.type === _Constants.typeToggle) {
+                    hasToggleCommands = true;
+                }
+                if (command.type === _Constants.typeFlyout) {
+                    hasFlyoutCommands = true;
+                }
+                menuCommands.push(_this._getMenuCommand(command));
+            });
+            // Add separator between primary and secondary command if applicable 
+            var secondaryCommandsLength = this._secondaryCommands.length;
+            if (additionalCommands.length > 0 && secondaryCommandsLength > 0) {
+                var separator = new _CommandingSurfaceMenuCommand._MenuCommand(null, {
+                    type: _Constants.typeSeparator
+                });
+                menuCommands.push(separator);
+            }
+            // Add secondary commands 
+            this._secondaryCommands.forEach(function (command) {
+                if (!command.hidden) {
+                    if (command.type === _Constants.typeToggle) {
+                        hasToggleCommands = true;
+                    }
+                    if (command.type === _Constants.typeFlyout) {
+                        hasFlyoutCommands = true;
+                    }
+                    menuCommands.push(_this._getMenuCommand(command));
+                }
+            });
+            this._hideSeparatorsIfNeeded(menuCommands);
+            menuCommands.forEach(function (command) {
+                _this._overflowArea.appendChild(command.element);
+            });
+            _ElementUtilities[hasToggleCommands ? "addClass" : "removeClass"](this._overflowArea, _Constants.menuContainsToggleCommandClass);
+            _ElementUtilities[hasFlyoutCommands ? "addClass" : "removeClass"](this._overflowArea, _Constants.menuContainsFlyoutCommandClass);
+        };
+        _CommandingSurface.prototype._hideSeparatorsIfNeeded = function (commands) {
+            var prevType = _Constants.typeSeparator;
+            var command;
+            // Hide all leading or consecutive separators
+            var commandsLength = commands.length;
+            commands.forEach(function (command) {
+                if (command.type === _Constants.typeSeparator && prevType === _Constants.typeSeparator) {
+                    command.element.style.display = "none";
+                }
+                prevType = command.type;
+            });
+            for (var i = commandsLength - 1; i >= 0; i--) {
+                command = commands[i];
+                if (command.type === _Constants.typeSeparator) {
+                    command.element.style.display = "none";
+                }
+                else {
+                    break;
+                }
+            }
+        };
+        _CommandingSurface.supportedForProcessing = true;
+        return _CommandingSurface;
+    })();
+    exports._CommandingSurface = _CommandingSurface;
+    // addEventListener, removeEventListener, dispatchEvent
+    _Base.Class.mix(_CommandingSurface, _Control.DOMEventMixin);
+});
+
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/// <reference path="../../../../typings/require.d.ts" />
+define('WinJS/Controls/CommandingSurface',["require", "exports", '../Core/_Base'], function (require, exports, _Base) {
+    var module = null;
+    function getModule() {
+        if (!module) {
+            require(["./CommandingSurface/_CommandingSurface"], function (m) {
+                module = m;
+            });
+        }
+        return module._CommandingSurface;
+    }
+    _Base.Namespace.define("WinJS.UI", {
+        _CommandingSurface: {
+            get: getModule
+        }
+    });
+    var publicMembers = Object.create({}, {
+        _CommandingSurface: {
+            get: function () {
+                return getModule();
+            }
+        }
+    });
+    return publicMembers;
+});
+
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS',[
     'WinJS/Core/_WinJS',
     'WinJS/Core',
@@ -79305,7 +80091,8 @@ define('WinJS',[
     'WinJS/Controls/ViewBox',
     'WinJS/Controls/ContentDialog',
     'WinJS/Controls/ToolBar',
-    'WinJS/Controls/SplitView'
+    'WinJS/Controls/SplitView',
+    'WinJS/Controls/CommandingSurface',
     ], function (_WinJS) {
     "use strict";
 

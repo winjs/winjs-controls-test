@@ -5340,6 +5340,126 @@ Hide clear button in search box control.
 .win-splitview.win-splitview-showndisplayinline .win-splitview-paneplaceholder {
   display: none;
 }
+.win-commandingsurface {
+  width: 100%;
+  outline: none;
+  min-width: 68px;
+  /* enough for one primary command */
+}
+.win-commandingsurface .win-commandingsurface-actionarea {
+  width: 100%;
+  min-height: 24px;
+  vertical-align: top;
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+.win-commandingsurface .win-commandingsurface-actionarea .win-commandingsurface-spacer {
+  visibility: hidden;
+  height: 48px;
+  /* height of a primary command with no label */
+  width: 0px;
+}
+.win-commandingsurface .win-commandingsurface-actionarea .win-command,
+.win-commandingsurface .win-commandingsurface-actionarea .win-commandingsurface-overflowbutton {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+.win-commandingsurface.win-commandingsurface-empty .win-commandingsurface-overflowbutton {
+  display: none;
+}
+.win-commandingsurface .win-commandingsurface-overflowbutton {
+  width: 32px;
+  /* 30px + 2px border */
+  margin: 0px;
+  padding: 0px;
+  border: 1px dotted;
+  min-width: 0px;
+  position: relative;
+  outline: none;
+  -ms-flex-item-align: stretch;
+  -webkit-align-self: stretch;
+  align-self: stretch;
+  box-sizing: border-box;
+  background-clip: border-box;
+}
+.win-commandingsurface .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis {
+  width: 32px;
+  right: 0px;
+  top: 12px;
+  line-height: 24px;
+  position: absolute;
+  display: inline-block;
+  font-size: 14px;
+  text-align: center;
+  font-family: "Segoe UI Symbol", "Symbols";
+}
+.win-commandingsurface .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis::before {
+  content: "\E10C";
+  position: relative;
+}
+.win-commandingsurface .win-commandingsurface-overflowarea {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 0;
+  max-height: 198px;
+  /* 4.5 * 44px */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+}
+.win-commandingsurface .win-commandingsurface-overflowarea.win-menu {
+  max-width: inherit;
+  /* Turn off max-width styles from .win-menu */
+}
+.win-commandingsurface .win-commandingsurface-overflowarea button.win-command {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border: 1px dotted transparent;
+  padding: 10px 11px 12px 11px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+  white-space: nowrap;
+  overflow: hidden;
+  width: auto;
+}
+.win-commandingsurface .win-commandingsurface-overflowarea hr.win-command {
+  -ms-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  height: 2px;
+  margin: 6px 12px 4px 12px;
+}
+.win-commandingsurface:lang(ar) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(dv) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(fa) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(he) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(ku-Arab) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(pa-Arab) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(prs) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(ps) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(sd-Arab) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(syr) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(ug) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(ur) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis,
+.win-commandingsurface:lang(qps-plocm) .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis {
+  right: auto;
+  left: 0px;
+}
 body {
   background-color: #000000;
   color: #ffffff;
@@ -6185,6 +6305,36 @@ button.win-command:disabled:active .win-label {
 .win-splitview-pane {
   background-color: #171717;
 }
+.win-commandingsurface,
+.win-commandingsurface {
+  background-color: #2b2b2b;
+}
+.win-commandingsurface button.win-commandingsurface-overflowbutton,
+.win-commandingsurface button.win-commandingsurface-overflowbutton {
+  background-color: transparent;
+  border-color: transparent;
+}
+.win-commandingsurface button.win-commandingsurface-overflowbutton:enabled:-ms-keyboard-active,
+.win-commandingsurface button.win-commandingsurface-overflowbutton:enabled:-ms-keyboard-active {
+  background-color: transparent;
+}
+.win-commandingsurface button.win-commandingsurface-overflowbutton:enabled .win-commandingsurface-ellipsis,
+.win-commandingsurface button.win-commandingsurface-overflowbutton:enabled .win-commandingsurface-ellipsis {
+  color: #ffffff;
+}
+.win-commandingsurface button.win-commandingsurface-overflowbutton.win-keyboard:focus,
+.win-commandingsurface button.win-commandingsurface-overflowbutton.win-keyboard:focus {
+  border-color: #ffffff;
+}
+.win-commandingsurface button.win-commandingsurface-overflowbutton.win-commandingsurface-overflowbutton:hover:active,
+.win-commandingsurface button.win-commandingsurface-overflowbutton.win-commandingsurface-overflowbutton:hover:active {
+  background-color: #808080;
+}
+.win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active,
+.win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active {
+  color: #ffffff;
+  background-color: #808080;
+}
 html.win-hoverable {
   /* Appbar control colors */
 }
@@ -6313,6 +6463,16 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 }
 html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover.win-pressed {
   background-color: rgba(0, 120, 215, 0.9);
+}
+html.win-hoverable.win-commandingsurface button.win-commandingsurface-overflowbutton:hover,
+html.win-hoverable .win-commandingsurface button.win-commandingsurface-overflowbutton:hover,
+html.win-hoverable.win-commandingsurface .win-commandingsurface-overflowarea button.win-command:hover,
+html.win-hoverable .win-commandingsurface .win-commandingsurface-overflowarea button.win-command:hover {
+  background-color: #555555;
+}
+html.win-hoverable.win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis,
+html.win-hoverable .win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis {
+  color: #ffffff;
 }
 .win-ui-light body {
   background-color: #ffffff;
@@ -7159,6 +7319,36 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-light .win-splitview-pane {
   background-color: #f2f2f2;
 }
+.win-ui-light.win-commandingsurface,
+.win-ui-light .win-commandingsurface {
+  background-color: #e6e6e6;
+}
+.win-ui-light.win-commandingsurface button.win-commandingsurface-overflowbutton,
+.win-ui-light .win-commandingsurface button.win-commandingsurface-overflowbutton {
+  background-color: transparent;
+  border-color: transparent;
+}
+.win-ui-light.win-commandingsurface button.win-commandingsurface-overflowbutton:enabled:-ms-keyboard-active,
+.win-ui-light .win-commandingsurface button.win-commandingsurface-overflowbutton:enabled:-ms-keyboard-active {
+  background-color: transparent;
+}
+.win-ui-light.win-commandingsurface button.win-commandingsurface-overflowbutton:enabled .win-commandingsurface-ellipsis,
+.win-ui-light .win-commandingsurface button.win-commandingsurface-overflowbutton:enabled .win-commandingsurface-ellipsis {
+  color: #000000;
+}
+.win-ui-light.win-commandingsurface button.win-commandingsurface-overflowbutton.win-keyboard:focus,
+.win-ui-light .win-commandingsurface button.win-commandingsurface-overflowbutton.win-keyboard:focus {
+  border-color: #000000;
+}
+.win-ui-light.win-commandingsurface button.win-commandingsurface-overflowbutton.win-commandingsurface-overflowbutton:hover:active,
+.win-ui-light .win-commandingsurface button.win-commandingsurface-overflowbutton.win-commandingsurface-overflowbutton:hover:active {
+  background-color: #8a8a8a;
+}
+.win-ui-light.win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active,
+.win-ui-light .win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active {
+  color: #000000;
+  background-color: #8a8a8a;
+}
 html.win-hoverable .win-ui-light {
   /* Appbar control colors */
 }
@@ -7287,6 +7477,16 @@ html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-navbarcomman
 }
 html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover.win-pressed {
   background-color: rgba(0, 120, 215, 0.9);
+}
+html.win-hoverable .win-ui-light.win-commandingsurface button.win-commandingsurface-overflowbutton:hover,
+html.win-hoverable .win-ui-light .win-commandingsurface button.win-commandingsurface-overflowbutton:hover,
+html.win-hoverable .win-ui-light.win-commandingsurface .win-commandingsurface-overflowarea button.win-command:hover,
+html.win-hoverable .win-ui-light .win-commandingsurface .win-commandingsurface-overflowarea button.win-command:hover {
+  background-color: #b8b8b8;
+}
+html.win-hoverable .win-ui-light.win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis,
+html.win-hoverable .win-ui-light .win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis {
+  color: #000000;
 }
 @media (-ms-high-contrast) {
   .win-overlay {
@@ -7502,6 +7702,36 @@ html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-navbarcomman
     color: ButtonFace;
     background-color: ButtonText;
   }
+  .win-commandingsurface,
+  .win-commandingsurface {
+    background-color: ButtonFace;
+  }
+  .win-commandingsurface button.win-commandingsurface-overflowbutton,
+  .win-commandingsurface button.win-commandingsurface-overflowbutton {
+    background-color: ButtonFace;
+    border-color: transparent;
+  }
+  .win-commandingsurface button.win-commandingsurface-overflowbutton:enabled:-ms-keyboard-active,
+  .win-commandingsurface button.win-commandingsurface-overflowbutton:enabled:-ms-keyboard-active {
+    background-color: ButtonFace;
+  }
+  .win-commandingsurface button.win-commandingsurface-overflowbutton:enabled .win-commandingsurface-ellipsis,
+  .win-commandingsurface button.win-commandingsurface-overflowbutton:enabled .win-commandingsurface-ellipsis {
+    color: ButtonText;
+  }
+  .win-commandingsurface button.win-commandingsurface-overflowbutton.win-keyboard:focus,
+  .win-commandingsurface button.win-commandingsurface-overflowbutton.win-keyboard:focus {
+    border-color: ButtonText;
+  }
+  .win-commandingsurface button.win-commandingsurface-overflowbutton.win-commandingsurface-overflowbutton:hover:active,
+  .win-commandingsurface button.win-commandingsurface-overflowbutton.win-commandingsurface-overflowbutton:hover:active {
+    background-color: Highlight;
+  }
+  .win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active,
+  .win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active {
+    color: ButtonFace;
+    background-color: ButtonText;
+  }
   html.win-hoverable {
     /* Appbar control colors */
   }
@@ -7563,6 +7793,16 @@ html.win-hoverable .win-ui-light .win-navbarcommand-splitbutton.win-navbarcomman
   }
   html.win-hoverable.win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis,
   html.win-hoverable .win-toolbar button.win-toolbar-overflowbutton:hover .win-toolbar-ellipsis {
+    color: HighlightText;
+  }
+  html.win-hoverable.win-commandingsurface button.win-commandingsurface-overflowbutton:hover,
+  html.win-hoverable .win-commandingsurface button.win-commandingsurface-overflowbutton:hover,
+  html.win-hoverable.win-commandingsurface .win-commandingsurface-overflowarea button.win-command:hover,
+  html.win-hoverable .win-commandingsurface .win-commandingsurface-overflowarea button.win-command:hover {
+    background-color: Highlight;
+  }
+  html.win-hoverable.win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis,
+  html.win-hoverable .win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis {
     color: HighlightText;
   }
 }
