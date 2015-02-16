@@ -16105,56 +16105,30 @@ define('WinJS/Animations',[
         });
     }
     // See _resizeTransition's comment for documentation on *args*.
-    function growTransition(elementClipper, element, args) {
-        var diff = args.anchorTrailingEdge ? args.to.total - args.from.total : args.from.total - args.to.total;
+    function resizeTransition(elementClipper, element, args) {
+        var start = args.actualSize - args.from;
+        var end = args.actualSize - args.to;
+        if (!args.anchorTrailingEdge) {
+            start = -start;
+            end = -end;
+        } 
         var translate = args.dimension === "width" ? "translateX" : "translateY";
-        var size = args.dimension;
-        var duration = args.duration || 367;
-        var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
+        var transition = {
+            duration: args.duration,
+            timing: args.timing 
+        };
     
         // Set up
-        elementClipper.style[size] = args.to.total + "px";
-        elementClipper.style[transformNames.scriptName] = translate + "(" + diff + "px)";
-        element.style[size] = args.to.content + "px";
-        element.style[transformNames.scriptName] = translate + "(" + -diff + "px)";
+        elementClipper.style[transformNames.scriptName] = translate + "(" + start + "px)";
+        element.style[transformNames.scriptName] = translate + "(" + -start + "px)";
     
         // Resolve styles
         _Global.getComputedStyle(elementClipper).opacity;
         _Global.getComputedStyle(element).opacity;
         
         // Animate
-        var transition = {
-            duration: duration,
-            timing: timing,
-            to: ""
-        };
-        return Promise.join([
-            transformWithTransition(elementClipper,  transition),
-            transformWithTransition(element, transition)
-        ]);
-    }
-    // See _resizeTransition's comment for documentation on *args*.
-    function shrinkTransition(elementClipper, element, args) {
-        var diff = args.anchorTrailingEdge ? args.from.total - args.to.total : args.to.total - args.from.total;
-        var translate = args.dimension === "width" ? "translateX" : "translateY";
-        var duration = args.duration || 367;
-        var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
-    
-        // Set up
-        elementClipper.style[transformNames.scriptName] = "";
-        element.style[transformNames.scriptName] = "";
-    
-        // Resolve styles
-        _Global.getComputedStyle(elementClipper).opacity;
-        _Global.getComputedStyle(element).opacity;
-    
-        // Animate
-        var transition = {
-            duration: duration,
-            timing: timing
-        };
-        var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + diff + "px)" });
-        var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -diff + "px)" });
+        var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + end + "px)" });
+        var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -end + "px)" });
         return Promise.join([
             transformWithTransition(elementClipper, clipperTransition),
             transformWithTransition(element, elementTransition)
@@ -17945,25 +17919,36 @@ define('WinJS/Animations',[
         //   size should match element's size. Its purpose is to clip *element* during the animation to give
         //   it the illusion that it is resizing.
         // - element: The element that should look like it's resizing.
-        // - args: An object with the following required properties: 
-        //   - from: An object representing the old width/height of the element.
-        //   - to: An object representing the new width/height of the element.
-        //     from/to are objects of the form { content: number; total: number; }. "content" is the
-        //     width/height of *element*'s content box (e.g. getContentWidth). "total" is the width/height
-        //     of *element*'s margin box (e.g. getTotalWidth).
-        //   - duration: The CSS transition duration property.
-        //   - timing: The CSS transition timing property.
+        // - args: An object with the following properties (each is required unless noted otherwise): 
+        //   - from: A number representing the old total width/height of the element.
+        //   - to: A number representing the new total width/height of the element.
+        //   - actualSize: A number representing the actual total width/height of the element (should be at least
+        //     as big as from and to). The element should be at *actualSize* when this function is called.
+        //     from/to/actualSize represent the width/height of *element*'s margin box (e.g. getTotalWidth).
         //   - dimension: The dimension on which *element* is resizing. Either "width" or "height".
-        //   - anchorTrailingEdge: During the resize animation, one edge will move and the other edge will
-        //     remain where it is. This flag specifies which edge is anchored (i.e. won't move).
+        //   - anchorTrailingEdge (optional): During the resize animation, one edge will move and the other
+        //     edge will remain where it is. This flag specifies which edge is anchored (i.e. won't move).
+        //   - duration (optional): Number representing the duration of the animation in milliseconds.
+        //   - timing (optional): String representing the CSS timing function that controls the progress of the animation.
         //
         _resizeTransition: function Utilities_resizeTransition(elementClipper, element, args) {
-            if (args.to.total > args.from.total) {
-                return growTransition(elementClipper, element, args);
-            } else if (args.to.total < args.from.total) {
-                return shrinkTransition(elementClipper, element, args);
-            } else {
+            if (args.to === args.from) {
                 return Promise.as();
+            } else {
+                var growTransition = {
+                    duration: 350,
+                    timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
+                };
+                var shrinkTransition = {
+                    duration: 120,
+                    timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
+                };
+                var defaultTransition = args.to > args.from ? growTransition : shrinkTransition;
+                
+                return resizeTransition(elementClipper, element, _BaseUtils._merge(args, {
+                    duration: args.duration === undefined ? defaultTransition.duration : args.duration,
+                    timing: args.timing === undefined ? defaultTransition.timing : args.timing
+                }));
             }
         }
     });
@@ -69498,7 +69483,6 @@ define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], functio
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Layouts',[
     'exports',
-    '../../Animations',
     '../../Animations/_TransitionAnimation',
     '../../BindingList',
     '../../Core/_BaseUtils',
@@ -69516,7 +69500,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
     '../../Utilities/_ElementUtilities',
     './_Command',
     './_Constants'
-], function appBarLayoutsInit(exports, Animations, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, ToolBar, _ToolBarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
+], function appBarLayoutsInit(exports, _TransitionAnimation, BindingList, _BaseUtils, _Global, _Base, _ErrorFromName, _Resources, _WriteProfilerMark, ToolBar, _ToolBarConstants, Promise, Scheduler, _Control, _Dispose, _ElementUtilities, _Command, _Constants) {
     "use strict";
 
     // AppBar will use this when AppBar.layout property is set to "custom"
@@ -69527,7 +69511,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
             var strings = {
                 get nullCommand() { return "Invalid argument: command must not be null"; }
             };
-
+            
             var _AppBarBaseLayout = _Base.Class.define(function _AppBarBaseLayout_ctor(appBarEl, options) {
                 this._disposed = false;
 
@@ -69960,7 +69944,135 @@ define('WinJS/Controls/AppBar/_Layouts',[
         _AppBarMenuLayout: _Base.Namespace._lazy(function () {
             var layoutClassName = _Constants.menuLayoutClass;
             var layoutType = _Constants.appBarLayoutMenu;
-
+            
+            //
+            // Resize animation
+            //  The resize animation requires 2 animations to run simultaneously in sync with each other. It's implemented
+            //  without PVL because PVL doesn't provide a way to guarantee that 2 animations will start at the same time.
+            //
+            var transformNames = _BaseUtils._browserStyleEquivalents["transform"];
+            function transformWithTransition(element, transition) {
+                // transition's properties:
+                // - duration: Number representing the duration of the animation in milliseconds.
+                // - timing: String representing the CSS timing function that controls the progress of the animation.
+                // - to: The value of *element*'s transform property after the animation.
+                var duration = transition.duration * _TransitionAnimation._animationFactor;
+                var transitionProperty = _BaseUtils._browserStyleEquivalents["transition"].scriptName;
+                element.style[transitionProperty] = duration + "ms " + transformNames.cssName + " " + transition.timing;
+                element.style[transformNames.scriptName] = transition.to;
+            
+                var finish;
+                return new Promise(function (c) {
+                    var onTransitionEnd = function (eventObject) {
+                        if (eventObject.target === element && eventObject.propertyName === transformNames.cssName) {
+                            finish();
+                        }
+                    };
+                    
+                    var didFinish = false;
+                    finish = function () {
+                        if (!didFinish) {
+                            _Global.clearTimeout(timeoutId);
+                            element.removeEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
+                            element.style[transitionProperty] = "";
+                            didFinish = true;
+                        }
+                        c();
+                    };
+            
+                    // Watch dog timeout
+                    var timeoutId = _Global.setTimeout(function () {
+                        timeoutId = _Global.setTimeout(finish, duration);
+                    }, 50);
+            
+                    element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
+                }, function () {
+                    finish(); // On cancelation, complete the promise successfully to match PVL
+                });
+            }
+            // See resizeTransition's comment for documentation on *args*.
+            function growTransition(elementClipper, element, args) {
+                var diff = args.anchorTrailingEdge ? args.to.total - args.from.total : args.from.total - args.to.total;
+                var translate = args.dimension === "width" ? "translateX" : "translateY";
+                var size = args.dimension;
+                var duration = args.duration || 367;
+                var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
+            
+                // Set up
+                elementClipper.style[size] = args.to.total + "px";
+                elementClipper.style[transformNames.scriptName] = translate + "(" + diff + "px)";
+                element.style[size] = args.to.content + "px";
+                element.style[transformNames.scriptName] = translate + "(" + -diff + "px)";
+            
+                // Resolve styles
+                _Global.getComputedStyle(elementClipper).opacity;
+                _Global.getComputedStyle(element).opacity;
+                
+                // Animate
+                var transition = {
+                    duration: duration,
+                    timing: timing,
+                    to: ""
+                };
+                return Promise.join([
+                    transformWithTransition(elementClipper,  transition),
+                    transformWithTransition(element, transition)
+                ]);
+            }
+            // See resizeTransition's comment for documentation on *args*.
+            function shrinkTransition(elementClipper, element, args) {
+                var diff = args.anchorTrailingEdge ? args.from.total - args.to.total : args.to.total - args.from.total;
+                var translate = args.dimension === "width" ? "translateX" : "translateY";
+                var duration = args.duration || 367;
+                var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
+            
+                // Set up
+                elementClipper.style[transformNames.scriptName] = "";
+                element.style[transformNames.scriptName] = "";
+            
+                // Resolve styles
+                _Global.getComputedStyle(elementClipper).opacity;
+                _Global.getComputedStyle(element).opacity;
+            
+                // Animate
+                var transition = {
+                    duration: duration,
+                    timing: timing
+                };
+                var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + diff + "px)" });
+                var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -diff + "px)" });
+                return Promise.join([
+                    transformWithTransition(elementClipper, clipperTransition),
+                    transformWithTransition(element, elementTransition)
+                ]);
+            }
+            // Plays an animation which makes an element look like it is resizing in 1 dimension. Arguments:
+            // - elementClipper: The parent of *element*. It shouldn't have any margin, border, or padding and its
+            //   size should match element's size. Its purpose is to clip *element* during the animation to give
+            //   it the illusion that it is resizing.
+            // - element: The element that should look like it's resizing.
+            // - args: An object with the following required properties: 
+            //   - from: An object representing the old width/height of the element.
+            //   - to: An object representing the new width/height of the element.
+            //     from/to are objects of the form { content: number; total: number; }. "content" is the
+            //     width/height of *element*'s content box (e.g. getContentWidth). "total" is the width/height
+            //     of *element*'s margin box (e.g. getTotalWidth).
+            //   - duration: The CSS transition duration property.
+            //   - timing: The CSS transition timing property.
+            //   - dimension: The dimension on which *element* is resizing. Either "width" or "height".
+            //   - anchorTrailingEdge: During the resize animation, one edge will move and the other edge will
+            //     remain where it is. This flag specifies which edge is anchored (i.e. won't move).
+            //
+            function resizeTransition(elementClipper, element, args) {
+                if (args.to.total > args.from.total) {
+                    return growTransition(elementClipper, element, args);
+                } else if (args.to.total < args.from.total) {
+                    return shrinkTransition(elementClipper, element, args);
+                } else {
+                    return Promise.as();
+                }
+            }
+            
             var _AppBarMenuLayout = _Base.Class.derive(exports._AppBarBaseLayout, function _AppBarMenuLayout_ctor(appBarEl) {
                 exports._AppBarBaseLayout.call(this, appBarEl, { _className: layoutClassName, _type: layoutType });
                 this._tranformNames = _BaseUtils._browserStyleEquivalents["transform"];
@@ -70210,7 +70322,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                         return this._executeTranslate(this._menu, "translateY(" + -offsetTop + "px)");
                     } else {
                         // Top AppBar Animation
-                        return Animations._resizeTransition(this._menu, this._toolbarEl, {
+                        return resizeTransition(this._menu, this._toolbarEl, {
                             from: { content: heightVisible, total: heightVisible },
                             to: { content: this._menu.offsetHeight, total: this._menu.offsetHeight },
                             dimension: "height",
@@ -70228,7 +70340,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                         return this._executeTranslate(this._menu, "none");
                     } else {
                         // Top AppBar Animation
-                        return Animations._resizeTransition(this._menu, this._toolbarEl, {
+                        return resizeTransition(this._menu, this._toolbarEl, {
                             from: { content: this._menu.offsetHeight, total: this._menu.offsetHeight },
                             to: { content: heightVisible, total: heightVisible },
                             dimension: "height",
@@ -78240,13 +78352,476 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
     });
 });
 
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/// <reference path="../../../../typings/require.d.ts" />
+define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Global', '../Promise', '../_Signal'], function (require, exports, _Global, Promise, _Signal) {
+    "use strict";
+    // This module provides a state machine which is designed to be used by controls which need to
+    // show, hide, and fire related events (e.g. beforeshow, afterhide). The state machine handles
+    // many edge cases. For example, what happens if:
+    //  - show is called when we're already shown?
+    //  - hide is called while we're in the middle of showing?
+    //  - dispose is called while we're in the middle of firing beforeshow?
+    // The state machine takes care of all of these edge cases so that the control doesn't have to.
+    // The control is responible for knowing how to play its show/hide animations and update its DOM.
+    // The state machine is responsible for ensuring that these things happen at the appropriate times.
+    // This module is broken up into 3 major pieces:
+    //   - ShowHideMachine: Controls should instantiate one of these. The machine keeps track of the
+    //     current state and has methods for forwarding calls to the current state.
+    //   - IShowHideControl: Controls must provide an object which implements this interface. The
+    //     interface gives the machine hooks for invoking the control's show and hide animations.
+    //   - States: The various states (e.g. Hidden, Shown, Showing) that the machine can be in. Each
+    //     implements IShowHideState.
+    // Example usage:
+    //   class MyControl {
+    //       element: HTMLElement;
+    //       private _machine: ShowHideMachine;
+    //       
+    //       constructor(element?: HTMLElement, options: any = {}) {
+    //           this.element = element || document.createElement("div");
+    //           
+    //           // Create the machine.
+    //           this._machine = new ShowHideMachine({
+    //               eventElement: this.element,
+    //               onShow: (): Promise<any> => {
+    //                   // Do the work to render the contol in its shown state with an animation.
+    //                   // Return the animation promise.
+    //               },
+    //               onHide: (): Promise<any> => {
+    //                   // Do the work to render the contol in its hidden state with an animation.
+    //                   // Return the animation promise.
+    //               },
+    //               onUpdateDom() {
+    //                   // Do the work to render the internal state of the control to the DOM. If a
+    //                   // control restricts all its DOM modifications to onUpdateDom, the state machine
+    //                   // can guarantee that the control won't modify its DOM while it is animating.
+    //               },
+    //               onUpdateDomWithIsShown: (isShown: boolean ) => {
+    //                   // Do the same work as onUpdateDom but ensure that the DOM is rendered with either
+    //                   // the shown or hidden visual as dictacted by isShown. The control should have some
+    //                   // internal state to track whether it is currently shown or hidden. Treat this as a
+    //                   // cue to mutate that internal state to reflect the value of isShown.
+    //               },
+    //           });
+    //           
+    //           // Initialize the control. During this time, the machine will not ask the control to
+    //           // play any animations or update its DOM.
+    //           this.hidden = true;
+    //           _Control.setOptions(this, options);
+    //           
+    //           // Tell the machine the control is initialized. After this, the machine will start asking
+    //           // the control to play animations and update its DOM as appropriate.
+    //           this._machine.initialized();
+    //       }
+    //       
+    //       get hidden() {
+    //           return this._machine.hidden;
+    //       }
+    //       set hidden(value: boolean) {
+    //           this._machine.hidden = value;
+    //       }
+    //       show() {
+    //           this._machine.show();
+    //       }
+    //       hide() {
+    //           this._machine.hide();
+    //       }
+    //       dispose() {
+    //           this._machine.dispose();
+    //       }
+    //   }
+    var EventNames = {
+        beforeShow: "beforeshow",
+        afterShow: "aftershow",
+        beforeHide: "beforehide",
+        afterHide: "afterhide"
+    };
+    //
+    // ShowHideMachine
+    //
+    var ShowHideMachine = (function () {
+        //
+        // Methods called by the control
+        //
+        // When the machine is created, it sits in the Init state. When in the Init state, calls to
+        // updateDom will be postponed until the machine exits the Init state. Consequently, while in
+        // this state, the control can feel free to call updateDom as many times as it wants without
+        // worrying about it being expensive due to updating the DOM many times. The control should call
+        // *initialized* to move the machine out of the Init state. 
+        function ShowHideMachine(args) {
+            this._control = args;
+            this._initializedSignal = new _Signal();
+            this._disposed = false;
+            this._setState(States.Init);
+        }
+        // Moves the machine out of the Init state and into the Shown or Hidden state depending on whether
+        // show or hide was called more recently.
+        ShowHideMachine.prototype.initialized = function () {
+            this._initializedSignal.complete();
+        };
+        // These method calls are forwarded to the current state.
+        ShowHideMachine.prototype.updateDom = function () {
+            this._state.updateDom();
+        };
+        ShowHideMachine.prototype.show = function () {
+            this._state.show();
+        };
+        ShowHideMachine.prototype.hide = function () {
+            this._state.hide();
+        };
+        Object.defineProperty(ShowHideMachine.prototype, "hidden", {
+            get: function () {
+                return this._state.hidden;
+            },
+            set: function (value) {
+                if (value) {
+                    this.hide();
+                }
+                else {
+                    this.show();
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        // Puts the machine into the Disposed state.
+        ShowHideMachine.prototype.dispose = function () {
+            this._setState(States.Disposed);
+            this._disposed = true;
+            this._control = null;
+        };
+        //
+        // Methods called by states
+        //
+        ShowHideMachine.prototype._setState = function (NewState, arg0) {
+            if (!this._disposed) {
+                this._state && this._state.exit();
+                this._state = new NewState();
+                this._state.machine = this;
+                this._state.enter(arg0);
+            }
+        };
+        // Triggers arbitrary app code
+        ShowHideMachine.prototype._fireEvent = function (eventName, options) {
+            options = options || {};
+            var detail = options.detail || null;
+            var cancelable = !!options.cancelable;
+            var eventObject = _Global.document.createEvent("CustomEvent");
+            eventObject.initCustomEvent(eventName, true, cancelable, detail);
+            return this._control.eventElement.dispatchEvent(eventObject);
+        };
+        // Triggers arbitrary app code
+        ShowHideMachine.prototype._fireBeforeShow = function () {
+            return this._fireEvent(EventNames.beforeShow, {
+                cancelable: true
+            });
+        };
+        // Triggers arbitrary app code
+        ShowHideMachine.prototype._fireBeforeHide = function () {
+            return this._fireEvent(EventNames.beforeHide, {
+                cancelable: true
+            });
+        };
+        return ShowHideMachine;
+    })();
+    exports.ShowHideMachine = ShowHideMachine;
+    //
+    // States (each implements IShowHideState)
+    //
+    // WinJS animation promises always complete successfully. This
+    // helper allows an animation promise to complete in the canceled state
+    // so that the success handler can be skipped when the animation is
+    // interrupted.
+    function cancelablePromise(animationPromise) {
+        return Promise._cancelBlocker(animationPromise, function () {
+            animationPromise.cancel();
+        });
+    }
+    // Noop function, used in the various states to indicate that they don't support a given
+    // message. Named with the somewhat cute name '_' because it reads really well in the states.
+    function _() {
+    }
+    // Implementing the control as a state machine helps us correctly handle:
+    //   - re-entrancy while firing events
+    //   - calls into the control during asynchronous operations (e.g. animations)
+    //
+    // Many of the states do their "enter" work within a promise chain. The idea is that if
+    // the state is interrupted and exits, the rest of its work can be skipped by canceling
+    // the promise chain.
+    // An interesting detail is that anytime the state may trigger app code (e.g. due to
+    // firing an event), the current promise must end and a new promise must be chained off of it.
+    // This is necessary because the app code may interact with the control and cause it to
+    // change states. If we didn't create a new promise, then the very next line of code that runs
+    // after triggering app code may not be valid because the state may have exited. Starting a
+    // new promise after each triggering of app code prevents us from having to worry about this
+    // problem. In this configuration, when a promise's success handler runs, it guarantees that
+    // the state hasn't exited.
+    // For similar reasons, each of the promise chains created in "enter" starts off with a _Signal
+    // which is completed at the end of the "enter" function (this boilerplate is abstracted away by
+    // the "interruptible" function). The reason is that we don't want any of the code in "enter"
+    // to run until the promise chain has been stored in a variable. If we didn't do this (e.g. instead,
+    // started the promise chain with Promise.wrap()), then the "enter" code could trigger the "exit"
+    // function (via app code) before the promise chain had been stored in a variable. Under these
+    // circumstances, the promise chain would be uncancelable and so the "enter" work would be
+    // unskippable. This wouldn't be good when we needed the state to exit early.
+    // These two functions manage interruptible work promises (one creates them the other cancels
+    // them). They communicate with each other thru the _interruptibleWorkPromises property which
+    //  "interruptible" creates on your object.
+    function interruptible(object, workFn) {
+        object["_interruptibleWorkPromises"] = object["_interruptibleWorkPromises"] || [];
+        var workStoredSignal = new _Signal();
+        object["_interruptibleWorkPromises"].push(workFn(workStoredSignal.promise));
+        workStoredSignal.complete();
+    }
+    function cancelInterruptibles() {
+        (this["_interruptibleWorkPromises"] || []).forEach(function (workPromise) {
+            workPromise.cancel();
+        });
+    }
+    // Transitions:
+    //   When created, the state machine will take one of the following initialization
+    //   transitions depending on how the machines's APIs have been used by the time
+    //   initialized() is called on it:
+    //     Init -> Hidden
+    //     Init -> Shown
+    //   Following that, the life of the machine will be dominated by the following
+    //   sequences of transitions. In geneneral, these sequences are uninterruptible.
+    //     Hidden -> BeforeShow -> Hidden (when preventDefault is called on beforeshow event)
+    //     Hidden -> BeforeShow -> Showing -> Shown
+    //     Shown -> BeforeHide -> Shown (when preventDefault is called on beforehide event)
+    //     Shown -> BeforeHide -> Hiding -> Hidden
+    //   However, any state can be interrupted to go to the Disposed state:
+    //     * -> Disposed
+    var States;
+    (function (States) {
+        function updateDomImpl() {
+            this.machine._control.onUpdateDom();
+        }
+        // Initial state. Gives the control the opportunity to initialize itself without
+        // triggering any animations or DOM modifications. When done, the control should
+        // call *initialized* to move the machine to the next state.
+        var Init = (function () {
+            function Init() {
+                this.name = "Init";
+                this.exit = cancelInterruptibles;
+                this.updateDom = _; // Postponed until immediately before we switch to another state
+            }
+            Init.prototype.enter = function () {
+                var _this = this;
+                interruptible(this, function (ready) {
+                    return ready.then(function () {
+                        return _this.machine._initializedSignal.promise;
+                    }).then(function () {
+                        _this.machine._control.onUpdateDomWithIsShown(!_this._hidden);
+                        _this.machine._setState(_this._hidden ? Hidden : Shown);
+                    });
+                });
+            };
+            Object.defineProperty(Init.prototype, "hidden", {
+                get: function () {
+                    return this._hidden;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Init.prototype.show = function () {
+                this._hidden = false;
+            };
+            Init.prototype.hide = function () {
+                this._hidden = true;
+            };
+            return Init;
+        })();
+        States.Init = Init;
+        // A rest state. The control is hidden and is waiting for the app to call show.
+        var Hidden = (function () {
+            function Hidden() {
+                this.name = "Hidden";
+                this.exit = _;
+                this.hidden = true;
+                this.hide = _;
+                this.updateDom = updateDomImpl;
+            }
+            Hidden.prototype.enter = function (args) {
+                args = args || {};
+                if (args.showIsPending) {
+                    this.show();
+                }
+            };
+            Hidden.prototype.show = function () {
+                this.machine._setState(BeforeShow);
+            };
+            return Hidden;
+        })();
+        // An event state. The control fires the beforeshow event.
+        var BeforeShow = (function () {
+            function BeforeShow() {
+                this.name = "BeforeShow";
+                this.exit = cancelInterruptibles;
+                this.hidden = true;
+                this.show = _;
+                this.hide = _;
+                this.updateDom = updateDomImpl;
+            }
+            BeforeShow.prototype.enter = function () {
+                var _this = this;
+                interruptible(this, function (ready) {
+                    return ready.then(function () {
+                        return _this.machine._fireBeforeShow(); // Give opportunity for chain to be canceled when triggering app code
+                    }).then(function (shouldShow) {
+                        if (shouldShow) {
+                            _this.machine._setState(Showing);
+                        }
+                        else {
+                            _this.machine._setState(Hidden);
+                        }
+                    });
+                });
+            };
+            return BeforeShow;
+        })();
+        // An animation/event state. The control plays its show animation and fires aftershow.
+        var Showing = (function () {
+            function Showing() {
+                this.name = "Showing";
+                this.exit = cancelInterruptibles;
+                this.updateDom = _; // Postponed until immediately before we switch to another state
+            }
+            Showing.prototype.enter = function () {
+                var _this = this;
+                interruptible(this, function (ready) {
+                    return ready.then(function () {
+                        _this._hideIsPending = false;
+                        return cancelablePromise(_this.machine._control.onShow());
+                    }).then(function () {
+                        _this.machine._fireEvent(EventNames.afterShow); // Give opportunity for chain to be canceled when triggering app code
+                    }).then(function () {
+                        _this.machine._control.onUpdateDom();
+                        _this.machine._setState(Shown, { hideIsPending: _this._hideIsPending });
+                    });
+                });
+            };
+            Object.defineProperty(Showing.prototype, "hidden", {
+                get: function () {
+                    return this._hideIsPending;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Showing.prototype.show = function () {
+                this._hideIsPending = false;
+            };
+            Showing.prototype.hide = function () {
+                this._hideIsPending = true;
+            };
+            return Showing;
+        })();
+        // A rest state. The control is shown and is waiting for the app to call hide.
+        var Shown = (function () {
+            function Shown() {
+                this.name = "Shown";
+                this.exit = _;
+                this.hidden = false;
+                this.show = _;
+                this.updateDom = updateDomImpl;
+            }
+            Shown.prototype.enter = function (args) {
+                args = args || {};
+                if (args.hideIsPending) {
+                    this.hide();
+                }
+            };
+            Shown.prototype.hide = function () {
+                this.machine._setState(BeforeHide);
+            };
+            return Shown;
+        })();
+        // An event state. The control fires the beforehide event.
+        var BeforeHide = (function () {
+            function BeforeHide() {
+                this.name = "BeforeHide";
+                this.exit = cancelInterruptibles;
+                this.hidden = false;
+                this.show = _;
+                this.hide = _;
+                this.updateDom = updateDomImpl;
+            }
+            BeforeHide.prototype.enter = function () {
+                var _this = this;
+                interruptible(this, function (ready) {
+                    return ready.then(function () {
+                        return _this.machine._fireBeforeHide(); // Give opportunity for chain to be canceled when triggering app code
+                    }).then(function (shouldHide) {
+                        if (shouldHide) {
+                            _this.machine._setState(Hiding);
+                        }
+                        else {
+                            _this.machine._setState(Shown);
+                        }
+                    });
+                });
+            };
+            return BeforeHide;
+        })();
+        // An animation/event state. The control plays the hide animation and fires the afterhide event.
+        var Hiding = (function () {
+            function Hiding() {
+                this.name = "Hiding";
+                this.exit = cancelInterruptibles;
+                this.updateDom = _; // Postponed until immediately before we switch to another state
+            }
+            Hiding.prototype.enter = function () {
+                var _this = this;
+                interruptible(this, function (ready) {
+                    return ready.then(function () {
+                        _this._showIsPending = false;
+                        return cancelablePromise(_this.machine._control.onHide());
+                    }).then(function () {
+                        _this.machine._fireEvent(EventNames.afterHide); // Give opportunity for chain to be canceled when triggering app code
+                    }).then(function () {
+                        _this.machine._control.onUpdateDom();
+                        _this.machine._setState(Hidden, { showIsPending: _this._showIsPending });
+                    });
+                });
+            };
+            Object.defineProperty(Hiding.prototype, "hidden", {
+                get: function () {
+                    return !this._showIsPending;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Hiding.prototype.show = function () {
+                this._showIsPending = true;
+            };
+            Hiding.prototype.hide = function () {
+                this._showIsPending = false;
+            };
+            return Hiding;
+        })();
+        var Disposed = (function () {
+            function Disposed() {
+                this.name = "Disposed";
+                this.enter = _;
+                this.exit = _;
+                this.hidden = true;
+                this.show = _;
+                this.hide = _;
+                this.updateDom = _;
+            }
+            return Disposed;
+        })();
+        States.Disposed = Disposed;
+    })(States || (States = {}));
+});
+
 
 define('require-style!less/styles-splitview',[],function(){});
 
 define('require-style!less/colors-splitview',[],function(){});
 // Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 /// <reference path="../../../../../typings/require.d.ts" />
-define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../_LightDismissService', '../../Promise', '../../_Signal', '../../Animations/_TransitionAnimation'], function (require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, Promise, _Signal, _TransitionAnimation) {
+define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../_LightDismissService', '../../Utilities/_ShowHideMachine'], function (require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, _ShowHideMachine) {
     require(["require-style!less/styles-splitview"]);
     require(["require-style!less/colors-splitview"]);
     "use strict";
@@ -78353,327 +78928,6 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             total: rect.totalHeight
         };
     }
-    // WinJS animation promises always complete successfully. This
-    // helper allows an animation promise to complete in the canceled state
-    // so that the success handler can be skipped when the animation is
-    // interrupted.
-    function cancelablePromise(animationPromise) {
-        return Promise._cancelBlocker(animationPromise, function () {
-            animationPromise.cancel();
-        });
-    }
-    function showEdgeUI(elements, offsets) {
-        return cancelablePromise(Animations.showEdgeUI(elements, offsets, { mechanism: "transition" }));
-    }
-    function hideEdgeUI(elements, offsets) {
-        return cancelablePromise(Animations.hideEdgeUI(elements, offsets, { mechanism: "transition" }));
-    }
-    function fadeIn(elements) {
-        return cancelablePromise(Animations.fadeIn(elements));
-    }
-    function resizeTransition(elementClipper, element, options) {
-        return cancelablePromise(Animations._resizeTransition(elementClipper, element, options));
-    }
-    //
-    // State machine
-    //
-    // Noop function, used in the various states to indicate that they don't support a given
-    // message. Named with the somewhat cute name '_' because it reads really well in the states.
-    function _() {
-    }
-    // Implementing the control as a state machine helps us correctly handle:
-    //   - re-entrancy while firing events
-    //   - calls into the control during asynchronous operations (e.g. animations)
-    //
-    // Many of the states do their "enter" work within a promise chain. The idea is that if
-    // the state is interrupted and exits, the rest of its work can be skipped by canceling
-    // the promise chain.
-    // An interesting detail is that anytime the state may call into app code (e.g. due to
-    // firing an event), the current promise must end and a new promise must be chained off of it.
-    // This is necessary because the app code may interact with the control and cause it to
-    // change states. If we didn't create a new promise, then the very next line of code that runs
-    // after calling into app code may not be valid because the state may have exited. Starting a
-    // new promise after each call into app code prevents us from having to worry about this
-    // problem. In this configuration, when a promise's success handler runs, it guarantees that
-    // the state hasn't exited.
-    // For similar reasons, each of the promise chains created in "enter" starts off with a _Signal
-    // which is completed at the end of the "enter" function (this boilerplate is abstracted away by
-    // the "interruptible" function). The reason is that we don't want any of the code in "enter"
-    // to run until the promise chain has been stored in a variable. If we didn't do this (e.g. instead,
-    // started the promise chain with Promise.wrap()), then the "enter" code could trigger the "exit"
-    // function (via app code) before the promise chain had been stored in a variable. Under these
-    // circumstances, the promise chain would be uncancelable and so the "enter" work would be
-    // unskippable. This wouldn't be good when we needed the state to exit early.
-    // These two functions manage interruptible work promises (one creates them the other cancels
-    // them). They communicate with each other thru the _interruptibleWorkPromises property which
-    //  "interruptible" creates on your object.
-    function interruptible(object, workFn) {
-        object["_interruptibleWorkPromises"] = object["_interruptibleWorkPromises"] || [];
-        var workStoredSignal = new _Signal();
-        object["_interruptibleWorkPromises"].push(workFn(workStoredSignal.promise));
-        workStoredSignal.complete();
-    }
-    function cancelInterruptibles() {
-        (this["_interruptibleWorkPromises"] || []).forEach(function (workPromise) {
-            workPromise.cancel();
-        });
-    }
-    // Transitions:
-    //   When created, the control will take one of the following initialization transitions depending on
-    //   how the control's APIs have been used by the time it is inserted into the DOM:
-    //     Init -> Hidden
-    //     Init -> Shown
-    //   Following that, the life of the SplitView will be dominated by the following
-    //   sequences of transitions. In geneneral, these sequences are uninterruptible.
-    //     Hidden -> BeforeShow -> Hidden (when preventDefault is called on beforeshow event)
-    //     Hidden -> BeforeShow -> Showing -> Shown
-    //     Shown -> BeforeHide -> Shown (when preventDefault is called on beforehide event)
-    //     Shown -> BeforeHide -> Hiding -> Hidden
-    //   However, any state can be interrupted to go to the Disposed state:
-    //     * -> Disposed
-    var States;
-    (function (States) {
-        function updateDomImpl() {
-            this.splitView._updateDomImpl();
-        }
-        // Initial state. Initializes state on the SplitView shared by the various states.
-        var Init = (function () {
-            function Init() {
-                this.name = "Init";
-                this.exit = cancelInterruptibles;
-                this.updateDom = _; // Postponed until immediately before we switch to another state
-            }
-            Init.prototype.enter = function (options) {
-                var _this = this;
-                interruptible(this, function (ready) {
-                    return ready.then(function () {
-                        options = options || {};
-                        _this.splitView._dismissable = new _LightDismissService.LightDismissableElement({
-                            element: _this.splitView._dom.paneWrapper,
-                            tabIndex: -1,
-                            onLightDismiss: function () {
-                                _this.splitView.hidePane();
-                            }
-                        });
-                        _this.splitView._cachedHiddenPaneThickness = null;
-                        _this.splitView.paneHidden = true;
-                        _this.splitView.hiddenDisplayMode = HiddenDisplayMode.inline;
-                        _this.splitView.shownDisplayMode = ShownDisplayMode.overlay;
-                        _this.splitView.panePlacement = PanePlacement.left;
-                        _Control.setOptions(_this.splitView, options);
-                        return _ElementUtilities._inDom(_this.splitView._dom.root).then(function () {
-                            _this.splitView._rtl = _Global.getComputedStyle(_this.splitView._dom.root).direction === 'rtl';
-                            _this.splitView._isShownMode = !_this._paneHidden;
-                            _this.splitView._updateDomImpl();
-                            _this.splitView._setState(_this._paneHidden ? Hidden : Shown);
-                        });
-                    });
-                });
-            };
-            Object.defineProperty(Init.prototype, "paneHidden", {
-                get: function () {
-                    return this._paneHidden;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Init.prototype.showPane = function () {
-                this._paneHidden = false;
-            };
-            Init.prototype.hidePane = function () {
-                this._paneHidden = true;
-            };
-            return Init;
-        })();
-        States.Init = Init;
-        // A rest state. The SplitView pane is hidden and is waiting for the app to call showPane.
-        var Hidden = (function () {
-            function Hidden() {
-                this.name = "Hidden";
-                this.exit = _;
-                this.paneHidden = true;
-                this.hidePane = _;
-                this.updateDom = updateDomImpl;
-            }
-            Hidden.prototype.enter = function (args) {
-                args = args || {};
-                if (args.showIsPending) {
-                    this.showPane();
-                }
-            };
-            Hidden.prototype.showPane = function () {
-                this.splitView._setState(BeforeShow);
-            };
-            return Hidden;
-        })();
-        // An event state. The SplitView fires the beforeshow event.
-        var BeforeShow = (function () {
-            function BeforeShow() {
-                this.name = "BeforeShow";
-                this.exit = cancelInterruptibles;
-                this.paneHidden = true;
-                this.showPane = _;
-                this.hidePane = _;
-                this.updateDom = updateDomImpl;
-            }
-            BeforeShow.prototype.enter = function () {
-                var _this = this;
-                interruptible(this, function (ready) {
-                    return ready.then(function () {
-                        return _this.splitView._fireBeforeShow(); // Give opportunity for chain to be canceled when calling into app code
-                    }).then(function (shouldShow) {
-                        if (shouldShow) {
-                            _this.splitView._setState(Showing);
-                        }
-                        else {
-                            _this.splitView._setState(Hidden);
-                        }
-                    });
-                });
-            };
-            return BeforeShow;
-        })();
-        // An animation/event state. The SplitView plays its show animation and fires aftershow.
-        var Showing = (function () {
-            function Showing() {
-                this.name = "Showing";
-                this.exit = cancelInterruptibles;
-                this.updateDom = _; // Postponed until immediately before we switch to another state
-            }
-            Showing.prototype.enter = function () {
-                var _this = this;
-                interruptible(this, function (ready) {
-                    return ready.then(function () {
-                        _this._hideIsPending = false;
-                        _this.splitView._cachedHiddenPaneThickness = null;
-                        var hiddenPaneThickness = _this.splitView._getHiddenPaneThickness();
-                        _this.splitView._isShownMode = true;
-                        _this.splitView._updateDomImpl();
-                        return _this.splitView._playShowAnimation(hiddenPaneThickness);
-                    }).then(function () {
-                        _this.splitView._fireEvent(EventNames.afterShow); // Give opportunity for chain to be canceled when calling into app code
-                    }).then(function () {
-                        _this.splitView._updateDomImpl();
-                        _this.splitView._setState(Shown, { hideIsPending: _this._hideIsPending });
-                    });
-                });
-            };
-            Object.defineProperty(Showing.prototype, "paneHidden", {
-                get: function () {
-                    return this._hideIsPending;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Showing.prototype.showPane = function () {
-                this._hideIsPending = false;
-            };
-            Showing.prototype.hidePane = function () {
-                this._hideIsPending = true;
-            };
-            return Showing;
-        })();
-        // A rest state. The SplitView pane is shown and is waiting for the app to trigger hidePane.
-        var Shown = (function () {
-            function Shown() {
-                this.name = "Shown";
-                this.exit = _;
-                this.paneHidden = false;
-                this.showPane = _;
-                this.updateDom = updateDomImpl;
-            }
-            Shown.prototype.enter = function (args) {
-                args = args || {};
-                if (args.hideIsPending) {
-                    this.hidePane();
-                }
-            };
-            Shown.prototype.hidePane = function () {
-                this.splitView._setState(BeforeHide);
-            };
-            return Shown;
-        })();
-        // An event state. The SplitView fires the beforehide event.
-        var BeforeHide = (function () {
-            function BeforeHide() {
-                this.name = "BeforeHide";
-                this.exit = cancelInterruptibles;
-                this.paneHidden = false;
-                this.showPane = _;
-                this.hidePane = _;
-                this.updateDom = updateDomImpl;
-            }
-            BeforeHide.prototype.enter = function () {
-                var _this = this;
-                interruptible(this, function (ready) {
-                    return ready.then(function () {
-                        return _this.splitView._fireBeforeHide(); // Give opportunity for chain to be canceled when calling into app code
-                    }).then(function (shouldHide) {
-                        if (shouldHide) {
-                            _this.splitView._setState(Hiding);
-                        }
-                        else {
-                            _this.splitView._setState(Shown);
-                        }
-                    });
-                });
-            };
-            return BeforeHide;
-        })();
-        // An animation/event state. The SpitView plays the hide animation and fires the afterhide event.
-        var Hiding = (function () {
-            function Hiding() {
-                this.name = "Hiding";
-                this.exit = cancelInterruptibles;
-                this.updateDom = _; // Postponed until immediately before we switch to another state
-            }
-            Hiding.prototype.enter = function () {
-                var _this = this;
-                interruptible(this, function (ready) {
-                    return ready.then(function () {
-                        _this._showIsPending = false;
-                        return _this.splitView._playHideAnimation(_this.splitView._getHiddenPaneThickness());
-                    }).then(function () {
-                        _this.splitView._isShownMode = false;
-                        _this.splitView._updateDomImpl();
-                        _this.splitView._fireEvent(EventNames.afterHide); // Give opportunity for chain to be canceled when calling into app code
-                    }).then(function () {
-                        _this.splitView._updateDomImpl();
-                        _this.splitView._setState(Hidden, { showIsPending: _this._showIsPending });
-                    });
-                });
-            };
-            Object.defineProperty(Hiding.prototype, "paneHidden", {
-                get: function () {
-                    return !this._showIsPending;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Hiding.prototype.showPane = function () {
-                this._showIsPending = true;
-            };
-            Hiding.prototype.hidePane = function () {
-                this._showIsPending = false;
-            };
-            return Hiding;
-        })();
-        var Disposed = (function () {
-            function Disposed() {
-                this.name = "Disposed";
-                this.exit = _;
-                this.paneHidden = true;
-                this.showPane = _;
-                this.hidePane = _;
-                this.updateDom = _;
-            }
-            Disposed.prototype.enter = function () {
-                _LightDismissService.hidden(this.splitView._dismissable);
-            };
-            return Disposed;
-        })();
-        States.Disposed = Disposed;
-    })(States || (States = {}));
     /// <field>
     /// <summary locid="WinJS.UI.SplitView">
     /// Displays a SplitView which renders a collapsable pane next to arbitrary HTML content.
@@ -78710,6 +78964,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             /// The new SplitView.
             /// </returns>
             /// </signature>
+            var _this = this;
             if (options === void 0) { options = {}; }
             // State private to _updateDomImpl. No other method should make use of it.
             //
@@ -78730,9 +78985,51 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             if (element && element["winControl"]) {
                 throw new _ErrorFromName("WinJS.UI.SplitView.DuplicateConstruction", Strings.duplicateConstruction);
             }
-            this._disposed = false;
             this._initializeDom(element || _Global.document.createElement("div"));
-            this._setState(States.Init, options);
+            this._machine = new _ShowHideMachine.ShowHideMachine({
+                eventElement: this._dom.root,
+                onShow: function () {
+                    _this._cachedHiddenPaneThickness = null;
+                    var hiddenPaneThickness = _this._getHiddenPaneThickness();
+                    _this._isShownMode = true;
+                    _this._updateDomImpl();
+                    return _this._playShowAnimation(hiddenPaneThickness);
+                },
+                onHide: function () {
+                    return _this._playHideAnimation(_this._getHiddenPaneThickness()).then(function () {
+                        _this._isShownMode = false;
+                        _this._updateDomImpl();
+                    });
+                },
+                onUpdateDom: function () {
+                    _this._updateDomImpl();
+                },
+                onUpdateDomWithIsShown: function (isShown) {
+                    _this._isShownMode = isShown;
+                    _this._updateDomImpl();
+                }
+            });
+            // Initialize private state.
+            this._disposed = false;
+            this._dismissable = new _LightDismissService.LightDismissableElement({
+                element: this._dom.paneWrapper,
+                tabIndex: -1,
+                onLightDismiss: function () {
+                    _this.hidePane();
+                }
+            });
+            this._cachedHiddenPaneThickness = null;
+            // Initialize public properties.
+            this.paneHidden = true;
+            this.hiddenDisplayMode = HiddenDisplayMode.inline;
+            this.shownDisplayMode = ShownDisplayMode.overlay;
+            this.panePlacement = PanePlacement.left;
+            _Control.setOptions(this, options);
+            // Exit the Init state.
+            _ElementUtilities._inDom(this._dom.root).then(function () {
+                _this._rtl = _Global.getComputedStyle(_this._dom.root).direction === 'rtl';
+                _this._machine.initialized();
+            });
         }
         Object.defineProperty(SplitView.prototype, "element", {
             /// <field type="HTMLElement" domElement="true" readonly="true" hidden="true" locid="WinJS.UI.SplitView.element" helpKeyword="WinJS.UI.SplitView.element">
@@ -78775,7 +79072,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 if (HiddenDisplayMode[value] && this._hiddenDisplayMode !== value) {
                     this._hiddenDisplayMode = value;
                     this._cachedHiddenPaneThickness = null;
-                    this._state.updateDom();
+                    this._machine.updateDom();
                 }
             },
             enumerable: true,
@@ -78792,7 +79089,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 if (ShownDisplayMode[value] && this._shownDisplayMode !== value) {
                     this._shownDisplayMode = value;
                     this._cachedHiddenPaneThickness = null;
-                    this._state.updateDom();
+                    this._machine.updateDom();
                 }
             },
             enumerable: true,
@@ -78809,7 +79106,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 if (PanePlacement[value] && this._panePlacement !== value) {
                     this._panePlacement = value;
                     this._cachedHiddenPaneThickness = null;
-                    this._state.updateDom();
+                    this._machine.updateDom();
                 }
             },
             enumerable: true,
@@ -78820,15 +79117,10 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             /// Gets or sets whether the SpitView's pane is currently collapsed.
             /// </field>
             get: function () {
-                return this._state.paneHidden;
+                return this._machine.hidden;
             },
             set: function (value) {
-                if (value) {
-                    this.hidePane();
-                }
-                else {
-                    this.showPane();
-                }
+                this._machine.hidden = value;
             },
             enumerable: true,
             configurable: true
@@ -78842,8 +79134,9 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             if (this._disposed) {
                 return;
             }
-            this._setState(States.Disposed);
             this._disposed = true;
+            this._machine.dispose();
+            _LightDismissService.hidden(this._dismissable);
             _Dispose._disposeElement(this._dom.pane);
             _Dispose._disposeElement(this._dom.content);
         };
@@ -78853,7 +79146,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             /// Shows the SplitView's pane.
             /// </summary>
             /// </signature>
-            this._state.showPane();
+            this._machine.show();
         };
         SplitView.prototype.hidePane = function () {
             /// <signature helpKeyword="WinJS.UI.SplitView.hidePane">
@@ -78861,7 +79154,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             /// Hides the SplitView's pane.
             /// </summary>
             /// </signature>
-            this._state.hidePane();
+            this._machine.hide();
         };
         SplitView.prototype._initializeDom = function (root) {
             // The first child is the pane
@@ -78985,61 +79278,13 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 };
             }
         };
-        SplitView.prototype._getAnimationOffsets = function (shownPaneRect) {
-            var placementLeft = this._rtl ? PanePlacement.right : PanePlacement.left;
-            return this._horizontal ? {
-                left: (this.panePlacement === placementLeft ? -1 : 1) * shownPaneRect.totalWidth + "px",
-                top: "0px"
-            } : {
-                left: "0px",
-                top: (this.panePlacement === PanePlacement.top ? -1 : 1) * shownPaneRect.totalHeight + "px"
-            };
-        };
-        SplitView.prototype._paneSlideIn = function (shownPaneRect) {
-            return showEdgeUI(this._dom.paneWrapper, this._getAnimationOffsets(shownPaneRect));
-        };
-        SplitView.prototype._paneSlideOut = function (shownPaneRect) {
-            return hideEdgeUI(this._dom.paneWrapper, this._getAnimationOffsets(shownPaneRect));
-        };
         Object.defineProperty(SplitView.prototype, "_horizontal", {
-            //
-            // Methods called by states
-            //
             get: function () {
                 return this.panePlacement === PanePlacement.left || this.panePlacement === PanePlacement.right;
             },
             enumerable: true,
             configurable: true
         });
-        SplitView.prototype._setState = function (NewState, arg0) {
-            if (!this._disposed) {
-                this._state && this._state.exit();
-                this._state = new NewState();
-                this._state.splitView = this;
-                this._state.enter(arg0);
-            }
-        };
-        // Calls into arbitrary app code
-        SplitView.prototype._fireEvent = function (eventName, options) {
-            options = options || {};
-            var detail = options.detail || null;
-            var cancelable = !!options.cancelable;
-            var eventObject = _Global.document.createEvent("CustomEvent");
-            eventObject.initCustomEvent(eventName, true, cancelable, detail);
-            return this._dom.root.dispatchEvent(eventObject);
-        };
-        // Calls into arbitrary app code
-        SplitView.prototype._fireBeforeShow = function () {
-            return this._fireEvent(EventNames.beforeShow, {
-                cancelable: true
-            });
-        };
-        // Calls into arbitrary app code
-        SplitView.prototype._fireBeforeHide = function () {
-            return this._fireEvent(EventNames.beforeHide, {
-                cancelable: true
-            });
-        };
         SplitView.prototype._getHiddenPaneThickness = function () {
             if (this._cachedHiddenPaneThickness === null) {
                 if (this._hiddenDisplayMode === HiddenDisplayMode.none) {
@@ -79071,32 +79316,24 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             var hiddenContentRect = this._getHiddenContentRect(shownContentRect, hiddenPaneThickness, shownPaneThickness);
             this._prepareAnimation(shownPaneRect, hiddenContentRect);
             var playPaneAnimation = function () {
-                var peek = hiddenPaneThickness.total > 0;
-                if (peek) {
-                    var placementRight = _this._rtl ? PanePlacement.left : PanePlacement.right;
-                    return resizeTransition(_this._dom.paneWrapper, _this._dom.pane, {
-                        from: hiddenPaneThickness,
-                        to: shownPaneThickness,
-                        dimension: dim,
-                        anchorTrailingEdge: _this.panePlacement === placementRight || _this.panePlacement === PanePlacement.bottom
-                    });
-                }
-                else {
-                    return _this._paneSlideIn(shownPaneRect);
-                }
+                var placementRight = _this._rtl ? PanePlacement.left : PanePlacement.right;
+                // What percentage of the size change should be skipped? (e.g. let's do the first
+                // 30% of the size change instantly and then animate the other 70%)
+                var animationOffsetFactor = 0.3;
+                var from = hiddenPaneThickness.total + animationOffsetFactor * (shownPaneThickness.total - hiddenPaneThickness.total);
+                return Animations._resizeTransition(_this._dom.paneWrapper, _this._dom.pane, {
+                    from: from,
+                    to: shownPaneThickness.total,
+                    actualSize: shownPaneThickness.total,
+                    dimension: dim,
+                    anchorTrailingEdge: _this.panePlacement === placementRight || _this.panePlacement === PanePlacement.bottom
+                });
             };
             var playShowAnimation = function () {
-                if (_this.shownDisplayMode === ShownDisplayMode.overlay) {
-                    return playPaneAnimation();
+                if (_this.shownDisplayMode === ShownDisplayMode.inline) {
+                    _this._setContentRect(shownContentRect);
                 }
-                else {
-                    var fadeInDelay = 350 * _TransitionAnimation._animationFactor;
-                    var contentAnimation = Promise.timeout(fadeInDelay).then(function () {
-                        _this._setContentRect(shownContentRect);
-                        return fadeIn(_this._dom.contentWrapper);
-                    });
-                    return Promise.join([contentAnimation, playPaneAnimation()]);
-                }
+                return playPaneAnimation();
             };
             return playShowAnimation().then(function () {
                 _this._clearAnimation();
@@ -79113,32 +79350,24 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             var hiddenContentRect = this._getHiddenContentRect(shownContentRect, hiddenPaneThickness, shownPaneThickness);
             this._prepareAnimation(shownPaneRect, shownContentRect);
             var playPaneAnimation = function () {
-                var peek = hiddenPaneThickness.total > 0;
-                if (peek) {
-                    var placementRight = _this._rtl ? PanePlacement.left : PanePlacement.right;
-                    return resizeTransition(_this._dom.paneWrapper, _this._dom.pane, {
-                        from: shownPaneThickness,
-                        to: hiddenPaneThickness,
-                        dimension: dim,
-                        anchorTrailingEdge: _this.panePlacement === placementRight || _this.panePlacement === PanePlacement.bottom
-                    });
-                }
-                else {
-                    return _this._paneSlideOut(shownPaneRect);
-                }
+                var placementRight = _this._rtl ? PanePlacement.left : PanePlacement.right;
+                // What percentage of the size change should be skipped? (e.g. let's do the first
+                // 30% of the size change instantly and then animate the other 70%)
+                var animationOffsetFactor = 0.3;
+                var from = shownPaneThickness.total - animationOffsetFactor * (shownPaneThickness.total - hiddenPaneThickness.total);
+                return Animations._resizeTransition(_this._dom.paneWrapper, _this._dom.pane, {
+                    from: from,
+                    to: hiddenPaneThickness.total,
+                    actualSize: shownPaneThickness.total,
+                    dimension: dim,
+                    anchorTrailingEdge: _this.panePlacement === placementRight || _this.panePlacement === PanePlacement.bottom
+                });
             };
             var playHideAnimation = function () {
-                if (_this.shownDisplayMode === ShownDisplayMode.overlay) {
-                    return playPaneAnimation();
+                if (_this.shownDisplayMode === ShownDisplayMode.inline) {
+                    _this._setContentRect(hiddenContentRect);
                 }
-                else {
-                    var fadeInDelay = 267 * _TransitionAnimation._animationFactor;
-                    var contentAnimation = Promise.timeout(fadeInDelay).then(function () {
-                        _this._setContentRect(hiddenContentRect);
-                        return fadeIn(_this._dom.contentWrapper);
-                    });
-                    return Promise.join([contentAnimation, playPaneAnimation()]);
-                }
+                return playPaneAnimation();
             };
             return playHideAnimation().then(function () {
                 _this._clearAnimation();
