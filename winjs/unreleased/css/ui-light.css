@@ -1175,7 +1175,7 @@ legend {
 code,
 pre,
 samp {
-  font-family: "Consolas";
+  font-family: "Consolas", "Menlo", "Monaco", "Courier New", monospace;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.333;
