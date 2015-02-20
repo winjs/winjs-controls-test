@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.19 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.20 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.19 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.2.20 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -12841,7 +12841,6 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
     });
     // Publish to WinJS namespace
     var toPublish = {
-        keyCodeMap: exports.keyCodeMap,
         focusRoot: {
             get: function () {
                 return exports.focusRoot;
@@ -12853,7 +12852,10 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
         enableXYFocus: enableXYFocus,
         disableXYFocus: disableXYFocus,
         findNextFocusElement: findNextFocusElement,
+        keyCodeMap: exports.keyCodeMap,
         moveFocus: moveFocus,
+        onfocuschanged: _Events._createEventProperty(EventNames.focusChanged),
+        onfocuschanging: _Events._createEventProperty(EventNames.focusChanging),
         _xyFocus: _xyFocus
     };
     toPublish = _BaseUtils._merge(toPublish, _Events.eventMixin);
