@@ -96,12 +96,24 @@ window.addEventListener('load', function()
     // Test if single file version exists
     var mainJSFile = iframe.contentDocument.createElement('script');
     var xhr = new XMLHttpRequest();
-    xhr.open('HEAD', versions[version].replace('../', '') + 'js/WinJS.js', false);
+    xhr.open('HEAD', versions[version].replace('../', '') + 'js/WinJS.js', true);
+    xhr.onload = function()
+    {
+      if (xhr.status !== 404)
+      {
+        mainJSFile.src = versions[version] + 'js/WinJS.js';
+      }
+      else
+      {
+        mainJSFile.src = versions[version] + 'js/ui.js';
+        
+        // Add base.js if main file is ui.js
+        var base = iframe.contentDocument.createElement('script');
+        base.src = versions[version] + 'js/base.js';
+        iframe.contentDocument.head.appendChild(base);
+      }
+    };
     xhr.send();
-    if (xhr.status !== 404)
-      mainJSFile.src = versions[version] + 'js/WinJS.js';
-    else
-      mainJSFile.src = versions[version] + 'js/ui.js';
 
     // Initialize WinJS when the main script loads
     mainJSFile.onload = function()
@@ -122,13 +134,6 @@ window.addEventListener('load', function()
         iframe.contentWindow.initialize();
     };
 
-    // Add base.js if main file is ui.js
-    if (xhr.status === 404)
-    {
-      var base = iframe.contentDocument.createElement('script');
-      base.src = versions[version] + 'js/base.js';
-      iframe.contentDocument.head.appendChild(base);
-    }
 
     iframe.contentDocument.head.appendChild(mainJSFile);
   }
