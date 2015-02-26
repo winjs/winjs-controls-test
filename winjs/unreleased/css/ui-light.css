@@ -2208,7 +2208,7 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
   height: 36px;
   z-index: 1;
   position: absolute;
-  font-family: "Segoe MDL2 Assetsf", "Symbols";
+  font-family: "Segoe MDL2 Assets", "Symbols";
   font-size: 16px;
   padding: 0;
   min-width: 0;
@@ -3074,7 +3074,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
 }
 .win-hub-section-header {
   margin: 4px 0;
-  font-size: 20pt;
+  font-size: 20px;
   text-align: left;
   height: 51px;
 }
@@ -3102,7 +3102,7 @@ button.win-hub-section-header-tabstop:hover:active {
   min-height: 0;
   min-width: 0;
   max-width: calc(100% - 3px);
-  font-size: 20pt;
+  font-size: 20px;
 }
 button.win-hub-section-header-tabstop:lang(ar),
 html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ar),
@@ -4652,7 +4652,7 @@ Hide clear button in search box control.
   top: 0;
   width: 32px;
   font-family: "Segoe MDL2 Assets", "Symbols";
-  font-size: 15pt;
+  font-size: 15px;
   border-style: none;
   height: 100%;
   text-align: center;
@@ -4676,8 +4676,8 @@ Hide clear button in search box control.
 .win-searchbox-button.win-searchbox-button:before {
   content: "\E094";
   position: absolute;
-  left: 6px;
-  top: 6px;
+  left: 8px;
+  top: 8px;
   line-height: 100%;
 }
 @media (-ms-high-contrast) {
@@ -4796,7 +4796,7 @@ Hide clear button in search box control.
   font-family: "Segoe MDL2 Assets", "Symbols";
   height: calc(100% - 48px);
   width: 20px;
-  font-size: 16pt;
+  font-size: 16px;
   overflow: hidden;
 }
 .win-navbarcontainer-vertical .win-navbarcontainer-navarrow {
