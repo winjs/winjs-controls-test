@@ -1,13 +1,13 @@
 /*!
-  Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-  Build: $(build.version).$(build.branch).$(build.date)
-  Version: $(TARGET_DESTINATION)
+  Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
+  Build: 4.0.0.winjs.2015.2.26
+  Version: WinJS.4.0
 */
 
 (function (global) {
     global.strings = global.strings || {};
 
-    var appxVersion = "$(TARGET_DESTINATION)";
+    var appxVersion = "WinJS.4.0";
     var developerPrefix = "Developer.";
     if (appxVersion.indexOf(developerPrefix) === 0) {
         appxVersion = appxVersion.substring(developerPrefix.length);

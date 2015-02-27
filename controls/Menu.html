@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>WinJS Stylesheet</title>
+  <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
+</head>
+
+<body>
+  <script>
+    function scriptLoaded()
+    {
+      var showButton = document.querySelector('.showButton');
+      showButton.addEventListener('click', function()
+      {
+          var menu = document.querySelector('#menu').winControl;
+          menu.show(showButton, 'auto');
+      });
+
+      var dismissButton = document.getElementById('dismissButton');
+      dismissButton.addEventListener('click', function () {
+      var flyout = document.getElementById('menuFlyout').winControl;
+      flyout.hide();
+    });
+    }
+  </script>
+
+  <style>
+  </style>
+
+  <button class='showButton'>Show</button>
+
+  <div id='menu' data-win-control='WinJS.UI.Menu'>
+    <button data-win-control='WinJS.UI.MenuCommand' data-win-options="{label:'button option', type:'button'}"></button>
+    <button data-win-control='WinJS.UI.MenuCommand' data-win-options="{label:'toggle option', type:'toggle', selected: true}"></button>
+    <hr data-win-control='WinJS.UI.MenuCommand' data-win-options="{type: 'separator'}" />
+    <button data-win-control='WinJS.UI.MenuCommand' data-win-options="{label:'flyout option', type:'flyout', flyout:select('#menuFlyout')}"></button>
+  </div>
+
+  <div id='menuFlyout' data-win-control='WinJS.UI.Flyout' aria-label='{Confirm purchase flyout}'>
+    <div>This flyout was invoked after clicking on a menu item.</div>
+    <button id='dismissButton'>Ok</button>
+  </div>
+
+</body>
+
+</html>
