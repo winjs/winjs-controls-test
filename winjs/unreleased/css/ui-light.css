@@ -3175,6 +3175,8 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   flex: 0 0 auto;
   display: inline-block;
   margin-left: 7px;
+  font-size: 20px;
+  padding-top: 14px;
 }
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ar),
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(dv),
