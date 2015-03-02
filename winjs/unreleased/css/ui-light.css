@@ -4858,11 +4858,13 @@ Hide clear button in search box control.
   font-family: "Segoe MDL2 Assets", "Symbols";
   height: 16px;
   width: 16px;
-  font-size: 13px;
+  font-size: 16px;
   margin-left: 0;
   margin-right: 16px;
   margin-top: 16px;
   /* Center icon vertically */
+  line-height: 1;
+  /* Ensure icon is exactly font-size */
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
