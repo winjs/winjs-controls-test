@@ -1202,7 +1202,7 @@ h2.win-type-ellipsis,
 }
 dt,
 th {
-  font-size: 11pt;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1.3636;
 }
@@ -2642,7 +2642,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   line-height: 16px;
 }
 .win-toggleswitch .win-toggleswitch-description {
-  font-size: 12pt;
+  font-size: 12px;
   width: 22em;
   margin-top: 28px;
   display: none;
@@ -2770,7 +2770,7 @@ button.win-navigation-backbutton:enabled:hover:active {
 .win-semanticzoom-button::before {
   font-family: "Segoe MDL2 Assets", "Symbols";
   font-weight: normal;
-  font-size: 11pt;
+  font-size: 11px;
   content: "\E0B8";
   /* minus sign */
 }
@@ -2860,7 +2860,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
-  font-size: 14pt;
+  font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
   margin: 12px 0 -8px 18px;
@@ -3286,7 +3286,7 @@ button.win-command {
   min-width: 40px;
   min-height: 48px;
   text-align: center;
-  font-size: 9pt;
+  font-size: 9px;
   line-height: 16px;
   font-weight: normal;
   overflow: visible;
@@ -3436,7 +3436,7 @@ div.win-command {
   border: 1px dotted;
   /* reserve focus rect */
   text-align: center;
-  font-size: 9pt;
+  font-size: 9px;
   line-height: 16px;
   font-weight: normal;
   vertical-align: top;
