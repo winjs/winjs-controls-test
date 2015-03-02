@@ -791,7 +791,7 @@ textarea,
 button,
 select,
 option {
-  font-family: "Segoe UI", "Segoe WP", "sans-serif", "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI", "Segoe WP", sans-serif, "Segoe MDL2 Assets", "Symbols";
 }
 input[type=text],
 input[type=password],
@@ -2425,7 +2425,7 @@ body > .win-navigation-backbutton {
   text-align: center;
   width: 41px;
   height: 41px;
-  font-size: 14pt;
+  font-size: 24px;
   line-height: 41px;
   vertical-align: baseline;
 }
