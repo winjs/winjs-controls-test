@@ -10,6 +10,17 @@
   <script>
     function scriptLoaded()
     {
+      function groupKey(data)
+      {
+        var A = 'A'.charCodeAt(0);
+        return String.fromCharCode(A + data.group);
+      }
+
+      function groupData(data) 
+      {
+        return {key: groupKey(data), picture: data.picture};
+      }
+
       var data =
       [
         {title: 'Item 1', text: 'Item 1 description', picture: 'http://lorempixel.com/60/60/nature/1'},
@@ -21,7 +32,7 @@
         {title: 'Item 7', text: 'Item 7 description', picture: 'http://lorempixel.com/60/60/nature/7'},
         {title: 'Item 8', text: 'Item 8 description', picture: 'http://lorempixel.com/60/60/nature/8'},
       ];
-      var bindingList = new WinJS.Binding.List(data);
+      var bindingList = new WinJS.Binding.List(data).createGrouped(groupKey, groupData);
       var ns = WinJS.Namespace.define('Sample.ListView', {data: bindingList});
     }
   </script>
@@ -86,7 +97,7 @@
          data-win-options='{itemDataSource: Sample.ListView.data.dataSource, itemTemplate: select(".zoomedInTemplate")}'>
     </div>
     <div data-win-control='WinJS.UI.ListView'
-         data-win-options='{itemDataSource: Sample.ListView.data.dataSource, itemTemplate: select(".zoomedOutTemplate")}'>
+         data-win-options='{itemDataSource: Sample.ListView.data.groups.dataSource, itemTemplate: select(".zoomedOutTemplate")}'>
     </div>
   </div>
 </body>
