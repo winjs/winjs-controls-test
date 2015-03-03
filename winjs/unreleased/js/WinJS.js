@@ -1,18 +1,18 @@
 
-/*! Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information. */
+/*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
 (function (global) {
 
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.2 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.3 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.2 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.3 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /*jshint ignore:start */
 var require;
 var define;
@@ -111,17 +111,17 @@ var define;
 })();
 define("amd", function(){});
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_WinJS',{});
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 (function (global) {
     "use strict";
 
     define('WinJS/Core/_Global',global);
 }(this));
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_BaseCoreUtils',[
     './_Global'
     ], function baseCoreUtilsInit(_Global) {
@@ -154,7 +154,7 @@ define('WinJS/Core/_BaseCoreUtils',[
         }
     };
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_WriteProfilerMark',[
     './_Global'
 ], function profilerInit(_Global) {
@@ -162,7 +162,7 @@ define('WinJS/Core/_WriteProfilerMark',[
 
     return _Global.msWriteProfilerMark || function () { };
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Base',[
     './_WinJS',
     './_Global',
@@ -478,7 +478,7 @@ define('WinJS/Core/_Base',[
     };
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_ErrorFromName',[
     './_Base'
     ], function errorsInit(_Base) {
@@ -512,7 +512,7 @@ define('WinJS/Core/_ErrorFromName',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_WinRT',[
     'exports',
     './_Global',
@@ -580,7 +580,7 @@ define('WinJS/Core/_WinRT',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Events',[
     'exports',
     './_Base'
@@ -1213,7 +1213,7 @@ define('require-json!en-US/ui.resjson',{
     "_appBarIcons\\preview.comment":                   	"{Locked:qps-ploc,qps-plocm}"
 }
 );
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Resources',[
     'exports',
     './_Global',
@@ -1448,7 +1448,7 @@ define('WinJS/Core/_Resources',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Trace',[
     './_Global'
     ], function traceInit(_Global) {
@@ -1465,7 +1465,7 @@ define('WinJS/Core/_Trace',[
         _traceAsyncCallbackCompleted: (_Global.Debug && _Global.Debug.msTraceAsyncCallbackCompleted && _Global.Debug.msTraceAsyncCallbackCompleted.bind(_Global.Debug)) || nop
     };
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Promise/_StateMachine',[
     '../Core/_Global',
     '../Core/_BaseCoreUtils',
@@ -2891,7 +2891,7 @@ define('WinJS/Promise/_StateMachine',[
     };
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Promise',[
     './Core/_Base',
     './Promise/_StateMachine'
@@ -2905,7 +2905,7 @@ define('WinJS/Promise',[
     return _StateMachine.Promise;
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Log',[
     'exports',
     './_Global',
@@ -3017,7 +3017,7 @@ define('WinJS/Core/_Log',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Scheduler',[
     'exports',
     './Core/_Global',
@@ -4639,7 +4639,7 @@ define('WinJS/Scheduler',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_BaseUtils',[
     'exports',
     './_Global',
@@ -5163,7 +5163,7 @@ define('WinJS/Core',[
     ], function () {
     // Wrapper module
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/_Signal',[
     './Core/_Base',
     './Promise/_StateMachine'
@@ -5214,7 +5214,7 @@ define('WinJS/_Signal',[
 
     return Signal;
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Control',[
     'exports',
     '../Core/_Global',
@@ -5345,7 +5345,7 @@ define('WinJS/Utilities/_Control',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_ElementUtilities',[
     'exports',
     '../Core/_Global',
@@ -7783,7 +7783,7 @@ define('WinJS/Utilities/_ElementUtilities',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Dispose',[
     'exports',
     '../Core/_Base',
@@ -7890,7 +7890,7 @@ define('WinJS/Utilities/_Dispose',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/ControlProcessor/_OptionsLexer',[
     'exports',
     '../Core/_Base'
@@ -8526,7 +8526,7 @@ StringLiteral       7.8.4
         })
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/ControlProcessor/_OptionsParser',[
     'exports',
     '../Core/_Base',
@@ -9155,7 +9155,7 @@ define('WinJS/ControlProcessor/_OptionsParser',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/ControlProcessor',[
     'exports',
     './Core/_Global',
@@ -9405,7 +9405,7 @@ define('WinJS/ControlProcessor',[
         process: process
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_ElementListUtilities',[
     'exports',
     '../Core/_Global',
@@ -9843,7 +9843,7 @@ define('WinJS/Utilities/_ElementListUtilities',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Hoverable',[
     'exports',
     '../Core/_Global'
@@ -9871,7 +9871,7 @@ define('WinJS/Utilities/_Hoverable',[
     }
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_ParallelWorkQueue',[
     'exports',
     '../Core/_Base',
@@ -9976,7 +9976,7 @@ define('WinJS/Utilities/_ParallelWorkQueue',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_VersionManager',[
     'exports',
     '../Core/_Base',
@@ -10070,7 +10070,7 @@ define('WinJS/Utilities/_VersionManager',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Items Manager
 
 define('WinJS/Utilities/_ItemsManager',[
@@ -11027,7 +11027,7 @@ define('WinJS/Utilities/_ItemsManager',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_TabContainer',[
     'exports',
     '../Core/_Global',
@@ -11343,7 +11343,7 @@ define('WinJS/Utilities/_TabContainer',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_KeyboardBehavior',[
     'exports',
     '../Core/_Global',
@@ -11672,7 +11672,7 @@ define('WinJS/Utilities/_KeyboardBehavior',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_SafeHtml',[
     'exports',
     '../Core/_WinJS',
@@ -11884,7 +11884,7 @@ define('WinJS/Utilities/_SafeHtml',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Select',[
     'exports',
     '../Core/_Base',
@@ -12022,7 +12022,7 @@ define('WinJS/Utilities/_Select',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Telemetry',[
     'exports'
     ], function telemetryInit(exports) {
@@ -12030,7 +12030,7 @@ define('WinJS/Utilities/_Telemetry',[
 
     /// NOTE: This file should be included when NOT building
     /// Microsoft WinJS Framework Package which will be available in Windows Store.
-    
+
     exports.send = function (name, params) {
     /// <signature helpKeyword="WinJS._Telemetry.send">
     /// <summary locid="WinJS._Telemetry.send">
@@ -12046,7 +12046,7 @@ define('WinJS/Utilities/_Telemetry',[
     };
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_UI',[
     'exports',
     '../Core/_BaseCoreUtils',
@@ -12209,7 +12209,7 @@ define('WinJS/Utilities/_UI',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Xhr',[
     '../Core/_Global',
     '../Core/_Base',
@@ -12319,7 +12319,7 @@ define('WinJS/Utilities/_Xhr',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities',[
     './Utilities/_Control',
     './Utilities/_Dispose',
@@ -12915,7 +12915,6 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
 
     // Publish to WinJS namespace
     var toPublish = {
-        keyCodeMap: exports.keyCodeMap,
         focusRoot: {
             get: function () {
                 return exports.focusRoot;
@@ -12927,7 +12926,10 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
         enableXYFocus: exports.enableXYFocus,
         disableXYFocus: exports.disableXYFocus,
         findNextFocusElement: exports.findNextFocusElement,
+        keyCodeMap: exports.keyCodeMap,
         moveFocus: exports.moveFocus,
+        onfocuschanged: _Events._createEventProperty(EventNames.focusChanged),
+        onfocuschanging: _Events._createEventProperty(EventNames.focusChanging),
         _xyFocus: _xyFocus
     };
     toPublish = _BaseUtils._merge(toPublish, _Events.eventMixin);
@@ -12936,7 +12938,7 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
     _Base.Namespace.define("WinJS.UI.XYFocus", toPublish);
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Fragments',[
     'exports',
     './Core/_Global',
@@ -13407,7 +13409,7 @@ define('WinJS/Fragments',[
         }
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Application/_State',[
     'exports',
     '../Core/_Global',
@@ -13712,7 +13714,7 @@ define('WinJS/Application/_State',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Navigation',[
     'exports',
     './Core/_Base',
@@ -14015,7 +14017,7 @@ define('WinJS/Navigation',[
         onbeforenavigate: createEvent(beforenavigateEventName)
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Application',[
     'exports',
     './Core/_Global',
@@ -14064,7 +14066,7 @@ define('WinJS/Application',[
     var TypeToSearch = {
         _suggestionManager: null,
         _registered: false,
-        
+
         updateRegistration: function Application_TypeToSearch_updateRegistration() {
             var ls = listeners._listeners && listeners._listeners[requestingFocusOnKeyboardInputET] || [];
             if (!TypeToSearch._registered && ls.length > 0) {
@@ -14086,19 +14088,19 @@ define('WinJS/Application',[
                 TypeToSearch._registered = false;
             }
         },
-        
+
         _keydownCaptureHandler: function Application_TypeToSearch_keydownCaptureHandler(event) {
             if (TypeToSearch._registered && TypeToSearch._shouldKeyTriggerTypeToSearch(event)) {
                 requestingFocusOnKeyboardInput();
             }
         },
-    
+
         _frameLoadCaptureHandler: function Application_TypeToSearch_frameLoadCaptureHandler(event) {
             if (TypeToSearch._registered) {
                 TypeToSearch._updateKeydownCaptureListeners(event.target.contentWindow, true /*add*/);
             }
         },
-    
+
         _updateKeydownCaptureListeners: function Application_TypeToSearch_updateKeydownCaptureListeners(win, add) {
             // Register for child frame keydown events in order to support FocusOnKeyboardInput
             // when focus is in a child frame.  Also register for child frame load events so
@@ -14113,12 +14115,12 @@ define('WinJS/Application',[
                 }
             } catch (e) { // if the IFrame crosses domains, we'll get a permission denied error
             }
-    
+
             if (win.frames) {
                 for (var i = 0, l = win.frames.length; i < l; i++) {
                     var childWin = win.frames[i];
                     TypeToSearch._updateKeydownCaptureListeners(childWin, add);
-    
+
                     try {
                         if (add) {
                             if (childWin.frameElement) {
@@ -14134,7 +14136,7 @@ define('WinJS/Application',[
                 }
             }
         },
-    
+
         _shouldKeyTriggerTypeToSearch: function Application_TypeToSearch_shouldKeyTriggerTypeToSearch(event) {
             var shouldTrigger = false;
             // First, check if a metaKey is pressed (only applies to MacOS). If so, do nothing here.
@@ -14154,7 +14156,7 @@ define('WinJS/Application',[
                         case 0x37:  //0x37 7 key
                         case 0x38:  //0x38 8 key
                         case 0x39:  //0x39 9 key
-    
+
                         case 0x41:  //0x41 A key
                         case 0x42:  //0x42 B key
                         case 0x43:  //0x43 C key
@@ -14181,7 +14183,7 @@ define('WinJS/Application',[
                         case 0x58:  //0x58 X key
                         case 0x59:  //0x59 Y key
                         case 0x5A:  //0x5A Z key
-    
+
                         case 0x60:  // VK_NUMPAD0,             //0x60 Numeric keypad 0 key
                         case 0x61:  // VK_NUMPAD1,             //0x61 Numeric keypad 1 key
                         case 0x62:  // VK_NUMPAD2,             //0x62 Numeric keypad 2 key
@@ -14198,7 +14200,7 @@ define('WinJS/Application',[
                         case 0x6D:  // VK_SUBTRACT,            //0x6D Subtract key
                         case 0x6E:  // VK_DECIMAL,             //0x6E Decimal key
                         case 0x6F:  // VK_DIVIDE,              //0x6F Divide key
-    
+
                         case 0xBA:  // VK_OEM_1,               //0xBA Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ';:' key
                         case 0xBB:  // VK_OEM_PLUS,            //0xBB For any country/region, the '+' key
                         case 0xBC:  // VK_OEM_COMMA,           //0xBC For any country/region, the ',' key
@@ -14206,17 +14208,17 @@ define('WinJS/Application',[
                         case 0xBE:  // VK_OEM_PERIOD,          //0xBE For any country/region, the '.' key
                         case 0xBF:  // VK_OEM_2,               //0xBF Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '/?' key
                         case 0xC0:  // VK_OEM_3,               //0xC0 Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '`~' key
-    
+
                         case 0xDB:  // VK_OEM_4,               //0xDB Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '[{' key
                         case 0xDC:  // VK_OEM_5,               //0xDC Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '\|' key
                         case 0xDD:  // VK_OEM_6,               //0xDD Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ']}' key
                         case 0xDE:  // VK_OEM_7,               //0xDE Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the 'single-quote/double-quote' key
                         case 0xDF:  // VK_OEM_8,               //0xDF Used for miscellaneous characters; it can vary by keyboard.
-    
+
                         case 0xE2:  // VK_OEM_102,             //0xE2 Either the angle bracket key or the backslash key on the RT 102-key keyboard
-    
+
                         case 0xE5:  // VK_PROCESSKEY,          //0xE5 IME PROCESS key
-    
+
                         case 0xE7:  // VK_PACKET,              //0xE7 Used to pass Unicode characters as if they were keystrokes. The VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods. For more information, see Remark in KEYBDINPUT, SendInput, WM_KEYDOWN, and WM_KEYUP
                             shouldTrigger = true;
                             break;
@@ -14659,21 +14661,21 @@ define('WinJS/Application',[
         });
         dispatchEvent(eventRecord);
     }
-    
+
     function requestingFocusOnKeyboardInput() {
         // Built in listener for beforeRequestingFocusOnKeyboardInputET will trigger
         // requestingFocusOnKeyboardInputET if it wasn't handled.
         dispatchEvent({ type: beforeRequestingFocusOnKeyboardInputET });
     }
-    
+
     function edgyStarting(eventObject) {
         dispatchEvent({ type: edgyStartingET, kind: eventObject.kind });
     }
-    
+
     function edgyCompleted(eventObject) {
         dispatchEvent({ type: edgyCompletedET, kind: eventObject.kind });
     }
-    
+
     function edgyCanceled(eventObject) {
         dispatchEvent({ type: edgyCanceledET, kind: eventObject.kind });
     }
@@ -14687,7 +14689,7 @@ define('WinJS/Application',[
             if (_Global.document) {
                 _Global.addEventListener("error", errorHandler, false);
                 if (_WinRT.Windows.UI.WebUI.WebUIApplication) {
-                    
+
                     var wui = _WinRT.Windows.UI.WebUI.WebUIApplication;
                     wui.addEventListener("activated", activatedHandler, false);
                     wui.addEventListener("suspending", suspendingHandler, false);
@@ -14702,7 +14704,7 @@ define('WinJS/Application',[
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {
                     _WinRT.Windows.Phone.UI.Input.HardwareButtons.addEventListener("backpressed", hardwareButtonBackPressed);
                 }
-                
+
                 if (_WinRT.Windows.UI.Input.EdgeGesture) {
                     var edgy = _WinRT.Windows.UI.Input.EdgeGesture.getForCurrentView();
                     edgy.addEventListener("starting", edgyStarting);
@@ -14738,7 +14740,7 @@ define('WinJS/Application',[
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {
                     _WinRT.Windows.Phone.UI.Input.HardwareButtons.removeEventListener("backpressed", hardwareButtonBackPressed);
                 }
-                
+
                 if (_WinRT.Windows.UI.Input.EdgeGesture) {
                     var edgy = _WinRT.Windows.UI.Input.EdgeGesture.getForCurrentView();
                     edgy.removeEventListener("starting", edgyStarting);
@@ -14845,7 +14847,7 @@ define('WinJS/Application',[
         },
 
         queueEvent: queueEvent,
-        
+
         // Like queueEvent but fires the event synchronously. Useful in tests.
         _dispatchEvent: dispatchEvent,
 
@@ -14857,7 +14859,7 @@ define('WinJS/Application',[
                 terminateAppHandler = value;
             }
         },
-        
+
         _applicationListener: _Base.Namespace._lazy(function () {
             // Use _lazy because publicNS can't be referenced in its own definition
             return new _ElementUtilities._GenericListener("Application", publicNS);
@@ -14902,7 +14904,7 @@ define('WinJS/Application',[
 
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Animations/_Constants',[
     'exports',
     '../Core/_Base'
@@ -14934,7 +14936,7 @@ define('WinJS/Animations/_Constants',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Animations/_TransitionAnimation',[
     'exports',
     '../Core/_Global',
@@ -15365,7 +15367,7 @@ define('WinJS/Animations/_TransitionAnimation',[
     var animationTimeAdjustment = function _animationTimeAdjustmentImpl(v) {
         return v * animationFactor;
     };
-    
+
     var animationFactor = 1;
     var libraryDelay = 0;
 
@@ -15492,7 +15494,7 @@ define('WinJS/Animations/_TransitionAnimation',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Animations',[
     'exports',
     './Core/_Global',
@@ -16133,7 +16135,7 @@ define('WinJS/Animations',[
     }, { // Static Members
         supportedForProcessing: false,
     });
-    
+
     //
     // Resize animation
     //  The resize animation requires 2 animations to run simultaneously in sync with each other. It's implemented
@@ -16148,7 +16150,7 @@ define('WinJS/Animations',[
         var transitionProperty = _BaseUtils._browserStyleEquivalents["transition"].scriptName;
         element.style[transitionProperty] = duration + "ms " + transformNames.cssName + " " + transition.timing;
         element.style[transformNames.scriptName] = transition.to;
-    
+
         var finish;
         return new Promise(function (c) {
             var onTransitionEnd = function (eventObject) {
@@ -16156,7 +16158,7 @@ define('WinJS/Animations',[
                     finish();
                 }
             };
-            
+
             var didFinish = false;
             finish = function () {
                 if (!didFinish) {
@@ -16167,12 +16169,12 @@ define('WinJS/Animations',[
                 }
                 c();
             };
-    
+
             // Watch dog timeout
             var timeoutId = _Global.setTimeout(function () {
                 timeoutId = _Global.setTimeout(finish, duration);
             }, 50);
-    
+
             element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
         }, function () {
             finish(); // On cancelation, complete the promise successfully to match PVL
@@ -16185,21 +16187,21 @@ define('WinJS/Animations',[
         if (!args.anchorTrailingEdge) {
             start = -start;
             end = -end;
-        } 
+        }
         var translate = args.dimension === "width" ? "translateX" : "translateY";
         var transition = {
             duration: args.duration,
-            timing: args.timing 
+            timing: args.timing
         };
-    
+
         // Set up
         elementClipper.style[transformNames.scriptName] = translate + "(" + start + "px)";
         element.style[transformNames.scriptName] = translate + "(" + -start + "px)";
-    
+
         // Resolve styles
         _Global.getComputedStyle(elementClipper).opacity;
         _Global.getComputedStyle(element).opacity;
-        
+
         // Animate
         var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + end + "px)" });
         var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -end + "px)" });
@@ -16464,7 +16466,7 @@ define('WinJS/Animations',[
             /// </returns>
             /// </signature>
             writeAnimationProfilerMark("showEdgeUI,StartTM");
-            
+
             var isTransition = options && options.mechanism === "transition";
             var offsetArray = new OffsetArray(offset, "WinJS-showEdgeUI", [{ top: "-70px", left: "0px" }]);
             return _TransitionAnimation[(isTransition ? "executeTransition" : "executeAnimation")](
@@ -16549,7 +16551,7 @@ define('WinJS/Animations',[
             /// </returns>
             /// </signature>
             writeAnimationProfilerMark("hideEdgeUI,StartTM");
-            
+
             var isTransition = options && options.mechanism === "transition";
             var offsetArray = new OffsetArray(offset, "WinJS-hideEdgeUI", [{ top: "-70px", left: "0px" }]);
             return _TransitionAnimation[(isTransition ? "executeTransition" : "executeAnimation")](
@@ -17981,19 +17983,19 @@ define('WinJS/Animations',[
             function emptyAnimationFunction() {
                 return Promise.wrap();
             }
-            
+
             return {
                 exit: emptyAnimationFunction,
                 entrance: exports.enterPage
             };
         },
-        
+
         // Plays an animation which makes an element look like it is resizing in 1 dimension. Arguments:
         // - elementClipper: The parent of *element*. It shouldn't have any margin, border, or padding and its
         //   size should match element's size. Its purpose is to clip *element* during the animation to give
         //   it the illusion that it is resizing.
         // - element: The element that should look like it's resizing.
-        // - args: An object with the following properties (each is required unless noted otherwise): 
+        // - args: An object with the following properties (each is required unless noted otherwise):
         //   - from: A number representing the old total width/height of the element.
         //   - to: A number representing the new total width/height of the element.
         //   - actualSize: A number representing the actual total width/height of the element (should be at least
@@ -18018,7 +18020,7 @@ define('WinJS/Animations',[
                     timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
                 };
                 var defaultTransition = args.to > args.from ? growTransition : shrinkTransition;
-                
+
                 return resizeTransition(elementClipper, element, _BaseUtils._merge(args, {
                     duration: args.duration === undefined ? defaultTransition.duration : args.duration,
                     timing: args.timing === undefined ? defaultTransition.timing : args.timing
@@ -18028,7 +18030,7 @@ define('WinJS/Animations',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_BindingParser',[
     'exports',
     '../Core/_Base',
@@ -18230,7 +18232,7 @@ define('WinJS/Binding/_BindingParser',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_DomWeakRefTable',[
     'exports',
     '../Core/_Global',
@@ -18391,7 +18393,7 @@ define('WinJS/Binding/_DomWeakRefTable',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_Data',[
     'exports',
     '../Core/_WinRT',
@@ -19039,7 +19041,7 @@ define('WinJS/Binding/_Data',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_Declarative',[
     'exports',
     '../Core/_Global',
@@ -19727,7 +19729,7 @@ define('WinJS/Binding',[
     './Binding/_DomWeakRefTable'], function () {
     //Wrapper module
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/BindingTemplate/_DataTemplateCompiler',[
     'exports',
     '../Core/_Global',
@@ -22012,7 +22014,7 @@ define('WinJS/BindingTemplate/_DataTemplateCompiler',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/BindingTemplate',[
     'exports',
     './Core/_Global',
@@ -22494,7 +22496,7 @@ define('WinJS/BindingTemplate',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // WinJS.Binding.ListDataSource
 //
 define('WinJS/BindingList/_BindingListDataSource',[
@@ -23254,7 +23256,7 @@ define('WinJS/BindingList/_BindingListDataSource',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
 // WinJS.Binding.List
 //
@@ -25345,7 +25347,7 @@ define('WinJS/BindingList',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Res',[
     'exports',
     './Core/_Global',
@@ -25511,7 +25513,7 @@ define('WinJS/Res',[
         processAll: processAll
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Pages/_BasePage',[
     'exports',
     '../Core/_Global',
@@ -25792,7 +25794,7 @@ define('WinJS/Pages/_BasePage',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Pages',[
     'exports',
     './Core/_Global',
@@ -25974,7 +25976,7 @@ define('WinJS/Pages',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/HtmlControl',[
     'exports',
     '../Core/_Global',
@@ -26018,7 +26020,7 @@ define('WinJS/Controls/HtmlControl',[
         })
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Virtualized Data Source
 define('WinJS/VirtualizedDataSource/_VirtualizedDataSourceImpl',[
     'exports',
@@ -32071,7 +32073,7 @@ define('WinJS/VirtualizedDataSource/_VirtualizedDataSourceImpl',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Group Data Source
 
 define('WinJS/VirtualizedDataSource/_GroupDataSource',[
@@ -32927,7 +32929,7 @@ define('WinJS/VirtualizedDataSource/_GroupDataSource',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Grouped Item Data Source
 
 define('WinJS/VirtualizedDataSource/_GroupedItemDataSource',[
@@ -33128,7 +33130,7 @@ define('WinJS/VirtualizedDataSource/_GroupedItemDataSource',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Storage Item Data Source
 
 define('WinJS/VirtualizedDataSource/_StorageDataSource',[
@@ -33458,7 +33460,7 @@ define('WinJS/VirtualizedDataSource/_StorageDataSource',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/VirtualizedDataSource',[
     './VirtualizedDataSource/_VirtualizedDataSourceImpl',
     './VirtualizedDataSource/_GroupDataSource',
@@ -33473,14 +33475,14 @@ define('require-style',{load: function(id){throw new Error("Dynamic load not all
 define('require-style!less/styles-intrinsic',[],function(){});
 
 define('require-style!less/colors-intrinsic',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/IntrinsicControls',[
     '../Utilities/_Hoverable',
     'require-style!less/styles-intrinsic',
     'require-style!less/colors-intrinsic'
     ], function (_Hoverable) {
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ItemContainer/_Constants',[
     'exports',
     '../../Core/_Base'
@@ -33586,7 +33588,7 @@ define('WinJS/Controls/ItemContainer/_Constants',[
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", members);
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
     'exports',
     '../../Core/_Global',
@@ -34307,7 +34309,7 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_SelectionManager',[
     'exports',
     '../../Core/_Global',
@@ -35161,7 +35163,7 @@ define('WinJS/Controls/ListView/_SelectionManager',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_BrowseMode',[
     'exports',
     '../../Core/_Global',
@@ -36541,7 +36543,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                             } else {
                                 var entity = { type: _UI.ObjectType.groupHeader, index: site._groups.groupFromItem(focused.index) };
                             }
-                            
+
                         }
 
                         if (entity && dispatchKeyboardNavigating(site._element, focused, entity)) {
@@ -36570,7 +36572,7 @@ define('WinJS/Controls/ListView/_BrowseMode',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_ErrorMessages',[
         'exports',
         '../../Core/_Base',
@@ -36645,7 +36647,7 @@ define('WinJS/Controls/ListView/_ErrorMessages',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_GroupFocusCache',[
     'exports',
     '../../Core/_Base'
@@ -36774,7 +36776,7 @@ define('WinJS/Controls/ListView/_GroupFocusCache',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_GroupsContainer',[
     'exports',
     '../../Core/_Base',
@@ -37325,7 +37327,7 @@ define('WinJS/Controls/ListView/_GroupsContainer',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_Helpers',[
     'exports',
     '../../Core/_Base',
@@ -37387,7 +37389,7 @@ define('WinJS/Controls/ListView/_Helpers',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_ItemsContainer',[
     'exports',
     '../../Core/_Base',
@@ -37532,7 +37534,7 @@ define('WinJS/Controls/ListView/_ItemsContainer',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_Layouts',[
     'exports',
     '../../Core/_Global',
@@ -42090,7 +42092,7 @@ define('WinJS/Controls/ListView/_Layouts',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView/_VirtualizeContentsView',[
     'exports',
     '../../Core/_Global',
@@ -44129,7 +44131,7 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
                         return [{ key: "-1", size: count }];
                     }
                 },
-                
+
                 // Overridden by tests.
                 // Tests should have _createChunk return true when they want _createContainers to stop creating containers.
                 _createChunk: function VirtualizeContentsView_createChunk(groups, count, chunkSize) {
@@ -44184,7 +44186,7 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
 
                     this._listView._writeProfilerMark("createChunk,StopTM");
                 },
-                
+
                 // Overridden by tests.
                 // Tests should have _createChunkWithBlocks return true when they want _createContainers to stop creating containers.
                 _createChunkWithBlocks: function VirtualizeContentsView_createChunkWithBlocks(groups, count, blockSize, chunkSize) {
@@ -45432,7 +45434,7 @@ define('WinJS/Controls/ListView/_VirtualizeContentsView',[
 define('require-style!less/styles-listview',[],function(){});
 
 define('require-style!less/colors-listview',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ListView',[
     '../Core/_Global',
     '../Core/_Base',
@@ -47648,7 +47650,7 @@ define('WinJS/Controls/ListView',[
                         var previousModifiedElementsHash = {};
                         this._modifiedElements = [];
                         this._countDifference += updater.countDifference;
-                        
+
                         for (i = 0; i < previousModifiedElements.length; i++) {
                             var modifiedElement = previousModifiedElements[i];
                             if (modifiedElement.newIndex === -1) {
@@ -47657,7 +47659,7 @@ define('WinJS/Controls/ListView',[
                                 previousModifiedElementsHash[modifiedElement.newIndex] = modifiedElement;
                             }
                         }
-                        
+
                         for (i = 0; i < updater.removed.length; i++) {
                             var removed = updater.removed[i];
                             var modifiedElement = previousModifiedElementsHash[removed.index];
@@ -47675,7 +47677,7 @@ define('WinJS/Controls/ListView',[
                             }
                             this._modifiedElements.push(modifiedElement);
                         }
-                        
+
                         var insertedKeys = Object.keys(this._insertedItems);
                         for (i = 0; i < insertedKeys.length; i++) {
                             this._modifiedElements.push({
@@ -47712,7 +47714,7 @@ define('WinJS/Controls/ListView',[
                             }
                         }
                         this._writeProfilerMark("_synchronize:update_modifiedElements,StopTM");
-                        
+
                         var previousIndices = Object.keys(previousModifiedElementsHash);
                         for (i = 0; i < previousIndices.length; i++) {
                             var key = previousIndices[i];
@@ -49575,7 +49577,7 @@ define('WinJS/Controls/ListView',[
 
                 _updateContainers: function ListView_updateContainers(groups, count, containersDelta, modifiedElements) {
                     var that = this;
-                    
+
                     // If the ListView is still in the middle of asynchronously creating containers (i.e. createContainersWorker isn't done),
                     // then we need to cap the number of containers we create here. Without the cap, we'll synchronously finish creating all
                     // of the containers nullifying the responsiveness benefits of the asynchronous create containers worker. However, if
@@ -50067,7 +50069,7 @@ define('WinJS/Controls/ListView',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/FlipView/_Constants',[
     ], function constantsInit() {
     "use strict";
@@ -50082,7 +50084,7 @@ define('WinJS/Controls/FlipView/_Constants',[
     return members;
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
 define('WinJS/Controls/FlipView/_PageManager',[
     'exports',
@@ -52026,7 +52028,7 @@ define('WinJS/Controls/FlipView/_PageManager',[
 define('require-style!less/styles-flipview',[],function(){});
 
 define('require-style!less/colors-flipview',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/FlipView',[
     '../Core/_Global',
     '../Core/_Base',
@@ -53300,7 +53302,7 @@ define('WinJS/Controls/FlipView',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ItemContainer',[
     'exports',
     '../Core/_Global',
@@ -54055,7 +54057,7 @@ define('WinJS/Controls/ItemContainer',[
         })
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Repeater',[
     'exports',
     '../Core/_Global',
@@ -54571,7 +54573,7 @@ define('WinJS/Controls/Repeater',[
 
 
 define('require-style!less/styles-datetimepicker',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/DatePicker',[
     '../Core/_Global',
     '../Core/_WinRT',
@@ -55326,7 +55328,7 @@ define('WinJS/Controls/DatePicker',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
 define('WinJS/Controls/TimePicker',[
     '../Core/_Global',
@@ -55921,7 +55923,7 @@ define('WinJS/Controls/TimePicker',[
 define('require-style!less/styles-backbutton',[],function(){});
 
 define('require-style!less/colors-backbutton',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Back Button
 define('WinJS/Controls/BackButton',[
     '../Core/_Global',
@@ -56170,7 +56172,7 @@ define('WinJS/Controls/BackButton',[
 define('require-style!less/styles-tooltip',[],function(){});
 
 define('require-style!less/colors-tooltip',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Tooltip',[
     'exports',
     '../Core/_Global',
@@ -57127,7 +57129,7 @@ define('WinJS/Controls/Tooltip',[
 define('require-style!less/styles-rating',[],function(){});
 
 define('require-style!less/colors-rating',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Rating',[
     '../Core/_Global',
     '../Core/_Base',
@@ -58293,7 +58295,7 @@ define('WinJS/Controls/Rating',[
 define('require-style!less/styles-toggleswitch',[],function(){});
 
 define('require-style!less/colors-toggleswitch',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ToggleSwitch',[
     '../Core/_Global',
     '../Core/_Base',
@@ -58700,7 +58702,7 @@ define('WinJS/Controls/ToggleSwitch',[
 define('require-style!less/styles-semanticzoom',[],function(){});
 
 define('require-style!less/colors-semanticzoom',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Semantic Zoom control
 define('WinJS/Controls/SemanticZoom',[
     '../Core/_Global',
@@ -60245,7 +60247,7 @@ define('WinJS/Controls/SemanticZoom',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Pivot/_Constants',[
     ], function pivotConstantsInit() {
     "use strict";
@@ -60276,7 +60278,7 @@ define('WinJS/Controls/Pivot/_Constants',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Pivot/_Item',[
     'exports',
     '../../Core/_Global',
@@ -60465,7 +60467,7 @@ define('WinJS/Controls/Pivot/_Item',[
 define('require-style!less/styles-pivot',[],function(){});
 
 define('require-style!less/colors-pivot',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Pivot',[
     '../Core/_Global',
     '../Core/_Base',
@@ -62164,7 +62166,7 @@ define('WinJS/Controls/Pivot',[
         }),
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Hub/_Section',[
     'exports',
     '../../Core/_Global',
@@ -62404,7 +62406,7 @@ define('WinJS/Controls/Hub/_Section',[
 define('require-style!less/styles-hub',[],function(){});
 
 define('require-style!less/colors-hub',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/Hub',[
     '../Core/_Global',
     '../Core/_Base',
@@ -63838,7 +63840,7 @@ define('WinJS/Controls/Hub',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Constants',[
      'exports',
      '../../Core/_Base',
@@ -63930,7 +63932,7 @@ define('WinJS/Controls/AppBar/_Constants',[
 define('require-style!less/styles-overlay',[],function(){});
 
 define('require-style!less/colors-overlay',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <dictionary>animatable,appbar,appbars,divs,Flyout,Flyouts,iframe,Statics,unfocus,unselectable</dictionary>
 define('WinJS/Controls/Flyout/_Overlay',[
     'exports',
@@ -65673,7 +65675,7 @@ define('WinJS/Controls/Flyout/_Overlay',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <dictionary>appbar,Flyout,Flyouts,Statics</dictionary>
 define('WinJS/Controls/Flyout',[
     'exports',
@@ -66127,12 +66129,12 @@ define('WinJS/Controls/Flyout',[
                     // then don't mess up our current state.
                     if (this._element.winAnimating) {
                         this._reuseCurrent = true;
-                        // Queue us up to wait for the current animation to finish. 
+                        // Queue us up to wait for the current animation to finish.
                         // _checkDoNext() is always scheduled after the current animation completes.
                         this._doNext = "show";
                     } else if (Flyout._cascadeManager.reentrancyLock) {
                         this._reuseCurrent = true;
-                        // Queue us up to wait for the current animation to finish. 
+                        // Queue us up to wait for the current animation to finish.
                         // Schedule a call to _checkDoNext() for when the cascadeManager unlocks.
                         this._doNext = "show";
                         var that = this;
@@ -66172,7 +66174,7 @@ define('WinJS/Controls/Flyout',[
 
                             // Store what had focus before showing the Flyout. This must happen after we've appended this
                             // Flyout to the cascade and subsequently triggered other branches of cascading flyouts to
-                            // collapse. Ensures that focus has already been restored to the correct element by the 
+                            // collapse. Ensures that focus has already been restored to the correct element by the
                             // previous branch before we try to record it here.
                             this._previousFocus = _Global.document.activeElement;
 
@@ -66750,7 +66752,7 @@ define('WinJS/Controls/Flyout',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ToolBar/_Constants',["require", "exports"], function(require, exports) {
     // ToolBar class names
     exports.controlCssClass = "win-toolbar";
@@ -66783,7 +66785,7 @@ define('WinJS/Controls/ToolBar/_Constants',["require", "exports"], function(requ
     exports.typeFlyout = "flyout";
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Glyph Enumeration
 /// <dictionary>Segoe</dictionary>
 define('WinJS/Controls/AppBar/_Icon',[
@@ -67001,7 +67003,7 @@ define('WinJS/Controls/AppBar/_Icon',[
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI.AppBarIcon", icons);
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // AppBarCommand
 /// <dictionary>appbar,appbars,Flyout,Flyouts,onclick,Statics</dictionary>
 define('WinJS/Controls/AppBar/_Command',[
@@ -67683,7 +67685,7 @@ define('WinJS/Controls/AppBar/_Command',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Menu Command
 /// <dictionary>appbar,appbars,Flyout,Flyouts,onclick,Statics</dictionary>
 define('WinJS/Controls/Menu/_Command',[
@@ -68196,7 +68198,7 @@ define('WinJS/Controls/Menu/_Command',[
 
                 _deactivateFlyoutCommand: function MenuCommand_deactivateFlyoutCommand(menuCommand) {
                     // Deactivates the associated Flyout command and returns a promise once complete.
-                    // A command is considered to be deactivated once the proper CSS class has been applied and its associated flyout has finished hiding. 
+                    // A command is considered to be deactivated once the proper CSS class has been applied and its associated flyout has finished hiding.
                     return new Promise(function (c) {
                         menuCommand = menuCommand.winControl || menuCommand;
                         _ElementUtilities.removeClass(menuCommand.element, _Constants.menuCommandFlyoutActivatedClass);
@@ -68225,7 +68227,7 @@ define('WinJS/Controls/Menu/_Command',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Menu
 /// <dictionary>Menu,Menus,Flyout,Flyouts,Statics</dictionary>
 define('WinJS/Controls/Menu',[
@@ -68705,7 +68707,7 @@ define('WinJS/Controls/Menu',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -69659,7 +69661,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Animation
     _Base.Class.mix(ToolBar, _Control.DOMEventMixin);
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
     var module = null;
@@ -69691,7 +69693,7 @@ define('WinJS/Controls/ToolBar',["require", "exports", '../Core/_Base'], functio
     return publicMembers;
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/AppBar/_Layouts',[
     'exports',
     '../../Animations/_TransitionAnimation',
@@ -69722,7 +69724,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
             var strings = {
                 get nullCommand() { return "Invalid argument: command must not be null"; }
             };
-            
+
             var _AppBarBaseLayout = _Base.Class.define(function _AppBarBaseLayout_ctor(appBarEl, options) {
                 this._disposed = false;
 
@@ -70155,7 +70157,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
         _AppBarMenuLayout: _Base.Namespace._lazy(function () {
             var layoutClassName = _Constants.menuLayoutClass;
             var layoutType = _Constants.appBarLayoutMenu;
-            
+
             //
             // Resize animation
             //  The resize animation requires 2 animations to run simultaneously in sync with each other. It's implemented
@@ -70171,7 +70173,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 var transitionProperty = _BaseUtils._browserStyleEquivalents["transition"].scriptName;
                 element.style[transitionProperty] = duration + "ms " + transformNames.cssName + " " + transition.timing;
                 element.style[transformNames.scriptName] = transition.to;
-            
+
                 var finish;
                 return new Promise(function (c) {
                     var onTransitionEnd = function (eventObject) {
@@ -70179,7 +70181,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                             finish();
                         }
                     };
-                    
+
                     var didFinish = false;
                     finish = function () {
                         if (!didFinish) {
@@ -70190,12 +70192,12 @@ define('WinJS/Controls/AppBar/_Layouts',[
                         }
                         c();
                     };
-            
+
                     // Watch dog timeout
                     var timeoutId = _Global.setTimeout(function () {
                         timeoutId = _Global.setTimeout(finish, duration);
                     }, 50);
-            
+
                     element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
                 }, function () {
                     finish(); // On cancelation, complete the promise successfully to match PVL
@@ -70208,17 +70210,17 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 var size = args.dimension;
                 var duration = args.duration || 367;
                 var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
-            
+
                 // Set up
                 elementClipper.style[size] = args.to.total + "px";
                 elementClipper.style[transformNames.scriptName] = translate + "(" + diff + "px)";
                 element.style[size] = args.to.content + "px";
                 element.style[transformNames.scriptName] = translate + "(" + -diff + "px)";
-            
+
                 // Resolve styles
                 _Global.getComputedStyle(elementClipper).opacity;
                 _Global.getComputedStyle(element).opacity;
-                
+
                 // Animate
                 var transition = {
                     duration: duration,
@@ -70236,15 +70238,15 @@ define('WinJS/Controls/AppBar/_Layouts',[
                 var translate = args.dimension === "width" ? "translateX" : "translateY";
                 var duration = args.duration || 367;
                 var timing = args.timing || "cubic-bezier(0.1, 0.9, 0.2, 1)";
-            
+
                 // Set up
                 elementClipper.style[transformNames.scriptName] = "";
                 element.style[transformNames.scriptName] = "";
-            
+
                 // Resolve styles
                 _Global.getComputedStyle(elementClipper).opacity;
                 _Global.getComputedStyle(element).opacity;
-            
+
                 // Animate
                 var transition = {
                     duration: duration,
@@ -70262,7 +70264,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
             //   size should match element's size. Its purpose is to clip *element* during the animation to give
             //   it the illusion that it is resizing.
             // - element: The element that should look like it's resizing.
-            // - args: An object with the following required properties: 
+            // - args: An object with the following required properties:
             //   - from: An object representing the old width/height of the element.
             //   - to: An object representing the new width/height of the element.
             //     from/to are objects of the form { content: number; total: number; }. "content" is the
@@ -70283,7 +70285,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
                     return Promise.as();
                 }
             }
-            
+
             var _AppBarMenuLayout = _Base.Class.derive(exports._AppBarBaseLayout, function _AppBarMenuLayout_ctor(appBarEl) {
                 exports._AppBarBaseLayout.call(this, appBarEl, { _className: layoutClassName, _type: layoutType });
                 this._tranformNames = _BaseUtils._browserStyleEquivalents["transform"];
@@ -70590,7 +70592,7 @@ define('WinJS/Controls/AppBar/_Layouts',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // AppBar
 /// <dictionary>appbar,appBars,Flyout,Flyouts,iframe,Statics,unfocus,WinJS</dictionary>
 define('WinJS/Controls/AppBar',[
@@ -72232,7 +72234,7 @@ define('WinJS/Controls/AppBar',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/AutoSuggestBox/_SearchSuggestionManagerShim',[
     'exports',
     '../../_Signal',
@@ -72470,7 +72472,7 @@ define('WinJS/Controls/AutoSuggestBox/_SearchSuggestionManagerShim',[
 define('require-style!less/styles-autosuggestbox',[],function(){});
 
 define('require-style!less/colors-autosuggestbox',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/AutoSuggestBox',[
     "exports",
     "../Core/_Global",
@@ -73790,7 +73792,7 @@ define('WinJS/Controls/AutoSuggestBox',[
 define('require-style!less/styles-searchbox',[],function(){});
 
 define('require-style!less/colors-searchbox',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/SearchBox',[
     '../Core/_Global',
     '../Core/_WinRT',
@@ -73981,7 +73983,7 @@ define('WinJS/Controls/SearchBox',[
                         render.classList.add(ClassName.searchBoxSuggestionSeparator);
                     } else {
                         render.classList.add(ClassName.searchBoxSuggestionResult);
-                        
+
                         var resultText = render.querySelector("." + AutoSuggestBox.ClassNames.asbSuggestionResultText);
                         resultText.classList.add(ClassName.searchBoxSuggestionResultText);
 
@@ -74109,7 +74111,7 @@ define('WinJS/Controls/SearchBox',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <dictionary>appbar,Flyout,Flyouts,registeredforsettings,SettingsFlyout,Statics,Syriac</dictionary>
 define('WinJS/Controls/SettingsFlyout',[
     '../Core/_Global',
@@ -74740,7 +74742,7 @@ define('WinJS/Controls/SettingsFlyout',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/NavBar/_Command',[
     'exports',
     '../../Core/_Global',
@@ -75195,7 +75197,7 @@ define('WinJS/Controls/NavBar/_Command',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/NavBar/_Container',[
     'exports',
     '../../Core/_Global',
@@ -76604,7 +76606,7 @@ define('WinJS/Controls/NavBar/_Container',[
 define('require-style!less/styles-navbar',[],function(){});
 
 define('require-style!less/colors-navbar',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/NavBar',[
     '../Core/_Global',
     '../Core/_WinRT',
@@ -76826,7 +76828,7 @@ define('WinJS/Controls/NavBar',[
 });
 
 define('require-style!less/styles-viewbox',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // ViewBox control
 define('WinJS/Controls/ViewBox',[
     '../Core/_Global',
@@ -77009,7 +77011,7 @@ define('WinJS/Controls/ViewBox',[
 define('require-style!less/styles-contentdialog',[],function(){});
 
 define('require-style!less/colors-contentdialog',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ContentDialog',[
     '../Application',
     '../Utilities/_Dispose',
@@ -78097,7 +78099,7 @@ define('WinJS/Controls/ContentDialog',[
 
 
 define('require-style!less/styles-lightdismissservice',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/_LightDismissService',["require", "exports", './Application', './Core/_Base', './Core/_BaseUtils', './Utilities/_ElementUtilities', './Core/_Global', './Utilities/_KeyboardBehavior', './Core/_Log', './Core/_Resources'], function(require, exports, Application, _Base, _BaseUtils, _ElementUtilities, _Global, _KeyboardBehavior, _Log, _Resources) {
     require(["require-style!less/styles-lightdismissservice"]);
 
@@ -78612,7 +78614,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Global', '../Promise', '../_Signal'], function(require, exports, _Global, Promise, _Signal) {
     "use strict";
@@ -79105,7 +79107,7 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
 define('require-style!less/styles-splitview',[],function(){});
 
 define('require-style!less/colors-splitview',[],function(){});
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../../typings/require.d.ts" />
 define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../_LightDismissService', '../../Utilities/_ShowHideMachine'], function(require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, _ShowHideMachine) {
     require(["require-style!less/styles-splitview"]);
@@ -79809,7 +79811,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
     _Base.Class.mix(SplitView, _Control.DOMEventMixin);
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
     var module = null;
@@ -79828,7 +79830,7 @@ define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], funct
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/CommandingSurface/_Constants',["require", "exports"], function(require, exports) {
     // CommandingSurface class names
     exports.controlCssClass = "win-commandingsurface";
@@ -79853,7 +79855,7 @@ define('WinJS/Controls/CommandingSurface/_Constants',["require", "exports"], fun
     exports.typeFlyout = "flyout";
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -80706,7 +80708,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
     _Base.Class.mix(_CommandingSurface, _Control.DOMEventMixin);
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
 define('WinJS/Controls/CommandingSurface',["require", "exports", '../Core/_Base'], function(require, exports, _Base) {
     var module = null;
@@ -80738,7 +80740,7 @@ define('WinJS/Controls/CommandingSurface',["require", "exports", '../Core/_Base'
     return publicMembers;
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS',[
     'WinJS/Core/_WinJS',
     'WinJS/Core',
