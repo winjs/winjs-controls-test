@@ -417,7 +417,7 @@
 }
 @font-face {
   font-family: "Segoe UI Command";
-  src: local("Segoe MDL2 Assets");
+  src: local("Segoe UI Symbol");
   font-weight: normal;
   font-style: normal;
 }
@@ -589,7 +589,7 @@ textarea:-ms-lang(am, ti),
 button:-ms-lang(am, ti),
 select:-ms-lang(am, ti),
 option:-ms-lang(am, ti) {
-  font-family: "Ebrima", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Ebrima", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
 .win-type-xx-large:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
@@ -605,7 +605,7 @@ textarea:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb
 button:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
 select:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te),
 option:-ms-lang(as, bn, gu, hi, kn, kok, ml, mr, ne, or, pa, sat-Olck, si, srb-Sora, ta, te) {
-  font-family: "Nirmala UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Nirmala UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(chr-CHER-US),
 .win-type-xx-large:-ms-lang(chr-CHER-US),
@@ -621,7 +621,7 @@ textarea:-ms-lang(chr-CHER-US),
 button:-ms-lang(chr-CHER-US),
 select:-ms-lang(chr-CHER-US),
 option:-ms-lang(chr-CHER-US) {
-  font-family: "Gadugi", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Gadugi", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(ja),
 .win-type-xx-large:-ms-lang(ja),
@@ -637,7 +637,7 @@ textarea:-ms-lang(ja),
 button:-ms-lang(ja),
 select:-ms-lang(ja),
 option:-ms-lang(ja) {
-  font-family: "Yu Gothic UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Yu Gothic UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(km, lo, th, bug-Bugi),
 .win-type-xx-large:-ms-lang(km, lo, th, bug-Bugi),
@@ -653,7 +653,7 @@ textarea:-ms-lang(km, lo, th, bug-Bugi),
 button:-ms-lang(km, lo, th, bug-Bugi),
 select:-ms-lang(km, lo, th, bug-Bugi),
 option:-ms-lang(km, lo, th, bug-Bugi) {
-  font-family: "Leelawadee UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Leelawadee UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(ko),
 .win-type-xx-large:-ms-lang(ko),
@@ -669,7 +669,7 @@ textarea:-ms-lang(ko),
 button:-ms-lang(ko),
 select:-ms-lang(ko),
 option:-ms-lang(ko) {
-  font-family: "Malgun Gothic", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Malgun Gothic", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(jv-Java),
 .win-type-xx-large:-ms-lang(jv-Java),
@@ -685,7 +685,7 @@ textarea:-ms-lang(jv-Java),
 button:-ms-lang(jv-Java),
 select:-ms-lang(jv-Java),
 option:-ms-lang(jv-Java) {
-  font-family: "Javanese Text", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Javanese Text", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(cop-Copt),
 .win-type-xx-large:-ms-lang(cop-Copt),
@@ -701,7 +701,7 @@ textarea:-ms-lang(cop-Copt),
 button:-ms-lang(cop-Copt),
 select:-ms-lang(cop-Copt),
 option:-ms-lang(cop-Copt) {
-  font-family: "Segoe MDL2 Assets", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Segoe UI Symbol", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(zh-CN, zh-Hans, zh-SG),
 .win-type-xx-large:-ms-lang(zh-CN, zh-Hans, zh-SG),
@@ -717,7 +717,7 @@ textarea:-ms-lang(zh-CN, zh-Hans, zh-SG),
 button:-ms-lang(zh-CN, zh-Hans, zh-SG),
 select:-ms-lang(zh-CN, zh-Hans, zh-SG),
 option:-ms-lang(zh-CN, zh-Hans, zh-SG) {
-  font-family: "Microsoft YaHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Microsoft YaHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 body:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 .win-type-xx-large:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
@@ -733,7 +733,7 @@ textarea:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 button:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 select:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO),
 option:-ms-lang(zh-HK, zh-TW, zh-Hant, zh-MO) {
-  font-family: "Microsoft JhengHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe MDL2 Assets", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
+  font-family: "Microsoft JhengHei UI", "Ebrima", "Nirmala UI", "Gadugi", "Segoe UI Emoji", "Segoe UI Symbol", "Symbols", "Yu Gothic UI", "Yu Gothic", "Meiryo UI", "Leelawadee UI", "Microsoft YaHei UI", "Microsoft JhengHei UI", "Malgun Gothic", "Segoe UI Historic", "Estrangelo Edessa", "Microsoft Himalaya", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Yi Baiti", "Mongolian Baiti", "MV Boli", "Myanmar Text", "Javanese Text", "Cambria Math";
 }
 html,
 body {
@@ -791,7 +791,7 @@ textarea,
 button,
 select,
 option {
-  font-family: "Segoe UI", "Segoe WP", sans-serif, "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI", "Segoe WP", "sans-serif", "Segoe UI Symbol", "Symbols";
 }
 input[type=text],
 input[type=password],
@@ -1202,7 +1202,7 @@ h2.win-type-ellipsis,
 }
 dt,
 th {
-  font-size: 11px;
+  font-size: 11pt;
   font-weight: 700;
   line-height: 1.3636;
 }
@@ -1527,7 +1527,7 @@ html.win-hoverable .win-itemcontainer.win-itembox.win-selected:hover::before {
   padding: 2px;
   right: 0;
   top: 0;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   font-size: 14px;
   z-index: 4;
   display: none;
@@ -2208,8 +2208,8 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
   height: 36px;
   z-index: 1;
   position: absolute;
-  font-family: "Segoe MDL2 Assets", "Symbols";
-  font-size: 16px;
+  font-family: "Segoe UI Symbol", "Symbols";
+  font-size: 16pt;
   padding: 0;
   min-width: 0;
 }
@@ -2425,13 +2425,13 @@ body > .win-navigation-backbutton {
   text-align: center;
   width: 41px;
   height: 41px;
-  font-size: 24px;
+  font-size: 14pt;
   line-height: 41px;
   vertical-align: baseline;
 }
 .win-backbutton::before,
 .win-back::before {
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   font-weight: normal;
   content: "\E0D5";
   vertical-align: 50%;
@@ -2572,7 +2572,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   height: 24px;
   width: 24px;
   padding: 9px 10px 11px 10px;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   font-size: 24px;
   overflow: hidden;
   text-indent: 0;
@@ -2642,7 +2642,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   line-height: 16px;
 }
 .win-toggleswitch .win-toggleswitch-description {
-  font-size: 12px;
+  font-size: 12pt;
   width: 22em;
   margin-top: 28px;
   display: none;
@@ -2768,9 +2768,9 @@ button.win-navigation-backbutton:enabled:hover:active {
   touch-action: none;
 }
 .win-semanticzoom-button::before {
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   font-weight: normal;
-  font-size: 11px;
+  font-size: 11pt;
   content: "\E0B8";
   /* minus sign */
 }
@@ -2845,7 +2845,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   border-width: 0px;
   cursor: pointer;
   opacity: 0;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
 }
 .win-pivot .win-pivot-headers.win-pivot-shownavbuttons .win-pivot-navbutton {
   opacity: 1;
@@ -2860,7 +2860,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
-  font-size: 14px;
+  font-size: 14pt;
   font-weight: 600;
   white-space: nowrap;
   margin: 12px 0 -8px 18px;
@@ -2981,7 +2981,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   padding: 0px;
   border-width: 0px;
   cursor: pointer;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
 }
 /*
     PivotItem
@@ -3074,7 +3074,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
 }
 .win-hub-section-header {
   margin: 4px 0;
-  font-size: 20px;
+  font-size: 20pt;
   text-align: left;
   height: 51px;
 }
@@ -3102,7 +3102,7 @@ button.win-hub-section-header-tabstop:hover:active {
   min-height: 0;
   min-width: 0;
   max-width: calc(100% - 3px);
-  font-size: 20px;
+  font-size: 20pt;
 }
 button.win-hub-section-header-tabstop:lang(ar),
 html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ar),
@@ -3175,8 +3175,6 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   flex: 0 0 auto;
   display: inline-block;
   margin-left: 7px;
-  font-size: 20px;
-  padding-top: 14px;
 }
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ar),
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(dv),
@@ -3195,7 +3193,7 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   margin-right: 7px;
 }
 .win-hub-section-header-chevron::before {
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   content: "\E26B";
 }
 .win-hub-section-header-chevron:lang(ar),
@@ -3211,7 +3209,7 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
 .win-hub-section-header-chevron:lang(ug),
 .win-hub-section-header-chevron:lang(ur),
 .win-hub-section-header-chevron:lang(qps-plocm) {
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   content: "\E26C";
 }
 .win-hub-horizontal .win-hub-section-content {
@@ -3288,7 +3286,7 @@ button.win-command {
   min-width: 40px;
   min-height: 48px;
   text-align: center;
-  font-size: 12px;
+  font-size: 9pt;
   line-height: 16px;
   font-weight: normal;
   overflow: visible;
@@ -3344,7 +3342,7 @@ Command button icons.
   letter-spacing: 0;
   /* Applications provide their own content, like &#xE0D5;. */
   vertical-align: middle;
-  font-size: 20px;
+  font-size: 19pt;
   margin: 0;
   line-height: 24px;
   /* line-height must match the content box height */
@@ -3358,7 +3356,8 @@ Command button icons.
 }
 .win-commandimage.win-commandglyph {
   position: absolute;
-  left: 0;
+  left: -4px;
+  /* offset for font-size:19pt */
 }
 /*
 Offsets for sprite versions.
@@ -3438,7 +3437,7 @@ div.win-command {
   border: 1px dotted;
   /* reserve focus rect */
   text-align: center;
-  font-size: 9px;
+  font-size: 9pt;
   line-height: 16px;
   font-weight: normal;
   vertical-align: top;
@@ -3529,7 +3528,7 @@ AppBar
   display: inline-block;
   font-size: 14px;
   text-align: center;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
 }
 .win-appbar .win-appbar-invokebutton .win-appbar-ellipsis::before {
   content: "\E10C";
@@ -3883,7 +3882,7 @@ Menu commands.
   display: none;
   visibility: hidden;
   font-size: 16px;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
 }
 .win-menu button.win-command .win-menucommand-liner .win-toggleicon {
   margin-left: 12px;
@@ -4360,7 +4359,7 @@ Settings Pane
   display: inline-block;
   font-size: 14px;
   text-align: center;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
 }
 .win-toolbar .win-toolbar-overflowbutton .win-toolbar-ellipsis::before {
   content: "\E10C";
@@ -4653,8 +4652,8 @@ Hide clear button in search box control.
   right: 0;
   top: 0;
   width: 32px;
-  font-family: "Segoe MDL2 Assets", "Symbols";
-  font-size: 15px;
+  font-family: "Segoe UI Symbol", "Symbols";
+  font-size: 15pt;
   border-style: none;
   height: 100%;
   text-align: center;
@@ -4678,8 +4677,8 @@ Hide clear button in search box control.
 .win-searchbox-button.win-searchbox-button:before {
   content: "\E094";
   position: absolute;
-  left: 8px;
-  top: 8px;
+  left: 6px;
+  top: 6px;
   line-height: 100%;
 }
 @media (-ms-high-contrast) {
@@ -4795,10 +4794,10 @@ Hide clear button in search box control.
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   height: calc(100% - 48px);
   width: 20px;
-  font-size: 16px;
+  font-size: 16pt;
   overflow: hidden;
 }
 .win-navbarcontainer-vertical .win-navbarcontainer-navarrow {
@@ -4857,16 +4856,14 @@ Hide clear button in search box control.
   outline: none;
 }
 .win-navbarcommand-icon {
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   height: 16px;
   width: 16px;
-  font-size: 16px;
+  font-size: 13px;
   margin-left: 0;
   margin-right: 16px;
-  margin-top: 14px;
+  margin-top: 16px;
   /* Center icon vertically */
-  line-height: 1;
-  /* Ensure icon is exactly font-size */
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -4904,7 +4901,7 @@ Hide clear button in search box control.
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 48px;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
   font-size: 16px;
   margin-right: 0;
   margin-left: 2px;
@@ -5402,7 +5399,7 @@ Hide clear button in search box control.
   display: inline-block;
   font-size: 14px;
   text-align: center;
-  font-family: "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI Symbol", "Symbols";
 }
 .win-commandingsurface .win-commandingsurface-overflowbutton .win-commandingsurface-ellipsis::before {
   content: "\E10C";
