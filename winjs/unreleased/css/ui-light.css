@@ -191,38 +191,6 @@
     transform: none;
   }
 }
-@keyframes WinJS-selectionMode-shiftRight {
-  from {
-    transform: none;
-  }
-  to {
-    transform: translateX(40px);
-  }
-}
-@keyframes WinJS-selectionMode-shiftRight-rtl {
-  from {
-    transform: none;
-  }
-  to {
-    transform: translateX(-40px);
-  }
-}
-@keyframes WinJS-selectionMode-shiftLeft {
-  from {
-    transform: translateX(40px);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes WinJS-selectionMode-shiftLeft-rtl {
-  from {
-    transform: translateX(40px);
-  }
-  to {
-    transform: none;
-  }
-}
 @-webkit-keyframes WinJS-node-inserted {
   from {
     outline-color: #000;
@@ -1936,10 +1904,6 @@ html.win-hoverable .win-selectionstylefilled .win-itemcontainer.win-container:ho
 .win-selectionstylefilled .win-itemcontainer .win-itembox,
 .win-listview.win-selectionstylefilled .win-itembox {
   background-color: transparent;
-}
-.win-listview.win-selectionstylefilled .win-selected,
-.win-itemcontainer.win-selectionstylefilled.win-selected {
-  color: #ffffff;
 }
 .win-listview.win-selectionstylefilled .win-container.win-selected .win-selectionborder,
 .win-itemcontainer.win-selectionstylefilled.win-container.win-selected .win-selectionborder {
@@ -5872,11 +5836,13 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container .wi
 .win-itemcontainer .win-focusedoutline {
   outline: #000000 dashed 2px;
 }
-.win-listview .win-container.win-selected .win-selectionborder,
-.win-itemcontainer.win-container.win-selected .win-selectionborder,
 .win-listview.win-selectionstylefilled .win-selected .win-selectionbackground,
 .win-itemcontainer.win-selectionstylefilled.win-selected .win-selectionbackground {
   opacity: 0.4;
+}
+.win-listview.win-selectionstylefilled .win-selected,
+.win-itemcontainer.win-selectionstylefilled.win-selected {
+  color: #000000;
 }
 .win-flipview .win-navbutton {
   background-color: rgba(0, 0, 0, 0.4);
@@ -6893,11 +6859,13 @@ html.win-hoverable .win-commandingsurface button.win-commandingsurface-overflowb
 .win-ui-dark .win-itemcontainer .win-focusedoutline {
   outline: #ffffff dashed 2px;
 }
-.win-ui-dark .win-listview .win-container.win-selected .win-selectionborder,
-.win-ui-dark .win-itemcontainer.win-container.win-selected .win-selectionborder,
 .win-ui-dark .win-listview.win-selectionstylefilled .win-selected .win-selectionbackground,
 .win-ui-dark .win-itemcontainer.win-selectionstylefilled.win-selected .win-selectionbackground {
   opacity: 0.6;
+}
+.win-ui-dark .win-listview.win-selectionstylefilled .win-selected,
+.win-ui-dark .win-itemcontainer.win-selectionstylefilled.win-selected {
+  color: #ffffff;
 }
 .win-ui-dark .win-flipview .win-navbutton {
   background-color: rgba(255, 255, 255, 0.4);
