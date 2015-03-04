@@ -48446,7 +48446,9 @@ define('WinJS/Controls/ListView',[
 
                 _setViewState: function ListView_setViewState(state) {
                     if (state !== this._loadingState) {
-                        var detail = null;
+                        var detail = {
+                            scrolling: false
+                        };
                         // We can go from any state to itemsLoading but the rest of the states transitions must follow this
                         // order: itemsLoading -> viewPortLoaded -> itemsLoaded -> complete.
                         // Recursively set the previous state until you hit the current state or itemsLoading.
