@@ -1,6 +1,6 @@
 /*!
   Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
-  Build: 4.0.0.winjs.2015.3.4
+  Build: 4.0.0.winjs.2015.3.5
   Version: WinJS.4.0
 */
 
@@ -35,7 +35,7 @@
     "backbuttonarialabel": "Back",
     "clearYourRating" : "Clear your rating",
     "closeOverlay" : "Close",
-	"commandingSurfaceAriaLabel": "CommandingSurface",
+    "commandingSurfaceAriaLabel": "CommandingSurface",
     "commandingSurfaceOverflowButtonAriaLabel": "View more",
     "datePicker": "Date Picker",
     "flipViewPanningContainerAriaLabel": "Scrolling Container",
@@ -457,10 +457,12 @@
     "_appBarIcons\\threebars.comment":                  "{Locked:qps-ploc,qps-plocm}",
     "appBarIcons\\fourbars":                            "\uE1E9", //  group:System
     "_appBarIcons\\fourbars.comment":                   "{Locked:qps-ploc,qps-plocm}",
-    "appBarIcons\\scan":               			"\uE294", //  group:General
-    "_appBarIcons\\scan.comment":                   	"{Locked:qps-ploc,qps-plocm}",
-    "appBarIcons\\preview":            			"\uE295", //  group:General
-    "_appBarIcons\\preview.comment":                   	"{Locked:qps-ploc,qps-plocm}"
+    "appBarIcons\\scan":                                "\uE294", //  group:General
+    "_appBarIcons\\scan.comment":                       "{Locked:qps-ploc,qps-plocm}",
+    "appBarIcons\\preview":                             "\uE295", //  group:General
+    "_appBarIcons\\preview.comment":                    "{Locked:qps-ploc,qps-plocm}",
+    "appBarIcons\\hamburger":                           "\uE700", //  group:General
+    "_appBarIcons\\hamburger.comment":                  "{Locked:qps-ploc,qps-plocm}"
 }
 
 );
