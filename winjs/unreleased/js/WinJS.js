@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.9 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.11 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.9 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.11 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -78432,6 +78432,9 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
     //       hide() {
     //           this._machine.hide();
     //       }
+    //       forceLayout() {
+    //           this._machine.updateDom();
+    //       }
     //       dispose() {
     //           this._machine.dispose();
     //       }
@@ -79501,19 +79504,37 @@ define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], funct
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/CommandingSurface/_Constants',["require", "exports"], function (require, exports) {
     // CommandingSurface class names
-    exports.controlCssClass = "win-commandingsurface";
-    exports.actionAreaCssClass = "win-commandingsurface-actionarea";
-    exports.overflowButtonCssClass = "win-commandingsurface-overflowbutton";
-    exports.spacerCssClass = "win-commandingsurface-spacer";
-    exports.ellipsisCssClass = "win-commandingsurface-ellipsis";
-    exports.overflowAreaCssClass = "win-commandingsurface-overflowarea";
-    exports.contentFlyoutCssClass = "win-commandingsurface-contentflyout";
-    exports.emptyCommandingSurfaceCssClass = "win-commandingsurface-empty";
-    exports.menuCssClass = "win-menu";
-    exports.menuContainsToggleCommandClass = "win-menu-containstogglecommand";
-    exports.menuContainsFlyoutCommandClass = "win-menu-containsflyoutcommand";
+    exports.ClassNames = {
+        controlCssClass: "win-commandingsurface",
+        actionAreaCssClass: "win-commandingsurface-actionarea",
+        overflowButtonCssClass: "win-commandingsurface-overflowbutton",
+        spacerCssClass: "win-commandingsurface-spacer",
+        ellipsisCssClass: "win-commandingsurface-ellipsis",
+        overflowAreaCssClass: "win-commandingsurface-overflowarea",
+        contentFlyoutCssClass: "win-commandingsurface-contentflyout",
+        emptyCommandingSurfaceCssClass: "win-commandingsurface-empty",
+        menuCssClass: "win-menu",
+        menuContainsToggleCommandClass: "win-menu-containstogglecommand",
+        menuContainsFlyoutCommandClass: "win-menu-containsflyoutcommand",
+        openingClass: "win-commandingsurface-opening",
+        openedClass: "win-commandingsurface-opened",
+        closingClass: "win-commandingsurface-closing",
+        closedClass: "win-commandingsurface-closed",
+        noneClass: "win-commandingsurface-closeddisplaynone",
+        minimalClass: "win-commandingsurface-closeddisplayminimal",
+        compactClass: "win-commandingsurface-closeddisplaycompact",
+        fullClass: "win-commandingsurface-closeddisplayfull",
+    };
+    exports.EventNames = {
+        /* TODO Update the string literals to the proper open/close nomenclature once we move the state machine and splitview over to the new names. */
+        beforeShow: "beforeshow",
+        afterShow: "aftershow",
+        beforeHide: "beforehide",
+        afterHide: "afterhide"
+    };
     exports.contentMenuCommandDefaultLabel = "Custom content";
     exports.defaultClosedDisplayMode = "compact";
+    exports.defaultOpened = false;
     // Constants for commands
     exports.typeSeparator = "separator";
     exports.typeContent = "content";
@@ -79551,7 +79572,7 @@ define('WinJS/Controls/CommandingSurface/_MenuCommand',["require", "exports", ".
 define('require-style!less/styles-commandingsurface',[],function(){});
 
 define('require-style!less/colors-commandingsurface',[],function(){});
-define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../CommandingSurface/_Constants", "../AppBar/_Command", "../CommandingSurface/_MenuCommand", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", '../../Promise', "../../Core/_Resources", "../../Scheduler", '../../Utilities/_ShowHideMachine', "../../Core/_WriteProfilerMark"], function (require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _CommandingSurfaceMenuCommand, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Promise, _Resources, Scheduler, _ShowHideMachine, _WriteProfilerMark) {
+define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../CommandingSurface/_Constants", "../AppBar/_Command", "../CommandingSurface/_MenuCommand", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", '../../Promise', "../../Core/_Resources", "../../Scheduler", '../../Utilities/_ShowHideMachine', "../../Core/_WriteProfilerMark"], function (require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _CommandingSurfaceMenuCommand, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Promise, _Resources, Scheduler, _ShowHideMachine, _WriteProfilerMark) {
     require(["require-style!less/styles-commandingsurface"]);
     require(["require-style!less/colors-commandingsurface"]);
     "use strict";
@@ -79572,11 +79593,11 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             return "Invalid argument: Controls may only be instantiated one time for each DOM element";
         }
     };
-    var EventNames = {
-        beforeOpen: "beforeopen",
-        afterOpen: "afteropen",
-        beforeClose: "beforeclose",
-        afterClose: "afterclose"
+    var CommandLayoutPipeline = {
+        newDataStage: 3,
+        measuringStage: 2,
+        layoutStage: 1,
+        idle: 0,
     };
     var ClosedDisplayMode = {
         /// <field locid="WinJS.UI._CommandingSurface.ClosedDisplayMode.none" helpKeyword="WinJS.UI._CommandingSurface.ClosedDisplayMode.none">
@@ -79596,17 +79617,11 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
         /// </field>
         full: "full",
     };
-    var CommandLayoutPipeline = {
-        newDataStage: 3,
-        measuringStage: 2,
-        layoutStage: 1,
-        idle: 0,
-    };
     var closedDisplayModeClassMap = {};
-    closedDisplayModeClassMap[ClosedDisplayMode.none] = "win-commandingsurface-closeddisplaynone";
-    closedDisplayModeClassMap[ClosedDisplayMode.minimal] = "win-commandingsurface-closeddisplayminimal";
-    closedDisplayModeClassMap[ClosedDisplayMode.compact] = "win-commandingsurface-closeddisplaycompact";
-    closedDisplayModeClassMap[ClosedDisplayMode.full] = "win-commandingsurface-closeddisplayfull";
+    closedDisplayModeClassMap[ClosedDisplayMode.none] = _Constants.ClassNames.noneClass;
+    closedDisplayModeClassMap[ClosedDisplayMode.minimal] = _Constants.ClassNames.minimalClass;
+    closedDisplayModeClassMap[ClosedDisplayMode.compact] = _Constants.ClassNames.compactClass;
+    closedDisplayModeClassMap[ClosedDisplayMode.full] = _Constants.ClassNames.fullClass;
     // Versions of add/removeClass that are no ops when called with falsy class names.
     function addClass(element, className) {
         className && _ElementUtilities.addClass(element, className);
@@ -79661,6 +79676,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             // rendered.
             this._updateDomImpl_renderedState = {
                 closedDisplayMode: undefined,
+                opened: undefined,
             };
             this._writeProfilerMark("constructor,StartTM");
             // Check to make sure we weren't duplicated
@@ -79673,15 +79689,15 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 onShow: function () {
                     //this._cachedHiddenPaneThickness = null;
                     //var hiddenPaneThickness = this._getHiddenPaneThickness();
-                    //this._isShownMode = true;
-                    //this._updateDomImpl();
+                    _this._isOpenedMode = true;
+                    _this._updateDomImpl();
                     //return this._playShowAnimation(hiddenPaneThickness);
                     return Promise.wrap();
                 },
                 onHide: function () {
                     //return this._playHideAnimation(this._getHiddenPaneThickness()).then(() => {
-                    //    this._isShownMode = false;
-                    //    this._updateDomImpl();
+                    _this._isOpenedMode = false;
+                    _this._updateDomImpl();
                     //});
                     return Promise.wrap();
                 },
@@ -79689,7 +79705,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                     _this._updateDomImpl();
                 },
                 onUpdateDomWithIsShown: function (isShown) {
-                    //this._isShownMode = isShown;
+                    _this._isOpenedMode = isShown;
                     _this._updateDomImpl();
                 }
             });
@@ -79703,8 +79719,10 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             this._refreshPending = false;
             this._rtl = false;
             this._nextLayoutStage = CommandLayoutPipeline.idle;
+            this._isOpenedMode = _Constants.defaultOpened;
             // Initialize public properties.
             this.closedDisplayMode = _Constants.defaultClosedDisplayMode;
+            this.opened = this._isOpenedMode;
             if (!options.data) {
                 // Shallow copy object so we can modify it.
                 options = _BaseUtils._shallowCopy(options);
@@ -79774,6 +79792,35 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(_CommandingSurface.prototype, "opened", {
+            /// <field type="Boolean" hidden="true" locid="WinJS.UI._CommandingSurface.opened" helpKeyword="WinJS.UI._CommandingSurface.opened">
+            /// Gets or sets whether the _CommandingSurface is currently opened.
+            /// </field>
+            get: function () {
+                return !this._machine.hidden;
+            },
+            set: function (value) {
+                this._machine.hidden = !value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        _CommandingSurface.prototype.open = function () {
+            /// <signature helpKeyword="WinJS.UI._CommandingSurface.open">
+            /// <summary locid="WinJS.UI._CommandingSurface.open">
+            /// Opens the _CommandingSurface's actionarea and overflowarea
+            /// </summary>
+            /// </signature>
+            this._machine.show();
+        };
+        _CommandingSurface.prototype.close = function () {
+            /// <signature helpKeyword="WinJS.UI._CommandingSurface.close">
+            /// <summary locid="WinJS.UI._CommandingSurface.close">
+            /// Closes the _CommandingSurface's actionarea and overflowarea
+            /// </summary>
+            /// </signature>
+            this._machine.hide();
+        };
         _CommandingSurface.prototype.dispose = function () {
             /// <signature helpKeyword="WinJS.UI._CommandingSurface.dispose">
             /// <summary locid="WinJS.UI._CommandingSurface.dispose">
@@ -79805,6 +79852,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             _WriteProfilerMark("WinJS.UI._CommandingSurface:" + this._id + ":" + text);
         };
         _CommandingSurface.prototype._initializeDom = function (root) {
+            var _this = this;
             this._writeProfilerMark("_intializeDom,info");
             // Attaching JS control to DOM element
             root["winControl"] = this;
@@ -79812,7 +79860,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             if (!root.hasAttribute("tabIndex")) {
                 root.tabIndex = -1;
             }
-            _ElementUtilities.addClass(root, _Constants.controlCssClass);
+            _ElementUtilities.addClass(root, _Constants.ClassNames.controlCssClass);
             _ElementUtilities.addClass(root, "win-disposable");
             // Make sure we have an ARIA role
             var role = root.getAttribute("role");
@@ -79824,24 +79872,23 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 root.setAttribute("aria-label", strings.ariaLabel);
             }
             var actionArea = _Global.document.createElement("div");
-            _ElementUtilities.addClass(actionArea, _Constants.actionAreaCssClass);
+            _ElementUtilities.addClass(actionArea, _Constants.ClassNames.actionAreaCssClass);
             _ElementUtilities._reparentChildren(root, actionArea);
             root.appendChild(actionArea);
             var spacer = _Global.document.createElement("div");
-            _ElementUtilities.addClass(spacer, _Constants.spacerCssClass);
+            _ElementUtilities.addClass(spacer, _Constants.ClassNames.spacerCssClass);
             actionArea.appendChild(spacer);
             var overflowButton = _Global.document.createElement("button");
             overflowButton.tabIndex = 0;
-            overflowButton.innerHTML = "<span class='" + _Constants.ellipsisCssClass + "'></span>";
-            _ElementUtilities.addClass(overflowButton, _Constants.overflowButtonCssClass);
+            overflowButton.innerHTML = "<span class='" + _Constants.ClassNames.ellipsisCssClass + "'></span>";
+            _ElementUtilities.addClass(overflowButton, _Constants.ClassNames.overflowButtonCssClass);
             actionArea.appendChild(overflowButton);
             overflowButton.addEventListener("click", function () {
-                overflowArea.style.display = (overflowArea.style.display === "none") ? "block" : "none";
+                _this.opened = !_this.opened;
             });
             var overflowArea = _Global.document.createElement("div");
-            overflowArea.style.display = "none";
-            _ElementUtilities.addClass(overflowArea, _Constants.overflowAreaCssClass);
-            _ElementUtilities.addClass(overflowArea, _Constants.menuCssClass);
+            _ElementUtilities.addClass(overflowArea, _Constants.ClassNames.overflowAreaCssClass);
+            _ElementUtilities.addClass(overflowArea, _Constants.ClassNames.menuCssClass);
             root.appendChild(overflowArea);
             this._dom = {
                 root: root,
@@ -80013,6 +80060,16 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 }
             }
         };
+        // Should be called while _CommandingSurface is rendered in its opened mode
+        // Overridden by tests.
+        _CommandingSurface.prototype._playShowAnimation = function () {
+            return Promise.wrap();
+        };
+        // Should be called while SplitView is rendered in its opened mode
+        // Overridden by tests.
+        _CommandingSurface.prototype._playHideAnimation = function () {
+            return Promise.wrap();
+        };
         _CommandingSurface.prototype._dataDirty = function () {
             this._nextLayoutStage = Math.max(CommandLayoutPipeline.newDataStage, this._nextLayoutStage);
         };
@@ -80028,6 +80085,19 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
         };
         _CommandingSurface.prototype._updateDomImpl_renderDisplayMode = function () {
             var rendered = this._updateDomImpl_renderedState;
+            if (rendered.opened !== this._isOpenedMode) {
+                if (this._isOpenedMode) {
+                    // Render opened
+                    removeClass(this._dom.root, _Constants.ClassNames.closedClass);
+                    addClass(this._dom.root, _Constants.ClassNames.openedClass);
+                }
+                else {
+                    // Render closed
+                    removeClass(this._dom.root, _Constants.ClassNames.openedClass);
+                    addClass(this._dom.root, _Constants.ClassNames.closedClass);
+                }
+                rendered.opened = this._isOpenedMode;
+            }
             if (rendered.closedDisplayMode !== this.closedDisplayMode) {
                 removeClass(this._dom.root, closedDisplayModeClassMap[rendered.closedDisplayMode]);
                 addClass(this._dom.root, closedDisplayModeClassMap[this.closedDisplayMode]);
@@ -80121,10 +80191,10 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             // Ensure that the overflow button is always the last element in the actionarea
             this._dom.actionArea.appendChild(this._dom.overflowButton);
             if (this.data.length > 0) {
-                _ElementUtilities.removeClass(this._dom.root, _Constants.emptyCommandingSurfaceCssClass);
+                _ElementUtilities.removeClass(this._dom.root, _Constants.ClassNames.emptyCommandingSurfaceCssClass);
             }
             else {
-                _ElementUtilities.addClass(this._dom.root, _Constants.emptyCommandingSurfaceCssClass);
+                _ElementUtilities.addClass(this._dom.root, _Constants.ClassNames.emptyCommandingSurfaceCssClass);
             }
             // Execute the animation.
             updateCommandAnimation.execute();
@@ -80207,7 +80277,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             var hasCustomContent = overflowCommands.some(isCustomContent) || this._secondaryCommands.some(isCustomContent);
             if (hasCustomContent && !this._contentFlyout) {
                 this._contentFlyoutInterior = _Global.document.createElement("div");
-                _ElementUtilities.addClass(this._contentFlyoutInterior, _Constants.contentFlyoutCssClass);
+                _ElementUtilities.addClass(this._contentFlyoutInterior, _Constants.ClassNames.contentFlyoutCssClass);
                 this._contentFlyout = new _Flyout.Flyout();
                 this._contentFlyout.element.appendChild(this._contentFlyoutInterior);
                 _Global.document.body.appendChild(this._contentFlyout.element);
@@ -80258,8 +80328,8 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             menuCommandProjections.forEach(function (command) {
                 _this._dom.overflowArea.appendChild(command.element);
             });
-            _ElementUtilities[hasToggleCommands ? "addClass" : "removeClass"](this._dom.overflowArea, _Constants.menuContainsToggleCommandClass);
-            _ElementUtilities[hasFlyoutCommands ? "addClass" : "removeClass"](this._dom.overflowArea, _Constants.menuContainsFlyoutCommandClass);
+            _ElementUtilities[hasToggleCommands ? "addClass" : "removeClass"](this._dom.overflowArea, _Constants.ClassNames.menuContainsToggleCommandClass);
+            _ElementUtilities[hasFlyoutCommands ? "addClass" : "removeClass"](this._dom.overflowArea, _Constants.ClassNames.menuContainsFlyoutCommandClass);
             this._writeProfilerMark("_layoutCommands,StopTM");
             // Indicate layout was successful.
             return true;
@@ -80397,6 +80467,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
         return _CommandingSurface;
     })();
     exports._CommandingSurface = _CommandingSurface;
+    _Base.Class.mix(_CommandingSurface, _Events.createEventProperties(_Constants.EventNames.beforeShow, _Constants.EventNames.afterShow, _Constants.EventNames.beforeHide, _Constants.EventNames.afterHide));
     // addEventListener, removeEventListener, dispatchEvent
     _Base.Class.mix(_CommandingSurface, _Control.DOMEventMixin);
 });
