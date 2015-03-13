@@ -2901,6 +2901,8 @@ button.win-navigation-backbutton:enabled:hover:active {
   font-size: 15px;
   font-weight: 500;
   line-height: 1.333;
+  font-weight: 600;
+  /* Font-weight 500 provided by .win-type-base() is indistinguishable from the default 400 in some fonts */
   opacity: 1.0;
   visibility: inherit;
 }
