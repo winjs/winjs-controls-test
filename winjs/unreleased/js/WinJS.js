@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.11 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.13 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.11 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.13 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -17858,7 +17858,7 @@ define('WinJS/Animations',[
         continuumBackwardOut: function (outgoingPage) {
             /// <signature helpKeyword="WinJS.UI.Animation.continuumBackwardOut">
             /// <summary locid="WinJS.UI.Animation.continuumBackwardOut">
-            /// Execute a continuum animation, scaling down the outgoing page while.
+            /// Execute a continuum animation, scaling down the outgoing page while fading it out.
             /// </summary>
             /// <param name="outgoingPage" locid="WinJS.UI.Animation.continuumBackwardOut_p:outgoingPage">
             /// Single element to be scaled down that is the page root.
@@ -17887,6 +17887,146 @@ define('WinJS/Animations',[
                 to: 0,
             }])
             .then(function () { writeAnimationProfilerMark("continuumBackwardOut,StopTM"); });
+        },
+
+        drillInIncoming: function (incomingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillInIncoming">
+            /// <summary locid="WinJS.UI.Animation.drillInIncoming">
+            /// Execute the incoming phase of the drill in animation, scaling up the incoming page while fading it in.
+            /// </summary>
+            /// <param name="incomingPage" locid="WinJS.UI.Animation.drillInIncoming_p:incomingPage">
+            /// Element to be scaled up and faded in.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillInIncoming_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillInIncoming,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                incomingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(0.84)",
+                    to: "scale(1.0)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 0,
+                    to: 1,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillInIncoming,StopTM"); });
+        },
+
+        drillInOutgoing: function (outgoingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillInOutgoing">
+            /// <summary locid="WinJS.UI.Animation.drillInOutgoing">
+            /// Execute the outgoing phase of the drill in animation, scaling up the outgoing page while fading it out.
+            /// </summary>
+            /// <param name="outgoingPage" locid="WinJS.UI.Animation.drillInOutgoing_p:outgoingPage">
+            /// Element to be scaled up and faded out.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillInOutgoing_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillInOutgoing,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                outgoingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(1.0)",
+                    to: "scale(1.29)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 1,
+                    to: 0,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillInOutgoing,StopTM"); });
+        },
+
+        drillOutIncoming: function (incomingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillOutIncoming">
+            /// <summary locid="WinJS.UI.Animation.drillOutIncoming">
+            /// Execute the incoming phase of the drill out animation, scaling down the incoming page while fading it in.
+            /// </summary>
+            /// <param name="incomingPage" locid="WinJS.UI.Animation.drillOutIncoming_p:incomingPage">
+            /// Element to be scaled up and faded in.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillOutIncoming_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillOutIncoming,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                incomingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(1.29)",
+                    to: "scale(1.0)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 0,
+                    to: 1,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillOutIncoming,StopTM"); });
+        },
+
+        drillOutOutgoing: function (outgoingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillOutOutgoing">
+            /// <summary locid="WinJS.UI.Animation.drillOutOutgoing">
+            /// Execute the outgoing phase of the drill out animation, scaling down the outgoing page while fading it out.
+            /// </summary>
+            /// <param name="outgoingPage" locid="WinJS.UI.Animation.drillOutOutgoing_p:outgoingPage">
+            /// Element to be scaled down and faded out.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillOutOutgoing_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillOutOutgoing,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                outgoingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(1.0)",
+                    to: "scale(0.84)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 1,
+                    to: 0,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillOutOutgoing,StopTM"); });
         },
 
         createPageNavigationAnimations: function (currentPreferredAnimation, nextPreferredAnimation, movingBackwards) {
