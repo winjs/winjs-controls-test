@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.13 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.17 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.13 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.17 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -12883,10 +12883,6 @@ define('WinJS/Fragments',[
 ], function fragmentLoaderInit(exports, _Global, _WinRT, _Base, _BaseUtils, _ErrorFromName, _Resources, _WriteProfilerMark, Promise, _ElementUtilities, _SafeHtml, _Xhr) {
     "use strict";
 
-    var strings = {
-        get invalidFragmentUri() { return "Unsupported uri for fragment loading. Fragments in the local context can only load from package content or local sources. To load fragments from other sources, use a web context."; },
-    };
-
     // not supported in WebWorker
     if (!_Global.document) {
         return;
@@ -13244,40 +13240,7 @@ define('WinJS/Fragments',[
         }
     }
 
-    function _forceLocal(uri) {
-        if (_BaseUtils.hasWinRT) {
-            // we force the URI to be cannonicalized and made absolute by IE
-            //
-            var a = _Global.document.createElement("a");
-            a.href = uri;
-
-            var absolute = a.href;
-
-            // WinRT Uri class doesn't provide URI construction, but can crack the URI
-            // appart to let us reliably discover the scheme.
-            //
-            var wuri = new _WinRT.Windows.Foundation.Uri(absolute);
-
-            // Only "ms-appx" (local package content) are allowed when running in the local
-            // context. Both strings are known to be safe to compare in any culture (including Turkish).
-            //
-            var scheme = wuri.schemeName;
-            if (scheme !== "ms-appx") {
-
-                throw new _ErrorFromName("WinJS.UI.Fragments.InvalidUri", strings.invalidFragmentUri);
-            }
-
-            return absolute;
-        }
-        return uri;
-    }
-
     function populateDocument(state, href) {
-        // Because we later use "setInnerHTMLUnsafe" ("Unsafe" is the magic word here), we
-        // want to force the href to only support local package content when running
-        // in the local context. When running in the web context, this will be a no-op.
-        //
-        href = forceLocal(href);
 
         var htmlDoc = _Global.document.implementation.createHTMLDocument("frag");
         var base = htmlDoc.createElement("base");
@@ -13296,7 +13259,6 @@ define('WinJS/Fragments',[
     }
 
     var writeProfilerMark = _WriteProfilerMark;
-    var forceLocal = _forceLocal;
 
     var getFragmentContents = getFragmentContentsXHR;
     function getFragmentContentsXHR(href) {
@@ -13311,14 +13273,6 @@ define('WinJS/Fragments',[
         cache: cache,
         clearCache: clearCache,
         _cacheStore: { get: function () { return cacheStore; } },
-        _forceLocal: {
-            get: function () {
-                return forceLocal;
-            },
-            set: function (value) {
-                forceLocal = value;
-            }
-        },
         _getFragmentContents: {
             get: function () {
                 return getFragmentContents;
