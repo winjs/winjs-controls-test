@@ -78389,41 +78389,41 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
 
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
-define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Global', '../Promise', '../_Signal'], function (require, exports, _Global, Promise, _Signal) {
+define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Global', '../Promise', '../_Signal'], function (require, exports, _Global, Promise, _Signal) {
     "use strict";
     // This module provides a state machine which is designed to be used by controls which need to
-    // show, hide, and fire related events (e.g. beforeshow, afterhide). The state machine handles
+    // open, close, and fire related events (e.g. beforeopen, afterclose). The state machine handles
     // many edge cases. For example, what happens if:
-    //  - show is called when we're already shown?
-    //  - hide is called while we're in the middle of showing?
-    //  - dispose is called while we're in the middle of firing beforeshow?
+    //  - open is called when we're already opened?
+    //  - close is called while we're in the middle of opening?
+    //  - dispose is called while we're in the middle of firing beforeopen?
     // The state machine takes care of all of these edge cases so that the control doesn't have to.
-    // The control is responible for knowing how to play its show/hide animations and update its DOM.
+    // The control is responible for knowing how to play its open/close animations and update its DOM.
     // The state machine is responsible for ensuring that these things happen at the appropriate times.
     // This module is broken up into 3 major pieces:
-    //   - ShowHideMachine: Controls should instantiate one of these. The machine keeps track of the
+    //   - OpenCloseMachine: Controls should instantiate one of these. The machine keeps track of the
     //     current state and has methods for forwarding calls to the current state.
-    //   - IShowHideControl: Controls must provide an object which implements this interface. The
-    //     interface gives the machine hooks for invoking the control's show and hide animations.
-    //   - States: The various states (e.g. Hidden, Shown, Showing) that the machine can be in. Each
-    //     implements IShowHideState.
+    //   - IOpenCloseControl: Controls must provide an object which implements this interface. The
+    //     interface gives the machine hooks for invoking the control's open and close animations.
+    //   - States: The various states (e.g. Closed, Opened, Opening) that the machine can be in. Each
+    //     implements IOpenCloseState.
     // Example usage:
     //   class MyControl {
     //       element: HTMLElement;
-    //       private _machine: ShowHideMachine;
+    //       private _machine: OpenCloseMachine;
     //
     //       constructor(element?: HTMLElement, options: any = {}) {
     //           this.element = element || document.createElement("div");
     //
     //           // Create the machine.
-    //           this._machine = new ShowHideMachine({
+    //           this._machine = new OpenCloseMachine({
     //               eventElement: this.element,
-    //               onShow: (): Promise<any> => {
-    //                   // Do the work to render the contol in its shown state with an animation.
+    //               onOpen: (): Promise<any> => {
+    //                   // Do the work to render the contol in its opened state with an animation.
     //                   // Return the animation promise.
     //               },
-    //               onHide: (): Promise<any> => {
-    //                   // Do the work to render the contol in its hidden state with an animation.
+    //               onClose: (): Promise<any> => {
+    //                   // Do the work to render the contol in its closed state with an animation.
     //                   // Return the animation promise.
     //               },
     //               onUpdateDom() {
@@ -78431,17 +78431,17 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
     //                   // control restricts all its DOM modifications to onUpdateDom, the state machine
     //                   // can guarantee that the control won't modify its DOM while it is animating.
     //               },
-    //               onUpdateDomWithIsShown: (isShown: boolean ) => {
+    //               onUpdateDomWithIsOpened: (isOpened: boolean ) => {
     //                   // Do the same work as onUpdateDom but ensure that the DOM is rendered with either
-    //                   // the shown or hidden visual as dictacted by isShown. The control should have some
-    //                   // internal state to track whether it is currently shown or hidden. Treat this as a
-    //                   // cue to mutate that internal state to reflect the value of isShown.
+    //                   // the opened or closed visual as dictacted by isOpened. The control should have some
+    //                   // internal state to track whether it is currently opened or closed. Treat this as a
+    //                   // cue to mutate that internal state to reflect the value of isOpened.
     //               },
     //           });
     //
     //           // Initialize the control. During this time, the machine will not ask the control to
     //           // play any animations or update its DOM.
-    //           this.hidden = true;
+    //           this.opened = true;
     //           _Control.setOptions(this, options);
     //
     //           // Tell the machine the control is initialized. After this, the machine will start asking
@@ -78449,17 +78449,17 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
     //           this._machine.initialized();
     //       }
     //
-    //       get hidden() {
-    //           return this._machine.hidden;
+    //       get opened() {
+    //           return this._machine.opened;
     //       }
-    //       set hidden(value: boolean) {
-    //           this._machine.hidden = value;
+    //       set opened(value: boolean) {
+    //           this._machine.opened = value;
     //       }
-    //       show() {
-    //           this._machine.show();
+    //       open() {
+    //           this._machine.open();
     //       }
-    //       hide() {
-    //           this._machine.hide();
+    //       close() {
+    //           this._machine.close();
     //       }
     //       forceLayout() {
     //           this._machine.updateDom();
@@ -78469,15 +78469,15 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
     //       }
     //   }
     var EventNames = {
-        beforeShow: "beforeshow",
-        afterShow: "aftershow",
-        beforeHide: "beforehide",
-        afterHide: "afterhide"
+        beforeOpen: "beforeopen",
+        afterOpen: "afteropen",
+        beforeClose: "beforeclose",
+        afterClose: "afterclose"
     };
     //
-    // ShowHideMachine
+    // OpenCloseMachine
     //
-    var ShowHideMachine = (function () {
+    var OpenCloseMachine = (function () {
         //
         // Methods called by the control
         //
@@ -78486,55 +78486,55 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
         // this state, the control can feel free to call updateDom as many times as it wants without
         // worrying about it being expensive due to updating the DOM many times. The control should call
         // *initialized* to move the machine out of the Init state.
-        function ShowHideMachine(args) {
+        function OpenCloseMachine(args) {
             this._counter = 0;
             this._control = args;
             this._initializedSignal = new _Signal();
             this._disposed = false;
             this._setState(States.Init);
         }
-        ShowHideMachine.prototype.initializing = function (p) {
+        OpenCloseMachine.prototype.initializing = function (p) {
             var _this = this;
             ++this._counter;
             p.then(function () {
                 _this._initialized();
             });
         };
-        // Moves the machine out of the Init state and into the Shown or Hidden state depending on whether
-        // show or hide was called more recently.
-        ShowHideMachine.prototype._initialized = function () {
+        // Moves the machine out of the Init state and into the Opened or Closed state depending on whether
+        // open or close was called more recently.
+        OpenCloseMachine.prototype._initialized = function () {
             --this._counter;
             if (this._counter === 0) {
                 this._initializedSignal.complete();
             }
         };
         // These method calls are forwarded to the current state.
-        ShowHideMachine.prototype.updateDom = function () {
+        OpenCloseMachine.prototype.updateDom = function () {
             this._state.updateDom();
         };
-        ShowHideMachine.prototype.show = function () {
-            this._state.show();
+        OpenCloseMachine.prototype.open = function () {
+            this._state.open();
         };
-        ShowHideMachine.prototype.hide = function () {
-            this._state.hide();
+        OpenCloseMachine.prototype.close = function () {
+            this._state.close();
         };
-        Object.defineProperty(ShowHideMachine.prototype, "hidden", {
+        Object.defineProperty(OpenCloseMachine.prototype, "opened", {
             get: function () {
-                return this._state.hidden;
+                return this._state.opened;
             },
             set: function (value) {
                 if (value) {
-                    this.hide();
+                    this.open();
                 }
                 else {
-                    this.show();
+                    this.close();
                 }
             },
             enumerable: true,
             configurable: true
         });
         // Puts the machine into the Disposed state.
-        ShowHideMachine.prototype.dispose = function () {
+        OpenCloseMachine.prototype.dispose = function () {
             this._setState(States.Disposed);
             this._disposed = true;
             this._control = null;
@@ -78542,7 +78542,7 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
         //
         // Methods called by states
         //
-        ShowHideMachine.prototype._setState = function (NewState, arg0) {
+        OpenCloseMachine.prototype._setState = function (NewState, arg0) {
             if (!this._disposed) {
                 this._state && this._state.exit();
                 this._state = new NewState();
@@ -78551,7 +78551,7 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
             }
         };
         // Triggers arbitrary app code
-        ShowHideMachine.prototype._fireEvent = function (eventName, options) {
+        OpenCloseMachine.prototype._fireEvent = function (eventName, options) {
             options = options || {};
             var detail = options.detail || null;
             var cancelable = !!options.cancelable;
@@ -78560,22 +78560,22 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
             return this._control.eventElement.dispatchEvent(eventObject);
         };
         // Triggers arbitrary app code
-        ShowHideMachine.prototype._fireBeforeShow = function () {
-            return this._fireEvent(EventNames.beforeShow, {
+        OpenCloseMachine.prototype._fireBeforeOpen = function () {
+            return this._fireEvent(EventNames.beforeOpen, {
                 cancelable: true
             });
         };
         // Triggers arbitrary app code
-        ShowHideMachine.prototype._fireBeforeHide = function () {
-            return this._fireEvent(EventNames.beforeHide, {
+        OpenCloseMachine.prototype._fireBeforeClose = function () {
+            return this._fireEvent(EventNames.beforeClose, {
                 cancelable: true
             });
         };
-        return ShowHideMachine;
+        return OpenCloseMachine;
     })();
-    exports.ShowHideMachine = ShowHideMachine;
+    exports.OpenCloseMachine = OpenCloseMachine;
     //
-    // States (each implements IShowHideState)
+    // States (each implements IOpenCloseState)
     //
     // WinJS animation promises always complete successfully. This
     // helper allows an animation promise to complete in the canceled state
@@ -78631,14 +78631,14 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
     //   When created, the state machine will take one of the following initialization
     //   transitions depending on how the machines's APIs have been used by the time
     //   initialized() is called on it:
-    //     Init -> Hidden
-    //     Init -> Shown
+    //     Init -> Closed
+    //     Init -> Opened
     //   Following that, the life of the machine will be dominated by the following
     //   sequences of transitions. In geneneral, these sequences are uninterruptible.
-    //     Hidden -> BeforeShow -> Hidden (when preventDefault is called on beforeshow event)
-    //     Hidden -> BeforeShow -> Showing -> Shown
-    //     Shown -> BeforeHide -> Shown (when preventDefault is called on beforehide event)
-    //     Shown -> BeforeHide -> Hiding -> Hidden
+    //     Closed -> BeforeOpen -> Closed (when preventDefault is called on beforeopen event)
+    //     Closed -> BeforeOpen -> Opening -> Opened
+    //     Opened -> BeforeClose -> Opened (when preventDefault is called on beforeclose event)
+    //     Opened -> BeforeClose -> Closing -> Closed
     //   However, any state can be interrupted to go to the Disposed state:
     //     * -> Disposed
     var States;
@@ -78661,201 +78661,201 @@ define('WinJS/Utilities/_ShowHideMachine',["require", "exports", '../Core/_Globa
                     return ready.then(function () {
                         return _this.machine._initializedSignal.promise;
                     }).then(function () {
-                        _this.machine._control.onUpdateDomWithIsShown(!_this._hidden);
-                        _this.machine._setState(_this._hidden ? Hidden : Shown);
+                        _this.machine._control.onUpdateDomWithIsOpened(_this._opened);
+                        _this.machine._setState(_this._opened ? Opened : Closed);
                     });
                 });
             };
-            Object.defineProperty(Init.prototype, "hidden", {
+            Object.defineProperty(Init.prototype, "opened", {
                 get: function () {
-                    return this._hidden;
+                    return this._opened;
                 },
                 enumerable: true,
                 configurable: true
             });
-            Init.prototype.show = function () {
-                this._hidden = false;
+            Init.prototype.open = function () {
+                this._opened = true;
             };
-            Init.prototype.hide = function () {
-                this._hidden = true;
+            Init.prototype.close = function () {
+                this._opened = false;
             };
             return Init;
         })();
         States.Init = Init;
-        // A rest state. The control is hidden and is waiting for the app to call show.
-        var Hidden = (function () {
-            function Hidden() {
-                this.name = "Hidden";
+        // A rest state. The control is closed and is waiting for the app to call open.
+        var Closed = (function () {
+            function Closed() {
+                this.name = "Closed";
                 this.exit = _;
-                this.hidden = true;
-                this.hide = _;
+                this.opened = false;
+                this.close = _;
                 this.updateDom = updateDomImpl;
             }
-            Hidden.prototype.enter = function (args) {
+            Closed.prototype.enter = function (args) {
                 args = args || {};
-                if (args.showIsPending) {
-                    this.show();
+                if (args.openIsPending) {
+                    this.open();
                 }
             };
-            Hidden.prototype.show = function () {
-                this.machine._setState(BeforeShow);
+            Closed.prototype.open = function () {
+                this.machine._setState(BeforeOpen);
             };
-            return Hidden;
+            return Closed;
         })();
-        // An event state. The control fires the beforeshow event.
-        var BeforeShow = (function () {
-            function BeforeShow() {
-                this.name = "BeforeShow";
+        // An event state. The control fires the beforeopen event.
+        var BeforeOpen = (function () {
+            function BeforeOpen() {
+                this.name = "BeforeOpen";
                 this.exit = cancelInterruptibles;
-                this.hidden = true;
-                this.show = _;
-                this.hide = _;
+                this.opened = false;
+                this.open = _;
+                this.close = _;
                 this.updateDom = updateDomImpl;
             }
-            BeforeShow.prototype.enter = function () {
+            BeforeOpen.prototype.enter = function () {
                 var _this = this;
                 interruptible(this, function (ready) {
                     return ready.then(function () {
-                        return _this.machine._fireBeforeShow(); // Give opportunity for chain to be canceled when triggering app code
-                    }).then(function (shouldShow) {
-                        if (shouldShow) {
-                            _this.machine._setState(Showing);
+                        return _this.machine._fireBeforeOpen(); // Give opportunity for chain to be canceled when triggering app code
+                    }).then(function (shouldOpen) {
+                        if (shouldOpen) {
+                            _this.machine._setState(Opening);
                         }
                         else {
-                            _this.machine._setState(Hidden);
+                            _this.machine._setState(Closed);
                         }
                     });
                 });
             };
-            return BeforeShow;
+            return BeforeOpen;
         })();
-        // An animation/event state. The control plays its show animation and fires aftershow.
-        var Showing = (function () {
-            function Showing() {
-                this.name = "Showing";
+        // An animation/event state. The control plays its open animation and fires afteropen.
+        var Opening = (function () {
+            function Opening() {
+                this.name = "Opening";
                 this.exit = cancelInterruptibles;
                 this.updateDom = _; // Postponed until immediately before we switch to another state
             }
-            Showing.prototype.enter = function () {
+            Opening.prototype.enter = function () {
                 var _this = this;
                 interruptible(this, function (ready) {
                     return ready.then(function () {
-                        _this._hideIsPending = false;
-                        return cancelablePromise(_this.machine._control.onShow());
+                        _this._closeIsPending = false;
+                        return cancelablePromise(_this.machine._control.onOpen());
                     }).then(function () {
-                        _this.machine._fireEvent(EventNames.afterShow); // Give opportunity for chain to be canceled when triggering app code
+                        _this.machine._fireEvent(EventNames.afterOpen); // Give opportunity for chain to be canceled when triggering app code
                     }).then(function () {
                         _this.machine._control.onUpdateDom();
-                        _this.machine._setState(Shown, { hideIsPending: _this._hideIsPending });
+                        _this.machine._setState(Opened, { closeIsPending: _this._closeIsPending });
                     });
                 });
             };
-            Object.defineProperty(Showing.prototype, "hidden", {
+            Object.defineProperty(Opening.prototype, "opened", {
                 get: function () {
-                    return this._hideIsPending;
+                    return !this._closeIsPending;
                 },
                 enumerable: true,
                 configurable: true
             });
-            Showing.prototype.show = function () {
-                this._hideIsPending = false;
+            Opening.prototype.open = function () {
+                this._closeIsPending = false;
             };
-            Showing.prototype.hide = function () {
-                this._hideIsPending = true;
+            Opening.prototype.close = function () {
+                this._closeIsPending = true;
             };
-            return Showing;
+            return Opening;
         })();
-        // A rest state. The control is shown and is waiting for the app to call hide.
-        var Shown = (function () {
-            function Shown() {
-                this.name = "Shown";
+        // A rest state. The control is opened and is waiting for the app to call close.
+        var Opened = (function () {
+            function Opened() {
+                this.name = "Opened";
                 this.exit = _;
-                this.hidden = false;
-                this.show = _;
+                this.opened = true;
+                this.open = _;
                 this.updateDom = updateDomImpl;
             }
-            Shown.prototype.enter = function (args) {
+            Opened.prototype.enter = function (args) {
                 args = args || {};
-                if (args.hideIsPending) {
-                    this.hide();
+                if (args.closeIsPending) {
+                    this.close();
                 }
             };
-            Shown.prototype.hide = function () {
-                this.machine._setState(BeforeHide);
+            Opened.prototype.close = function () {
+                this.machine._setState(BeforeClose);
             };
-            return Shown;
+            return Opened;
         })();
-        // An event state. The control fires the beforehide event.
-        var BeforeHide = (function () {
-            function BeforeHide() {
-                this.name = "BeforeHide";
+        // An event state. The control fires the beforeclose event.
+        var BeforeClose = (function () {
+            function BeforeClose() {
+                this.name = "BeforeClose";
                 this.exit = cancelInterruptibles;
-                this.hidden = false;
-                this.show = _;
-                this.hide = _;
+                this.opened = true;
+                this.open = _;
+                this.close = _;
                 this.updateDom = updateDomImpl;
             }
-            BeforeHide.prototype.enter = function () {
+            BeforeClose.prototype.enter = function () {
                 var _this = this;
                 interruptible(this, function (ready) {
                     return ready.then(function () {
-                        return _this.machine._fireBeforeHide(); // Give opportunity for chain to be canceled when triggering app code
-                    }).then(function (shouldHide) {
-                        if (shouldHide) {
-                            _this.machine._setState(Hiding);
+                        return _this.machine._fireBeforeClose(); // Give opportunity for chain to be canceled when triggering app code
+                    }).then(function (shouldClose) {
+                        if (shouldClose) {
+                            _this.machine._setState(Closing);
                         }
                         else {
-                            _this.machine._setState(Shown);
+                            _this.machine._setState(Opened);
                         }
                     });
                 });
             };
-            return BeforeHide;
+            return BeforeClose;
         })();
-        // An animation/event state. The control plays the hide animation and fires the afterhide event.
-        var Hiding = (function () {
-            function Hiding() {
-                this.name = "Hiding";
+        // An animation/event state. The control plays the close animation and fires the afterclose event.
+        var Closing = (function () {
+            function Closing() {
+                this.name = "Closing";
                 this.exit = cancelInterruptibles;
                 this.updateDom = _; // Postponed until immediately before we switch to another state
             }
-            Hiding.prototype.enter = function () {
+            Closing.prototype.enter = function () {
                 var _this = this;
                 interruptible(this, function (ready) {
                     return ready.then(function () {
-                        _this._showIsPending = false;
-                        return cancelablePromise(_this.machine._control.onHide());
+                        _this._openIsPending = false;
+                        return cancelablePromise(_this.machine._control.onClose());
                     }).then(function () {
-                        _this.machine._fireEvent(EventNames.afterHide); // Give opportunity for chain to be canceled when triggering app code
+                        _this.machine._fireEvent(EventNames.afterClose); // Give opportunity for chain to be canceled when triggering app code
                     }).then(function () {
                         _this.machine._control.onUpdateDom();
-                        _this.machine._setState(Hidden, { showIsPending: _this._showIsPending });
+                        _this.machine._setState(Closed, { openIsPending: _this._openIsPending });
                     });
                 });
             };
-            Object.defineProperty(Hiding.prototype, "hidden", {
+            Object.defineProperty(Closing.prototype, "opened", {
                 get: function () {
-                    return !this._showIsPending;
+                    return this._openIsPending;
                 },
                 enumerable: true,
                 configurable: true
             });
-            Hiding.prototype.show = function () {
-                this._showIsPending = true;
+            Closing.prototype.open = function () {
+                this._openIsPending = true;
             };
-            Hiding.prototype.hide = function () {
-                this._showIsPending = false;
+            Closing.prototype.close = function () {
+                this._openIsPending = false;
             };
-            return Hiding;
+            return Closing;
         })();
         var Disposed = (function () {
             function Disposed() {
                 this.name = "Disposed";
                 this.enter = _;
                 this.exit = _;
-                this.hidden = true;
-                this.show = _;
-                this.hide = _;
+                this.opened = false;
+                this.open = _;
+                this.close = _;
                 this.updateDom = _;
             }
             return Disposed;
@@ -78870,7 +78870,7 @@ define('require-style!less/styles-splitview',[],function(){});
 define('require-style!less/colors-splitview',[],function(){});
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../../typings/require.d.ts" />
-define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../_LightDismissService', '../../Promise', '../../Utilities/_ShowHideMachine'], function (require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, Promise, _ShowHideMachine) {
+define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../_LightDismissService', '../../Promise', '../../Utilities/_OpenCloseMachine'], function (require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, Promise, _OpenCloseMachine) {
     require(["require-style!less/styles-splitview"]);
     require(["require-style!less/colors-splitview"]);
     "use strict";
@@ -78884,9 +78884,9 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         splitView: "win-splitview",
         pane: "win-splitview-pane",
         content: "win-splitview-content",
-        // hidden/shown
-        paneHidden: "win-splitview-pane-hidden",
-        paneShown: "win-splitview-pane-shown",
+        // closed/opened
+        paneClosed: "win-splitview-pane-closed",
+        paneOpened: "win-splitview-pane-opened",
         _panePlaceholder: "win-splitview-paneplaceholder",
         _paneWrapper: "win-splitview-panewrapper",
         _contentWrapper: "win-splitview-contentwrapper",
@@ -78895,40 +78895,40 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         _placementRight: "win-splitview-placementright",
         _placementTop: "win-splitview-placementtop",
         _placementBottom: "win-splitview-placementbottom",
-        // hidden display mode
-        _hiddenDisplayNone: "win-splitview-hiddendisplaynone",
-        _hiddenDisplayInline: "win-splitview-hiddendisplayinline",
-        // shown display mode
-        _shownDisplayInline: "win-splitview-showndisplayinline",
-        _shownDisplayOverlay: "win-splitview-showndisplayoverlay"
+        // closed display mode
+        _closedDisplayNone: "win-splitview-closeddisplaynone",
+        _closedDisplayInline: "win-splitview-closeddisplayinline",
+        // opened display mode
+        _openedDisplayInline: "win-splitview-openeddisplayinline",
+        _openedDisplayOverlay: "win-splitview-openeddisplayoverlay"
     };
     var EventNames = {
-        beforeShow: "beforeshow",
-        afterShow: "aftershow",
-        beforeHide: "beforehide",
-        afterHide: "afterhide"
+        beforeOpen: "beforeopen",
+        afterOpen: "afteropen",
+        beforeClose: "beforeclose",
+        afterClose: "afterclose"
     };
     var Dimension = {
         width: "width",
         height: "height"
     };
-    var HiddenDisplayMode = {
-        /// <field locid="WinJS.UI.SplitView.HiddenDisplayMode.none" helpKeyword="WinJS.UI.SplitView.HiddenDisplayMode.none">
-        /// When the pane is hidden, it is not visible and doesn't take up any space.
+    var ClosedDisplayMode = {
+        /// <field locid="WinJS.UI.SplitView.ClosedDisplayMode.none" helpKeyword="WinJS.UI.SplitView.ClosedDisplayMode.none">
+        /// When the pane is closed, it is not visible and doesn't take up any space.
         /// </field>
         none: "none",
-        /// <field locid="WinJS.UI.SplitView.HiddenDisplayMode.inline" helpKeyword="WinJS.UI.SplitView.HiddenDisplayMode.inline">
-        /// When the pane is hidden, it occupies space leaving less room for the SplitView's content.
+        /// <field locid="WinJS.UI.SplitView.ClosedDisplayMode.inline" helpKeyword="WinJS.UI.SplitView.ClosedDisplayMode.inline">
+        /// When the pane is closed, it occupies space leaving less room for the SplitView's content.
         /// </field>
         inline: "inline"
     };
-    var ShownDisplayMode = {
-        /// <field locid="WinJS.UI.SplitView.ShownDisplayMode.inline" helpKeyword="WinJS.UI.SplitView.ShownDisplayMode.inline">
-        /// When the pane is shown, it occupies space leaving less room for the SplitView's content.
+    var OpenedDisplayMode = {
+        /// <field locid="WinJS.UI.SplitView.OpenedDisplayMode.inline" helpKeyword="WinJS.UI.SplitView.OpenedDisplayMode.inline">
+        /// When the pane is open, it occupies space leaving less room for the SplitView's content.
         /// </field>
         inline: "inline",
-        /// <field locid="WinJS.UI.SplitView.ShownDisplayMode.overlay" helpKeyword="WinJS.UI.SplitView.ShownDisplayMode.overlay">
-        /// When the pane is shown, it doesn't take up any space and it is light dismissable.
+        /// <field locid="WinJS.UI.SplitView.OpenedDisplayMode.overlay" helpKeyword="WinJS.UI.SplitView.OpenedDisplayMode.overlay">
+        /// When the pane is open, it doesn't take up any space and it is light dismissable.
         /// </field>
         overlay: "overlay"
     };
@@ -78950,12 +78950,12 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         /// </field>
         bottom: "bottom"
     };
-    var hiddenDisplayModeClassMap = {};
-    hiddenDisplayModeClassMap[HiddenDisplayMode.none] = ClassNames._hiddenDisplayNone;
-    hiddenDisplayModeClassMap[HiddenDisplayMode.inline] = ClassNames._hiddenDisplayInline;
-    var shownDisplayModeClassMap = {};
-    shownDisplayModeClassMap[ShownDisplayMode.overlay] = ClassNames._shownDisplayOverlay;
-    shownDisplayModeClassMap[ShownDisplayMode.inline] = ClassNames._shownDisplayInline;
+    var closedDisplayModeClassMap = {};
+    closedDisplayModeClassMap[ClosedDisplayMode.none] = ClassNames._closedDisplayNone;
+    closedDisplayModeClassMap[ClosedDisplayMode.inline] = ClassNames._closedDisplayInline;
+    var openedDisplayModeClassMap = {};
+    openedDisplayModeClassMap[OpenedDisplayMode.overlay] = ClassNames._openedDisplayOverlay;
+    openedDisplayModeClassMap[OpenedDisplayMode.inline] = ClassNames._openedDisplayInline;
     var panePlacementClassMap = {};
     panePlacementClassMap[PanePlacement.left] = ClassNames._placementLeft;
     panePlacementClassMap[PanePlacement.right] = ClassNames._placementRight;
@@ -78985,10 +78985,10 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
     /// <icon src="ui_winjs.ui.splitview.12x12.png" width="12" height="12" />
     /// <icon src="ui_winjs.ui.splitview.16x16.png" width="16" height="16" />
     /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.UI.SplitView"></div>]]></htmlSnippet>
-    /// <event name="beforeshow" locid="WinJS.UI.SplitView_e:beforeshow">Raised just before showing the pane. Call preventDefault on this event to stop the pane from being shown.</event>
-    /// <event name="aftershow" locid="WinJS.UI.SplitView_e:aftershow">Raised immediately after the pane is fully shown.</event>
-    /// <event name="beforehide" locid="WinJS.UI.SplitView_e:beforehide">Raised just before hiding the pane. Call preventDefault on this event to stop the pane from being hidden.</event>
-    /// <event name="afterhide" locid="WinJS.UI.SplitView_e:afterhide">Raised immediately after the pane is fully hidden.</event>
+    /// <event name="beforeopen" locid="WinJS.UI.SplitView_e:beforeopen">Raised just before opening the pane. Call preventDefault on this event to stop the pane from opening.</event>
+    /// <event name="afteropen" locid="WinJS.UI.SplitView_e:afteropen">Raised immediately after the pane is fully opened.</event>
+    /// <event name="beforeclose" locid="WinJS.UI.SplitView_e:beforeclose">Raised just before closing the pane. Call preventDefault on this event to stop the pane from closing.</event>
+    /// <event name="afterclose" locid="WinJS.UI.SplitView_e:afterclose">Raised immediately after the pane is fully closed.</event>
     /// <part name="splitview" class="win-splitview" locid="WinJS.UI.SplitView_part:splitview">The entire SplitView control.</part>
     /// <part name="splitview-pane" class="win-splitview-pane" locid="WinJS.UI.SplitView_part:splitview-pane">The element which hosts the SplitView's pane.</part>
     /// <part name="splitview-content" class="win-splitview-content" locid="WinJS.UI.SplitView_part:splitview-content">The element which hosts the SplitView's content.</part>
@@ -79006,8 +79006,8 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             /// <param name="options" type="Object" isOptional="true" locid="WinJS.UI.SplitView.constructor_p:options">
             /// An object that contains one or more property/value pairs to apply to the new control.
             /// Each property of the options object corresponds to one of the control's properties or events.
-            /// Event names must begin with "on". For example, to provide a handler for the beforehide event,
-            /// add a property named "onbeforehide" to the options object and set its value to the event handler.
+            /// Event names must begin with "on". For example, to provide a handler for the beforeclose event,
+            /// add a property named "onbeforeclose" to the options object and set its value to the event handler.
             /// </param>
             /// <returns type="WinJS.UI.SplitView" locid="WinJS.UI.SplitView.constructor_returnValue">
             /// The new SplitView.
@@ -79022,9 +79022,9 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             // rendered.
             this._updateDomImpl_rendered = {
                 paneIsFirst: undefined,
-                isShownMode: undefined,
-                hiddenDisplayMode: undefined,
-                shownDisplayMode: undefined,
+                isOpenedMode: undefined,
+                closedDisplayMode: undefined,
+                openedDisplayMode: undefined,
                 panePlacement: undefined,
                 panePlaceholderWidth: undefined,
                 panePlaceholderHeight: undefined,
@@ -79035,26 +79035,26 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 throw new _ErrorFromName("WinJS.UI.SplitView.DuplicateConstruction", Strings.duplicateConstruction);
             }
             this._initializeDom(element || _Global.document.createElement("div"));
-            this._machine = new _ShowHideMachine.ShowHideMachine({
+            this._machine = new _OpenCloseMachine.OpenCloseMachine({
                 eventElement: this._dom.root,
-                onShow: function () {
+                onOpen: function () {
                     _this._cachedHiddenPaneThickness = null;
                     var hiddenPaneThickness = _this._getHiddenPaneThickness();
-                    _this._isShownMode = true;
+                    _this._isOpenedMode = true;
                     _this._updateDomImpl();
                     return _this._playShowAnimation(hiddenPaneThickness);
                 },
-                onHide: function () {
+                onClose: function () {
                     return _this._playHideAnimation(_this._getHiddenPaneThickness()).then(function () {
-                        _this._isShownMode = false;
+                        _this._isOpenedMode = false;
                         _this._updateDomImpl();
                     });
                 },
                 onUpdateDom: function () {
                     _this._updateDomImpl();
                 },
-                onUpdateDomWithIsShown: function (isShown) {
-                    _this._isShownMode = isShown;
+                onUpdateDomWithIsOpened: function (isOpened) {
+                    _this._isOpenedMode = isOpened;
                     _this._updateDomImpl();
                 }
             });
@@ -79065,14 +79065,14 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                     element: _this._dom.paneWrapper,
                     tabIndex: -1,
                     onLightDismiss: function () {
-                        _this.hidePane();
+                        _this.closePane();
                     }
                 });
                 _this._cachedHiddenPaneThickness = null;
                 // Initialize public properties.
-                _this.paneHidden = true;
-                _this.hiddenDisplayMode = HiddenDisplayMode.inline;
-                _this.shownDisplayMode = ShownDisplayMode.overlay;
+                _this.paneOpened = false;
+                _this.closedDisplayMode = ClosedDisplayMode.inline;
+                _this.openedDisplayMode = OpenedDisplayMode.overlay;
                 _this.panePlacement = PanePlacement.left;
                 _Control.setOptions(_this, options);
                 // Exit the Init state.
@@ -79112,16 +79112,16 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(SplitView.prototype, "hiddenDisplayMode", {
-            /// <field type="String" oamOptionsDatatype="WinJS.UI.SplitView.HiddenDisplayMode" locid="WinJS.UI.SplitView.HiddenDisplayMode" helpKeyword="WinJS.UI.SplitView.HiddenDisplayMode">
+        Object.defineProperty(SplitView.prototype, "closedDisplayMode", {
+            /// <field type="String" oamOptionsDatatype="WinJS.UI.SplitView.ClosedDisplayMode" locid="WinJS.UI.SplitView.ClosedDisplayMode" helpKeyword="WinJS.UI.SplitView.ClosedDisplayMode">
             /// Gets or sets the display mode of the SplitView's pane when it is hidden.
             /// </field>
             get: function () {
-                return this._hiddenDisplayMode;
+                return this._closedDisplayMode;
             },
             set: function (value) {
-                if (HiddenDisplayMode[value] && this._hiddenDisplayMode !== value) {
-                    this._hiddenDisplayMode = value;
+                if (ClosedDisplayMode[value] && this._closedDisplayMode !== value) {
+                    this._closedDisplayMode = value;
                     this._cachedHiddenPaneThickness = null;
                     this._machine.updateDom();
                 }
@@ -79129,16 +79129,16 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(SplitView.prototype, "shownDisplayMode", {
-            /// <field type="String" oamOptionsDatatype="WinJS.UI.SplitView.ShownDisplayMode" locid="WinJS.UI.SplitView.shownDisplayMode" helpKeyword="WinJS.UI.SplitView.shownDisplayMode">
-            /// Gets or sets the display mode of the SplitView's pane when it is shown.
+        Object.defineProperty(SplitView.prototype, "openedDisplayMode", {
+            /// <field type="String" oamOptionsDatatype="WinJS.UI.SplitView.OpenedDisplayMode" locid="WinJS.UI.SplitView.openedDisplayMode" helpKeyword="WinJS.UI.SplitView.openedDisplayMode">
+            /// Gets or sets the display mode of the SplitView's pane when it is open.
             /// </field>
             get: function () {
-                return this._shownDisplayMode;
+                return this._openedDisplayMode;
             },
             set: function (value) {
-                if (ShownDisplayMode[value] && this._shownDisplayMode !== value) {
-                    this._shownDisplayMode = value;
+                if (OpenedDisplayMode[value] && this._openedDisplayMode !== value) {
+                    this._openedDisplayMode = value;
                     this._cachedHiddenPaneThickness = null;
                     this._machine.updateDom();
                 }
@@ -79163,15 +79163,15 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(SplitView.prototype, "paneHidden", {
-            /// <field type="Boolean" hidden="true" locid="WinJS.UI.SplitView.paneHidden" helpKeyword="WinJS.UI.SplitView.paneHidden">
-            /// Gets or sets whether the SpitView's pane is currently collapsed.
+        Object.defineProperty(SplitView.prototype, "paneOpened", {
+            /// <field type="Boolean" hidden="true" locid="WinJS.UI.SplitView.paneOpened" helpKeyword="WinJS.UI.SplitView.paneOpened">
+            /// Gets or sets whether the SpitView's pane is currently opened.
             /// </field>
             get: function () {
-                return this._machine.hidden;
+                return this._machine.opened;
             },
             set: function (value) {
-                this._machine.hidden = value;
+                this._machine.opened = value;
             },
             enumerable: true,
             configurable: true
@@ -79191,21 +79191,21 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             _Dispose._disposeElement(this._dom.pane);
             _Dispose._disposeElement(this._dom.content);
         };
-        SplitView.prototype.showPane = function () {
-            /// <signature helpKeyword="WinJS.UI.SplitView.showPane">
-            /// <summary locid="WinJS.UI.SplitView.showPane">
-            /// Shows the SplitView's pane.
+        SplitView.prototype.openPane = function () {
+            /// <signature helpKeyword="WinJS.UI.SplitView.openPane">
+            /// <summary locid="WinJS.UI.SplitView.openPane">
+            /// Opens the SplitView's pane.
             /// </summary>
             /// </signature>
-            this._machine.show();
+            this._machine.open();
         };
-        SplitView.prototype.hidePane = function () {
-            /// <signature helpKeyword="WinJS.UI.SplitView.hidePane">
-            /// <summary locid="WinJS.UI.SplitView.hidePane">
-            /// Hides the SplitView's pane.
+        SplitView.prototype.closePane = function () {
+            /// <signature helpKeyword="WinJS.UI.SplitView.closePane">
+            /// <summary locid="WinJS.UI.SplitView.closePane">
+            /// Closes the SplitView's pane.
             /// </summary>
             /// </signature>
-            this._machine.hide();
+            this._machine.close();
         };
         SplitView.prototype._initializeDom = function (root) {
             // The first child is the pane
@@ -79302,7 +79302,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             paneStyle[transformNames.scriptName] = "";
         };
         SplitView.prototype._getHiddenContentRect = function (shownContentRect, hiddenPaneThickness, shownPaneThickness) {
-            if (this.shownDisplayMode === ShownDisplayMode.overlay) {
+            if (this.openedDisplayMode === OpenedDisplayMode.overlay) {
                 return shownContentRect;
             }
             else {
@@ -79338,25 +79338,25 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         });
         SplitView.prototype._getHiddenPaneThickness = function () {
             if (this._cachedHiddenPaneThickness === null) {
-                if (this._hiddenDisplayMode === HiddenDisplayMode.none) {
+                if (this._closedDisplayMode === ClosedDisplayMode.none) {
                     this._cachedHiddenPaneThickness = { content: 0, total: 0 };
                 }
                 else {
-                    if (this._isShownMode) {
-                        _ElementUtilities.removeClass(this._dom.root, ClassNames.paneShown);
-                        _ElementUtilities.addClass(this._dom.root, ClassNames.paneHidden);
+                    if (this._isOpenedMode) {
+                        _ElementUtilities.removeClass(this._dom.root, ClassNames.paneOpened);
+                        _ElementUtilities.addClass(this._dom.root, ClassNames.paneClosed);
                     }
                     var size = this._measureElement(this._dom.pane);
                     this._cachedHiddenPaneThickness = rectToThickness(size, this._horizontal ? Dimension.width : Dimension.height);
-                    if (this._isShownMode) {
-                        _ElementUtilities.removeClass(this._dom.root, ClassNames.paneHidden);
-                        _ElementUtilities.addClass(this._dom.root, ClassNames.paneShown);
+                    if (this._isOpenedMode) {
+                        _ElementUtilities.removeClass(this._dom.root, ClassNames.paneClosed);
+                        _ElementUtilities.addClass(this._dom.root, ClassNames.paneOpened);
                     }
                 }
             }
             return this._cachedHiddenPaneThickness;
         };
-        // Should be called while SplitView is rendered in its shown mode
+        // Should be called while SplitView is rendered in its opened mode
         // Overridden by tests.
         SplitView.prototype._playShowAnimation = function (hiddenPaneThickness) {
             var _this = this;
@@ -79381,7 +79381,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 });
             };
             var playShowAnimation = function () {
-                if (_this.shownDisplayMode === ShownDisplayMode.inline) {
+                if (_this.openedDisplayMode === OpenedDisplayMode.inline) {
                     _this._setContentRect(shownContentRect);
                 }
                 return playPaneAnimation();
@@ -79390,7 +79390,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 _this._clearAnimation();
             });
         };
-        // Should be called while SplitView is rendered in its shown mode
+        // Should be called while SplitView is rendered in its opened mode
         // Overridden by tests.
         SplitView.prototype._playHideAnimation = function (hiddenPaneThickness) {
             var _this = this;
@@ -79415,7 +79415,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 });
             };
             var playHideAnimation = function () {
-                if (_this.shownDisplayMode === ShownDisplayMode.inline) {
+                if (_this.openedDisplayMode === OpenedDisplayMode.inline) {
                     _this._setContentRect(hiddenContentRect);
                 }
                 return playPaneAnimation();
@@ -79441,33 +79441,33 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 }
             }
             rendered.paneIsFirst = paneShouldBeFirst;
-            if (rendered.isShownMode !== this._isShownMode) {
-                if (this._isShownMode) {
-                    _ElementUtilities.removeClass(this._dom.root, ClassNames.paneHidden);
-                    _ElementUtilities.addClass(this._dom.root, ClassNames.paneShown);
+            if (rendered.isOpenedMode !== this._isOpenedMode) {
+                if (this._isOpenedMode) {
+                    _ElementUtilities.removeClass(this._dom.root, ClassNames.paneClosed);
+                    _ElementUtilities.addClass(this._dom.root, ClassNames.paneOpened);
                 }
                 else {
-                    _ElementUtilities.removeClass(this._dom.root, ClassNames.paneShown);
-                    _ElementUtilities.addClass(this._dom.root, ClassNames.paneHidden);
+                    _ElementUtilities.removeClass(this._dom.root, ClassNames.paneOpened);
+                    _ElementUtilities.addClass(this._dom.root, ClassNames.paneClosed);
                 }
             }
-            rendered.isShownMode = this._isShownMode;
+            rendered.isOpenedMode = this._isOpenedMode;
             if (rendered.panePlacement !== this.panePlacement) {
                 removeClass(this._dom.root, panePlacementClassMap[rendered.panePlacement]);
                 addClass(this._dom.root, panePlacementClassMap[this.panePlacement]);
                 rendered.panePlacement = this.panePlacement;
             }
-            if (rendered.hiddenDisplayMode !== this.hiddenDisplayMode) {
-                removeClass(this._dom.root, hiddenDisplayModeClassMap[rendered.hiddenDisplayMode]);
-                addClass(this._dom.root, hiddenDisplayModeClassMap[this.hiddenDisplayMode]);
-                rendered.hiddenDisplayMode = this.hiddenDisplayMode;
+            if (rendered.closedDisplayMode !== this.closedDisplayMode) {
+                removeClass(this._dom.root, closedDisplayModeClassMap[rendered.closedDisplayMode]);
+                addClass(this._dom.root, closedDisplayModeClassMap[this.closedDisplayMode]);
+                rendered.closedDisplayMode = this.closedDisplayMode;
             }
-            if (rendered.shownDisplayMode !== this.shownDisplayMode) {
-                removeClass(this._dom.root, shownDisplayModeClassMap[rendered.shownDisplayMode]);
-                addClass(this._dom.root, shownDisplayModeClassMap[this.shownDisplayMode]);
-                rendered.shownDisplayMode = this.shownDisplayMode;
+            if (rendered.openedDisplayMode !== this.openedDisplayMode) {
+                removeClass(this._dom.root, openedDisplayModeClassMap[rendered.openedDisplayMode]);
+                addClass(this._dom.root, openedDisplayModeClassMap[this.openedDisplayMode]);
+                rendered.openedDisplayMode = this.openedDisplayMode;
             }
-            var isOverlayShown = this._isShownMode && this.shownDisplayMode === ShownDisplayMode.overlay;
+            var isOverlayShown = this._isOpenedMode && this.openedDisplayMode === OpenedDisplayMode.overlay;
             // panePlaceholder's purpose is to take up the amount of space occupied by the
             // hidden pane while the pane is shown in overlay mode. Without this, the content
             // would shift as the pane shows and hides in overlay mode.
@@ -79504,14 +79504,14 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 rendered.isOverlayShown = isOverlayShown;
             }
         };
-        /// <field locid="WinJS.UI.SplitView.HiddenDisplayMode" helpKeyword="WinJS.UI.SplitView.HiddenDisplayMode">
-        /// Display options for a SplitView's pane when it is hidden.
+        /// <field locid="WinJS.UI.SplitView.ClosedDisplayMode" helpKeyword="WinJS.UI.SplitView.ClosedDisplayMode">
+        /// Display options for a SplitView's pane when it is closed.
         /// </field>
-        SplitView.HiddenDisplayMode = HiddenDisplayMode;
-        /// <field locid="WinJS.UI.SplitView.ShownDisplayMode" helpKeyword="WinJS.UI.SplitView.ShownDisplayMode">
-        /// Display options for a SplitView's pane when it is shown.
+        SplitView.ClosedDisplayMode = ClosedDisplayMode;
+        /// <field locid="WinJS.UI.SplitView.OpenedDisplayMode" helpKeyword="WinJS.UI.SplitView.OpenedDisplayMode">
+        /// Display options for a SplitView's pane when it is open.
         /// </field>
-        SplitView.ShownDisplayMode = ShownDisplayMode;
+        SplitView.OpenedDisplayMode = OpenedDisplayMode;
         /// <field locid="WinJS.UI.SplitView.PanePlacement" helpKeyword="WinJS.UI.SplitView.PanePlacement">
         /// Placement options for a SplitView's pane.
         /// </field>
@@ -79521,7 +79521,7 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
         return SplitView;
     })();
     exports.SplitView = SplitView;
-    _Base.Class.mix(SplitView, _Events.createEventProperties(EventNames.beforeShow, EventNames.afterShow, EventNames.beforeHide, EventNames.afterHide));
+    _Base.Class.mix(SplitView, _Events.createEventProperties(EventNames.beforeOpen, EventNames.afterOpen, EventNames.beforeClose, EventNames.afterClose));
     _Base.Class.mix(SplitView, _Control.DOMEventMixin);
 });
 
@@ -79571,11 +79571,10 @@ define('WinJS/Controls/CommandingSurface/_Constants',["require", "exports"], fun
         overflowBottomClass: "win-commandingsurface-overflowbottom",
     };
     exports.EventNames = {
-        /* TODO Update the string literals to the proper open/close nomenclature once we move the state machine and splitview over to the new names. */
-        beforeShow: "beforeshow",
-        afterShow: "aftershow",
-        beforeHide: "beforehide",
-        afterHide: "afterhide"
+        beforeOpen: "beforeopen",
+        afterOpen: "afteropen",
+        beforeClose: "beforeclose",
+        afterClose: "afterclose"
     };
     exports.actionAreaCommandWidth = 68;
     exports.actionAreaSeparatorWidth = 34;
@@ -79629,7 +79628,7 @@ define('WinJS/Controls/CommandingSurface/_MenuCommand',["require", "exports", ".
 define('require-style!less/styles-commandingsurface',[],function(){});
 
 define('require-style!less/colors-commandingsurface',[],function(){});
-define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../CommandingSurface/_Constants", "../AppBar/_Command", "../CommandingSurface/_MenuCommand", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", '../../Promise', "../../Core/_Resources", "../../Scheduler", '../../Utilities/_ShowHideMachine', '../../_Signal', "../../Core/_WriteProfilerMark"], function (require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _CommandingSurfaceMenuCommand, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Promise, _Resources, Scheduler, _ShowHideMachine, _Signal, _WriteProfilerMark) {
+define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../CommandingSurface/_Constants", "../AppBar/_Command", "../CommandingSurface/_MenuCommand", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", '../../Promise', "../../Core/_Resources", "../../Scheduler", '../../Utilities/_OpenCloseMachine', '../../_Signal', "../../Core/_WriteProfilerMark"], function (require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _CommandingSurfaceMenuCommand, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Promise, _Resources, Scheduler, _OpenCloseMachine, _Signal, _WriteProfilerMark) {
     require(["require-style!less/styles-commandingsurface"]);
     require(["require-style!less/colors-commandingsurface"]);
     "use strict";
@@ -79752,16 +79751,16 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 throw new _ErrorFromName("WinJS.UI._CommandingSurface.DuplicateConstruction", strings.duplicateConstruction);
             }
             this._initializeDom(element || _Global.document.createElement("div"));
-            this._machine = options.showHideMachine || new _ShowHideMachine.ShowHideMachine({
+            this._machine = options.openCloseMachine || new _OpenCloseMachine.OpenCloseMachine({
                 eventElement: this._dom.root,
-                onShow: function () {
+                onOpen: function () {
                     //this._cachedHiddenPaneThickness = null;
                     //var hiddenPaneThickness = this._getHiddenPaneThickness();
                     _this.synchronousOpen();
                     //return this._playShowAnimation(hiddenPaneThickness);
                     return Promise.wrap();
                 },
-                onHide: function () {
+                onClose: function () {
                     //return this._playHideAnimation(this._getHiddenPaneThickness()).then(() => {
                     _this.synchronousClose();
                     //});
@@ -79770,8 +79769,8 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 onUpdateDom: function () {
                     _this.updateDomImpl();
                 },
-                onUpdateDomWithIsShown: function (isShown) {
-                    _this._isOpenedMode = isShown;
+                onUpdateDomWithIsOpened: function (isOpened) {
+                    _this._isOpenedMode = isOpened;
                     _this.updateDomImpl();
                 }
             });
@@ -79883,10 +79882,10 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             /// Gets or sets whether the _CommandingSurface is currently opened.
             /// </field>
             get: function () {
-                return !this._machine.hidden;
+                return this._machine.opened;
             },
             set: function (value) {
-                this._machine.hidden = !value;
+                this._machine.opened = value;
             },
             enumerable: true,
             configurable: true
@@ -79897,7 +79896,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             /// Opens the _CommandingSurface's actionarea and overflowarea
             /// </summary>
             /// </signature>
-            this._machine.show();
+            this._machine.open();
         };
         _CommandingSurface.prototype.close = function () {
             /// <signature helpKeyword="WinJS.UI._CommandingSurface.close">
@@ -79905,7 +79904,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             /// Closes the _CommandingSurface's actionarea and overflowarea
             /// </summary>
             /// </signature>
-            this._machine.hide();
+            this._machine.close();
         };
         _CommandingSurface.prototype.dispose = function () {
             /// <signature helpKeyword="WinJS.UI._CommandingSurface.dispose">
@@ -80567,7 +80566,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
         return _CommandingSurface;
     })();
     exports._CommandingSurface = _CommandingSurface;
-    _Base.Class.mix(_CommandingSurface, _Events.createEventProperties(_Constants.EventNames.beforeShow, _Constants.EventNames.afterShow, _Constants.EventNames.beforeHide, _Constants.EventNames.afterHide));
+    _Base.Class.mix(_CommandingSurface, _Events.createEventProperties(_Constants.EventNames.beforeOpen, _Constants.EventNames.afterOpen, _Constants.EventNames.beforeClose, _Constants.EventNames.afterClose));
     // addEventListener, removeEventListener, dispatchEvent
     _Base.Class.mix(_CommandingSurface, _Control.DOMEventMixin);
 });
@@ -80627,11 +80626,10 @@ define('WinJS/Controls/ToolBarNew/_Constants',["require", "exports", "../Command
         placeHolderCssClass: "win-toolbar-placeholder",
     };
     exports.EventNames = {
-        /* TODO Update the string literals to the proper open/close nomenclature once we move the state machine and splitview over to the new names. */
-        beforeShow: "beforeshow",
-        afterShow: "aftershow",
-        beforeHide: "beforehide",
-        afterHide: "afterhide"
+        beforeOpen: "beforeopen",
+        afterOpen: "afteropen",
+        beforeClose: "beforeclose",
+        afterClose: "afterclose"
     };
     exports.controlMinWidth = _CommandingSurfaceConstants.controlMinWidth;
     exports.defaultClosedDisplayMode = "compact";
@@ -80651,7 +80649,7 @@ define('WinJS/Controls/ToolBarNew/_Constants',["require", "exports", "../Command
 define('require-style!less/styles-toolbarnew',[],function(){});
 
 define('require-style!less/colors-toolbarnew',[],function(){});
-define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Core/_Base", "../ToolBarNew/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../Promise', "../../Core/_Resources", '../../Utilities/_ShowHideMachine', '../../_Signal', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, Promise, _Resources, _ShowHideMachine, _Signal, _WriteProfilerMark) {
+define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Core/_Base", "../ToolBarNew/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../Promise', "../../Core/_Resources", '../../Utilities/_OpenCloseMachine', '../../_Signal', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, Promise, _Resources, _OpenCloseMachine, _Signal, _WriteProfilerMark) {
     require(["require-style!less/styles-toolbarnew"]);
     require(["require-style!less/colors-toolbarnew"]);
     "use strict";
@@ -80730,14 +80728,14 @@ define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Cor
                 throw new _ErrorFromName("WinJS.UI.ToolBarNew.DuplicateConstruction", strings.duplicateConstruction);
             }
             this._initializeDom(element || _Global.document.createElement("div"));
-            var stateMachine = new _ShowHideMachine.ShowHideMachine({
+            var stateMachine = new _OpenCloseMachine.OpenCloseMachine({
                 eventElement: this.element,
-                onShow: function () {
+                onOpen: function () {
                     _this._synchronousOpen();
                     // Animate
                     return Promise.wrap();
                 },
-                onHide: function () {
+                onClose: function () {
                     _this._synchronousClose();
                     // Animate
                     return Promise.wrap();
@@ -80745,8 +80743,8 @@ define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Cor
                 onUpdateDom: function () {
                     _this._commandingSurface.updateDomImpl();
                 },
-                onUpdateDomWithIsShown: function (isShown) {
-                    _this._commandingSurface._isOpenedMode = isShown;
+                onUpdateDomWithIsOpened: function (isOpened) {
+                    _this._commandingSurface._isOpenedMode = isOpened;
                     _this._commandingSurface.updateDomImpl();
                 }
             });
@@ -80755,7 +80753,7 @@ define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Cor
             stateMachine.initializing(signal.promise);
             // Initialize private state.
             this._disposed = false;
-            this._commandingSurface = new _CommandingSurface._CommandingSurface(this._dom.commandingSurfaceEl, { showHideMachine: stateMachine });
+            this._commandingSurface = new _CommandingSurface._CommandingSurface(this._dom.commandingSurfaceEl, { openCloseMachine: stateMachine });
             this._isOpenedMode = _Constants.defaultOpened;
             // Initialize public properties.
             this.closedDisplayMode = _Constants.defaultClosedDisplayMode;
@@ -80844,7 +80842,7 @@ define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Cor
                 return;
             }
             this._disposed = true;
-            // Disposing the _commandingSurface will trigger dispose on its ShowHideMachine and synchronously complete any animations that might have been running.
+            // Disposing the _commandingSurface will trigger dispose on its OpenCloseMachine and synchronously complete any animations that might have been running.
             this._commandingSurface.dispose();
             // If page navigation is happening, we don't want to ToolBar left behind in the body.
             // Synchronoulsy close the ToolBar to force it out of the body and back into its parent element.
@@ -80995,7 +80993,7 @@ define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Cor
         return ToolBarNew;
     })();
     exports.ToolBarNew = ToolBarNew;
-    _Base.Class.mix(ToolBarNew, _Events.createEventProperties(_Constants.EventNames.beforeShow, _Constants.EventNames.afterShow, _Constants.EventNames.beforeHide, _Constants.EventNames.afterHide));
+    _Base.Class.mix(ToolBarNew, _Events.createEventProperties(_Constants.EventNames.beforeOpen, _Constants.EventNames.afterOpen, _Constants.EventNames.beforeClose, _Constants.EventNames.afterClose));
     // addEventListener, removeEventListener, dispatchEvent
     _Base.Class.mix(ToolBarNew, _Control.DOMEventMixin);
 });
