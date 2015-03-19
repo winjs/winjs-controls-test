@@ -5315,20 +5315,24 @@ Hide clear button in search box control.
   display: none;
 }
 .win-commandingsurface {
-  width: 100%;
   outline: none;
-  min-width: 68px;
-  /* enough for one primary command */
+  min-width: 32px;
+  /* enough to fit the overflowbutton */
   position: relative;
 }
+.win-commandingsurface.win-commandingsurface-overflowbottom .win-commandingsurface-overflowarea {
+  top: 100%;
+}
+.win-commandingsurface.win-commandingsurface-overflowtop .win-commandingsurface-overflowarea {
+  bottom: 100%;
+}
 .win-commandingsurface .win-commandingsurface-actionarea {
-  width: 100%;
   min-height: 24px;
   vertical-align: top;
   overflow: hidden;
-  display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
-  display: inline-flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
   -ms-flex-pack: end;
   -webkit-justify-content: flex-end;
   justify-content: flex-end;
@@ -5419,6 +5423,23 @@ Hide clear button in search box control.
   overflow-x: hidden;
   padding: 0;
   position: absolute;
+  right: 0;
+}
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(ar),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(dv),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(fa),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(he),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(ku-Arab),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(pa-Arab),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(prs),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(ps),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(sd-Arab),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(syr),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(ug),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(ur),
+.win-commandingsurface .win-commandingsurface-overflowarea:lang(qps-plocm) {
+  left: 0;
+  right: auto;
 }
 .win-commandingsurface .win-commandingsurface-overflowarea.win-menu {
   max-width: inherit;
@@ -5443,6 +5464,13 @@ Hide clear button in search box control.
   flex: 0 0 auto;
   height: 2px;
   margin: 6px 12px 4px 12px;
+}
+.win-toolbarnew {
+  min-width: 32px;
+  /* enough to fit the overflowbutton */
+}
+.win-toolbarnew.win-toolbarnew-opened {
+  position: fixed;
 }
 body {
   background-color: #ffffff;
