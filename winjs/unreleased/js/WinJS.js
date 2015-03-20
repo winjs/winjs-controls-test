@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.19 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.20 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.19 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.20 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -78446,7 +78446,7 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
     //
     //           // Tell the machine the control is initialized. After this, the machine will start asking
     //           // the control to play animations and update its DOM as appropriate.
-    //           this._machine.initialized();
+    //           this._machine.exitInit();
     //       }
     //
     //       get opened() {
@@ -78485,28 +78485,17 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
         // updateDom will be postponed until the machine exits the Init state. Consequently, while in
         // this state, the control can feel free to call updateDom as many times as it wants without
         // worrying about it being expensive due to updating the DOM many times. The control should call
-        // *initialized* to move the machine out of the Init state.
+        // *exitInit* to move the machine out of the Init state.
         function OpenCloseMachine(args) {
-            this._counter = 0;
             this._control = args;
             this._initializedSignal = new _Signal();
             this._disposed = false;
             this._setState(States.Init);
         }
-        OpenCloseMachine.prototype.initializing = function (p) {
-            var _this = this;
-            ++this._counter;
-            p.then(function () {
-                _this._initialized();
-            });
-        };
         // Moves the machine out of the Init state and into the Opened or Closed state depending on whether
         // open or close was called more recently.
-        OpenCloseMachine.prototype._initialized = function () {
-            --this._counter;
-            if (this._counter === 0) {
-                this._initializedSignal.complete();
-            }
+        OpenCloseMachine.prototype.exitInit = function () {
+            this._initializedSignal.complete();
         };
         // These method calls are forwarded to the current state.
         OpenCloseMachine.prototype.updateDom = function () {
@@ -78630,7 +78619,7 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
     // Transitions:
     //   When created, the state machine will take one of the following initialization
     //   transitions depending on how the machines's APIs have been used by the time
-    //   initialized() is called on it:
+    //   exitInit() is called on it:
     //     Init -> Closed
     //     Init -> Opened
     //   Following that, the life of the machine will be dominated by the following
@@ -78648,7 +78637,7 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
         }
         // Initial state. Gives the control the opportunity to initialize itself without
         // triggering any animations or DOM modifications. When done, the control should
-        // call *initialized* to move the machine to the next state.
+        // call *exitInit* to move the machine to the next state.
         var Init = (function () {
             function Init() {
                 this.name = "Init";
@@ -78870,7 +78859,7 @@ define('require-style!less/styles-splitview',[],function(){});
 define('require-style!less/colors-splitview',[],function(){});
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../../typings/require.d.ts" />
-define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../_LightDismissService', '../../Promise', '../../Utilities/_OpenCloseMachine'], function (require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, Promise, _OpenCloseMachine) {
+define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Animations', '../../Core/_Base', '../../Core/_BaseUtils', '../../Utilities/_Control', '../../Utilities/_Dispose', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../_LightDismissService', '../../Utilities/_OpenCloseMachine'], function (require, exports, Animations, _Base, _BaseUtils, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, _OpenCloseMachine) {
     require(["require-style!less/styles-splitview"]);
     require(["require-style!less/colors-splitview"]);
     "use strict";
@@ -79058,29 +79047,27 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                     _this._updateDomImpl();
                 }
             });
-            this._machine.initializing(new Promise(function (initialized) {
-                // Initialize private state.
-                _this._disposed = false;
-                _this._dismissable = new _LightDismissService.LightDismissableElement({
-                    element: _this._dom.paneWrapper,
-                    tabIndex: -1,
-                    onLightDismiss: function () {
-                        _this.closePane();
-                    }
-                });
-                _this._cachedHiddenPaneThickness = null;
-                // Initialize public properties.
-                _this.paneOpened = false;
-                _this.closedDisplayMode = ClosedDisplayMode.inline;
-                _this.openedDisplayMode = OpenedDisplayMode.overlay;
-                _this.panePlacement = PanePlacement.left;
-                _Control.setOptions(_this, options);
-                // Exit the Init state.
-                _ElementUtilities._inDom(_this._dom.root).then(function () {
-                    _this._rtl = _Global.getComputedStyle(_this._dom.root).direction === 'rtl';
-                    initialized();
-                });
-            }));
+            // Initialize private state.
+            this._disposed = false;
+            this._dismissable = new _LightDismissService.LightDismissableElement({
+                element: this._dom.paneWrapper,
+                tabIndex: -1,
+                onLightDismiss: function () {
+                    _this.closePane();
+                }
+            });
+            this._cachedHiddenPaneThickness = null;
+            // Initialize public properties.
+            this.paneOpened = false;
+            this.closedDisplayMode = ClosedDisplayMode.inline;
+            this.openedDisplayMode = OpenedDisplayMode.overlay;
+            this.panePlacement = PanePlacement.left;
+            _Control.setOptions(this, options);
+            // Exit the Init state.
+            _ElementUtilities._inDom(this._dom.root).then(function () {
+                _this._rtl = _Global.getComputedStyle(_this._dom.root).direction === 'rtl';
+                _this._machine.exitInit();
+            });
         }
         Object.defineProperty(SplitView.prototype, "element", {
             /// <field type="HTMLElement" domElement="true" readonly="true" hidden="true" locid="WinJS.UI.SplitView.element" helpKeyword="WinJS.UI.SplitView.element">
@@ -79774,9 +79761,6 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                     _this.updateDomImpl();
                 }
             });
-            // Enter the Init state
-            var signal = new _Signal();
-            this._machine.initializing(signal.promise);
             // Initialize private state.
             this._disposed = false;
             this._primaryCommands = [];
@@ -79786,6 +79770,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             this._winKeyboard = new _KeyboardBehavior._WinKeyboard(this._dom.root);
             this._refreshPending = false;
             this._rtl = false;
+            this._initializedSignal = new _Signal();
             this._nextLayoutStage = CommandLayoutPipeline.idle;
             this._isOpenedMode = _Constants.defaultOpened;
             // Initialize public properties.
@@ -79805,7 +79790,11 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             // Exit the Init state.
             _ElementUtilities._inDom(this._dom.root).then(function () {
                 _this._rtl = _Global.getComputedStyle(_this._dom.root).direction === 'rtl';
-                signal.complete();
+                if (!options.openCloseMachine) {
+                    // We should only call exitInit on the machine when we own the machine.
+                    _this._machine.exitInit();
+                }
+                _this._initializedSignal.complete();
                 _this._writeProfilerMark("constructor,StopTM");
             });
         }
@@ -79939,6 +79928,13 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 overflowArea: this._dom.overflowArea.getBoundingClientRect(),
             };
         };
+        Object.defineProperty(_CommandingSurface.prototype, "initialized", {
+            get: function () {
+                return this._initializedSignal.promise;
+            },
+            enumerable: true,
+            configurable: true
+        });
         _CommandingSurface.prototype._writeProfilerMark = function (text) {
             _WriteProfilerMark("WinJS.UI._CommandingSurface:" + this._id + ":" + text);
         };
@@ -80649,7 +80645,7 @@ define('WinJS/Controls/ToolBarNew/_Constants',["require", "exports", "../Command
 define('require-style!less/styles-toolbarnew',[],function(){});
 
 define('require-style!less/colors-toolbarnew',[],function(){});
-define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Core/_Base", "../ToolBarNew/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../Promise', "../../Core/_Resources", '../../Utilities/_OpenCloseMachine', '../../_Signal', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, Promise, _Resources, _OpenCloseMachine, _Signal, _WriteProfilerMark) {
+define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Core/_Base", "../ToolBarNew/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../Promise', "../../Core/_Resources", '../../Utilities/_OpenCloseMachine', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, Promise, _Resources, _OpenCloseMachine, _WriteProfilerMark) {
     require(["require-style!less/styles-toolbarnew"]);
     require(["require-style!less/colors-toolbarnew"]);
     "use strict";
@@ -80748,9 +80744,6 @@ define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Cor
                     _this._commandingSurface.updateDomImpl();
                 }
             });
-            // Enter the Init state.
-            var signal = new _Signal();
-            stateMachine.initializing(signal.promise);
             // Initialize private state.
             this._disposed = false;
             this._commandingSurface = new _CommandingSurface._CommandingSurface(this._dom.commandingSurfaceEl, { openCloseMachine: stateMachine });
@@ -80761,7 +80754,9 @@ define('WinJS/Controls/ToolBarNew/_ToolBarNew',["require", "exports", "../../Cor
             _Control.setOptions(this, options);
             // Exit the Init state.
             _ElementUtilities._inDom(this.element).then(function () {
-                signal.complete();
+                return _this._commandingSurface.initialized;
+            }).then(function () {
+                stateMachine.exitInit();
                 _this._writeProfilerMark("constructor,StopTM");
             });
         }
