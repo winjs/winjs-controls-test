@@ -1,6 +1,6 @@
 /*!
   Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
-  Build: 4.0.0.winjs.2015.3.20
+  Build: 4.0.0.winjs.2015.3.23
   Version: WinJS.4.0
 */
 
@@ -22,6 +22,7 @@
 {
     "appBarAriaLabel": "App Bar",
     "appBarCommandAriaLabel": "App Bar Item",
+	"appBarOverflowButtonAriaLabel": "View more",
     "autoSuggestBoxAriaLabel": "Autosuggestbox",
     "autoSuggestBoxAriaLabelInputNoPlaceHolder": "Autosuggestbox, enter to submit query, esc to clear text",
     "autoSuggestBoxAriaLabelInputPlaceHolder": "Autosuggestbox, {0}, enter to submit query, esc to clear text",
