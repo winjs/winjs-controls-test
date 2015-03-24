@@ -1,4 +1,4 @@
-
+﻿
 /*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
 (function (global) {
 
@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.23 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.24 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.23 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.24 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
