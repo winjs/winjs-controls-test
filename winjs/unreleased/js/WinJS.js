@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.24 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.25 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.24 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.25 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -16783,7 +16783,7 @@ define('WinJS/Animations',[
             writeAnimationProfilerMark("enterContent,StartTM");
 
             var animationPromise;
-            var offsetArray = new OffsetArray(offset, "WinJS-enterContent", [{ top: "0px", left: "40px", rtlflip: true }]);
+            var offsetArray = new OffsetArray(offset, "WinJS-enterContent", [{ top: "28px", left: "0px", rtlflip: false }]);
             if (options && options.mechanism === "transition") {
                 animationPromise = _TransitionAnimation.executeTransition(
                     incoming,
@@ -17106,7 +17106,7 @@ define('WinJS/Animations',[
             /// </signature>
             writeAnimationProfilerMark("enterPage,StartTM");
 
-            var offsetArray = new OffsetArray(offset, "WinJS-enterPage", [{ top: "0px", left: "100px", rtlflip: true }]);
+            var offsetArray = new OffsetArray(offset, "WinJS-enterPage", [{ top: "28px", left: "0px", rtlflip: false }]);
             var promise1 = _TransitionAnimation.executeAnimation(
                 element,
                 {
@@ -37289,9 +37289,8 @@ define('WinJS/Controls/ListView/_GroupsContainer',[
 define('WinJS/Controls/ListView/_Helpers',[
     'exports',
     '../../Core/_Base',
-    '../ItemContainer/_Constants',
-    '../../Animations'
-], function helpersInit(exports, _Base, _Constants, Animations) {
+    '../ItemContainer/_Constants'
+], function helpersInit(exports, _Base, _Constants) {
     "use strict";
 
     function nodeListToArray(nodeList) {
@@ -37332,18 +37331,7 @@ define('WinJS/Controls/ListView/_Helpers',[
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
         _nodeListToArray: nodeListToArray,
         _repeat: repeat,
-        _stripedContainers: stripedContainers,
-        _ListViewAnimationHelper: {
-            fadeInElement: function (element) {
-                return Animations.fadeIn(element);
-            },
-            fadeOutElement: function (element) {
-                return Animations.fadeOut(element);
-            },
-            animateEntrance: function (canvas, firstEntrance) {
-                return Animations.enterContent(canvas, [{ left: firstEntrance ? "100px" : "40px", top: "0px", rtlflip: true }], { mechanism: "transition" });
-            },
-        }
+        _stripedContainers: stripedContainers
     });
 });
 
@@ -45402,6 +45390,7 @@ define('WinJS/Controls/ListView',[
     '../Core/_Log',
     '../Core/_Resources',
     '../Core/_WriteProfilerMark',
+    '../Animations',
     '../Animations/_TransitionAnimation',
     '../BindingList',
     '../Promise',
@@ -45429,7 +45418,7 @@ define('WinJS/Controls/ListView',[
     './ListView/_VirtualizeContentsView',
     'require-style!less/styles-listview',
     'require-style!less/colors-listview'
-], function listViewImplInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, _TransitionAnimation, BindingList, Promise, Scheduler, _Signal, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _SafeHtml, _TabContainer, _UI, _VersionManager, _Constants, _ItemEventsHandler, _BrowseMode, _ErrorMessages, _GroupFocusCache, _GroupsContainer, _Helpers, _ItemsContainer, _Layouts, _SelectionManager, _VirtualizeContentsView) {
+], function listViewImplInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Signal, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _SafeHtml, _TabContainer, _UI, _VersionManager, _Constants, _ItemEventsHandler, _BrowseMode, _ErrorMessages, _GroupFocusCache, _GroupsContainer, _Helpers, _ItemsContainer, _Layouts, _SelectionManager, _VirtualizeContentsView) {
     "use strict";
 
     var transformNames = _BaseUtils._browserStyleEquivalents["transform"];
@@ -45460,8 +45449,6 @@ define('WinJS/Controls/ListView',[
     function getOffsetRight(element) {
         return element.offsetParent ? (element.offsetParent.offsetWidth - element.offsetLeft - element.offsetWidth) : 0;
     }
-
-    var AnimationHelper = _Helpers._ListViewAnimationHelper;
 
     var strings = {
         get notCompatibleWithSemanticZoom() { return "ListView can only be used with SemanticZoom if randomAccess loading behavior is specified."; },
@@ -48580,7 +48567,7 @@ define('WinJS/Controls/ListView',[
                         this._progressIndicatorDelayTimer = Promise.timeout(_Constants._LISTVIEW_PROGRESS_DELAY).then(function () {
                             if (!that._isZombie()) {
                                 parent.appendChild(progressBar);
-                                AnimationHelper.fadeInElement(progressBar);
+                                Animations.fadeIn(progressBar);
                                 that._progressIndicatorDelayTimer = null;
                             }
                         });
@@ -48599,7 +48586,7 @@ define('WinJS/Controls/ListView',[
                     if (progressBar.parentNode && !this._fadingProgressBar) {
                         this._fadingProgressBar = true;
                         var that = this;
-                        AnimationHelper.fadeOutElement(progressBar).then(function () {
+                        Animations.fadeOut(progressBar).then(function () {
                             if (progressBar.parentNode) {
                                 progressBar.parentNode.removeChild(progressBar);
                             }
@@ -49136,7 +49123,7 @@ define('WinJS/Controls/ListView',[
                             if (!eventDetails.prevented) {
                                 that._fadingViewportOut = true;
                                 that._viewport.style.overflow = "hidden";
-                                AnimationHelper.fadeOutElement(that._viewport).then(function () {
+                                Animations.fadeOut(that._viewport).then(function () {
                                     if (that._isZombie()) { return; }
                                     that._fadingViewportOut = false;
                                     that._viewport.style.opacity = 1.0;
@@ -49197,7 +49184,7 @@ define('WinJS/Controls/ListView',[
                             if (!that._isZombie()) {
                                 that._canvas.style.opacity = 1;
 
-                                return AnimationHelper.animateEntrance(that._viewport, firstTime).then(function () {
+                                return Animations.enterContent(that._viewport).then(function () {
                                     if (!that._isZombie()) {
                                         that._waitingEntranceAnimationPromise = null;
                                         that._viewport.style.overflow = "";
@@ -63148,7 +63135,7 @@ define('WinJS/Controls/Hub',[
 
                                                 if (!this._fireEntrance || this._fireEvent(Hub._EventName.contentAnimating, eventDetail)) {
                                                     this._viewportElement.style["-ms-overflow-style"] = "none";
-                                                    onScreenItemsAnimatedPromise = Animations.enterContent(this._viewportElement, [{ left: this._fireEntrance ? "100px" : "40px", top: "0px", rtlflip: true }], { mechanism: "transition" }).then(function () {
+                                                    onScreenItemsAnimatedPromise = Animations.enterContent(this._viewportElement).then(function () {
                                                         this._viewportElement.style["-ms-overflow-style"] = "";
                                                     }.bind(this));
                                                 }

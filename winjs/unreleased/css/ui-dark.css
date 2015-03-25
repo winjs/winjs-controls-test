@@ -145,15 +145,7 @@
 }
 @keyframes WinJS-enterContent {
   from {
-    transform: translateX(40px);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes WinJS-enterContent-rtl {
-  from {
-    transform: translateX(-40px);
+    transform: translateY(28px);
   }
   to {
     transform: none;
@@ -169,15 +161,7 @@
 }
 @keyframes WinJS-enterPage {
   from {
-    transform: translateX(100px);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes WinJS-enterPage-rtl {
-  from {
-    transform: translateX(-100px);
+    transform: translateY(28px);
   }
   to {
     transform: none;
@@ -337,15 +321,7 @@
 }
 @-webkit-keyframes -webkit-WinJS-enterContent {
   from {
-    -webkit-transform: translateX(40px);
-  }
-  to {
-    -webkit-transform: none;
-  }
-}
-@-webkit-keyframes -webkit-WinJS-enterContent-rtl {
-  from {
-    -webkit-transform: translateX(-40px);
+    -webkit-transform: translateY(28px);
   }
   to {
     -webkit-transform: none;
@@ -361,15 +337,7 @@
 }
 @-webkit-keyframes -webkit-WinJS-enterPage {
   from {
-    -webkit-transform: translateX(100px);
-  }
-  to {
-    -webkit-transform: none;
-  }
-}
-@-webkit-keyframes -webkit-WinJS-enterPage-rtl {
-  from {
-    -webkit-transform: translateX(-100px);
+    -webkit-transform: translateY(28px);
   }
   to {
     -webkit-transform: none;
