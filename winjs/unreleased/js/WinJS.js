@@ -68711,7 +68711,7 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
 define('require-style!less/styles-commandingsurface',[],function(){});
 
 define('require-style!less/colors-commandingsurface',[],function(){});
-define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../CommandingSurface/_Constants", "../AppBar/_Command", "../CommandingSurface/_MenuCommand", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", '../../Promise', "../../Core/_Resources", "../../Scheduler", '../../Utilities/_OpenCloseMachine', '../../_Signal', "../../Core/_WriteProfilerMark"], function (require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _CommandingSurfaceMenuCommand, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Flyout, _Global, _Hoverable, _KeyboardBehavior, Promise, _Resources, Scheduler, _OpenCloseMachine, _Signal, _WriteProfilerMark) {
+define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "exports", "../../Animations", "../../Core/_Base", "../../Core/_BaseUtils", "../../BindingList", "../../ControlProcessor", "../CommandingSurface/_Constants", "../AppBar/_Command", "../CommandingSurface/_MenuCommand", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Controls/Flyout", "../../Core/_Global", "../../Utilities/_Hoverable", "../../Utilities/_KeyboardBehavior", '../../Core/_Log', '../../Promise', "../../Core/_Resources", "../../Scheduler", '../../Utilities/_OpenCloseMachine', '../../_Signal', "../../Core/_WriteProfilerMark"], function (require, exports, Animations, _Base, _BaseUtils, BindingList, ControlProcessor, _Constants, _Command, _CommandingSurfaceMenuCommand, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Flyout, _Global, _Hoverable, _KeyboardBehavior, _Log, Promise, _Resources, Scheduler, _OpenCloseMachine, _Signal, _WriteProfilerMark) {
     require(["require-style!less/styles-commandingsurface"]);
     require(["require-style!less/colors-commandingsurface"]);
     "use strict";
@@ -68793,6 +68793,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 closedDisplayMode: undefined,
                 isOpenedMode: undefined,
                 overflowDirection: undefined,
+                overflowAlignmentOffset: undefined,
             };
             this._writeProfilerMark("constructor,StartTM");
             // Check to make sure we weren't duplicated
@@ -68819,8 +68820,12 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                     _this.updateDomImpl();
                 },
                 onUpdateDomWithIsOpened: function (isOpened) {
-                    _this._isOpenedMode = isOpened;
-                    _this.updateDomImpl();
+                    if (isOpened) {
+                        _this.synchronousOpen();
+                    }
+                    else {
+                        _this.synchronousClose();
+                    }
                 }
             });
             // Initialize private state.
@@ -68961,7 +68966,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
         };
         _CommandingSurface.prototype.getBoundingRects = function () {
             return {
-                actionArea: this._dom.actionArea.getBoundingClientRect(),
+                commandingSurface: this._dom.root.getBoundingClientRect(),
                 overflowArea: this._dom.overflowArea.getBoundingClientRect(),
             };
         };
@@ -69199,8 +69204,34 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             this._nextLayoutStage = Math.max(CommandLayoutPipeline.layoutStage, this._nextLayoutStage);
         };
         _CommandingSurface.prototype.synchronousOpen = function () {
+            this._overflowAlignmentOffset = 0;
             this._isOpenedMode = true;
             this.updateDomImpl();
+            this._overflowAlignmentOffset = this._computeAdjustedOverflowAreaOffset();
+            this.updateDomImpl();
+        };
+        _CommandingSurface.prototype._computeAdjustedOverflowAreaOffset = function () {
+            // Returns any negative offset needed to prevent the shown overflowarea from clipping outside of the viewport.
+            // This function should only be called when CommandingSurface has been rendered in the opened state with
+            // an overflowAlignmentOffset of 0.
+            if (_Log.log) {
+                !this._updateDomImpl_renderedState.isOpenedMode && _Log.log("The CommandingSurface should only attempt to compute adjusted overflowArea offset " + " when it has been rendered opened");
+                this._updateDomImpl_renderedState.overflowAlignmentOffset !== 0 && _Log.log("The CommandingSurface should only attempt to compute adjusted overflowArea offset " + " when it has been rendered with an overflowAlignementOffset of 0");
+            }
+            var overflowArea = this._dom.overflowArea, boundingClientRects = this.getBoundingRects(), adjustedOffset = 0;
+            if (this._rtl) {
+                // In RTL the left edge of overflowarea prefers to align to the LEFT edge of the commandingSurface. 
+                // Make sure we avoid clipping through the RIGHT edge of the viewport
+                var viewportRight = window.innerWidth, rightOffsetFromViewport = boundingClientRects.overflowArea.right;
+                adjustedOffset = Math.min(viewportRight - rightOffsetFromViewport, 0);
+            }
+            else {
+                // In LTR the right edge of overflowarea prefers to align to the RIGHT edge of the commandingSurface.
+                // Make sure we avoid clipping through the LEFT edge of the viewport.
+                var leftOffsetFromViewport = boundingClientRects.overflowArea.left;
+                adjustedOffset = Math.min(0, leftOffsetFromViewport);
+            }
+            return adjustedOffset;
         };
         _CommandingSurface.prototype.synchronousClose = function () {
             this._isOpenedMode = false;
@@ -69234,6 +69265,11 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 removeClass(this._dom.root, overflowDirectionClassMap[rendered.overflowDirection]);
                 addClass(this._dom.root, overflowDirectionClassMap[this.overflowDirection]);
                 rendered.overflowDirection = this.overflowDirection;
+            }
+            if (this._overflowAlignmentOffset !== rendered.overflowAlignmentOffset) {
+                var offsetProperty = (this._rtl ? "left" : "right");
+                var offsetTextValue = this._overflowAlignmentOffset + "px";
+                this._dom.overflowArea.style[offsetProperty] = offsetTextValue;
             }
         };
         _CommandingSurface.prototype._updateDomImpl_updateCommands = function () {
@@ -69909,20 +69945,20 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
         ToolBar.prototype._updateDomImpl_renderOpened = function () {
             var _this = this;
             // Measure closed state.
-            var closedActionAreaRect = this._commandingSurface.getBoundingRects().actionArea;
+            var closedCommandingSurfaceRect = this._commandingSurface.getBoundingRects().commandingSurface;
             this._updateDomImpl_renderedState.prevInlineWidth = this._dom.root.style.width;
             // Get replacement element
             var placeHolder = this._dom.placeHolder;
-            placeHolder.style.width = closedActionAreaRect.width + "px";
-            placeHolder.style.height = closedActionAreaRect.height + "px";
+            placeHolder.style.width = closedCommandingSurfaceRect.width + "px";
+            placeHolder.style.height = closedCommandingSurfaceRect.height + "px";
             // Move ToolBar element to the body and leave placeHolder element in our place to avoid reflowing surrounding app content.
             this._dom.root.parentElement.insertBefore(placeHolder, this._dom.root);
             _Global.document.body.appendChild(this._dom.root);
             // Render opened state
             _ElementUtilities.addClass(this._dom.root, _Constants.ClassNames.openedClass);
             _ElementUtilities.removeClass(this._dom.root, _Constants.ClassNames.closedClass);
-            this._dom.root.style.width = closedActionAreaRect.width + "px";
-            this._dom.root.style.left = closedActionAreaRect.left + "px";
+            this._dom.root.style.width = closedCommandingSurfaceRect.width + "px";
+            this._dom.root.style.left = closedCommandingSurfaceRect.left + "px";
             this._commandingSurface.synchronousOpen();
             // Measure opened state
             var openedRects = this._commandingSurface.getBoundingRects();
@@ -69932,20 +69968,20 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             var topOfViewport = 0, bottomOfViewport = topOfViewport + _Global.innerHeight, tolerance = 1;
             var alignTop = function () {
                 _this._commandingSurface.overflowDirection = "bottom"; // TODO: Is it safe to use the static commandingSurface "OverflowDirection" enum for this value? (lazy loading... et al)
-                _this._dom.root.style.top = closedActionAreaRect.top + "px";
+                _this._dom.root.style.top = closedCommandingSurfaceRect.top + "px";
             };
             var alignBottom = function () {
                 _this._commandingSurface.overflowDirection = "top"; // TODO: Is it safe to use the static commandingSurface "OverflowDirection" enum for this value? (lazy loading... et al)
-                _this._dom.root.style.bottom = (bottomOfViewport - closedActionAreaRect.bottom) + "px";
+                _this._dom.root.style.bottom = (bottomOfViewport - closedCommandingSurfaceRect.bottom) + "px";
             };
             function fitsBelow() {
                 // If we orient the commandingSurface from top to bottom, would the bottom of the overflow area fit above the bottom edge of the window?
-                var bottomOfOverFlowArea = closedActionAreaRect.top + openedRects.actionArea.height + openedRects.overflowArea.height;
+                var bottomOfOverFlowArea = closedCommandingSurfaceRect.top + openedRects.commandingSurface.height + openedRects.overflowArea.height;
                 return bottomOfOverFlowArea < bottomOfViewport + tolerance;
             }
             function fitsAbove() {
                 // If we orient the commandingSurface from bottom to top, would the top of the overflow area fit below the top edge of the window?
-                var topOfOverFlowArea = closedActionAreaRect.bottom - openedRects.actionArea.height - openedRects.overflowArea.height;
+                var topOfOverFlowArea = closedCommandingSurfaceRect.bottom - openedRects.commandingSurface.height - openedRects.overflowArea.height;
                 return topOfOverFlowArea > topOfViewport - tolerance;
             }
             if (fitsBelow()) {

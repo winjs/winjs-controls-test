@@ -4293,7 +4293,7 @@ Settings Pane
   -ms-flex-direction: column;
   -webkit-flex-direction: column;
   flex-direction: column;
-  min-width: 320px;
+  min-width: 160px;
   min-height: 0;
   max-height: 50vh;
   overflow-y: auto;
@@ -4301,6 +4301,7 @@ Settings Pane
   padding: 0;
   position: absolute;
   right: 0;
+  left: auto;
 }
 .win-commandingsurface .win-commandingsurface-overflowarea:lang(ar),
 .win-commandingsurface .win-commandingsurface-overflowarea:lang(dv),
@@ -4319,8 +4320,8 @@ Settings Pane
   right: auto;
 }
 .win-commandingsurface .win-commandingsurface-overflowarea.win-menu {
-  max-width: inherit;
-  /* Turn off max-width styles from .win-menu */
+  max-width: 480px;
+  /* override max-width styles from WinJS.UI.Menu */
 }
 .win-commandingsurface .win-commandingsurface-overflowarea button.win-command {
   -ms-flex: 0 0 auto;
@@ -4340,6 +4341,11 @@ Settings Pane
   flex: 0 0 auto;
   height: 2px;
   margin: 6px 12px 4px 12px;
+}
+@media (max-width: 480px) {
+  .win-commandingsurface .win-commandingsurface-overflowarea.win-menu {
+    width: 100vw;
+  }
 }
 .win-toolbar {
   min-width: 32px;
@@ -5322,7 +5328,7 @@ Hide clear button in search box control.
 .win-appbar.win-appbar-bottom {
   bottom: 0;
 }
-.win-appbar.win-appbar-closeddisplaynone {
+.win-appbar.win-appbar-closed.win-appbar-closeddisplaynone {
   display: none;
 }
 body {
