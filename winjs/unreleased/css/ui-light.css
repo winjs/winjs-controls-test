@@ -6085,6 +6085,14 @@ button.win-command:disabled:active .win-label {
   color: #000000;
   background-color: rgba(0, 0, 0, 0.2);
 }
+.win-toolbar,
+.win-toolbar {
+  background-color: #e6e6e6;
+}
+.win-toolbar .win-commandingsurface,
+.win-toolbar .win-commandingsurface {
+  background-color: inherit;
+}
 .win-autosuggestbox-flyout-highlighttext {
   color: #4617b4;
 }
@@ -6183,8 +6191,16 @@ button.win-command:disabled:active .win-label {
 .win-splitview-pane {
   background-color: #f2f2f2;
 }
+.win-appbar,
+.win-appbar {
+  background-color: #e6e6e6;
+}
+.win-appbar .win-commandingsurface,
+.win-appbar .win-commandingsurface {
+  background-color: inherit;
+}
 html.win-hoverable {
-  /* Appbar control colors */
+  /* LegacyAppBar control colors */
 }
 html.win-hoverable .win-selectionstylefilled .win-container:hover .win-itembox,
 html.win-hoverable .win-selectionstylefilled.win-container:hover .win-itembox {
@@ -7072,6 +7088,14 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.2);
 }
+.win-ui-dark.win-toolbar,
+.win-ui-dark .win-toolbar {
+  background-color: #393939;
+}
+.win-ui-dark.win-toolbar .win-commandingsurface,
+.win-ui-dark .win-toolbar .win-commandingsurface {
+  background-color: inherit;
+}
 .win-ui-dark .win-autosuggestbox-flyout-highlighttext {
   color: #4617b4;
 }
@@ -7170,8 +7194,16 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark .win-splitview-pane {
   background-color: #171717;
 }
+.win-ui-dark.win-appbar,
+.win-ui-dark .win-appbar {
+  background-color: #393939;
+}
+.win-ui-dark.win-appbar .win-commandingsurface,
+.win-ui-dark .win-appbar .win-commandingsurface {
+  background-color: inherit;
+}
 html.win-hoverable .win-ui-dark {
-  /* Appbar control colors */
+  /* LegacyAppBar control colors */
 }
 html.win-hoverable .win-ui-dark .win-selectionstylefilled .win-container:hover .win-itembox,
 html.win-hoverable .win-ui-dark .win-selectionstylefilled.win-container:hover .win-itembox {
@@ -7517,8 +7549,24 @@ html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand
     color: ButtonFace;
     background-color: ButtonText;
   }
+  .win-toolbar,
+  .win-toolbar {
+    background-color: ButtonFace;
+  }
+  .win-toolbar .win-commandingsurface,
+  .win-toolbar .win-commandingsurface {
+    background-color: inherit;
+  }
+  .win-appbar,
+  .win-appbar {
+    background-color: ButtonFace;
+  }
+  .win-appbar .win-commandingsurface,
+  .win-appbar .win-commandingsurface {
+    background-color: inherit;
+  }
   html.win-hoverable {
-    /* Appbar control colors */
+    /* LegacyAppBar control colors */
   }
   html.win-hoverable.win-navbar button.win-navbar-invokebutton:enabled:hover,
   html.win-hoverable .win-navbar button.win-navbar-invokebutton:enabled:hover,
