@@ -1,14 +1,19 @@
 ﻿
 /*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
-(function (global) {
+(function (globalObject) {
 
+    var globalObject = 
+        typeof window !== 'undefined' ? window :
+        typeof self !== 'undefined' ? self :
+        typeof global !== 'undefined' ? global :
+        {};
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.1 WinJS.js,StartTM');
-            factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.1 WinJS.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.1 WinJS.js,StartTM');
+            factory(globalObject.WinJS);
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.1 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -115,11 +120,19 @@ define("amd", function(){});
 define('WinJS/Core/_WinJS',{});
 
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
-(function (global) {
+define('WinJS/Core/_Global',[], function () {
     "use strict";
-
-    define('WinJS/Core/_Global',global);
-}(this));
+    
+    // Appease jshint
+    /* global window, self, global */
+    
+    var globalObject =
+        typeof window !== 'undefined' ? window :
+        typeof self !== 'undefined' ? self :
+        typeof global !== 'undefined' ? global :
+        {};
+    return globalObject;
+});
 
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_BaseCoreUtils',[
@@ -80599,9 +80612,9 @@ define('WinJS',[
 });
 
         require(['WinJS/Core/_WinJS', 'WinJS'], function (_WinJS) {
-            global.WinJS = _WinJS;
+            globalObject.WinJS = _WinJS;
         });
-        return global.WinJS;
+        return globalObject.WinJS;
     }));
-}(this));
+}());
 

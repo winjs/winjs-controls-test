@@ -4,8 +4,13 @@
   Version: WinJS.4.0
 */
 
-(function (global) {
-    global.strings = global.strings || {};
+(function () {
+    var globalObject =
+        typeof window !== 'undefined' ? window :
+        typeof self !== 'undefined' ? self :
+        typeof global !== 'undefined' ? global :
+        {};
+    globalObject.strings = globalObject.strings || {};
 
     var appxVersion = "WinJS.4.0";
     var developerPrefix = "Developer.";
@@ -15,7 +20,7 @@
 
     function addStrings(keyPrefix,  strings) {
         Object.keys(strings).forEach(function (key) {
-            global.strings[keyPrefix + key.replace("\\", "/")] = strings[key];
+            globalObject.strings[keyPrefix + key.replace("\\", "/")] = strings[key];
         });
     }
     addStrings("ms-resource://"+appxVersion+"/ui/",
@@ -467,4 +472,4 @@
 }
 
 );
-}(this));
+}());
