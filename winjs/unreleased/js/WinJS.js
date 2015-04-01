@@ -6,9 +6,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.31 WinJS.js,StartTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.1 WinJS.js,StartTM');
             factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.3.31 WinJS.js,StopTM');
+            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.1 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -5621,8 +5621,25 @@ define('WinJS/Utilities/_ElementUtilities',[
             return Math.round(parseFloat(value)) || 0;
         }
     }
+
     function getDimension(element, property) {
         return convertToPixels(element, _Global.getComputedStyle(element, null)[property]);
+    }
+
+    function _convertToPrecisePixels(value) {
+        return parseFloat(value) || 0;
+    }
+    function _getPreciseDimension(element, property) {
+        return _convertToPrecisePixels(_Global.getComputedStyle(element, null)[property]);
+    }
+    function _getPreciseMargins(element) {
+        var style = _Global.getComputedStyle(element);
+        return {
+            top: _convertToPrecisePixels(style.marginTop),
+            right: _convertToPrecisePixels(style.marginRight),
+            bottom: _convertToPrecisePixels(style.marginBottom),
+            left: _convertToPrecisePixels(style.marginLeft),
+        };
     }
 
     var _MSGestureEvent = _Global.MSGestureEvent || {
@@ -7336,6 +7353,11 @@ define('WinJS/Utilities/_ElementUtilities',[
                 padding = getDimension(element, "paddingLeft") + getDimension(element, "paddingRight");
             return element.offsetWidth - border - padding;
         },
+        _getPreciseContentWidth: function (element) {
+            var border = _getPreciseDimension(element, "borderLeftWidth") + _getPreciseDimension(element, "borderRightWidth"),
+                padding = _getPreciseDimension(element, "paddingLeft") + _getPreciseDimension(element, "paddingRight");
+            return element.offsetWidth - border - padding;
+        },
 
         getTotalWidth: function (element) {
             /// <signature helpKeyword="WinJS.Utilities.getTotalWidth">
@@ -7350,6 +7372,10 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// </returns>
             /// </signature>
             var margin = getDimension(element, "marginLeft") + getDimension(element, "marginRight");
+            return element.offsetWidth + margin;
+        },
+        _getPreciseTotalWidth: function (element) {
+            var margin = _getPreciseDimension(element, "marginLeft") + _getPreciseDimension(element, "marginRight");
             return element.offsetWidth + margin;
         },
 
@@ -7369,6 +7395,11 @@ define('WinJS/Utilities/_ElementUtilities',[
                 padding = getDimension(element, "paddingTop") + getDimension(element, "paddingBottom");
             return element.offsetHeight - border - padding;
         },
+        _getPreciseContentHeight: function (element) {
+            var border = _getPreciseDimension(element, "borderTopWidth") + _getPreciseDimension(element, "borderBottomWidth"),
+                padding = _getPreciseDimension(element, "paddingTop") + _getPreciseDimension(element, "paddingBottom");
+            return element.offsetHeight - border - padding;
+        },
 
         getTotalHeight: function (element) {
             /// <signature helpKeyword="WinJS.Utilities.getTotalHeight">
@@ -7383,6 +7414,10 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// </returns>
             /// </signature>
             var margin = getDimension(element, "marginTop") + getDimension(element, "marginBottom");
+            return element.offsetHeight + margin;
+        },
+        _getPreciseTotalHeight: function (element) {
+            var margin = _getPreciseDimension(element, "marginTop") + _getPreciseDimension(element, "marginBottom");
             return element.offsetHeight + margin;
         },
 
@@ -7433,6 +7468,9 @@ define('WinJS/Utilities/_ElementUtilities',[
         },
 
         convertToPixels: convertToPixels,
+        _convertToPrecisePixels: _convertToPrecisePixels,
+        _getPreciseMargins: _getPreciseMargins,
+
 
         eventWithinElement: function (element, event) {
             /// <signature helpKeyword="WinJS.Utilities.eventWithinElement">
@@ -66713,6 +66751,7 @@ define('WinJS/Controls/CommandingSurface/_Constants',["require", "exports"], fun
     exports.overflowCommandHeight = 44;
     exports.overflowSeparatorHeight = 12;
     exports.controlMinWidth = exports.actionAreaOverflowButtonWidth;
+    exports.overflowAreaMaxWidth = 480;
     exports.heightOfMinimal = 24;
     exports.heightOfCompact = 48;
     exports.contentMenuCommandDefaultLabel = "Custom content";
@@ -66760,6 +66799,11 @@ define('WinJS/Controls/ToolBar/_Constants',["require", "exports", "../Commanding
         beforeClose: "beforeclose",
         afterClose: "afterclose"
     };
+    exports.OverflowDirection = {
+        top: "top",
+        bottom: "bottom",
+    };
+    exports.overflowAreaMaxWidth = _CommandingSurfaceConstants.overflowAreaMaxWidth;
     exports.controlMinWidth = _CommandingSurfaceConstants.controlMinWidth;
     exports.defaultClosedDisplayMode = "compact";
     exports.defaultOpened = false;
@@ -69176,7 +69220,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
         };
         _CommandingSurface.prototype._resizeHandler = function () {
             if (this._dom.root.offsetWidth) {
-                var currentActionAreaWidth = _ElementUtilities.getContentWidth(this._dom.actionArea);
+                var currentActionAreaWidth = _ElementUtilities._getPreciseContentWidth(this._dom.actionArea);
                 if (this._cachedMeasurements && this._cachedMeasurements.actionAreaContentBoxWidth !== currentActionAreaWidth) {
                     this._cachedMeasurements.actionAreaContentBoxWidth = currentActionAreaWidth;
                     this._layoutDirty();
@@ -69374,7 +69418,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             this._writeProfilerMark("_measure,info");
             var canMeasure = (_Global.document.body.contains(this._dom.root) && this._dom.actionArea.offsetWidth > 0);
             if (canMeasure) {
-                var overflowButtonWidth = _ElementUtilities.getTotalWidth(this._dom.overflowButton), actionAreaContentBoxWidth = _ElementUtilities.getContentWidth(this._dom.actionArea), separatorWidth = 0, standardCommandWidth = 0, contentCommandWidths = {};
+                var overflowButtonWidth = _ElementUtilities._getPreciseTotalWidth(this._dom.overflowButton), actionAreaContentBoxWidth = _ElementUtilities._getPreciseContentWidth(this._dom.actionArea), separatorWidth = 0, standardCommandWidth = 0, contentCommandWidths = {};
                 this._primaryCommands.forEach(function (command) {
                     // Ensure that the element we are measuring does not have display: none (e.g. it was just added, and it
                     // will be animated in)
@@ -69382,18 +69426,18 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                     command.element.style.display = "";
                     if (command.type === _Constants.typeContent) {
                         // Measure each 'content' command type that we find
-                        contentCommandWidths[_this._commandUniqueId(command)] = _ElementUtilities.getTotalWidth(command.element);
+                        contentCommandWidths[_this._commandUniqueId(command)] = _ElementUtilities._getPreciseTotalWidth(command.element);
                     }
                     else if (command.type === _Constants.typeSeparator) {
                         // Measure the first 'separator' command type we find.
                         if (!separatorWidth) {
-                            separatorWidth = _ElementUtilities.getTotalWidth(command.element);
+                            separatorWidth = _ElementUtilities._getPreciseTotalWidth(command.element);
                         }
                     }
                     else {
                         // Button, toggle, 'flyout' command types have the same width. Measure the first one we find.
                         if (!standardCommandWidth) {
-                            standardCommandWidth = _ElementUtilities.getTotalWidth(command.element);
+                            standardCommandWidth = _ElementUtilities._getPreciseTotalWidth(command.element);
                         }
                     }
                     // Restore the original display style
@@ -69869,9 +69913,6 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             // Synchronoulsy close the ToolBar to force it out of the body and back into its parent element.
             this._synchronousClose();
             _Dispose.disposeSubTree(this.element);
-            //TODO: Does the placeHolder element need a dispose method on it as well, so that will be called if its parent subtree is disposed?
-            // If the placeholder is in the DOM at all, it means the toolbar is temporarily open and absolutely positioned in the docuent.body.
-            // Also, can we accomplish this just by hanging this._winControl off of the placeHolder element as well?
         };
         ToolBar.prototype.forceLayout = function () {
             /// <signature helpKeyword="WinJS.UI.ToolBar.forceLayout">
@@ -69904,12 +69945,20 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
                 root.setAttribute("aria-label", strings.ariaLabel);
             }
             // Create element for commandingSurface and reparent any declarative Commands.
-            // commandingSurface will parse child elements as AppBarCommands.
+            // The CommandingSurface constructor will parse child elements as AppBarCommands.
             var commandingSurfaceEl = document.createElement("DIV");
             _ElementUtilities._reparentChildren(root, commandingSurfaceEl);
             root.appendChild(commandingSurfaceEl);
+            // While the ToolBar is open, it will place itself in the <body> so it can become a light dismissible
+            // overlay. It leaves the placeHolder element behind as stand in at the ToolBar's original DOM location
+            // to avoid reflowing surrounding app content and create the illusion that the ToolBar hasn't moved along
+            // the x or y planes.
             var placeHolder = _Global.document.createElement("DIV");
             _ElementUtilities.addClass(placeHolder, _Constants.ClassNames.placeHolderCssClass);
+            // If the ToolBar's original HTML parent node is disposed while the ToolBar is open and repositioned as 
+            // a temporary child of the <body>, make sure that calling dispose on the placeHolder element will trigger 
+            // dispose on the ToolBar as well.
+            _Dispose.markDisposable(placeHolder, this.dispose.bind(this));
             this._dom = {
                 root: root,
                 commandingSurfaceEl: commandingSurfaceEl,
@@ -69943,57 +69992,57 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             this._commandingSurface.updateDomImpl();
         };
         ToolBar.prototype._updateDomImpl_renderOpened = function () {
-            var _this = this;
             // Measure closed state.
-            var closedCommandingSurfaceRect = this._commandingSurface.getBoundingRects().commandingSurface;
             this._updateDomImpl_renderedState.prevInlineWidth = this._dom.root.style.width;
-            // Get replacement element
+            var closedBorderBox = this._dom.root.getBoundingClientRect();
+            var closedContentWidth = _ElementUtilities._getPreciseContentWidth(this._dom.root);
+            var closedContentHeight = _ElementUtilities._getPreciseContentHeight(this._dom.root);
+            var closedStyle = getComputedStyle(this._dom.root);
+            var closedPaddingTop = _ElementUtilities._convertToPrecisePixels(closedStyle.paddingTop);
+            var closedBorderTop = _ElementUtilities._convertToPrecisePixels(closedStyle.borderTopWidth);
+            var closedMargins = _ElementUtilities._getPreciseMargins(this._dom.root);
+            var closedContentBoxTop = closedBorderBox.top + closedBorderTop + closedPaddingTop;
+            var closedContentBoxBottom = closedContentBoxTop + closedContentHeight;
+            // Size our placeHolder. Set height and width to match borderbox of the closed ToolBar.
+            // Copy ToolBar margins to the placeholder.
             var placeHolder = this._dom.placeHolder;
-            placeHolder.style.width = closedCommandingSurfaceRect.width + "px";
-            placeHolder.style.height = closedCommandingSurfaceRect.height + "px";
-            // Move ToolBar element to the body and leave placeHolder element in our place to avoid reflowing surrounding app content.
+            var placeHolderStyle = placeHolder.style;
+            placeHolderStyle.width = closedBorderBox.width + "px";
+            placeHolderStyle.height = closedBorderBox.height + "px";
+            placeHolderStyle.marginTop = closedMargins.top + "px";
+            placeHolderStyle.marginRight = closedMargins.right + "px";
+            placeHolderStyle.marginBottom = closedMargins.bottom + "px";
+            placeHolderStyle.marginLeft = closedMargins.left + "px";
+            // Move ToolBar element to the body in preparation of becoming a light dismissible. Leave an equal sized placeHolder element 
+            // at our original DOM location to avoid reflowing surrounding app content.
             this._dom.root.parentElement.insertBefore(placeHolder, this._dom.root);
             _Global.document.body.appendChild(this._dom.root);
+            // Position the ToolBar to completely cover the same region as the placeholder element.
+            this._dom.root.style.width = closedContentWidth + "px";
+            this._dom.root.style.left = closedBorderBox.left - closedMargins.left + "px";
+            // Determine which direction to expand the CommandingSurface elements when opened. The overflow area will be rendered at the corresponding edge of 
+            // the ToolBar's content box, so we choose the direction that offers the most space between that edge and the corresponding edge of the viewport. 
+            // This is to reduce the chance that the overflow area might clip through the edge of the viewport.
+            var topOfViewport = 0;
+            var bottomOfViewport = _Global.innerHeight;
+            var distanceFromTop = closedContentBoxTop - topOfViewport;
+            var distanceFromBottom = bottomOfViewport - closedContentBoxBottom;
+            if (distanceFromTop > distanceFromBottom) {
+                // CommandingSurface is going to expand updwards.
+                this._commandingSurface.overflowDirection = _Constants.OverflowDirection.top;
+                // Position the bottom edge of the ToolBar marginbox over the bottom edge of the placeholder marginbox.
+                this._dom.root.style.bottom = (bottomOfViewport - closedBorderBox.bottom) - closedMargins.bottom + "px";
+            }
+            else {
+                // CommandingSurface is going to expand downwards.
+                this._commandingSurface.overflowDirection = _Constants.OverflowDirection.bottom;
+                // Position the top edge of the ToolBar marginbox over the top edge of the placeholder marginbox.
+                this._dom.root.style.top = (topOfViewport + closedBorderBox.top) - closedMargins.top + "px";
+            }
             // Render opened state
             _ElementUtilities.addClass(this._dom.root, _Constants.ClassNames.openedClass);
             _ElementUtilities.removeClass(this._dom.root, _Constants.ClassNames.closedClass);
-            this._dom.root.style.width = closedCommandingSurfaceRect.width + "px";
-            this._dom.root.style.left = closedCommandingSurfaceRect.left + "px";
             this._commandingSurface.synchronousOpen();
-            // Measure opened state
-            var openedRects = this._commandingSurface.getBoundingRects();
-            //
-            // Determine _commandingSurface overflowDirection
-            //
-            var topOfViewport = 0, bottomOfViewport = topOfViewport + _Global.innerHeight, tolerance = 1;
-            var alignTop = function () {
-                _this._commandingSurface.overflowDirection = "bottom"; // TODO: Is it safe to use the static commandingSurface "OverflowDirection" enum for this value? (lazy loading... et al)
-                _this._dom.root.style.top = closedCommandingSurfaceRect.top + "px";
-            };
-            var alignBottom = function () {
-                _this._commandingSurface.overflowDirection = "top"; // TODO: Is it safe to use the static commandingSurface "OverflowDirection" enum for this value? (lazy loading... et al)
-                _this._dom.root.style.bottom = (bottomOfViewport - closedCommandingSurfaceRect.bottom) + "px";
-            };
-            function fitsBelow() {
-                // If we orient the commandingSurface from top to bottom, would the bottom of the overflow area fit above the bottom edge of the window?
-                var bottomOfOverFlowArea = closedCommandingSurfaceRect.top + openedRects.commandingSurface.height + openedRects.overflowArea.height;
-                return bottomOfOverFlowArea < bottomOfViewport + tolerance;
-            }
-            function fitsAbove() {
-                // If we orient the commandingSurface from bottom to top, would the top of the overflow area fit below the top edge of the window?
-                var topOfOverFlowArea = closedCommandingSurfaceRect.bottom - openedRects.commandingSurface.height - openedRects.overflowArea.height;
-                return topOfOverFlowArea > topOfViewport - tolerance;
-            }
-            if (fitsBelow()) {
-                alignTop();
-            }
-            else if (fitsAbove()) {
-                alignBottom();
-            }
-            else {
-                // TODO, orient ourselves top to bottom and shrink the height of the overflowarea to make us fit within the available space.
-                alignTop();
-            }
         };
         ToolBar.prototype._updateDomImpl_renderClosed = function () {
             // Restore our placement in the DOM
