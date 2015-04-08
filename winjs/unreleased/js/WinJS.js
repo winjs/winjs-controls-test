@@ -6577,7 +6577,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                 if (_Global.HTMLElement && _Global.HTMLElement.prototype.setActive) {
                     element.setActive();
                 } else {
-                    // We are aware the unlike setActive(), focus() will scroll to the element that gets focus. However, this is
+                    // We are aware that, unlike setActive(), focus() will scroll to the element that gets focus. However, this is
                     // our current cross-browser solution until there is an equivalent for setActive() in other browsers.
                     //
                     // This _setActive polyfill does have limited support for preventing scrolling: via the scroller parameter, it
@@ -7701,6 +7701,16 @@ define('WinJS/Utilities/_ElementUtilities',[
                 destinationParent.appendChild(child);
                 child = sibling;
             }
+        },
+
+        // Ensures that the same element has focus before and after *callback* is
+        // called. Useful if moving focus is an unintentional side effect of *callback*.
+        // For example, this could happen if *callback* removes and reinserts elements
+        // to the DOM.
+        _maintainFocus: function ElementUtilities_maintainFocus(callback) {
+            var focusedElement = _Global.document.activeElement;
+            callback();
+            exports._trySetActive(focusedElement);
         },
 
         _trySetActive: function Utilities_trySetActive(elem, scroller) {
@@ -69650,10 +69660,501 @@ define('WinJS/Controls/CommandingSurface',["require", "exports"], function (requ
 });
 
 
+define('require-style!less/styles-lightdismissservice',[],function(){});
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
+define('WinJS/_LightDismissService',["require", "exports", './Application', './Core/_Base', './Core/_BaseUtils', './Utilities/_ElementUtilities', './Core/_Global', './Utilities/_KeyboardBehavior', './Core/_Log', './Core/_Resources'], function (require, exports, Application, _Base, _BaseUtils, _ElementUtilities, _Global, _KeyboardBehavior, _Log, _Resources) {
+    require(["require-style!less/styles-lightdismissservice"]);
+    "use strict";
+    var baseZIndex = 900; // Below Ovelays for now
+    var rightButton = 2;
+    var Strings = {
+        get closeOverlay() {
+            return _Resources._getWinJSString("ui/closeOverlay").value;
+        }
+    };
+    var ClassNames = {
+        _clickEater: "win-clickeater"
+    };
+    var EventNames = {
+        requestingFocusOnKeyboardInput: "requestingfocusonkeyboardinput",
+        edgyStarting: "edgystarting",
+        edgyCompleted: "edgycompleted",
+        edgyCanceled: "edgycanceled"
+    };
+    var LightDismissalReasons = {
+        tap: "tap",
+        lostFocus: "lostFocus",
+        escape: "escape",
+        hardwareBackButton: "hardwareBackButton",
+        windowResize: "windowResize",
+        windowBlur: "windowBlur",
+        edgy: "edgy"
+    };
+    // Built-in implementations of ILightDismissable's onShouldLightDismiss.
+    exports.DismissalPolicies = {
+        light: function LightDismissalPolicies_light_onShouldLightDismiss(info) {
+            switch (info.reason) {
+                case LightDismissalReasons.tap:
+                case LightDismissalReasons.escape:
+                    if (info.active) {
+                        return true;
+                    }
+                    else {
+                        info.stopPropagation();
+                        return false;
+                    }
+                    break;
+                case LightDismissalReasons.hardwareBackButton:
+                    if (info.active) {
+                        info.preventDefault(); // prevent backwards navigation in the app
+                        return true;
+                    }
+                    else {
+                        info.stopPropagation();
+                        return false;
+                    }
+                    break;
+                case LightDismissalReasons.lostFocus:
+                case LightDismissalReasons.windowResize:
+                case LightDismissalReasons.windowBlur:
+                case LightDismissalReasons.edgy:
+                    return true;
+            }
+        },
+        sticky: function LightDismissalPolicies_sticky_onShouldLightDismiss(info) {
+            info.stopPropagation();
+            return false;
+        }
+    };
+    var LightDismissableElement = (function () {
+        function LightDismissableElement(args) {
+            this.element = args.element;
+            this.element.tabIndex = args.tabIndex;
+            this.onLightDismiss = args.onLightDismiss;
+            // Allow the caller to override the default implementations of our ILightDismissable methods.
+            if (args.setZIndex) {
+                this.setZIndex = args.setZIndex;
+            }
+            if (args.containsElement) {
+                this.containsElement = args.containsElement;
+            }
+            if (args.requiresClickEater) {
+                this.requiresClickEater = args.requiresClickEater;
+            }
+            if (args.onActivate) {
+                this.onActivate = args.onActivate;
+            }
+            this._customOnFocus = args.onFocus;
+            this._customOnHide = args.onHide;
+            if (args.onShouldLightDismiss) {
+                this.onShouldLightDismiss = args.onShouldLightDismiss;
+            }
+        }
+        LightDismissableElement.prototype.setZIndex = function (zIndex) {
+            this.element.style.zIndex = zIndex;
+        };
+        LightDismissableElement.prototype.containsElement = function (element) {
+            return this.element.contains(element);
+        };
+        LightDismissableElement.prototype.requiresClickEater = function () {
+            return true;
+        };
+        LightDismissableElement.prototype.onActivate = function () {
+            var activeElement = _Global.document.activeElement;
+            if (activeElement && this.containsElement(activeElement)) {
+                this._ldeCurrentFocus = activeElement;
+            }
+            else {
+                // If the last input type was keyboard, use focus() so a keyboard focus visual is drawn.
+                // Otherwise, use setActive() so no focus visual is drawn.
+                var useSetActive = !_KeyboardBehavior._keyboardSeenLast;
+                (this._ldeCurrentFocus && this.containsElement(this._ldeCurrentFocus) && _ElementUtilities._tryFocus(this._ldeCurrentFocus, useSetActive)) || _ElementUtilities._focusFirstFocusableElement(this.element, useSetActive) || _ElementUtilities._tryFocus(this.element, useSetActive);
+            }
+        };
+        LightDismissableElement.prototype.onFocus = function (element) {
+            this._ldeCurrentFocus = element;
+            this._customOnFocus && this._customOnFocus(element);
+        };
+        LightDismissableElement.prototype.onHide = function () {
+            this._ldeCurrentFocus = null;
+            this._customOnHide && this._customOnHide();
+        };
+        LightDismissableElement.prototype.onShouldLightDismiss = function (info) {
+            return exports.DismissalPolicies.light(info);
+        };
+        LightDismissableElement.prototype.onLightDismiss = function (info) {
+        };
+        return LightDismissableElement;
+    })();
+    exports.LightDismissableElement = LightDismissableElement;
+    // An implementation of ILightDismissable that represents the HTML body element. It can never be dismissed. The
+    // service should instantiate one of these to act as the bottommost light dismissable at all times (it isn't expected
+    // for anybody else to instantiate one). It takes care of restoring focus when the last dismissable is dismissed.
+    var LightDismissableBody = (function () {
+        function LightDismissableBody() {
+        }
+        LightDismissableBody.prototype.setZIndex = function (zIndex) {
+        };
+        LightDismissableBody.prototype.containsElement = function (element) {
+            return _Global.document.body.contains(element);
+        };
+        LightDismissableBody.prototype.requiresClickEater = function () {
+            return false;
+        };
+        LightDismissableBody.prototype.onActivate = function () {
+            // If the last input type was keyboard, use focus() so a keyboard focus visual is drawn.
+            // Otherwise, use setActive() so no focus visual is drawn.
+            var useSetActive = !_KeyboardBehavior._keyboardSeenLast;
+            (this.currentFocus && this.containsElement(this.currentFocus) && _ElementUtilities._tryFocus(this.currentFocus, useSetActive)) || _Global.document.body && _ElementUtilities._focusFirstFocusableElement(_Global.document.body, useSetActive) || _Global.document.body && _ElementUtilities._tryFocus(_Global.document.body, useSetActive);
+        };
+        LightDismissableBody.prototype.onFocus = function (element) {
+            this.currentFocus = element;
+        };
+        LightDismissableBody.prototype.onHide = function () {
+            this.currentFocus = null;
+        };
+        LightDismissableBody.prototype.onShouldLightDismiss = function (info) {
+            return false;
+        };
+        LightDismissableBody.prototype.onLightDismiss = function (info) {
+        };
+        return LightDismissableBody;
+    })();
+    //
+    // Light dismiss service
+    //
+    var OrderedCache = (function () {
+        function OrderedCache() {
+            // The item that was most recently touched appears at index 0.
+            this._orderedCache = [];
+        }
+        OrderedCache.prototype.touch = function (item) {
+            // Optimization: if *item* is already at index 0, then there's no need to move it to the front of the list.
+            if (this._orderedCache[0] !== item) {
+                this.remove(item);
+                this._orderedCache.unshift(item);
+            }
+        };
+        OrderedCache.prototype.remove = function (item) {
+            var index = this._orderedCache.indexOf(item);
+            if (index !== -1) {
+                this._orderedCache.splice(index, 1);
+            }
+        };
+        // Returns the item in *candidates* that was most recently touched.
+        OrderedCache.prototype.mostRecentlyTouched = function (candidates) {
+            for (var i = 0, len = this._orderedCache.length; i < len; i++) {
+                if (candidates.indexOf(this._orderedCache[i]) !== -1) {
+                    return this._orderedCache[i];
+                }
+            }
+            return null;
+        };
+        return OrderedCache;
+    })();
+    var LightDismissService = (function () {
+        function LightDismissService() {
+            this._debug = false; // Disables dismiss due to window blur. Useful during debugging.
+            this._clients = [];
+            this._focusCache = new OrderedCache();
+            this._notifying = false;
+            this._bodyClient = new LightDismissableBody();
+            // State private to _updateDom. No other method should make use of it.
+            this._updateDom_rendered = {
+                clickEaterInDom: false,
+                serviceActive: false
+            };
+            this._clickEaterEl = this._createClickEater();
+            this._onFocusInBound = this._onFocusIn.bind(this);
+            this._onKeyDownBound = this._onKeyDown.bind(this);
+            this._onWindowResizeBound = this._onWindowResize.bind(this);
+            this._onClickEaterPointerUpBound = this._onClickEaterPointerUp.bind(this);
+            this._onClickEaterPointerCancelBound = this._onClickEaterPointerCancel.bind(this);
+            // Register for infrequent events.
+            Application.addEventListener("backclick", this._onBackClick.bind(this));
+            // Focus handlers generally use _ElementUtilities._addEventListener with focusout/focusin. This
+            // uses the browser's blur event directly beacuse _addEventListener doesn't support focusout/focusin
+            // on window.
+            _Global.window.addEventListener("blur", this._onWindowBlur.bind(this));
+            this.shown(this._bodyClient);
+        }
+        // Dismissables should call this as soon as they are ready to be shown. More specifically, they should call this:
+        //   - After they are in the DOM and ready to receive focus (e.g. style.display cannot = "none")
+        //   - Before their entrance animation is played
+        LightDismissService.prototype.shown = function (client) {
+            var index = this._clients.indexOf(client);
+            if (index === -1) {
+                this._clients.push(client);
+                this._updateDom();
+            }
+        };
+        // Dismissables should call this when they are done being dismissed (i.e. after their exit animation has finished)
+        LightDismissService.prototype.hidden = function (client) {
+            var index = this._clients.indexOf(client);
+            if (index !== -1) {
+                this._clients.splice(index, 1);
+                this._focusCache.remove(client);
+                client.setZIndex("");
+                client.onHide();
+                this._updateDom();
+            }
+        };
+        LightDismissService.prototype.isShown = function (client) {
+            return this._clients.indexOf(client) !== -1;
+        };
+        LightDismissService.prototype.isTopmost = function (client) {
+            return client === this._clients[this._clients.length - 1];
+        };
+        // Disables dismiss due to window blur. Useful during debugging.
+        LightDismissService.prototype._setDebug = function (debug) {
+            this._debug = debug;
+        };
+        LightDismissService.prototype._updateDom = function () {
+            var rendered = this._updateDom_rendered;
+            if (this._notifying) {
+                return;
+            }
+            var serviceActive = this._clients.length > 1;
+            if (serviceActive !== rendered.serviceActive) {
+                // Unregister/register for events that occur frequently.
+                if (serviceActive) {
+                    _ElementUtilities._addEventListener(_Global.document.documentElement, "focusin", this._onFocusInBound);
+                    _Global.document.documentElement.addEventListener("keydown", this._onKeyDownBound);
+                    _Global.window.addEventListener("resize", this._onWindowResizeBound);
+                    this._bodyClient.currentFocus = _Global.document.activeElement;
+                }
+                else {
+                    _ElementUtilities._removeEventListener(_Global.document.documentElement, "focusin", this._onFocusInBound);
+                    _Global.document.documentElement.removeEventListener("keydown", this._onKeyDownBound);
+                    _Global.window.removeEventListener("resize", this._onWindowResizeBound);
+                }
+                rendered.serviceActive = serviceActive;
+            }
+            var clickEaterIndex = -1;
+            this._clients.forEach(function (c, i) {
+                if (c.requiresClickEater()) {
+                    clickEaterIndex = i;
+                }
+                c.setZIndex("" + (baseZIndex + i * 2 + 1));
+            });
+            if (clickEaterIndex !== -1) {
+                this._clickEaterEl.style.zIndex = "" + (baseZIndex + clickEaterIndex * 2);
+            }
+            var clickEaterInDom = clickEaterIndex !== -1;
+            if (clickEaterInDom !== rendered.clickEaterInDom) {
+                if (clickEaterInDom) {
+                    _Global.document.body.appendChild(this._clickEaterEl);
+                }
+                else {
+                    var parent = this._clickEaterEl.parentNode;
+                    parent && parent.removeChild(this._clickEaterEl);
+                }
+                rendered.clickEaterInDom = clickEaterInDom;
+            }
+            // Which dismissable should receive focus? In the easy case, there is only one dismissable above the click eater
+            // so this dismissable should receive focus. However, which one should receive focus if multiple dismissables
+            // are above the click eater? Our answer is the dismissable which is above the click eater which had focus most
+            // recently. Here's an example scenario. Suppose there are 2 dismissables and no click eater: the body and a sticky
+            // AppBar. Then:
+            //   - If a Flyout is launched by clicking a button in the body, then the body should receive focus when the
+            //     Flyout dismisses.
+            //   - If a Flyout is launched by clicking a button in the AppBar, then the AppBar should receive focus when the
+            //     Flyout dismisses.
+            var activeDismissable;
+            if (this._clients.length > 0) {
+                var startIndex = clickEaterIndex === -1 ? 0 : clickEaterIndex;
+                var candidates = this._clients.slice(startIndex);
+                activeDismissable = this._focusCache.mostRecentlyTouched(candidates) || candidates[candidates.length - 1];
+            }
+            if (this._activeDismissable !== activeDismissable) {
+                this._activeDismissable = activeDismissable;
+                this._activeDismissable && this._activeDismissable.onActivate();
+            }
+        };
+        LightDismissService.prototype._dispatchLightDismiss = function (reason, clients) {
+            if (this._notifying) {
+                _Log.log && _Log.log('_LightDismissService ignored dismiss trigger to avoid re-entrancy: "' + reason + '"', "winjs _LightDismissService", "warning");
+                return;
+            }
+            clients = clients || this._clients.slice(0);
+            if (clients.length === 0) {
+                return;
+            }
+            this._notifying = true;
+            var lightDismissInfo = {
+                // Which of the LightDismissalReasons caused this event to fire?
+                reason: reason,
+                // Is this dismissable currently the active dismissable?
+                active: false,
+                _stop: false,
+                stopPropagation: function () {
+                    this._stop = true;
+                },
+                _doDefault: true,
+                preventDefault: function () {
+                    this._doDefault = false;
+                }
+            };
+            for (var i = clients.length - 1; i >= 0 && !lightDismissInfo._stop; i--) {
+                lightDismissInfo.active = this._activeDismissable === clients[i];
+                if (clients[i].onShouldLightDismiss(lightDismissInfo)) {
+                    clients[i].onLightDismiss(lightDismissInfo);
+                }
+            }
+            this._notifying = false;
+            this._updateDom();
+            return lightDismissInfo._doDefault;
+        };
+        //
+        // Light dismiss triggers
+        //
+        // Called by tests.
+        LightDismissService.prototype._clickEaterTapped = function () {
+            this._dispatchLightDismiss(LightDismissalReasons.tap);
+        };
+        LightDismissService.prototype._onFocusIn = function (eventObject) {
+            var target = eventObject.target;
+            for (var i = this._clients.length - 1; i >= 0; i--) {
+                if (this._clients[i].containsElement(target)) {
+                    break;
+                }
+            }
+            if (i !== -1) {
+                this._focusCache.touch(this._clients[i]);
+                this._clients[i].onFocus(target);
+            }
+            this._dispatchLightDismiss(LightDismissalReasons.lostFocus, this._clients.slice(i + 1, this._clients.length));
+        };
+        LightDismissService.prototype._onKeyDown = function (eventObject) {
+            if (eventObject.keyCode === _ElementUtilities.Key.escape) {
+                eventObject.preventDefault();
+                eventObject.stopPropagation();
+                this._dispatchLightDismiss(LightDismissalReasons.escape);
+            }
+        };
+        LightDismissService.prototype._onBackClick = function (eventObject) {
+            var doDefault = this._dispatchLightDismiss(LightDismissalReasons.hardwareBackButton);
+            return !doDefault; // Returns whether or not the event was handled.
+        };
+        LightDismissService.prototype._onWindowResize = function (eventObject) {
+            this._dispatchLightDismiss(LightDismissalReasons.windowResize);
+        };
+        LightDismissService.prototype._onWindowBlur = function (eventObject) {
+            if (this._debug) {
+                return;
+            }
+            // Want to trigger a light dismiss on window blur.
+            // We get blur if we click off the window, including into an iframe within our window.
+            // Both blurs call this function, but fortunately document.hasFocus is true if either
+            // the document window or our iframe window has focus.
+            if (!_Global.document.hasFocus()) {
+                // The document doesn't have focus, so they clicked off the app, so light dismiss.
+                this._dispatchLightDismiss(LightDismissalReasons.windowBlur);
+            }
+            else {
+                // We were trying to unfocus the window, but document still has focus,
+                // so make sure the iframe that took the focus will check for blur next time.
+                var active = _Global.document.activeElement;
+                if (active && active.tagName === "IFRAME" && !active["msLightDismissBlur"]) {
+                    // - This will go away when the IFRAME goes away, and we only create one.
+                    // - This only works in IE because other browsers don't fire focus events on iframe elements.
+                    // - Can't use _ElementUtilities._addEventListener's focusout because it doesn't fire when an
+                    //   iframe loses focus due to changing windows.
+                    active.addEventListener("blur", this._onWindowBlur.bind(this), false);
+                    active["msLightDismissBlur"] = true;
+                }
+            }
+        };
+        LightDismissService.prototype._createClickEater = function () {
+            var clickEater = _Global.document.createElement("section");
+            clickEater.className = ClassNames._clickEater;
+            _ElementUtilities._addEventListener(clickEater, "pointerdown", this._onClickEaterPointerDown.bind(this), true);
+            clickEater.addEventListener("click", this._onClickEaterClick.bind(this), true);
+            // Tell Aria that it's clickable
+            clickEater.setAttribute("role", "menuitem");
+            clickEater.setAttribute("aria-label", Strings.closeOverlay);
+            // Prevent CED from removing any current selection
+            clickEater.setAttribute("unselectable", "on");
+            return clickEater;
+        };
+        LightDismissService.prototype._onClickEaterPointerDown = function (eventObject) {
+            eventObject.stopPropagation();
+            eventObject.preventDefault();
+            if (eventObject.button !== rightButton) {
+                this._clickEaterPointerId = eventObject.pointerId;
+                if (!this._registeredClickEaterCleanUp) {
+                    _ElementUtilities._addEventListener(_Global.window, "pointerup", this._onClickEaterPointerUpBound);
+                    _ElementUtilities._addEventListener(_Global.window, "pointercancel", this._onClickEaterPointerCancelBound);
+                    this._registeredClickEaterCleanUp = true;
+                }
+            }
+        };
+        LightDismissService.prototype._onClickEaterPointerUp = function (eventObject) {
+            var _this = this;
+            eventObject.stopPropagation();
+            eventObject.preventDefault();
+            if (eventObject.pointerId === this._clickEaterPointerId) {
+                this._resetClickEaterPointerState();
+                var element = _Global.document.elementFromPoint(eventObject.clientX, eventObject.clientY);
+                if (element === this._clickEaterEl) {
+                    this._skipClickEaterClick = true;
+                    _BaseUtils._yieldForEvents(function () {
+                        _this._skipClickEaterClick = false;
+                    });
+                    this._clickEaterTapped();
+                }
+            }
+        };
+        LightDismissService.prototype._onClickEaterClick = function (eventObject) {
+            eventObject.stopPropagation();
+            eventObject.preventDefault();
+            if (!this._skipClickEaterClick) {
+                // Handle the UIA invoke action on the click eater. this._skipClickEaterClick is false which tells
+                // us that we received a click event without an associated PointerUp event. This means that the click
+                // event was triggered thru UIA rather than thru the GUI.
+                this._clickEaterTapped();
+            }
+        };
+        LightDismissService.prototype._onClickEaterPointerCancel = function (eventObject) {
+            if (eventObject.pointerId === this._clickEaterPointerId) {
+                this._resetClickEaterPointerState();
+            }
+        };
+        LightDismissService.prototype._resetClickEaterPointerState = function () {
+            if (this._registeredClickEaterCleanUp) {
+                _ElementUtilities._removeEventListener(_Global.window, "pointerup", this._onClickEaterPointerUpBound);
+                _ElementUtilities._removeEventListener(_Global.window, "pointercancel", this._onClickEaterPointerCancelBound);
+            }
+            this._clickEaterPointerId = null;
+            this._registeredClickEaterCleanUp = false;
+        };
+        return LightDismissService;
+    })();
+    var service = new LightDismissService();
+    exports.shown = service.shown.bind(service);
+    exports.hidden = service.hidden.bind(service);
+    exports.isShown = service.isShown.bind(service);
+    exports.isTopmost = service.isTopmost.bind(service);
+    exports._clickEaterTapped = service._clickEaterTapped.bind(service);
+    exports._setDebug = service._setDebug.bind(service);
+    _Base.Namespace.define("WinJS.UI._LightDismissService", {
+        shown: exports.shown,
+        hidden: exports.hidden,
+        isShown: exports.isShown,
+        isTopmost: exports.isTopmost,
+        _clickEaterTapped: exports._clickEaterTapped,
+        _setDebug: exports._setDebug,
+        LightDismissableElement: LightDismissableElement,
+        DismissalPolicies: exports.DismissalPolicies,
+        _service: service
+    });
+});
+
+
 define('require-style!less/styles-toolbar',[],function(){});
 
 define('require-style!less/colors-toolbar',[],function(){});
-define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Base", "../ToolBar/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../Promise', "../../Core/_Resources", '../../Utilities/_OpenCloseMachine', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, Promise, _Resources, _OpenCloseMachine, _WriteProfilerMark) {
+define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Base", "../ToolBar/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../_LightDismissService', '../../Promise', "../../Core/_Resources", '../../Utilities/_OpenCloseMachine', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _LightDismissService, Promise, _Resources, _OpenCloseMachine, _WriteProfilerMark) {
     require(["require-style!less/styles-toolbar"]);
     require(["require-style!less/colors-toolbar"]);
     "use strict";
@@ -69768,6 +70269,13 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             addClass(this._dom.commandingSurfaceEl.querySelector(".win-commandingsurface-overflowbutton"), _Constants.ClassNames.overflowButtonCssClass);
             addClass(this._dom.commandingSurfaceEl.querySelector(".win-commandingsurface-ellipsis"), _Constants.ClassNames.ellipsisCssClass);
             this._isOpenedMode = _Constants.defaultOpened;
+            this._dismissable = new _LightDismissService.LightDismissableElement({
+                element: this._dom.root,
+                tabIndex: this._dom.root.hasAttribute("tabIndex") ? this._dom.root.tabIndex : -1,
+                onLightDismiss: function () {
+                    _this.close();
+                }
+            });
             // Initialize public properties.
             this.closedDisplayMode = _Constants.defaultClosedDisplayMode;
             this.opened = this._isOpenedMode;
@@ -69857,6 +70365,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
                 return;
             }
             this._disposed = true;
+            _LightDismissService.hidden(this._dismissable);
             // Disposing the _commandingSurface will trigger dispose on its OpenCloseMachine and synchronously complete any animations that might have been running.
             this._commandingSurface.dispose();
             // If page navigation is happening, we don't want to ToolBar left behind in the body.
@@ -69880,9 +70389,6 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             // Attaching JS control to DOM element
             root["winControl"] = this;
             this._id = root.id || _ElementUtilities._uniqueID(root);
-            if (!root.hasAttribute("tabIndex")) {
-                root.tabIndex = -1;
-            }
             _ElementUtilities.addClass(root, _Constants.ClassNames.controlCssClass);
             _ElementUtilities.addClass(root, _Constants.ClassNames.disposableCssClass);
             // Make sure we have an ARIA role
@@ -69942,6 +70448,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             this._commandingSurface.updateDomImpl();
         };
         ToolBar.prototype._updateDomImpl_renderOpened = function () {
+            var _this = this;
             // Measure closed state.
             this._updateDomImpl_renderedState.prevInlineWidth = this._dom.root.style.width;
             var closedBorderBox = this._dom.root.getBoundingClientRect();
@@ -69965,8 +70472,10 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             placeHolderStyle.marginLeft = closedMargins.left + "px";
             // Move ToolBar element to the body in preparation of becoming a light dismissible. Leave an equal sized placeHolder element 
             // at our original DOM location to avoid reflowing surrounding app content.
-            this._dom.root.parentElement.insertBefore(placeHolder, this._dom.root);
-            _Global.document.body.appendChild(this._dom.root);
+            _ElementUtilities._maintainFocus(function () {
+                _this._dom.root.parentElement.insertBefore(placeHolder, _this._dom.root);
+                _Global.document.body.appendChild(_this._dom.root);
+            });
             // Position the ToolBar to completely cover the same region as the placeholder element.
             this._dom.root.style.width = closedContentWidth + "px";
             this._dom.root.style.left = closedBorderBox.left - closedMargins.left + "px";
@@ -69993,13 +70502,17 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             _ElementUtilities.addClass(this._dom.root, _Constants.ClassNames.openedClass);
             _ElementUtilities.removeClass(this._dom.root, _Constants.ClassNames.closedClass);
             this._commandingSurface.synchronousOpen();
+            _LightDismissService.shown(this._dismissable); // Call at the start of the open animation
         };
         ToolBar.prototype._updateDomImpl_renderClosed = function () {
+            var _this = this;
             // Restore our placement in the DOM
             if (this._dom.placeHolder.parentElement) {
-                var placeHolder = this._dom.placeHolder;
-                placeHolder.parentElement.insertBefore(this._dom.root, placeHolder);
-                placeHolder.parentElement.removeChild(placeHolder);
+                _ElementUtilities._maintainFocus(function () {
+                    var placeHolder = _this._dom.placeHolder;
+                    placeHolder.parentElement.insertBefore(_this._dom.root, placeHolder);
+                    placeHolder.parentElement.removeChild(placeHolder);
+                });
             }
             // Render Closed
             this._dom.root.style.top = "";
@@ -70010,6 +70523,7 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             _ElementUtilities.addClass(this._dom.root, _Constants.ClassNames.closedClass);
             _ElementUtilities.removeClass(this._dom.root, _Constants.ClassNames.openedClass);
             this._commandingSurface.synchronousClose();
+            _LightDismissService.hidden(this._dismissable); // Call after the close animation
         };
         /// <field locid="WinJS.UI.ToolBar.ClosedDisplayMode" helpKeyword="WinJS.UI.ToolBar.ClosedDisplayMode">
         /// Display options for the actionarea when the ToolBar is closed.
@@ -78925,474 +79439,6 @@ define('WinJS/Controls/ContentDialog',[
 });
 
 
-define('require-style!less/styles-lightdismissservice',[],function(){});
-// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
-define('WinJS/_LightDismissService',["require", "exports", './Application', './Core/_Base', './Core/_BaseUtils', './Utilities/_ElementUtilities', './Core/_Global', './Utilities/_KeyboardBehavior', './Core/_Log', './Core/_Resources'], function (require, exports, Application, _Base, _BaseUtils, _ElementUtilities, _Global, _KeyboardBehavior, _Log, _Resources) {
-    require(["require-style!less/styles-lightdismissservice"]);
-    "use strict";
-    var baseZIndex = 900; // Below Ovelays for now
-    var rightButton = 2;
-    var Strings = {
-        get closeOverlay() {
-            return _Resources._getWinJSString("ui/closeOverlay").value;
-        }
-    };
-    var ClassNames = {
-        _clickEater: "win-clickeater"
-    };
-    var EventNames = {
-        requestingFocusOnKeyboardInput: "requestingfocusonkeyboardinput",
-        edgyStarting: "edgystarting",
-        edgyCompleted: "edgycompleted",
-        edgyCanceled: "edgycanceled"
-    };
-    var LightDismissalReasons = {
-        tap: "tap",
-        lostFocus: "lostFocus",
-        escape: "escape",
-        hardwareBackButton: "hardwareBackButton",
-        windowResize: "windowResize",
-        windowBlur: "windowBlur",
-        edgy: "edgy"
-    };
-    // Built-in implementations of ILightDismissable's onShouldLightDismiss.
-    exports.DismissalPolicies = {
-        light: function LightDismissalPolicies_light_onShouldLightDismiss(info) {
-            switch (info.reason) {
-                case LightDismissalReasons.tap:
-                case LightDismissalReasons.escape:
-                    if (info.active) {
-                        return true;
-                    }
-                    else {
-                        info.stopPropagation();
-                        return false;
-                    }
-                    break;
-                case LightDismissalReasons.hardwareBackButton:
-                    if (info.active) {
-                        info.preventDefault(); // prevent backwards navigation in the app
-                        return true;
-                    }
-                    else {
-                        info.stopPropagation();
-                        return false;
-                    }
-                    break;
-                case LightDismissalReasons.lostFocus:
-                case LightDismissalReasons.windowResize:
-                case LightDismissalReasons.windowBlur:
-                case LightDismissalReasons.edgy:
-                    return true;
-            }
-        },
-        sticky: function LightDismissalPolicies_sticky_onShouldLightDismiss(info) {
-            info.stopPropagation();
-            return false;
-        }
-    };
-    var LightDismissableElement = (function () {
-        function LightDismissableElement(args) {
-            this.element = args.element;
-            this.element.tabIndex = args.tabIndex;
-            this.onLightDismiss = args.onLightDismiss;
-            // Allow the caller to override the default implementations of our ILightDismissable methods.
-            if (args.setZIndex) {
-                this.setZIndex = args.setZIndex;
-            }
-            if (args.containsElement) {
-                this.containsElement = args.containsElement;
-            }
-            if (args.requiresClickEater) {
-                this.requiresClickEater = args.requiresClickEater;
-            }
-            if (args.onActivate) {
-                this.onActivate = args.onActivate;
-            }
-            this._customOnFocus = args.onFocus;
-            this._customOnHide = args.onHide;
-            if (args.onShouldLightDismiss) {
-                this.onShouldLightDismiss = args.onShouldLightDismiss;
-            }
-        }
-        LightDismissableElement.prototype.setZIndex = function (zIndex) {
-            this.element.style.zIndex = zIndex;
-        };
-        LightDismissableElement.prototype.containsElement = function (element) {
-            return this.element.contains(element);
-        };
-        LightDismissableElement.prototype.requiresClickEater = function () {
-            return true;
-        };
-        LightDismissableElement.prototype.onActivate = function () {
-            var activeElement = _Global.document.activeElement;
-            if (activeElement && this.containsElement(activeElement)) {
-                this._ldeCurrentFocus = activeElement;
-            }
-            else {
-                // If the last input type was keyboard, use focus() so a keyboard focus visual is drawn.
-                // Otherwise, use setActive() so no focus visual is drawn.
-                var useSetActive = !_KeyboardBehavior._keyboardSeenLast;
-                (this._ldeCurrentFocus && this.containsElement(this._ldeCurrentFocus) && _ElementUtilities._tryFocus(this._ldeCurrentFocus, useSetActive)) || _ElementUtilities._focusFirstFocusableElement(this.element, useSetActive) || _ElementUtilities._tryFocus(this.element, useSetActive);
-            }
-        };
-        LightDismissableElement.prototype.onFocus = function (element) {
-            this._ldeCurrentFocus = element;
-            this._customOnFocus && this._customOnFocus(element);
-        };
-        LightDismissableElement.prototype.onHide = function () {
-            this._ldeCurrentFocus = null;
-            this._customOnHide && this._customOnHide();
-        };
-        LightDismissableElement.prototype.onShouldLightDismiss = function (info) {
-            return exports.DismissalPolicies.light(info);
-        };
-        LightDismissableElement.prototype.onLightDismiss = function (info) {
-        };
-        return LightDismissableElement;
-    })();
-    exports.LightDismissableElement = LightDismissableElement;
-    // An implementation of ILightDismissable that represents the HTML body element. It can never be dismissed. The
-    // service should instantiate one of these to act as the bottommost light dismissable at all times (it isn't expected
-    // for anybody else to instantiate one). It takes care of restoring focus when the last dismissable is dismissed.
-    var LightDismissableBody = (function () {
-        function LightDismissableBody() {
-        }
-        LightDismissableBody.prototype.setZIndex = function (zIndex) {
-        };
-        LightDismissableBody.prototype.containsElement = function (element) {
-            return _Global.document.body.contains(element);
-        };
-        LightDismissableBody.prototype.requiresClickEater = function () {
-            return false;
-        };
-        LightDismissableBody.prototype.onActivate = function () {
-            // If the last input type was keyboard, use focus() so a keyboard focus visual is drawn.
-            // Otherwise, use setActive() so no focus visual is drawn.
-            var useSetActive = !_KeyboardBehavior._keyboardSeenLast;
-            (this.currentFocus && this.containsElement(this.currentFocus) && _ElementUtilities._tryFocus(this.currentFocus, useSetActive)) || _Global.document.body && _ElementUtilities._focusFirstFocusableElement(_Global.document.body, useSetActive) || _Global.document.body && _ElementUtilities._tryFocus(_Global.document.body, useSetActive);
-        };
-        LightDismissableBody.prototype.onFocus = function (element) {
-            this.currentFocus = element;
-        };
-        LightDismissableBody.prototype.onHide = function () {
-            this.currentFocus = null;
-        };
-        LightDismissableBody.prototype.onShouldLightDismiss = function (info) {
-            return false;
-        };
-        LightDismissableBody.prototype.onLightDismiss = function (info) {
-        };
-        return LightDismissableBody;
-    })();
-    //
-    // Light dismiss service
-    //
-    var OrderedCache = (function () {
-        function OrderedCache() {
-            // The item that was most recently touched appears at index 0.
-            this._orderedCache = [];
-        }
-        OrderedCache.prototype.touch = function (item) {
-            // Optimization: if *item* is already at index 0, then there's no need to move it to the front of the list.
-            if (this._orderedCache[0] !== item) {
-                this.remove(item);
-                this._orderedCache.unshift(item);
-            }
-        };
-        OrderedCache.prototype.remove = function (item) {
-            var index = this._orderedCache.indexOf(item);
-            if (index !== -1) {
-                this._orderedCache.splice(index, 1);
-            }
-        };
-        // Returns the item in *candidates* that was most recently touched.
-        OrderedCache.prototype.mostRecentlyTouched = function (candidates) {
-            for (var i = 0, len = this._orderedCache.length; i < len; i++) {
-                if (candidates.indexOf(this._orderedCache[i]) !== -1) {
-                    return this._orderedCache[i];
-                }
-            }
-            return null;
-        };
-        return OrderedCache;
-    })();
-    var LightDismissService = (function () {
-        function LightDismissService() {
-            this._clients = [];
-            this._focusCache = new OrderedCache();
-            this._notifying = false;
-            this._bodyClient = new LightDismissableBody();
-            // State private to _updateDom. No other method should make use of it.
-            this._updateDom_rendered = {
-                clickEaterInDom: false,
-                serviceActive: false
-            };
-            this._clickEaterEl = this._createClickEater();
-            this._onFocusInBound = this._onFocusIn.bind(this);
-            this._onKeyDownBound = this._onKeyDown.bind(this);
-            this._onWindowResizeBound = this._onWindowResize.bind(this);
-            this._onClickEaterPointerUpBound = this._onClickEaterPointerUp.bind(this);
-            this._onClickEaterPointerCancelBound = this._onClickEaterPointerCancel.bind(this);
-            // Register for infrequent events.
-            Application.addEventListener("backclick", this._onBackClick.bind(this));
-            // Focus handlers generally use _ElementUtilities._addEventListener with focusout/focusin. This
-            // uses the browser's blur event directly beacuse _addEventListener doesn't support focusout/focusin
-            // on window.
-            _Global.window.addEventListener("blur", this._onWindowBlur.bind(this));
-            this.shown(this._bodyClient);
-        }
-        // Dismissables should call this as soon as they are ready to be shown. More specifically, they should call this:
-        //   - After they are in the DOM and ready to receive focus (e.g. style.display cannot = "none")
-        //   - Before their entrance animation is played
-        LightDismissService.prototype.shown = function (client) {
-            var index = this._clients.indexOf(client);
-            if (index === -1) {
-                this._clients.push(client);
-                this._updateDom();
-            }
-        };
-        // Dismissables should call this when they are done being dismissed (i.e. after their exit animation has finished)
-        LightDismissService.prototype.hidden = function (client) {
-            var index = this._clients.indexOf(client);
-            if (index !== -1) {
-                this._clients.splice(index, 1);
-                this._focusCache.remove(client);
-                client.setZIndex("");
-                client.onHide();
-                this._updateDom();
-            }
-        };
-        LightDismissService.prototype._updateDom = function () {
-            var rendered = this._updateDom_rendered;
-            if (this._notifying) {
-                return;
-            }
-            var serviceActive = this._clients.length > 1;
-            if (serviceActive !== rendered.serviceActive) {
-                // Unregister/register for events that occur frequently.
-                if (serviceActive) {
-                    _ElementUtilities._addEventListener(_Global.document.documentElement, "focusin", this._onFocusInBound);
-                    _Global.document.documentElement.addEventListener("keydown", this._onKeyDownBound);
-                    _Global.window.addEventListener("resize", this._onWindowResizeBound);
-                    this._bodyClient.currentFocus = _Global.document.activeElement;
-                }
-                else {
-                    _ElementUtilities._removeEventListener(_Global.document.documentElement, "focusin", this._onFocusInBound);
-                    _Global.document.documentElement.removeEventListener("keydown", this._onKeyDownBound);
-                    _Global.window.removeEventListener("resize", this._onWindowResizeBound);
-                }
-                rendered.serviceActive = serviceActive;
-            }
-            var clickEaterIndex = -1;
-            this._clients.forEach(function (c, i) {
-                if (c.requiresClickEater()) {
-                    clickEaterIndex = i;
-                }
-                c.setZIndex("" + (baseZIndex + i * 2 + 1));
-            });
-            if (clickEaterIndex !== -1) {
-                this._clickEaterEl.style.zIndex = "" + (baseZIndex + clickEaterIndex * 2);
-            }
-            var clickEaterInDom = clickEaterIndex !== -1;
-            if (clickEaterInDom !== rendered.clickEaterInDom) {
-                if (clickEaterInDom) {
-                    _Global.document.body.appendChild(this._clickEaterEl);
-                }
-                else {
-                    var parent = this._clickEaterEl.parentNode;
-                    parent && parent.removeChild(this._clickEaterEl);
-                }
-                rendered.clickEaterInDom = clickEaterInDom;
-            }
-            // Which dismissable should receive focus? In the easy case, there is only one dismissable above the click eater
-            // so this dismissable should receive focus. However, which one should receive focus if multiple dismissables
-            // are above the click eater? Our answer is the dismissable which is above the click eater which had focus most
-            // recently. Here's an example scenario. Suppose there are 2 dismissables and no click eater: the body and a sticky
-            // AppBar. Then:
-            //   - If a Flyout is launched by clicking a button in the body, then the body should receive focus when the
-            //     Flyout dismisses.
-            //   - If a Flyout is launched by clicking a button in the AppBar, then the AppBar should receive focus when the
-            //     Flyout dismisses.
-            var activeDismissable;
-            if (this._clients.length > 0) {
-                var startIndex = clickEaterIndex === -1 ? 0 : clickEaterIndex;
-                var candidates = this._clients.slice(startIndex);
-                activeDismissable = this._focusCache.mostRecentlyTouched(candidates) || candidates[candidates.length - 1];
-            }
-            if (this._activeDismissable !== activeDismissable) {
-                this._activeDismissable = activeDismissable;
-                this._activeDismissable && this._activeDismissable.onActivate();
-            }
-        };
-        LightDismissService.prototype._dispatchLightDismiss = function (reason, clients) {
-            if (this._notifying) {
-                _Log.log && _Log.log('_LightDismissService ignored dismiss trigger to avoid re-entrancy: "' + reason + '"', "winjs _LightDismissService", "warning");
-                return;
-            }
-            clients = clients || this._clients.slice(0);
-            if (clients.length === 0) {
-                return;
-            }
-            this._notifying = true;
-            var lightDismissInfo = {
-                // Which of the LightDismissalReasons caused this event to fire?
-                reason: reason,
-                // Is this dismissable currently the active dismissable?
-                active: false,
-                _stop: false,
-                stopPropagation: function () {
-                    this._stop = true;
-                },
-                _doDefault: true,
-                preventDefault: function () {
-                    this._doDefault = false;
-                }
-            };
-            for (var i = clients.length - 1; i >= 0 && !lightDismissInfo._stop; i--) {
-                lightDismissInfo.active = this._activeDismissable === clients[i];
-                if (clients[i].onShouldLightDismiss(lightDismissInfo)) {
-                    clients[i].onLightDismiss(lightDismissInfo);
-                }
-            }
-            this._notifying = false;
-            this._updateDom();
-            return lightDismissInfo._doDefault;
-        };
-        //
-        // Light dismiss triggers
-        //
-        LightDismissService.prototype._clickEaterTapped = function () {
-            this._dispatchLightDismiss(LightDismissalReasons.tap);
-        };
-        LightDismissService.prototype._onFocusIn = function (eventObject) {
-            var target = eventObject.target;
-            for (var i = this._clients.length - 1; i >= 0; i--) {
-                if (this._clients[i].containsElement(target)) {
-                    break;
-                }
-            }
-            if (i !== -1) {
-                this._focusCache.touch(this._clients[i]);
-                this._clients[i].onFocus(target);
-            }
-            this._dispatchLightDismiss(LightDismissalReasons.lostFocus, this._clients.slice(i + 1, this._clients.length));
-        };
-        LightDismissService.prototype._onKeyDown = function (eventObject) {
-            if (eventObject.keyCode === _ElementUtilities.Key.escape) {
-                eventObject.preventDefault();
-                eventObject.stopPropagation();
-                this._dispatchLightDismiss(LightDismissalReasons.escape);
-            }
-        };
-        LightDismissService.prototype._onBackClick = function (eventObject) {
-            var doDefault = this._dispatchLightDismiss(LightDismissalReasons.hardwareBackButton);
-            return !doDefault; // Returns whether or not the event was handled.
-        };
-        LightDismissService.prototype._onWindowResize = function (eventObject) {
-            this._dispatchLightDismiss(LightDismissalReasons.windowResize);
-        };
-        LightDismissService.prototype._onWindowBlur = function (eventObject) {
-            // Want to trigger a light dismiss on window blur.
-            // We get blur if we click off the window, including into an iframe within our window.
-            // Both blurs call this function, but fortunately document.hasFocus is true if either
-            // the document window or our iframe window has focus.
-            if (!_Global.document.hasFocus()) {
-                // The document doesn't have focus, so they clicked off the app, so light dismiss.
-                this._dispatchLightDismiss(LightDismissalReasons.windowBlur);
-            }
-            else {
-                // We were trying to unfocus the window, but document still has focus,
-                // so make sure the iframe that took the focus will check for blur next time.
-                var active = _Global.document.activeElement;
-                if (active && active.tagName === "IFRAME" && !active["msLightDismissBlur"]) {
-                    // - This will go away when the IFRAME goes away, and we only create one.
-                    // - This only works in IE because other browsers don't fire focus events on iframe elements.
-                    // - Can't use _ElementUtilities._addEventListener's focusout because it doesn't fire when an
-                    //   iframe loses focus due to changing windows.
-                    active.addEventListener("blur", this._onWindowBlur.bind(this), false);
-                    active["msLightDismissBlur"] = true;
-                }
-            }
-        };
-        LightDismissService.prototype._createClickEater = function () {
-            var clickEater = _Global.document.createElement("section");
-            clickEater.className = ClassNames._clickEater;
-            _ElementUtilities._addEventListener(clickEater, "pointerdown", this._onClickEaterPointerDown.bind(this), true);
-            clickEater.addEventListener("click", this._onClickEaterClick.bind(this), true);
-            // Tell Aria that it's clickable
-            clickEater.setAttribute("role", "menuitem");
-            clickEater.setAttribute("aria-label", Strings.closeOverlay);
-            // Prevent CED from removing any current selection
-            clickEater.setAttribute("unselectable", "on");
-            return clickEater;
-        };
-        LightDismissService.prototype._onClickEaterPointerDown = function (eventObject) {
-            eventObject.stopPropagation();
-            eventObject.preventDefault();
-            if (eventObject.button !== rightButton) {
-                this._clickEaterPointerId = eventObject.pointerId;
-                if (!this._registeredClickEaterCleanUp) {
-                    _ElementUtilities._addEventListener(_Global.window, "pointerup", this._onClickEaterPointerUpBound);
-                    _ElementUtilities._addEventListener(_Global.window, "pointercancel", this._onClickEaterPointerCancelBound);
-                    this._registeredClickEaterCleanUp = true;
-                }
-            }
-        };
-        LightDismissService.prototype._onClickEaterPointerUp = function (eventObject) {
-            var _this = this;
-            eventObject.stopPropagation();
-            eventObject.preventDefault();
-            if (eventObject.pointerId === this._clickEaterPointerId) {
-                this._resetClickEaterPointerState();
-                var element = _Global.document.elementFromPoint(eventObject.clientX, eventObject.clientY);
-                if (element === this._clickEaterEl) {
-                    this._skipClickEaterClick = true;
-                    _BaseUtils._yieldForEvents(function () {
-                        _this._skipClickEaterClick = false;
-                    });
-                    this._clickEaterTapped();
-                }
-            }
-        };
-        LightDismissService.prototype._onClickEaterClick = function (eventObject) {
-            eventObject.stopPropagation();
-            eventObject.preventDefault();
-            if (!this._skipClickEaterClick) {
-                // Handle the UIA invoke action on the click eater. this._skipClickEaterClick is false which tells
-                // us that we received a click event without an associated PointerUp event. This means that the click
-                // event was triggered thru UIA rather than thru the GUI.
-                this._clickEaterTapped();
-            }
-        };
-        LightDismissService.prototype._onClickEaterPointerCancel = function (eventObject) {
-            if (eventObject.pointerId === this._clickEaterPointerId) {
-                this._resetClickEaterPointerState();
-            }
-        };
-        LightDismissService.prototype._resetClickEaterPointerState = function () {
-            if (this._registeredClickEaterCleanUp) {
-                _ElementUtilities._removeEventListener(_Global.window, "pointerup", this._onClickEaterPointerUpBound);
-                _ElementUtilities._removeEventListener(_Global.window, "pointercancel", this._onClickEaterPointerCancelBound);
-            }
-            this._clickEaterPointerId = null;
-            this._registeredClickEaterCleanUp = false;
-        };
-        return LightDismissService;
-    })();
-    var service = new LightDismissService();
-    exports.shown = service.shown.bind(service);
-    exports.hidden = service.hidden.bind(service);
-    _Base.Namespace.define("WinJS.UI._LightDismissService", {
-        shown: exports.shown,
-        hidden: exports.hidden,
-        LightDismissableElement: LightDismissableElement,
-        DismissalPolicies: exports.DismissalPolicies,
-        _service: service
-    });
-});
-
-
 define('require-style!less/styles-splitview',[],function(){});
 
 define('require-style!less/colors-splitview',[],function(){});
@@ -80119,7 +80165,7 @@ define('WinJS/Controls/AppBar/_Constants',["require", "exports", "../CommandingS
 define('require-style!less/styles-appbar',[],function(){});
 
 define('require-style!less/colors-appbar',[],function(){});
-define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base", "../AppBar/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../Utilities/_KeyboardInfo', '../../Promise', "../../Core/_Resources", '../../Utilities/_OpenCloseMachine', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _KeyboardInfo, Promise, _Resources, _OpenCloseMachine, _WriteProfilerMark) {
+define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base", "../AppBar/_Constants", "../CommandingSurface", "../../Utilities/_Control", "../../Utilities/_Dispose", "../../Utilities/_ElementUtilities", "../../Core/_ErrorFromName", '../../Core/_Events', "../../Core/_Global", '../../Utilities/_KeyboardInfo', '../../_LightDismissService', '../../Promise', "../../Core/_Resources", '../../Utilities/_OpenCloseMachine', "../../Core/_WriteProfilerMark"], function (require, exports, _Base, _Constants, _CommandingSurface, _Control, _Dispose, _ElementUtilities, _ErrorFromName, _Events, _Global, _KeyboardInfo, _LightDismissService, Promise, _Resources, _OpenCloseMachine, _WriteProfilerMark) {
     require(["require-style!less/styles-appbar"]);
     require(["require-style!less/colors-appbar"]);
     "use strict";
@@ -80264,6 +80310,13 @@ define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base"
             addClass(this._dom.commandingSurfaceEl.querySelector(".win-commandingsurface-overflowbutton"), _Constants.ClassNames.overflowButtonCssClass);
             addClass(this._dom.commandingSurfaceEl.querySelector(".win-commandingsurface-ellipsis"), _Constants.ClassNames.ellipsisCssClass);
             this._isOpenedMode = _Constants.defaultOpened;
+            this._dismissable = new _LightDismissService.LightDismissableElement({
+                element: this._dom.root,
+                tabIndex: this._dom.root.hasAttribute("tabIndex") ? this._dom.root.tabIndex : -1,
+                onLightDismiss: function () {
+                    _this.close();
+                }
+            });
             // Initialize public properties.
             this.closedDisplayMode = _Constants.defaultClosedDisplayMode;
             this.placement = _Constants.defaultPlacement;
@@ -80379,6 +80432,7 @@ define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base"
                 return;
             }
             this._disposed = true;
+            _LightDismissService.hidden(this._dismissable);
             // Disposing the _commandingSurface will trigger dispose on its OpenCloseMachine
             // and synchronously complete any animations that might have been running.
             this._commandingSurface.dispose();
@@ -80402,9 +80456,6 @@ define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base"
             // Attaching JS control to DOM element
             root["winControl"] = this;
             this._id = root.id || _ElementUtilities._uniqueID(root);
-            if (!root.hasAttribute("tabIndex")) {
-                root.tabIndex = -1;
-            }
             _ElementUtilities.addClass(root, _Constants.ClassNames.controlCssClass);
             _ElementUtilities.addClass(root, _Constants.ClassNames.disposableCssClass);
             // Make sure we have an ARIA role
@@ -80515,11 +80566,13 @@ define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base"
             addClass(this._dom.root, _Constants.ClassNames.openedClass);
             removeClass(this._dom.root, _Constants.ClassNames.closedClass);
             this._commandingSurface.synchronousOpen();
+            _LightDismissService.shown(this._dismissable); // Call at the start of the open animation
         };
         AppBar.prototype._updateDomImpl_renderClosed = function () {
             addClass(this._dom.root, _Constants.ClassNames.closedClass);
             removeClass(this._dom.root, _Constants.ClassNames.openedClass);
             this._commandingSurface.synchronousClose();
+            _LightDismissService.hidden(this._dismissable); // Call after the close animation
         };
         /// <field locid="WinJS.UI.AppBar.ClosedDisplayMode" helpKeyword="WinJS.UI.AppBar.ClosedDisplayMode">
         /// Display options for the AppBar when closed.

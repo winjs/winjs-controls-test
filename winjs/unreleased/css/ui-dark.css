@@ -4347,6 +4347,18 @@ Settings Pane
     width: 100vw;
   }
 }
+.win-clickeater {
+  background-color: transparent;
+  width: 110%;
+  height: 110%;
+  left: -5%;
+  top: -5%;
+  position: fixed;
+  touch-action: none;
+  outline: 1px solid Purple;
+  /*Necessary to block passthrough over webviews*/
+  -ms-high-contrast-adjust: none;
+}
 .win-toolbar {
   min-width: 32px;
   /* enough to fit the overflowbutton */
@@ -5160,18 +5172,6 @@ Hide clear button in search box control.
   margin-right: 4px;
   /* 4px of space between each command */
   white-space: nowrap;
-}
-.win-clickeater {
-  background-color: transparent;
-  width: 110%;
-  height: 110%;
-  left: -5%;
-  top: -5%;
-  position: fixed;
-  touch-action: none;
-  outline: 1px solid Purple;
-  /*Necessary to block passthrough over webviews*/
-  -ms-high-contrast-adjust: none;
 }
 .win-splitview {
   position: relative;
