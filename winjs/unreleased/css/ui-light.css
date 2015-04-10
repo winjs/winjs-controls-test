@@ -4727,11 +4727,21 @@ Hide clear button in search box control.
   width: 32px;
   min-height: 0;
   height: 24px;
-  bottom: 0;
 }
 .win-navbar .win-navbar-invokebutton .win-navbar-ellipsis {
   width: 32px;
+}
+.win-navbar.win-top .win-navbar-invokebutton {
+  bottom: 0;
+}
+.win-navbar.win-top .win-navbar-invokebutton .win-navbar-ellipsis {
   top: 5px;
+}
+.win-navbar.win-bottom .win-navbar-invokebutton {
+  top: 0;
+}
+.win-navbar.win-bottom .win-navbar-invokebutton .win-navbar-ellipsis {
+  top: 0;
 }
 .win-navbarcontainer {
   width: 100%;
