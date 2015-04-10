@@ -3804,9 +3804,6 @@ Menu commands.
 */
 .win-menu button.win-command {
   display: block;
-  padding-top: 11px;
-  padding-bottom: 13px;
-  min-height: 44px;
   margin-left: 0;
   margin-right: 0;
   text-align: left;
@@ -3931,6 +3928,16 @@ Menu commands.
 .win-menu button.win-command .win-menucommand-liner:lang(ur) .win-flyouticon::before,
 .win-menu button.win-command .win-menucommand-liner:lang(qps-plocm) .win-flyouticon::before {
   content: "\E26C";
+}
+.win-menu.win-menu-mousespacing button.win-command {
+  padding-top: 5px;
+  padding-bottom: 7px;
+  min-height: 32px;
+}
+.win-menu.win-menu-touchspacing button.win-command {
+  padding-top: 11px;
+  padding-bottom: 13px;
+  min-height: 44px;
 }
 .win-menu hr.win-command {
   display: block;
@@ -4347,6 +4354,7 @@ Settings Pane
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
+  min-height: 44px;
   border: 1px dotted transparent;
   padding: 10px 11px 12px 11px;
   font-size: 15px;

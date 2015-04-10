@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.9 WinJS.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.10 WinJS.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.9 WinJS.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.10 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -11422,30 +11422,56 @@ define('WinJS/Utilities/_KeyboardBehavior',[
     if (!_Global.document) {
         return;
     }
+    
+    var InputTypes = {
+        touch: "touch",
+        pen: "pen",
+        mouse: "mouse",
+        keyboard: "keyboard"
+    };
+    var _lastInputType = InputTypes.mouse;
+    
+    // Keys should be the same as the values for a PointerEvent's pointerType.
+    var pointerTypeToInputType = {
+        // IE 10 uses numbers for its pointerType
+        2: InputTypes.touch,
+        3: InputTypes.pen,
+        4: InputTypes.mouse,
+        
+        // Others use strings for their pointerTypes
+        touch: InputTypes.touch,
+        pen: InputTypes.pen,
+        mouse: InputTypes.mouse
+    };
 
-    var _keyboardSeenLast = false;
-
-    _ElementUtilities._addEventListener(_Global, "pointerdown", function () {
-        if (_keyboardSeenLast) {
-            _keyboardSeenLast = false;
-        }
+    _ElementUtilities._addEventListener(_Global, "pointerdown", function (eventObject) {
+        _lastInputType = pointerTypeToInputType[eventObject.pointerType] || InputTypes.mouse;
     }, true);
 
     _Global.addEventListener("keydown", function () {
-        if (!_keyboardSeenLast) {
-            _keyboardSeenLast = true;
-        }
+        _lastInputType = InputTypes.keyboard;
     }, true);
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
         _keyboardSeenLast: {
             get: function _keyboardSeenLast_get() {
-                return _keyboardSeenLast;
+                return _lastInputType === InputTypes.keyboard;
             },
             set: function _keyboardSeenLast_set(value) {
-                _keyboardSeenLast = value;
+                _lastInputType = (value ? InputTypes.keyboard : InputTypes.mouse);
             }
         },
+        _lastInputType: {
+            get: function _lastInputType_get() {
+                return _lastInputType;
+            },
+            set: function _lastInputType_set(value) {
+                if (InputTypes[value]) {
+                    _lastInputType = value;
+                }
+            }
+        },
+        _InputTypes: InputTypes,
         _WinKeyboard: function (element) {
             // Win Keyboard behavior is a solution that would be similar to -ms-keyboard-focus.
             // It monitors the last input (keyboard/mouse) and adds/removes a win-keyboard class
@@ -63971,6 +63997,8 @@ define('WinJS/Controls/_LegacyAppBar/_Constants',[
         menuClass: "win-menu",
         menuContainsToggleCommandClass: "win-menu-containstogglecommand",
         menuContainsFlyoutCommandClass: "win-menu-containsflyoutcommand",
+        menuMouseSpacingClass: "win-menu-mousespacing",
+        menuTouchSpacingClass: "win-menu-touchspacing",
         menuCommandHoverDelay: 400,
 
         // Other class names
@@ -64626,6 +64654,9 @@ define('WinJS/Controls/Flyout/_Overlay',[
                         this._queuedToShow = [];
                         this._queuedToHide = [];
                     }
+                    
+                    // Do our derived classes hide stuff
+                    this._endHide();
 
                     // We're hidden now
                     if (this._doNext === "hide") {
@@ -64641,6 +64672,10 @@ define('WinJS/Controls/Flyout/_Overlay',[
                     // the afterHide event in case it triggers a show() and they
                     // have something to do in beforeShow that requires afterHide first.
                     Scheduler.schedule(this._checkDoNext, Scheduler.Priority.normal, this, "WinJS.UI._Overlay._checkDoNext");
+                },
+                
+                _endHide: function _Overlay_endHide() {
+                    // Nothing by default
                 },
 
                 _checkDoNext: function _Overlay_checkDoNext() {
@@ -65630,9 +65665,10 @@ define('WinJS/Controls/Flyout',[
     '../Utilities/_Dispose',
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
+    '../Utilities/_KeyboardBehavior',
     './_LegacyAppBar/_Constants',
     './Flyout/_Overlay'
-], function flyoutInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _Signal, _Dispose, _ElementUtilities, _Hoverable, _Constants, _Overlay) {
+], function flyoutInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _Signal, _Dispose, _ElementUtilities, _Hoverable, _KeyboardBehavior, _Constants, _Overlay) {
     "use strict";
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
@@ -65674,6 +65710,7 @@ define('WinJS/Controls/Flyout',[
             var _CascadeManager = _Base.Class.define(function _CascadeManager_ctor() {
                 this._cascadingStack = [];
                 this._handleKeyDownInCascade_bound = this._handleKeyDownInCascade.bind(this);
+                this._inputType = null;
             },
             {
                 appendFlyout: function _CascadeManager_appendFlyout(flyoutToAdd) {
@@ -65711,6 +65748,12 @@ define('WinJS/Controls/Flyout',[
                             subFlyout = this._cascadingStack.pop();
                             subFlyout.element.removeEventListener("keydown", this._handleKeyDownInCascade_bound, false);
                             subFlyout._hide(); // We use the reentrancyLock to prevent reentrancy here.
+                        }
+                        
+                        if (this._cascadingStack.length === 0) {
+                            // The cascade is empty so clear the input type. This gives us the opportunity
+                            // to recalculate the input type when the next cascade starts.
+                            this._inputType = null;
                         }
 
                         this.reentrancyLock = false;
@@ -65762,6 +65805,17 @@ define('WinJS/Controls/Flyout',[
                     // Hide the entire cascade if focus has moved somewhere outside of it
                     if (this.indexOfElement(event.relatedTarget) < 0) {
                         this.collapseAll();
+                    }
+                },
+                // Compute the input type that is associated with the cascading stack on demand. Allows
+                // each Flyout in the cascade to adjust its sizing based on the current input type
+                // and to do it in a way that is consistent with the rest of the Flyouts in the cascade.
+                inputType: {
+                    get: function _CascadeManager_inputType_get() {
+                        if (!this._inputType) {
+                            this._inputType = _KeyboardBehavior._lastInputType;
+                        }
+                        return this._inputType;
                     }
                 },
                 _handleKeyDownInCascade: function _CascadeManager_handleKeyDownInCascade(event) {
@@ -73136,7 +73190,7 @@ define('WinJS/Controls/Menu',[
     './Menu/_Command'
 ], function menuInit(exports, _Global, _Base, _BaseUtils, _ErrorFromName, _Resources, _WriteProfilerMark, Promise, _ElementUtilities, _Hoverable, _KeyboardBehavior, _Constants, Flyout, _Overlay, _Command) {
     "use strict";
-
+    
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
         /// <field>
         /// <summary locid="WinJS.UI.Menu">Represents a menu flyout for displaying commands.</summary>
@@ -73365,6 +73419,17 @@ define('WinJS/Controls/Menu',[
                 },
 
                 _show: function Menu_show(anchor, placement, alignment) {
+                    if (!_ElementUtilities.hasClass(this.element, _Constants.menuMouseSpacingClass) && !_ElementUtilities.hasClass(this.element, _Constants.menuTouchSpacingClass)) {
+                        // The Menu's spacing shouldn't change while it is already shown. Only
+                        // add a spacing class if it doesn't already have one. It will get
+                        // removed after the Menu hides.
+                        _ElementUtilities.addClass(
+                            this.element,
+                            Flyout.Flyout._cascadeManager.inputType === _KeyboardBehavior._InputTypes.mouse || Flyout.Flyout._cascadeManager.inputType === _KeyboardBehavior._InputTypes.keyboard ?
+                                _Constants.menuMouseSpacingClass :
+                                _Constants.menuTouchSpacingClass
+                        );
+                    }
                     // Call flyout show
                     this._baseFlyoutShow(anchor, placement, alignment);
 
@@ -73379,6 +73444,11 @@ define('WinJS/Controls/Menu',[
                         this._hoverPromise.cancel();
                     }
                     Flyout.Flyout.prototype._hide.call(this);
+                },
+                
+                _endHide: function Menu_endHide() {
+                    _ElementUtilities.removeClass(this.element, _Constants.menuMouseSpacingClass);
+                    _ElementUtilities.removeClass(this.element, _Constants.menuTouchSpacingClass);
                 },
 
                 _addCommand: function Menu_addCommand(command) {
