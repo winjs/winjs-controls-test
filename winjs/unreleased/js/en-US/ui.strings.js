@@ -1,6 +1,6 @@
 ﻿/*!
   Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
-  Build: 4.0.0.winjs.2015.4.10
+  Build: 4.0.0.winjs.2015.4.13
   Version: WinJS.4.0
 */
 
@@ -59,6 +59,7 @@
     "searchBoxAriaLabelInputNoPlaceHolder": "Searchbox, enter to submit query, esc to clear text",
     "searchBoxAriaLabelInputPlaceHolder": "Searchbox, {0}, enter to submit query, esc to clear text",
     "searchBoxAriaLabelButton": "Click to submit query",
+    "seeMore":  "See more",
     "selectAMPM": "Select A.M P.M",
     "selectDay": "Select Day",
     "selectHour": "Select Hour",

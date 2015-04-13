@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.10 WinJS.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.13 WinJS.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.10 WinJS.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.13 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -817,6 +817,7 @@ define('require-json!en-US/ui.resjson',{
     "searchBoxAriaLabelInputNoPlaceHolder": "Searchbox, enter to submit query, esc to clear text",
     "searchBoxAriaLabelInputPlaceHolder": "Searchbox, {0}, enter to submit query, esc to clear text",
     "searchBoxAriaLabelButton": "Click to submit query",
+    "seeMore":  "See more",
     "selectAMPM": "Select A.M P.M",
     "selectDay": "Select Day",
     "selectHour": "Select Hour",
@@ -62295,7 +62296,8 @@ define('WinJS/Controls/Hub/_Section',[
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         HubSection: _Base.Namespace._lazy(function () {
             var strings = {
-                get duplicateConstruction() { return "Invalid argument: Controls may only be instantiated one time for each DOM element"; }
+                get duplicateConstruction() { return "Invalid argument: Controls may only be instantiated one time for each DOM element"; },
+                get seeMore() { return _Resources._getWinJSString("ui/seeMore").value; }
             };
 
             var HubSection = _Base.Class.define(function HubSection_ctor(element, options) {
@@ -62334,8 +62336,8 @@ define('WinJS/Controls/Hub/_Section',[
                 this._headerElement.innerHTML =
                     '<button type="button" role="link" class="' + HubSection._ClassName.hubSectionInteractive + ' ' + HubSection._ClassName.hubSectionHeaderTabStop + '">' +
                         '<div class="' +  HubSection._ClassName.hubSectionHeaderWrapper + '" tabindex="-1">' +
-                            '<h2 class="' + HubSection._ClassName.hubSectionHeaderContent + ' ' + HubSection._Constants.ellipsisTypeClassName + ' ' + HubSection._Constants.xLargeTypeClassName + '"></h2>' +
-                            '<span class="' + HubSection._ClassName.hubSectionHeaderChevron + ' ' + HubSection._Constants.ellipsisTypeClassName + ' ' + HubSection._Constants.xLargeTypeClassName + '"></span>' +
+                            '<h2 class="' + HubSection._ClassName.hubSectionHeaderContent + '"></h2>' +
+                            '<span class="' + HubSection._ClassName.hubSectionHeaderChevron + '">' + strings.seeMore + '</span>' +
                         '</div>' +
                     '</button>';
                 this._headerTabStopElement = this._headerElement.firstElementChild;
@@ -62468,10 +62470,6 @@ define('WinJS/Controls/Hub/_Section',[
                     hubSectionHeaderContent: "win-hub-section-header-content",
                     hubSectionHeaderChevron: "win-hub-section-header-chevron",
                     hubSectionContent: "win-hub-section-content"
-                },
-                _Constants: {
-                    ellipsisTypeClassName: "win-type-ellipsis",
-                    xLargeTypeClassName: "win-type-x-large"
                 },
                 isDeclarativeControlContainer: _BaseUtils.markSupportedForProcessing(function (section, callback) {
                     if (callback === ControlProcessor.processAll) {

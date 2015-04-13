@@ -3002,15 +3002,15 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
 }
 .win-hub-vertical .win-hub-surface {
   width: 100%;
-  padding: 15px 0;
+  padding: 0px 12px 8px 12px;
 }
 .win-hub-horizontal .win-hub-surface {
   height: 100%;
-  padding: 0 80px;
+  padding: 0px 0px 0px 12px;
 }
 .win-hub-section {
   display: inline-block;
-  padding: 0 40px;
+  padding: 0px 24px 0px 0px;
   vertical-align: top;
   white-space: normal;
 }
@@ -3018,87 +3018,28 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   height: 100%;
 }
 .win-hub-horizontal .win-hub-section-header {
-  margin-top: 129px;
+  margin-top: 44px;
 }
 .win-hub-vertical .win-hub-section {
-  width: calc(100% - 80px);
-  padding: 14px 40px;
+  width: calc(100% - 24px);
 }
 .win-hub-vertical .win-hub-section-header {
-  margin-top: 1px;
+  margin-top: 16px;
 }
 .win-hub-section-header {
-  margin: 4px 0;
-  font-size: 20px;
-  text-align: left;
-  height: 51px;
-}
-.win-hub-section-header:lang(ar),
-.win-hub-section-header:lang(dv),
-.win-hub-section-header:lang(fa),
-.win-hub-section-header:lang(he),
-.win-hub-section-header:lang(ku-Arab),
-.win-hub-section-header:lang(pa-Arab),
-.win-hub-section-header:lang(prs),
-.win-hub-section-header:lang(ps),
-.win-hub-section-header:lang(sd-Arab),
-.win-hub-section-header:lang(syr),
-.win-hub-section-header:lang(ug),
-.win-hub-section-header:lang(ur),
-.win-hub-section-header:lang(qps-plocm) {
-  text-align: right;
+  margin: 4px 0px 9px 0px;
+  height: 28px;
 }
 button.win-hub-section-header-tabstop,
 html.win-hoverable button.win-hub-section-header-tabstop:hover,
 button.win-hub-section-header-tabstop:hover:active {
+  width: 100%;
   background-color: transparent;
   border: 0;
-  padding: 0 3px 0 0;
   min-height: 0;
   min-width: 0;
-  max-width: calc(100% - 3px);
-  font-size: 20px;
-}
-button.win-hub-section-header-tabstop:lang(ar),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ar),
-button.win-hub-section-header-tabstop:hover:active:lang(ar),
-button.win-hub-section-header-tabstop:lang(dv),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(dv),
-button.win-hub-section-header-tabstop:hover:active:lang(dv),
-button.win-hub-section-header-tabstop:lang(fa),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(fa),
-button.win-hub-section-header-tabstop:hover:active:lang(fa),
-button.win-hub-section-header-tabstop:lang(he),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(he),
-button.win-hub-section-header-tabstop:hover:active:lang(he),
-button.win-hub-section-header-tabstop:lang(ku-Arab),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ku-Arab),
-button.win-hub-section-header-tabstop:hover:active:lang(ku-Arab),
-button.win-hub-section-header-tabstop:lang(pa-Arab),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(pa-Arab),
-button.win-hub-section-header-tabstop:hover:active:lang(pa-Arab),
-button.win-hub-section-header-tabstop:lang(prs),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(prs),
-button.win-hub-section-header-tabstop:hover:active:lang(prs),
-button.win-hub-section-header-tabstop:lang(ps),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ps),
-button.win-hub-section-header-tabstop:hover:active:lang(ps),
-button.win-hub-section-header-tabstop:lang(sd-Arab),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(sd-Arab),
-button.win-hub-section-header-tabstop:hover:active:lang(sd-Arab),
-button.win-hub-section-header-tabstop:lang(syr),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(syr),
-button.win-hub-section-header-tabstop:hover:active:lang(syr),
-button.win-hub-section-header-tabstop:lang(ug),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ug),
-button.win-hub-section-header-tabstop:hover:active:lang(ug),
-button.win-hub-section-header-tabstop:lang(ur),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(ur),
-button.win-hub-section-header-tabstop:hover:active:lang(ur),
-button.win-hub-section-header-tabstop:lang(qps-plocm),
-html.win-hoverable button.win-hub-section-header-tabstop:hover:lang(qps-plocm),
-button.win-hub-section-header-tabstop:hover:active:lang(qps-plocm) {
-  padding: 0 0 0 3px;
+  max-width: 100%;
+  padding: 0;
 }
 button.win-hub-section-header-tabstop:focus {
   outline: none;
@@ -3113,13 +3054,44 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   -ms-flex-direction: row;
   -webkit-flex-direction: row;
   flex-direction: row;
+  -ms-flex-align: stretch;
+  -webkit-align-items: stretch;
+  align-items: stretch;
   width: 100%;
   outline: none;
 }
 .win-hub-section-header-content {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
   -ms-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
+  text-align: left;
+  vertical-align: bottom;
+  padding-top: 1px;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.win-hub-section-header-content:lang(ar),
+.win-hub-section-header-content:lang(dv),
+.win-hub-section-header-content:lang(fa),
+.win-hub-section-header-content:lang(he),
+.win-hub-section-header-content:lang(ku-Arab),
+.win-hub-section-header-content:lang(pa-Arab),
+.win-hub-section-header-content:lang(prs),
+.win-hub-section-header-content:lang(ps),
+.win-hub-section-header-content:lang(sd-Arab),
+.win-hub-section-header-content:lang(syr),
+.win-hub-section-header-content:lang(ug),
+.win-hub-section-header-content:lang(ur),
+.win-hub-section-header-content:lang(qps-plocm) {
+  text-align: right;
+}
+.win-semanticzoom-zoomedoutview .win-hub-section-header-interactive .win-hub-section-header-content {
+  color: #0078d7;
 }
 .win-hub-section-header-chevron {
   display: none;
@@ -3129,9 +3101,12 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   display: inline-block;
-  margin-left: 7px;
-  font-size: 20px;
-  padding-top: 14px;
+  margin-left: 24px;
+  line-height: 1.5;
+  padding-top: 7px;
+  color: #0078d7;
+  text-align: right;
+  vertical-align: bottom;
 }
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ar),
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(dv),
@@ -3146,31 +3121,12 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ug),
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(ur),
 .win-hub-section-header-interactive .win-hub-section-header-chevron:lang(qps-plocm) {
+  text-align: left;
   margin-left: 0;
-  margin-right: 7px;
-}
-.win-hub-section-header-chevron::before {
-  font-family: "Segoe MDL2 Assets", "Symbols";
-  content: "\E26B";
-}
-.win-hub-section-header-chevron:lang(ar),
-.win-hub-section-header-chevron:lang(dv),
-.win-hub-section-header-chevron:lang(fa),
-.win-hub-section-header-chevron:lang(he),
-.win-hub-section-header-chevron:lang(ku-Arab),
-.win-hub-section-header-chevron:lang(pa-Arab),
-.win-hub-section-header-chevron:lang(prs),
-.win-hub-section-header-chevron:lang(ps),
-.win-hub-section-header-chevron:lang(sd-Arab),
-.win-hub-section-header-chevron:lang(syr),
-.win-hub-section-header-chevron:lang(ug),
-.win-hub-section-header-chevron:lang(ur),
-.win-hub-section-header-chevron:lang(qps-plocm) {
-  font-family: "Segoe MDL2 Assets", "Symbols";
-  content: "\E26C";
+  margin-right: 24px;
 }
 .win-hub-horizontal .win-hub-section-content {
-  height: calc(100% - 228px);
+  height: calc(100% - 81px);
 }
 .win-hub-vertical .win-hub-section-content {
   width: 100%;
