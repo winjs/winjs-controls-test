@@ -7116,6 +7116,46 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// </field>
             F12: 123,
 
+            /// <field locid="WinJS.Utilities.Key.NavigationView" helpKeyword="WinJS.Utilities.Key.NavigationView">
+            /// XBox One Remote NavigationView key.
+            /// </field>
+            NavigationView: 136,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationMenu" helpKeyword="WinJS.Utilities.Key.NavigationMenu">
+            /// XBox One Remote NavigationMenu key.
+            /// </field>
+            NavigationMenu: 137,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationUp" helpKeyword="WinJS.Utilities.Key.NavigationUp">
+            /// XBox One Remote NavigationUp key.
+            /// </field>
+            NavigationUp: 138,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationDown" helpKeyword="WinJS.Utilities.Key.NavigationDown">
+            /// XBox One Remote NavigationDown key.
+            /// </field>
+            NavigationDown: 139,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationLeft" helpKeyword="WinJS.Utilities.Key.NavigationLeft">
+            /// XBox One Remote NavigationLeft key.
+            /// </field>
+            NavigationLeft: 140,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationRight" helpKeyword="WinJS.Utilities.Key.NavigationRight">
+            /// XBox One Remote NavigationRight key.
+            /// </field>
+            NavigationRight: 141,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationAccept" helpKeyword="WinJS.Utilities.Key.NavigationAccept">
+            /// XBox One Remote NavigationAccept key.
+            /// </field>
+            NavigationAccept: 142,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationCancel" helpKeyword="WinJS.Utilities.Key.NavigationCancel">
+            /// XBox One Remote NavigationCancel key.
+            /// </field>
+            NavigationCancel: 143,
+
             /// <field locid="WinJS.Utilities.Key.numLock" helpKeyword="WinJS.Utilities.Key.numLock">
             /// NUMBER LOCK key.
             /// </field>
@@ -7170,6 +7210,126 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// Accent grave key.
             /// </field>
             graveAccent: 192,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadA" helpKeyword="WinJS.Utilities.Key.GamepadA">
+            /// XBox One GamepadA key.
+            /// </field>
+            GamepadA: 195,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadB" helpKeyword="WinJS.Utilities.Key.GamepadB">
+            /// XBox One GamepadB key.
+            /// </field>
+            GamepadB: 196,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadX" helpKeyword="WinJS.Utilities.Key.GamepadX">
+            /// XBox One GamepadX key.
+            /// </field>
+            GamepadX: 197,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadY" helpKeyword="WinJS.Utilities.Key.GamepadY">
+            /// XBox One GamepadY key.
+            /// </field>
+            GamepadY: 198,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightShoulder" helpKeyword="WinJS.Utilities.Key.GamepadRightShoulder">
+            /// XBox One GamepadRightShoulder key.
+            /// </field>
+            GamepadRightShoulder: 199,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftShoulder" helpKeyword="WinJS.Utilities.Key.GamepadLeftShoulder">
+            /// XBox One GamepadLeftShoulder key.
+            /// </field>
+            GamepadLeftShoulder: 200,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftTrigger" helpKeyword="WinJS.Utilities.Key.GamepadLeftTrigger">
+            /// XBox One GamepadLeftTrigger key.
+            /// </field>
+            GamepadLeftTrigger: 201,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightTrigger" helpKeyword="WinJS.Utilities.Key.GamepadRightTrigger">
+            /// XBox One GamepadRightTrigger key.
+            /// </field>
+            GamepadRightTrigger: 202,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadUp" helpKeyword="WinJS.Utilities.Key.GamepadDPadUp">
+            /// XBox One GamepadDPadUp key.
+            /// </field>
+            GamepadDPadUp: 203,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadDown" helpKeyword="WinJS.Utilities.Key.GamepadDPadDown">
+            /// XBox One GamepadDPadDown key.
+            /// </field>
+            GamepadDPadDown: 204,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadLeft" helpKeyword="WinJS.Utilities.Key.GamepadDPadLeft">
+            /// XBox One GamepadDPadLeft key.
+            /// </field>
+            GamepadDPadLeft: 205,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadRight" helpKeyword="WinJS.Utilities.Key.GamepadDPadRight">
+            /// XBox One GamepadDPadRight key.
+            /// </field>
+            GamepadDPadRight: 206,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadMenu" helpKeyword="WinJS.Utilities.Key.GamepadMenu">
+            /// XBox One GamepadMenu key.
+            /// </field>
+            GamepadMenu: 207,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadView" helpKeyword="WinJS.Utilities.Key.GamepadView">
+            /// XBox One GamepadView key.
+            /// </field>
+            GamepadView: 208,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstick" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstick">
+            /// XBox One GamepadLeftThumbstick key.
+            /// </field>
+            GamepadLeftThumbstick: 209,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstick" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstick">
+            /// XBox One GamepadRightThumbstick key.
+            /// </field>
+            GamepadRightThumbstick: 210,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickUp" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickUp">
+            /// XBox One GamepadLeftThumbstickUp key.
+            /// </field>
+            GamepadLeftThumbstickUp: 211,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickDown" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickDown">
+            /// XBox One GamepadLeftThumbstickDown key.
+            /// </field>
+            GamepadLeftThumbstickDown: 212,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickRight" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickRight">
+            /// XBox One GamepadLeftThumbstickRight key.
+            /// </field>
+            GamepadLeftThumbstickRight: 213,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickLeft" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickLeft">
+            /// XBox One GamepadLeftThumbstickLeft key.
+            /// </field>
+            GamepadLeftThumbstickLeft: 214,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickUp" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickUp">
+            /// XBox One GamepadRightThumbstickUp key.
+            /// </field>
+            GamepadRightThumbstickUp: 215,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickDown" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickDown">
+            /// XBox One GamepadRightThumbstickDown key.
+            /// </field>
+            GamepadRightThumbstickDown: 216,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickRight" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickRight">
+            /// XBox One GamepadRightThumbstickRight key.
+            /// </field>
+            GamepadRightThumbstickRight: 217,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickLeft" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickLeft">
+            /// XBox One GamepadRightThumbstickLeft key.
+            /// </field>
+            GamepadRightThumbstickLeft: 218,
 
             /// <field locid="WinJS.Utilities.Key.openBracket" helpKeyword="WinJS.Utilities.Key.openBracket">
             /// OPEN BRACKET key.
@@ -12431,12 +12591,14 @@ define('WinJS/Utilities',[
 });
 define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", "./Core/_BaseUtils", "./Utilities/_ElementUtilities", "./Core/_Events", "./ControlProcessor/_OptionsParser"], function (require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
     "use strict";
+    var Keys = _ElementUtilities.Key;
     var AttributeNames = {
         focusOverride: "data-win-xyfocus",
         focusOverrideLegacy: "data-win-focus"
     };
     var ClassNames = {
         focusable: "win-focusable",
+        xboxPlatform: "win-xbox",
     };
     var CrossDomainMessageConstants = {
         messageDataProperty: "msWinJSXYFocusControlMessage",
@@ -12473,10 +12635,11 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
      * Gets the mapping object that maps keycodes to XYFocus actions.
     **/
     exports.keyCodeMap = {
-        left: [_ElementUtilities.Key.leftArrow],
-        right: [_ElementUtilities.Key.rightArrow],
-        up: [_ElementUtilities.Key.upArrow],
-        down: [_ElementUtilities.Key.downArrow]
+        left: [Keys.GamepadLeftThumbstickLeft, Keys.GamepadDPadLeft, Keys.NavigationLeft],
+        right: [Keys.GamepadLeftThumbstickRight, Keys.GamepadDPadRight, Keys.NavigationRight],
+        up: [Keys.GamepadLeftThumbstickUp, Keys.GamepadDPadUp, Keys.NavigationUp],
+        down: [Keys.GamepadLeftThumbstickDown, Keys.GamepadDPadDown, Keys.NavigationDown],
+        accept: [Keys.GamepadA, Keys.NavigationAccept],
     };
     /**
      * Gets or sets the focus root when invoking XYFocus APIs.
@@ -12498,22 +12661,7 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
         }
     }
     exports.moveFocus = moveFocus;
-    function enableXYFocus() {
-        if (!_xyFocusEnabled) {
-            _Global.document.addEventListener("keydown", _handleKeyEvent);
-            _xyFocusEnabled = true;
-        }
-    }
-    exports.enableXYFocus = enableXYFocus;
-    function disableXYFocus() {
-        if (_xyFocusEnabled) {
-            _Global.document.removeEventListener("keydown", _handleKeyEvent);
-            _xyFocusEnabled = false;
-        }
-    }
-    exports.disableXYFocus = disableXYFocus;
     // Privates
-    var _xyFocusEnabled = false;
     var _lastTarget;
     var _cachedLastTargetRect;
     var _historyRect;
@@ -12689,11 +12837,12 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
         function calculatePercentInShadow(minReferenceCoord, maxReferenceCoord, minPotentialCoord, maxPotentialCoord) {
             /// Calculates the percentage of the potential element that is in the shadow of the reference element.
             if ((minReferenceCoord >= maxPotentialCoord) || (maxReferenceCoord <= minPotentialCoord)) {
+                // Potential is not in the reference's shadow.
                 return 0;
             }
-            var pixelOverlapWithTheReferenceShadow = Math.min(maxReferenceCoord, maxPotentialCoord) - Math.max(minReferenceCoord, minPotentialCoord);
-            var referenceEdgeLength = maxReferenceCoord - minReferenceCoord;
-            return pixelOverlapWithTheReferenceShadow / referenceEdgeLength;
+            var pixelOverlap = Math.min(maxReferenceCoord, maxPotentialCoord) - Math.max(minReferenceCoord, minPotentialCoord);
+            var shortEdge = Math.min(maxPotentialCoord - minPotentialCoord, maxReferenceCoord - minReferenceCoord);
+            return pixelOverlap / shortEdge;
         }
         function calculateScore(direction, maxDistance, historyRect, referenceRect, potentialRect) {
             var score = 0;
@@ -12868,12 +13017,17 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
         }
         var keys = Object.keys(exports.keyCodeMap);
         for (var i = 0; i < keys.length; i++) {
-            // Note: key is 'left', 'right', 'up', or 'down'
+            // Note: key is 'left', 'right', 'up', 'down', or 'accept'
             var key = keys[i];
             var keyMappings = exports.keyCodeMap[key];
             if (keyMappings.indexOf(e.keyCode) >= 0) {
-                if (_xyFocus(key, e.keyCode)) {
-                    e.preventDefault();
+                if (keyMappings === exports.keyCodeMap.accept) {
+                    _Global.document.activeElement && _Global.document.activeElement["click"] && _Global.document.activeElement["click"]();
+                }
+                else {
+                    if (_xyFocus(key, e.keyCode)) {
+                        e.preventDefault();
+                    }
                 }
                 return;
             }
@@ -12898,7 +13052,6 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
                 // The coordinates stored in data.refRect are already in this frame's coordinate system.
                 // When we get this message we will force-enable XYFocus to support scenarios where
                 // websites running WinJS are put into an IFRAME and the parent frame has XYFocus enabled.
-                enableXYFocus();
                 _xyFocus(data.direction, -1, data.referenceRect);
                 break;
             case CrossDomainMessageConstants.dFocusExit:
@@ -12915,10 +13068,11 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
                 break;
         }
     });
-    _Global.document.addEventListener("DOMContentLoaded", function () {
+    _BaseUtils.ready().then(function () {
         if (_ElementUtilities.hasWinRT && _Global["Windows"] && _Global["Windows"]["Xbox"]) {
-            enableXYFocus();
+            _ElementUtilities.addClass(_Global.document.body, ClassNames.xboxPlatform);
         }
+        _Global.document.addEventListener("keydown", _handleKeyEvent);
         // If we are running within an iframe, we send a registration message to the parent window
         if (_Global.top !== _Global.window) {
             var message = {};
@@ -12939,8 +13093,6 @@ define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", 
                 exports.focusRoot = value;
             }
         },
-        enableXYFocus: enableXYFocus,
-        disableXYFocus: disableXYFocus,
         findNextFocusElement: findNextFocusElement,
         keyCodeMap: exports.keyCodeMap,
         moveFocus: moveFocus,

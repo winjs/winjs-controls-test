@@ -5695,6 +5695,9 @@ input::-ms-reveal:active {
   color: #ffffff;
   background-color: #0078d7;
 }
+.win-xbox :focus {
+  outline: 2px solid white;
+}
 .win-selectionmode .win-itemcontainer.win-container .win-itembox::after,
 .win-itemcontainer.win-selectionmode.win-container .win-itembox::after,
 .win-listview .win-surface.win-selectionmode .win-itembox::after {
@@ -6697,6 +6700,9 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-light input::-ms-reveal:active {
   color: #ffffff;
   background-color: #0078d7;
+}
+.win-ui-light .win-xbox :focus {
+  outline: 2px solid white;
 }
 .win-ui-light .win-selectionmode .win-itemcontainer.win-container .win-itembox::after,
 .win-ui-light .win-itemcontainer.win-selectionmode.win-container .win-itembox::after,
