@@ -69084,6 +69084,17 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
                 overflowArea: this._dom.overflowArea.getBoundingClientRect(),
             };
         };
+        _CommandingSurface.prototype.getCommandById = function (id) {
+            if (this._data) {
+                for (var i = 0, len = this._data.length; i < len; i++) {
+                    var command = this._data.getAt(i);
+                    if (command.id === id) {
+                        return command;
+                    }
+                }
+            }
+            return null;
+        };
         _CommandingSurface.prototype.deferredDomUpate = function () {
             // Notify the machine that an update has been requested.
             this._machine.updateDom();
@@ -70490,6 +70501,19 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             /// </summary>
             /// </signature>
             this._commandingSurface.forceLayout();
+        };
+        ToolBar.prototype.getCommandById = function (id) {
+            /// <signature helpKeyword="WinJS.UI.ToolBar.getCommandById">
+            /// <summary locid="WinJS.UI.ToolBar.getCommandById">
+            /// Retrieves the command with the specified ID from this ToolBar.
+            /// If more than one command is found, this method returns the first command found.
+            /// </summary>
+            /// <param name="id" type="String" locid="WinJS.UI.ToolBar.getCommandById_p:id">Id of the command to return.</param>
+            /// <returns type="object" locid="WinJS.UI.ToolBar.getCommandById_returnValue">
+            /// The command found, or null if no command is found.
+            /// </returns>
+            /// </signature>
+            return this._commandingSurface.getCommandById(id);
         };
         ToolBar.prototype._writeProfilerMark = function (text) {
             _WriteProfilerMark("WinJS.UI.ToolBar:" + this._id + ":" + text);
@@ -80569,6 +80593,19 @@ define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base"
             /// </summary>
             /// </signature>
             this._commandingSurface.forceLayout();
+        };
+        AppBar.prototype.getCommandById = function (id) {
+            /// <signature helpKeyword="WinJS.UI.AppBar.getCommandById">
+            /// <summary locid="WinJS.UI.AppBar.getCommandById">
+            /// Retrieves the command with the specified ID from this AppBar.
+            /// If more than one command is found, this method returns the first command found.
+            /// </summary>
+            /// <param name="id" type="String" locid="WinJS.UI.AppBar.getCommandById_p:id">Id of the command to return.</param>
+            /// <returns type="object" locid="WinJS.UI.AppBar.getCommandById_returnValue">
+            /// The command found, or null if no command is found.
+            /// </returns>
+            /// </signature>
+            return this._commandingSurface.getCommandById(id);
         };
         AppBar.prototype._writeProfilerMark = function (text) {
             _WriteProfilerMark("WinJS.UI.AppBar:" + this._id + ":" + text);
