@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.17 WinJS.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.18 WinJS.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.17 WinJS.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.18 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -70522,6 +70522,9 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
                     _this._updateDomImpl();
                 }
             });
+            // Events
+            this._handleShowingKeyboardBound = this._handleShowingKeyboard.bind(this);
+            _ElementUtilities._inputPaneListener.addEventListener(this._dom.root, "showing", this._handleShowingKeyboardBound);
             // Initialize private state.
             this._disposed = false;
             this._commandingSurface = new _CommandingSurface._CommandingSurface(this._dom.commandingSurfaceEl, { openCloseMachine: stateMachine });
@@ -70629,9 +70632,10 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             _LightDismissService.hidden(this._dismissable);
             // Disposing the _commandingSurface will trigger dispose on its OpenCloseMachine and synchronously complete any animations that might have been running.
             this._commandingSurface.dispose();
-            // If page navigation is happening, we don't want to ToolBar left behind in the body.
+            // If page navigation is happening, we don't want the ToolBar left behind in the body.
             // Synchronoulsy close the ToolBar to force it out of the body and back into its parent element.
             this._synchronousClose();
+            _ElementUtilities._inputPaneListener.removeEventListener(this._dom.root, "showing", this._handleShowingKeyboardBound);
             _Dispose.disposeSubTree(this.element);
         };
         ToolBar.prototype.forceLayout = function () {
@@ -70694,6 +70698,20 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
                 commandingSurfaceEl: commandingSurfaceEl,
                 placeHolder: placeHolder,
             };
+        };
+        ToolBar.prototype._handleShowingKeyboard = function (event) {
+            // Because the ToolBar takes up layout space and is not an overlay, it doesn't have the same expectation 
+            // to move itself to get out of the way of a showing IHM. Instsead we just close the ToolBar to avoid 
+            // scenarios where the ToolBar is occluded, but the click-eating-div is still present since it may seem 
+            // strange to end users that an occluded ToolBar (out of sight, out of mind) is still eating their first 
+            // click.
+            // Mitigation:
+            // Because (1) custom content in a ToolBar can only be included as a 'content' type command, because (2)
+            // the ToolBar only supports closedDisplayModes 'compact' and 'full', and because (3) 'content' type
+            // commands in the overflowarea use a separate contentflyout to display their contents:
+            // Interactable custom content contained within the ToolBar actionarea or overflowarea, will remain
+            // visible and interactable even when showing the IHM closes the ToolBar.
+            this.close();
         };
         ToolBar.prototype._synchronousOpen = function () {
             this._isOpenedMode = true;
