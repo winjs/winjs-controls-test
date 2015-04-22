@@ -729,6 +729,8 @@ select,
 option {
   font-family: "Segoe UI", "Segoe WP", sans-serif, "Segoe MDL2 Assets", "Symbols";
 }
+input:not([type]),
+input[type=""],
 input[type=text],
 input[type=password],
 input[type=email],
@@ -5610,6 +5612,8 @@ input[type=range]::-ms-ticks-before,
 input[type=range]::-ms-ticks-after {
   color: rgba(0, 0, 0, 0.4);
 }
+input:not([type]),
+input[type=""],
 input[type=text],
 input[type=password],
 input[type=email],
@@ -5623,6 +5627,8 @@ textarea,
   background-color: rgba(255, 255, 255, 0.4);
   border-color: rgba(0, 0, 0, 0.4);
 }
+input:not([type]):-ms-input-placeholder,
+input[type=""]:-ms-input-placeholder,
 input[type=text]:-ms-input-placeholder,
 input[type=password]:-ms-input-placeholder,
 input[type=email]:-ms-input-placeholder,
@@ -5634,6 +5640,8 @@ textarea:-ms-input-placeholder,
 .win-textarea:-ms-input-placeholder {
   color: rgba(0, 0, 0, 0.6);
 }
+input:not([type])::-webkit-input-placeholder,
+input[type=""]::-webkit-input-placeholder,
 input[type=text]::-webkit-input-placeholder,
 input[type=password]::-webkit-input-placeholder,
 input[type=email]::-webkit-input-placeholder,
@@ -5645,6 +5653,8 @@ textarea::-webkit-input-placeholder,
 .win-textarea::-webkit-input-placeholder {
   color: rgba(0, 0, 0, 0.6);
 }
+input:not([type])::-moz-input-placeholder,
+input[type=""]::-moz-input-placeholder,
 input[type=text]::-moz-input-placeholder,
 input[type=password]::-moz-input-placeholder,
 input[type=email]::-moz-input-placeholder,
@@ -5656,6 +5666,8 @@ textarea::-moz-input-placeholder,
 .win-textarea::-moz-input-placeholder {
   color: rgba(0, 0, 0, 0.6);
 }
+input:not([type]):hover,
+input[type=""]:hover,
 input[type=text]:hover,
 input[type=password]:hover,
 input[type=email]:hover,
@@ -5668,6 +5680,8 @@ textarea:hover,
   background-color: rgba(255, 255, 255, 0.6);
   border-color: rgba(0, 0, 0, 0.6);
 }
+input:not([type]):focus,
+input[type=""]:focus,
 input[type=text]:focus,
 input[type=password]:focus,
 input[type=email]:focus,
@@ -6616,6 +6630,8 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark input[type=range]::-ms-ticks-after {
   color: rgba(255, 255, 255, 0.4);
 }
+.win-ui-dark input:not([type]),
+.win-ui-dark input[type=""],
 .win-ui-dark input[type=text],
 .win-ui-dark input[type=password],
 .win-ui-dark input[type=email],
@@ -6629,6 +6645,8 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   background-color: rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 255, 255, 0.4);
 }
+.win-ui-dark input:not([type]):-ms-input-placeholder,
+.win-ui-dark input[type=""]:-ms-input-placeholder,
 .win-ui-dark input[type=text]:-ms-input-placeholder,
 .win-ui-dark input[type=password]:-ms-input-placeholder,
 .win-ui-dark input[type=email]:-ms-input-placeholder,
@@ -6640,6 +6658,8 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark .win-textarea:-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
+.win-ui-dark input:not([type])::-webkit-input-placeholder,
+.win-ui-dark input[type=""]::-webkit-input-placeholder,
 .win-ui-dark input[type=text]::-webkit-input-placeholder,
 .win-ui-dark input[type=password]::-webkit-input-placeholder,
 .win-ui-dark input[type=email]::-webkit-input-placeholder,
@@ -6651,6 +6671,8 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark .win-textarea::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
+.win-ui-dark input:not([type])::-moz-input-placeholder,
+.win-ui-dark input[type=""]::-moz-input-placeholder,
 .win-ui-dark input[type=text]::-moz-input-placeholder,
 .win-ui-dark input[type=password]::-moz-input-placeholder,
 .win-ui-dark input[type=email]::-moz-input-placeholder,
@@ -6662,6 +6684,8 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark .win-textarea::-moz-input-placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
+.win-ui-dark input:not([type]):hover,
+.win-ui-dark input[type=""]:hover,
 .win-ui-dark input[type=text]:hover,
 .win-ui-dark input[type=password]:hover,
 .win-ui-dark input[type=email]:hover,
@@ -6674,6 +6698,8 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   background-color: rgba(0, 0, 0, 0.6);
   border-color: rgba(255, 255, 255, 0.6);
 }
+.win-ui-dark input:not([type]):focus,
+.win-ui-dark input[type=""]:focus,
 .win-ui-dark input[type=text]:focus,
 .win-ui-dark input[type=password]:focus,
 .win-ui-dark input[type=email]:focus,
