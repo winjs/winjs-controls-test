@@ -435,43 +435,6 @@
   src: local("Segoe UI Bold Italic");
 }
 @font-face {
-  font-family: "Segoe WP";
-  font-weight: 300;
-  src: local("Segoe WP Light");
-}
-@font-face {
-  font-family: "Segoe WP";
-  font-weight: 600;
-  src: local("Segoe WP Semilight");
-}
-@font-face {
-  font-family: "Segoe WP";
-  font-weight: 500;
-  src: local("Segoe WP");
-}
-@font-face {
-  font-family: "Segoe WP";
-  font-weight: 400;
-  src: local("Segoe WP");
-}
-@font-face {
-  font-family: "Segoe WP";
-  font-weight: 700;
-  src: local("Segoe WP Bold");
-}
-@font-face {
-  font-family: "Segoe WP";
-  font-style: italic;
-  font-weight: 500;
-  src: local("Segoe WP Italic");
-}
-@font-face {
-  font-family: "Segoe WP";
-  font-style: italic;
-  font-weight: 700;
-  src: local("Segoe WP Bold Italic");
-}
-@font-face {
   font-family: "Microsoft Yahei UI";
   font-weight: 200;
   src: local("Microsoft Yahei UI Light");
@@ -727,7 +690,7 @@ textarea,
 button,
 select,
 option {
-  font-family: "Segoe UI", "Segoe WP", sans-serif, "Segoe MDL2 Assets", "Symbols";
+  font-family: "Segoe UI", sans-serif, "Segoe MDL2 Assets", "Symbols";
 }
 input:not([type]),
 input[type=""],
