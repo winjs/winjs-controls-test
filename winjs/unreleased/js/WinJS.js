@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.23 WinJS.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.24 WinJS.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.23 WinJS.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.24 WinJS.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -69235,6 +69235,20 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             }
             return null;
         };
+        _CommandingSurface.prototype.showOnlyCommands = function (commands) {
+            if (this._data) {
+                for (var i = 0, len = this._data.length; i < len; i++) {
+                    this._data.getAt(i).hidden = true;
+                }
+                for (var i = 0, len = commands.length; i < len; i++) {
+                    // The array passed to showOnlyCommands can contain either command ids, or the commands themselves.
+                    var command = (typeof commands[i] === "string" ? this.getCommandById(commands[i]) : commands[i]);
+                    if (command) {
+                        command.hidden = false;
+                    }
+                }
+            }
+        };
         _CommandingSurface.prototype.deferredDomUpate = function () {
             // Notify the machine that an update has been requested.
             this._machine.updateDom();
@@ -70658,6 +70672,17 @@ define('WinJS/Controls/ToolBar/_ToolBar',["require", "exports", "../../Core/_Bas
             /// </returns>
             /// </signature>
             return this._commandingSurface.getCommandById(id);
+        };
+        ToolBar.prototype.showOnlyCommands = function (commands) {
+            /// <signature helpKeyword="WinJS.UI.ToolBar.showOnlyCommands">
+            /// <summary locid="WinJS.UI.ToolBar.showOnlyCommands">
+            /// Show the specified commands, hiding all of the others in the ToolBar.
+            /// </summary>
+            /// <param name="commands" type="Array" locid="WinJS.UI.ToolBar.showOnlyCommands_p:commands">
+            /// An array of the commands to show. The array elements may be Command objects, or the string identifiers (IDs) of commands.
+            /// </param>
+            /// </signature>
+            return this._commandingSurface.showOnlyCommands(commands);
         };
         ToolBar.prototype._writeProfilerMark = function (text) {
             _WriteProfilerMark("WinJS.UI.ToolBar:" + this._id + ":" + text);
@@ -80760,6 +80785,17 @@ define('WinJS/Controls/AppBar/_AppBar',["require", "exports", "../../Core/_Base"
             /// </returns>
             /// </signature>
             return this._commandingSurface.getCommandById(id);
+        };
+        AppBar.prototype.showOnlyCommands = function (commands) {
+            /// <signature helpKeyword="WinJS.UI.AppBar.showOnlyCommands">
+            /// <summary locid="WinJS.UI.AppBar.showOnlyCommands">
+            /// Show the specified commands, hiding all of the others in the AppBar.
+            /// </summary>
+            /// <param name="commands" type="Array" locid="WinJS.UI.AppBar.showOnlyCommands_p:commands">
+            /// An array of the commands to show. The array elements may be Command objects, or the string identifiers (IDs) of commands.
+            /// </param>
+            /// </signature>
+            return this._commandingSurface.showOnlyCommands(commands);
         };
         AppBar.prototype._writeProfilerMark = function (text) {
             _WriteProfilerMark("WinJS.UI.AppBar:" + this._id + ":" + text);
