@@ -4117,10 +4117,10 @@ Settings Pane
   /* enough to fit the overflowbutton */
   position: relative;
 }
-.win-commandingsurface.win-commandingsurface-overflowbottom .win-commandingsurface-overflowarea {
+.win-commandingsurface.win-commandingsurface-overflowbottom .win-commandingsurface-overflowareacontainer {
   top: 100%;
 }
-.win-commandingsurface.win-commandingsurface-overflowtop .win-commandingsurface-overflowarea {
+.win-commandingsurface.win-commandingsurface-overflowtop .win-commandingsurface-overflowareacontainer {
   bottom: 100%;
 }
 .win-commandingsurface .win-commandingsurface-actionarea {
@@ -4178,7 +4178,8 @@ Settings Pane
 .win-commandingsurface.win-commandingsurface-opened .win-commandingsurface-actionarea {
   height: auto;
 }
-.win-commandingsurface.win-commandingsurface-opened .win-commandingsurface-overflowarea {
+.win-commandingsurface.win-commandingsurface-opened .win-commandingsurface-overflowarea,
+.win-commandingsurface.win-commandingsurface-opened .win-commandingsurface-overflowareacontainer {
   display: block;
 }
 .win-commandingsurface.win-commandingsurface-closed.win-commandingsurface-closeddisplayfull .win-commandingsurface-actionarea {
@@ -4200,11 +4201,41 @@ Settings Pane
 .win-commandingsurface.win-commandingsurface-closed.win-commandingsurface-closeddisplaynone {
   display: none;
 }
-.win-commandingsurface.win-commandingsurface-closed .win-commandingsurface-overflowarea {
+.win-commandingsurface.win-commandingsurface-closed .win-commandingsurface-overflowarea,
+.win-commandingsurface.win-commandingsurface-closed .win-commandingsurface-overflowareacontainer {
   display: none;
 }
 .win-commandingsurface.win-commandingsurface-empty .win-commandingsurface-overflowbutton {
   display: none;
+}
+.win-commandingsurface .win-commandingsurface-overflowareacontainer {
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  left: auto;
+}
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(ar),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(dv),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(fa),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(he),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(ku-Arab),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(pa-Arab),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(prs),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(ps),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(sd-Arab),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(syr),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(ug),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(ur),
+.win-commandingsurface .win-commandingsurface-overflowareacontainer:lang(qps-plocm) {
+  left: 0;
+  right: auto;
+}
+.win-commandingsurface .win-commandingsurface-overflowarea,
+.win-commandingsurface .win-commandingsurface-overflowareacontainer {
+  min-width: 160px;
+  min-height: 0;
+  max-height: 50vh;
+  padding: 0;
 }
 .win-commandingsurface .win-commandingsurface-overflowarea {
   display: -ms-flexbox;
@@ -4213,31 +4244,8 @@ Settings Pane
   -ms-flex-direction: column;
   -webkit-flex-direction: column;
   flex-direction: column;
-  min-width: 160px;
-  min-height: 0;
-  max-height: 50vh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0;
-  position: absolute;
-  right: 0;
-  left: auto;
-}
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(ar),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(dv),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(fa),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(he),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(ku-Arab),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(pa-Arab),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(prs),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(ps),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(sd-Arab),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(syr),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(ug),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(ur),
-.win-commandingsurface .win-commandingsurface-overflowarea:lang(qps-plocm) {
-  left: 0;
-  right: auto;
 }
 .win-commandingsurface .win-commandingsurface-overflowarea.win-menu {
   max-width: 480px;
@@ -4262,6 +4270,14 @@ Settings Pane
   flex: 0 0 auto;
   height: 2px;
   margin: 6px 12px 4px 12px;
+}
+.win-commandingsurface .win-commandingsurface-actionareacontainer {
+  overflow: hidden;
+}
+.win-commandingsurface.win-commandingsurface-closing.win-commandingsurface-closeddisplaycompact .win-command .win-label,
+.win-commandingsurface.win-commandingsurface-closing.win-commandingsurface-closeddisplayminimal .win-command,
+.win-commandingsurface.win-commandingsurface-closing.win-commandingsurface-closeddisplaynone .win-command {
+  opacity: 0;
 }
 @media (max-width: 480px) {
   .win-commandingsurface .win-commandingsurface-overflowarea.win-menu {
@@ -6396,8 +6412,8 @@ button.win-command:disabled:active .win-label {
   background-color: transparent;
   color: rgba(0, 0, 0, 0.2);
 }
-.win-commandingsurface,
-.win-commandingsurface {
+.win-commandingsurface .win-commandingsurface-actionarea,
+.win-commandingsurface .win-commandingsurface-actionarea {
   background-color: #e6e6e6;
 }
 .win-commandingsurface button.win-commandingsurface-overflowbutton,
@@ -6429,14 +6445,6 @@ button.win-command:disabled:active .win-label {
 .win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active {
   color: #000000;
   background-color: rgba(0, 0, 0, 0.2);
-}
-.win-toolbar,
-.win-toolbar {
-  background-color: #e6e6e6;
-}
-.win-toolbar .win-commandingsurface,
-.win-toolbar .win-commandingsurface {
-  background-color: inherit;
 }
 /* The MediaPlayer uses the same colors in light and dark themes which is why we don't use
    the light / dark theme color values. */
@@ -6588,14 +6596,6 @@ progress.win-mediaplayer-busy {
 }
 .win-splitview-pane {
   background-color: #f2f2f2;
-}
-.win-appbar,
-.win-appbar {
-  background-color: #e6e6e6;
-}
-.win-appbar .win-commandingsurface,
-.win-appbar .win-commandingsurface {
-  background-color: inherit;
 }
 html.win-hoverable {
   /* LegacyAppBar control colors */
@@ -7471,8 +7471,8 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
   background-color: transparent;
   color: rgba(255, 255, 255, 0.2);
 }
-.win-ui-dark.win-commandingsurface,
-.win-ui-dark .win-commandingsurface {
+.win-ui-dark.win-commandingsurface .win-commandingsurface-actionarea,
+.win-ui-dark .win-commandingsurface .win-commandingsurface-actionarea {
   background-color: #393939;
 }
 .win-ui-dark.win-commandingsurface button.win-commandingsurface-overflowbutton,
@@ -7504,14 +7504,6 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark .win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active {
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.2);
-}
-.win-ui-dark.win-toolbar,
-.win-ui-dark .win-toolbar {
-  background-color: #393939;
-}
-.win-ui-dark.win-toolbar .win-commandingsurface,
-.win-ui-dark .win-toolbar .win-commandingsurface {
-  background-color: inherit;
 }
 .win-ui-dark .win-mediaplayer.win-mediaplayer-fullscreen {
   background-color: #000000;
@@ -7661,14 +7653,6 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 }
 .win-ui-dark .win-splitview-pane {
   background-color: #171717;
-}
-.win-ui-dark.win-appbar,
-.win-ui-dark .win-appbar {
-  background-color: #393939;
-}
-.win-ui-dark.win-appbar .win-commandingsurface,
-.win-ui-dark .win-appbar .win-commandingsurface {
-  background-color: inherit;
 }
 html.win-hoverable .win-ui-dark {
   /* LegacyAppBar control colors */
@@ -7983,8 +7967,8 @@ html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand
     background-color: transparent;
     color: GrayText;
   }
-  .win-commandingsurface,
-  .win-commandingsurface {
+  .win-commandingsurface .win-commandingsurface-actionarea,
+  .win-commandingsurface .win-commandingsurface-actionarea {
     background-color: ButtonFace;
   }
   .win-commandingsurface button.win-commandingsurface-overflowbutton,
@@ -8016,22 +8000,6 @@ html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton.win-navbarcommand
   .win-commandingsurface .win-commandingsurface-overflowarea button:enabled.win-command:hover:active {
     color: ButtonFace;
     background-color: ButtonText;
-  }
-  .win-toolbar,
-  .win-toolbar {
-    background-color: ButtonFace;
-  }
-  .win-toolbar .win-commandingsurface,
-  .win-toolbar .win-commandingsurface {
-    background-color: inherit;
-  }
-  .win-appbar,
-  .win-appbar {
-    background-color: ButtonFace;
-  }
-  .win-appbar .win-commandingsurface,
-  .win-appbar .win-commandingsurface {
-    background-color: inherit;
   }
   html.win-hoverable {
     /* LegacyAppBar control colors */
