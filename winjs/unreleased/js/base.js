@@ -1,18 +1,23 @@
 ﻿
-/*! Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information. */
-(function (global) {
+/*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
+(function (globalObject) {
 
+    var globalObject = 
+        typeof window !== 'undefined' ? window :
+        typeof self !== 'undefined' ? self :
+        typeof global !== 'undefined' ? global :
+        {};
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.4 base.js,StartTM');
-            factory(global.WinJS);
-            global.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2014.12.4 base.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.30 base.js,StartTM');
+            factory(globalObject.WinJS);
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.30 base.js,StopTM');
         }
     }(function (WinJS) {
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /*jshint ignore:start */
 var require;
 var define;
@@ -111,17 +116,25 @@ var define;
 })();
 define("amd", function(){});
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_WinJS',{});
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-(function (global) {
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
+define('WinJS/Core/_Global',[], function () {
     "use strict";
+    
+    // Appease jshint
+    /* global window, self, global */
+    
+    var globalObject =
+        typeof window !== 'undefined' ? window :
+        typeof self !== 'undefined' ? self :
+        typeof global !== 'undefined' ? global :
+        {};
+    return globalObject;
+});
 
-    define('WinJS/Core/_Global',global);
-}(this));
-
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_BaseCoreUtils',[
     './_Global'
     ], function baseCoreUtilsInit(_Global) {
@@ -154,7 +167,7 @@ define('WinJS/Core/_BaseCoreUtils',[
         }
     };
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_WriteProfilerMark',[
     './_Global'
 ], function profilerInit(_Global) {
@@ -162,7 +175,7 @@ define('WinJS/Core/_WriteProfilerMark',[
 
     return _Global.msWriteProfilerMark || function () { };
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Base',[
     './_WinJS',
     './_Global',
@@ -478,7 +491,7 @@ define('WinJS/Core/_Base',[
     };
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_ErrorFromName',[
     './_Base'
     ], function errorsInit(_Base) {
@@ -512,7 +525,7 @@ define('WinJS/Core/_ErrorFromName',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_WinRT',[
     'exports',
     './_Global',
@@ -527,7 +540,6 @@ define('WinJS/Core/_WinRT',[
         "Windows.ApplicationModel.DesignMode.designModeEnabled",
         "Windows.ApplicationModel.Resources.Core.ResourceContext",
         "Windows.ApplicationModel.Resources.Core.ResourceManager",
-        "Windows.ApplicationModel.Search.Core.SearchSuggestionManager",
         "Windows.ApplicationModel.Search.SearchQueryLinguisticDetails",
         "Windows.Data.Text.SemanticTextQuery",
         "Windows.Foundation.Collections.CollectionChange",
@@ -580,7 +592,7 @@ define('WinJS/Core/_WinRT',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Events',[
     'exports',
     './_Base'
@@ -772,6 +784,7 @@ define('require-json',{load: function(id){throw new Error("Dynamic load not allo
 define('require-json!en-US/ui.resjson',{
     "appBarAriaLabel": "App Bar",
     "appBarCommandAriaLabel": "App Bar Item",
+	"appBarOverflowButtonAriaLabel": "View more",
     "autoSuggestBoxAriaLabel": "Autosuggestbox",
     "autoSuggestBoxAriaLabelInputNoPlaceHolder": "Autosuggestbox, enter to submit query, esc to clear text",
     "autoSuggestBoxAriaLabelInputPlaceHolder": "Autosuggestbox, {0}, enter to submit query, esc to clear text",
@@ -783,24 +796,75 @@ define('require-json!en-US/ui.resjson',{
     "_autoSuggestBoxAriaLabelResult.comment": "Result: text, detailed text (example: Result: contoso, www.contoso.com)",
     "averageRating": "Average Rating",
     "backbuttonarialabel": "Back",
+    "chapterSkipBackMediaCommandDisplayText": "Chapter back",
+    "chapterSkipForwardMediaCommandDisplayText": "Chapter forward",
     "clearYourRating" : "Clear your rating",
+    "closedCaptionsLabelNone": "Off",
+    "closedCaptionsMediaCommandDisplayText": "Closed captioning",
     "closeOverlay" : "Close",
+    "commandingSurfaceAriaLabel": "CommandingSurface",
+    "commandingSurfaceOverflowButtonAriaLabel": "View more",
     "datePicker": "Date Picker",
+    "fastForwardMediaCommandDisplayText": "Fast forward",
+    "fastForwardFeedbackDisplayText": " {0}X",
+    "fastForwardFeedbackSlowMotionDisplayText": "0.5X",
     "flipViewPanningContainerAriaLabel": "Scrolling Container",
     "flyoutAriaLabel": "Flyout",
+    "goToFullScreenButtonLabel": "Go full screen",
+    "goToLiveMediaCommandDisplayText": "LIVE",
     "hubViewportAriaLabel": "Scrolling Container",
     "listViewViewportAriaLabel": "Scrolling Container",
+    "mediaErrorAborted": "Playback was interrupted. Please try again.",
+    "mediaErrorNetwork": "There was a network connection error.",
+    "mediaErrorDecode": "The content could not be decoded",
+    "mediaErrorSourceNotSupported": "This content type is not supported.",
+    "mediaErrorUnknown": "There was an unknown error.",
+    "mediaPlayerAudioTracksButtonLabel": "Audio tracks",
+    "mediaPlayerCastButtonLabel": "Cast",
+    "mediaPlayerChapterSkipBackButtonLabel": "Previous",
+    "mediaPlayerChapterSkipForwardButtonLabel": "Next",
+    "mediaPlayerClosedCaptionsButtonLabel": "Closed captions",
+    "mediaPlayerFastForwardButtonLabel": "Fast forward",
+    "mediaPlayerFullscreenButtonLabel": "Fullscreen",
+    "mediaPlayerLiveButtonLabel": "LIVE",
+    "mediaPlayerNextTrackButtonLabel": "Next",
+    "mediaPlayerOverlayActiveOptionIndicator": "(On)",
+    "mediaPlayerPauseButtonLabel": "Pause",
+    "mediaPlayerPlayButtonLabel": "Play",
+    "mediaPlayerPlayFromBeginningButtonLabel": "Replay",
+    "mediaPlayerPlayRateButtonLabel": "Playback rate",
+    "mediaPlayerPreviousTrackButtonLabel": "Previous",
+    "mediaPlayerRewindButtonLabel": "Rewind",
+    "mediaPlayerStopButtonLabel": "Stop",
+    "mediaPlayerTimeSkipBackButtonLabel": "8 second replay",   
+    "mediaPlayerTimeSkipForwardButtonLabel": "30 second skip",
+    "mediaPlayerToggleSnapButtonLabel": "Snap",
+    "mediaPlayerVolumeButtonLabel": "Volume",
+    "mediaPlayerZoomButtonLabel": "Zoom",
     "menuCommandAriaLabel": "Menu Item",
     "menuAriaLabel": "Menu",
     "navBarContainerViewportAriaLabel": "Scrolling Container",
+    "nextTrackMediaCommandDisplayText": "Next track",
     "off" : "Off",
     "on" : "On",
+    "pauseMediaCommandDisplayText": "Pause",
+    "playFromBeginningMediaCommandDisplayText": "Play again",
+    "playbackRateHalfSpeedLabel": "0.5x",
+    "playbackRateNormalSpeedLabel": "Normal",
+    "playbackRateOneAndHalfSpeedLabel": "1.5x",
+    "playbackRateDoubleSpeedLabel": "2x",
+    "playMediaCommandDisplayText": "Play",
     "pivotAriaLabel": "Pivot",
     "pivotViewportAriaLabel": "Scrolling Container",
+    "replayMediaCommandDisplayText": "Play again",
+    "rewindMediaCommandDisplayText": "Rewind",
+    "rewindFeedbackDisplayText": " {0}X",
+    "rewindFeedbackSlowMotionDisplayText": "0.5X",
     "searchBoxAriaLabel": "Searchbox",
     "searchBoxAriaLabelInputNoPlaceHolder": "Searchbox, enter to submit query, esc to clear text",
     "searchBoxAriaLabelInputPlaceHolder": "Searchbox, {0}, enter to submit query, esc to clear text",
     "searchBoxAriaLabelButton": "Click to submit query",
+    "seeMore":  "See more",
     "selectAMPM": "Select A.M P.M",
     "selectDay": "Select Day",
     "selectHour": "Select Hour",
@@ -808,12 +872,17 @@ define('require-json!en-US/ui.resjson',{
     "selectMonth": "Select Month",
     "selectYear": "Select Year",
     "settingsFlyoutAriaLabel": "Settings Flyout",
+    "stopMediaCommandDisplayText": "Stop",
     "tentativeRating": "Tentative Rating",
     "timePicker": "Time Picker",
+    "timeSeparator": ":",
+    "timeSkipBackMediaCommandDisplayText": "Skip back",
+    "timeSkipForwardMediaCommandDisplayText": "Skip forward",
     "toolbarAriaLabel": "ToolBar",
     "toolbarOverflowButtonAriaLabel": "View more",
     "unrated": "Unrated",
     "userRating": "User Rating",
+    "zoomMediaCommandDisplayText": "Zoom",
     // AppBar Icons follow, the format of the ui.js and ui.resjson differ for
     // the AppBarIcon namespace.  The remainder of the file therefore differs.
     // Code point comments are the icon glyphs in the 'Segoe UI Symbol' font.
@@ -1205,13 +1274,15 @@ define('require-json!en-US/ui.resjson',{
     "_appBarIcons\\threebars.comment":                  "{Locked:qps-ploc,qps-plocm}",
     "appBarIcons\\fourbars":                            "\uE1E9", //  group:System
     "_appBarIcons\\fourbars.comment":                   "{Locked:qps-ploc,qps-plocm}",
-    "appBarIcons\\scan":               			"\uE294", //  group:General
-    "_appBarIcons\\scan.comment":                   	"{Locked:qps-ploc,qps-plocm}",
-    "appBarIcons\\preview":            			"\uE295", //  group:General
-    "_appBarIcons\\preview.comment":                   	"{Locked:qps-ploc,qps-plocm}"
+    "appBarIcons\\scan":                                "\uE294", //  group:General
+    "_appBarIcons\\scan.comment":                       "{Locked:qps-ploc,qps-plocm}",
+    "appBarIcons\\preview":                             "\uE295", //  group:General
+    "_appBarIcons\\preview.comment":                    "{Locked:qps-ploc,qps-plocm}",
+    "appBarIcons\\hamburger":                           "\uE700", //  group:General
+    "_appBarIcons\\hamburger.comment":                  "{Locked:qps-ploc,qps-plocm}"
 }
 );
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Resources',[
     'exports',
     './_Global',
@@ -1446,7 +1517,7 @@ define('WinJS/Core/_Resources',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Trace',[
     './_Global'
     ], function traceInit(_Global) {
@@ -1463,7 +1534,7 @@ define('WinJS/Core/_Trace',[
         _traceAsyncCallbackCompleted: (_Global.Debug && _Global.Debug.msTraceAsyncCallbackCompleted && _Global.Debug.msTraceAsyncCallbackCompleted.bind(_Global.Debug)) || nop
     };
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Promise/_StateMachine',[
     '../Core/_Global',
     '../Core/_BaseCoreUtils',
@@ -2889,7 +2960,7 @@ define('WinJS/Promise/_StateMachine',[
     };
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Promise',[
     './Core/_Base',
     './Promise/_StateMachine'
@@ -2903,7 +2974,7 @@ define('WinJS/Promise',[
     return _StateMachine.Promise;
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_Log',[
     'exports',
     './_Global',
@@ -3015,7 +3086,7 @@ define('WinJS/Core/_Log',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Scheduler',[
     'exports',
     './Core/_Global',
@@ -4637,7 +4708,7 @@ define('WinJS/Scheduler',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Core/_BaseUtils',[
     'exports',
     './_Global',
@@ -5112,7 +5183,9 @@ define('WinJS/Core/_BaseUtils',[
         _traceAsyncOperationStarting: _Trace._traceAsyncOperationStarting,
         _traceAsyncOperationCompleted: _Trace._traceAsyncOperationCompleted,
         _traceAsyncCallbackStarting: _Trace._traceAsyncCallbackStarting,
-        _traceAsyncCallbackCompleted: _Trace._traceAsyncCallbackCompleted
+        _traceAsyncCallbackCompleted: _Trace._traceAsyncCallbackCompleted,
+
+        _version: "4.0.0"
     });
 
     _Base.Namespace._moduleDefine(exports, "WinJS", {
@@ -5159,7 +5232,7 @@ define('WinJS/Core',[
     ], function () {
     // Wrapper module
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/_Signal',[
     './Core/_Base',
     './Promise/_StateMachine'
@@ -5210,7 +5283,7 @@ define('WinJS/_Signal',[
 
     return Signal;
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Control',[
     'exports',
     '../Core/_Global',
@@ -5341,7 +5414,7 @@ define('WinJS/Utilities/_Control',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_ElementUtilities',[
     'exports',
     '../Core/_Global',
@@ -5614,8 +5687,25 @@ define('WinJS/Utilities/_ElementUtilities',[
             return Math.round(parseFloat(value)) || 0;
         }
     }
+
     function getDimension(element, property) {
         return convertToPixels(element, _Global.getComputedStyle(element, null)[property]);
+    }
+
+    function _convertToPrecisePixels(value) {
+        return parseFloat(value) || 0;
+    }
+    function _getPreciseDimension(element, property) {
+        return _convertToPrecisePixels(_Global.getComputedStyle(element, null)[property]);
+    }
+    function _getPreciseMargins(element) {
+        var style = _Global.getComputedStyle(element);
+        return {
+            top: _convertToPrecisePixels(style.marginTop),
+            right: _convertToPrecisePixels(style.marginRight),
+            bottom: _convertToPrecisePixels(style.marginBottom),
+            left: _convertToPrecisePixels(style.marginLeft),
+        };
     }
 
     var _MSGestureEvent = _Global.MSGestureEvent || {
@@ -6016,7 +6106,8 @@ define('WinJS/Utilities/_ElementUtilities',[
                 // prevent multiple events from firing when nesting observers
                 evt.stopPropagation();
 
-                if (this._attributeFilter.length && this._attributeFilter.indexOf(evt.attrName) === -1) {
+                var attrName = evt.attrName;
+                if (this._attributeFilter.length && this._attributeFilter.indexOf(attrName) === -1) {
                     return;
                 }
 
@@ -6025,7 +6116,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                     return;
                 }
 
-                var attrName = evt.attrName;
+                var isAriaMutation = attrName.indexOf("aria") >= 0;
 
                 // DOM mutation events use different naming for this attribute
                 if (attrName === 'tabindex') {
@@ -6038,7 +6129,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                     attributeName: attrName
                 });
 
-                if (this._observerCount === 1) {
+                if (this._observerCount === 1 && !isAriaMutation) {
                     this._dispatchEvent();
                 } else if (this._scheduled === false) {
                     this._scheduled = true;
@@ -6476,7 +6567,7 @@ define('WinJS/Utilities/_ElementUtilities',[
         _zoomToDuration: _zoomToDuration,
 
         _zoomTo: function _zoomTo(element, args) {
-            if (element.msZoomTo) {
+            if (this._supportsSnapPoints && element.msZoomTo) {
                 element.msZoomTo(args);
             } else {
                 // Schedule to ensure that we're not running from within an event handler. For example, if running
@@ -6539,7 +6630,7 @@ define('WinJS/Utilities/_ElementUtilities',[
                 if (_Global.HTMLElement && _Global.HTMLElement.prototype.setActive) {
                     element.setActive();
                 } else {
-                    // We are aware the unlike setActive(), focus() will scroll to the element that gets focus. However, this is
+                    // We are aware that, unlike setActive(), focus() will scroll to the element that gets focus. However, this is
                     // our current cross-browser solution until there is an equivalent for setActive() in other browsers.
                     //
                     // This _setActive polyfill does have limited support for preventing scrolling: via the scroller parameter, it
@@ -7078,6 +7169,46 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// </field>
             F12: 123,
 
+            /// <field locid="WinJS.Utilities.Key.NavigationView" helpKeyword="WinJS.Utilities.Key.NavigationView">
+            /// XBox One Remote NavigationView key.
+            /// </field>
+            NavigationView: 136,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationMenu" helpKeyword="WinJS.Utilities.Key.NavigationMenu">
+            /// XBox One Remote NavigationMenu key.
+            /// </field>
+            NavigationMenu: 137,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationUp" helpKeyword="WinJS.Utilities.Key.NavigationUp">
+            /// XBox One Remote NavigationUp key.
+            /// </field>
+            NavigationUp: 138,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationDown" helpKeyword="WinJS.Utilities.Key.NavigationDown">
+            /// XBox One Remote NavigationDown key.
+            /// </field>
+            NavigationDown: 139,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationLeft" helpKeyword="WinJS.Utilities.Key.NavigationLeft">
+            /// XBox One Remote NavigationLeft key.
+            /// </field>
+            NavigationLeft: 140,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationRight" helpKeyword="WinJS.Utilities.Key.NavigationRight">
+            /// XBox One Remote NavigationRight key.
+            /// </field>
+            NavigationRight: 141,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationAccept" helpKeyword="WinJS.Utilities.Key.NavigationAccept">
+            /// XBox One Remote NavigationAccept key.
+            /// </field>
+            NavigationAccept: 142,
+
+            /// <field locid="WinJS.Utilities.Key.NavigationCancel" helpKeyword="WinJS.Utilities.Key.NavigationCancel">
+            /// XBox One Remote NavigationCancel key.
+            /// </field>
+            NavigationCancel: 143,
+
             /// <field locid="WinJS.Utilities.Key.numLock" helpKeyword="WinJS.Utilities.Key.numLock">
             /// NUMBER LOCK key.
             /// </field>
@@ -7132,6 +7263,126 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// Accent grave key.
             /// </field>
             graveAccent: 192,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadA" helpKeyword="WinJS.Utilities.Key.GamepadA">
+            /// XBox One GamepadA key.
+            /// </field>
+            GamepadA: 195,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadB" helpKeyword="WinJS.Utilities.Key.GamepadB">
+            /// XBox One GamepadB key.
+            /// </field>
+            GamepadB: 196,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadX" helpKeyword="WinJS.Utilities.Key.GamepadX">
+            /// XBox One GamepadX key.
+            /// </field>
+            GamepadX: 197,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadY" helpKeyword="WinJS.Utilities.Key.GamepadY">
+            /// XBox One GamepadY key.
+            /// </field>
+            GamepadY: 198,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightShoulder" helpKeyword="WinJS.Utilities.Key.GamepadRightShoulder">
+            /// XBox One GamepadRightShoulder key.
+            /// </field>
+            GamepadRightShoulder: 199,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftShoulder" helpKeyword="WinJS.Utilities.Key.GamepadLeftShoulder">
+            /// XBox One GamepadLeftShoulder key.
+            /// </field>
+            GamepadLeftShoulder: 200,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftTrigger" helpKeyword="WinJS.Utilities.Key.GamepadLeftTrigger">
+            /// XBox One GamepadLeftTrigger key.
+            /// </field>
+            GamepadLeftTrigger: 201,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightTrigger" helpKeyword="WinJS.Utilities.Key.GamepadRightTrigger">
+            /// XBox One GamepadRightTrigger key.
+            /// </field>
+            GamepadRightTrigger: 202,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadUp" helpKeyword="WinJS.Utilities.Key.GamepadDPadUp">
+            /// XBox One GamepadDPadUp key.
+            /// </field>
+            GamepadDPadUp: 203,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadDown" helpKeyword="WinJS.Utilities.Key.GamepadDPadDown">
+            /// XBox One GamepadDPadDown key.
+            /// </field>
+            GamepadDPadDown: 204,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadLeft" helpKeyword="WinJS.Utilities.Key.GamepadDPadLeft">
+            /// XBox One GamepadDPadLeft key.
+            /// </field>
+            GamepadDPadLeft: 205,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadDPadRight" helpKeyword="WinJS.Utilities.Key.GamepadDPadRight">
+            /// XBox One GamepadDPadRight key.
+            /// </field>
+            GamepadDPadRight: 206,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadMenu" helpKeyword="WinJS.Utilities.Key.GamepadMenu">
+            /// XBox One GamepadMenu key.
+            /// </field>
+            GamepadMenu: 207,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadView" helpKeyword="WinJS.Utilities.Key.GamepadView">
+            /// XBox One GamepadView key.
+            /// </field>
+            GamepadView: 208,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstick" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstick">
+            /// XBox One GamepadLeftThumbstick key.
+            /// </field>
+            GamepadLeftThumbstick: 209,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstick" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstick">
+            /// XBox One GamepadRightThumbstick key.
+            /// </field>
+            GamepadRightThumbstick: 210,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickUp" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickUp">
+            /// XBox One GamepadLeftThumbstickUp key.
+            /// </field>
+            GamepadLeftThumbstickUp: 211,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickDown" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickDown">
+            /// XBox One GamepadLeftThumbstickDown key.
+            /// </field>
+            GamepadLeftThumbstickDown: 212,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickRight" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickRight">
+            /// XBox One GamepadLeftThumbstickRight key.
+            /// </field>
+            GamepadLeftThumbstickRight: 213,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadLeftThumbstickLeft" helpKeyword="WinJS.Utilities.Key.GamepadLeftThumbstickLeft">
+            /// XBox One GamepadLeftThumbstickLeft key.
+            /// </field>
+            GamepadLeftThumbstickLeft: 214,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickUp" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickUp">
+            /// XBox One GamepadRightThumbstickUp key.
+            /// </field>
+            GamepadRightThumbstickUp: 215,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickDown" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickDown">
+            /// XBox One GamepadRightThumbstickDown key.
+            /// </field>
+            GamepadRightThumbstickDown: 216,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickRight" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickRight">
+            /// XBox One GamepadRightThumbstickRight key.
+            /// </field>
+            GamepadRightThumbstickRight: 217,
+
+            /// <field locid="WinJS.Utilities.Key.GamepadRightThumbstickLeft" helpKeyword="WinJS.Utilities.Key.GamepadRightThumbstickLeft">
+            /// XBox One GamepadRightThumbstickLeft key.
+            /// </field>
+            GamepadRightThumbstickLeft: 218,
 
             /// <field locid="WinJS.Utilities.Key.openBracket" helpKeyword="WinJS.Utilities.Key.openBracket">
             /// OPEN BRACKET key.
@@ -7328,6 +7579,11 @@ define('WinJS/Utilities/_ElementUtilities',[
                 padding = getDimension(element, "paddingLeft") + getDimension(element, "paddingRight");
             return element.offsetWidth - border - padding;
         },
+        _getPreciseContentWidth: function (element) {
+            var border = _getPreciseDimension(element, "borderLeftWidth") + _getPreciseDimension(element, "borderRightWidth"),
+                padding = _getPreciseDimension(element, "paddingLeft") + _getPreciseDimension(element, "paddingRight");
+            return element.offsetWidth - border - padding;
+        },
 
         getTotalWidth: function (element) {
             /// <signature helpKeyword="WinJS.Utilities.getTotalWidth">
@@ -7342,6 +7598,10 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// </returns>
             /// </signature>
             var margin = getDimension(element, "marginLeft") + getDimension(element, "marginRight");
+            return element.offsetWidth + margin;
+        },
+        _getPreciseTotalWidth: function (element) {
+            var margin = _getPreciseDimension(element, "marginLeft") + _getPreciseDimension(element, "marginRight");
             return element.offsetWidth + margin;
         },
 
@@ -7361,6 +7621,11 @@ define('WinJS/Utilities/_ElementUtilities',[
                 padding = getDimension(element, "paddingTop") + getDimension(element, "paddingBottom");
             return element.offsetHeight - border - padding;
         },
+        _getPreciseContentHeight: function (element) {
+            var border = _getPreciseDimension(element, "borderTopWidth") + _getPreciseDimension(element, "borderBottomWidth"),
+                padding = _getPreciseDimension(element, "paddingTop") + _getPreciseDimension(element, "paddingBottom");
+            return element.offsetHeight - border - padding;
+        },
 
         getTotalHeight: function (element) {
             /// <signature helpKeyword="WinJS.Utilities.getTotalHeight">
@@ -7375,6 +7640,10 @@ define('WinJS/Utilities/_ElementUtilities',[
             /// </returns>
             /// </signature>
             var margin = getDimension(element, "marginTop") + getDimension(element, "marginBottom");
+            return element.offsetHeight + margin;
+        },
+        _getPreciseTotalHeight: function (element) {
+            var margin = _getPreciseDimension(element, "marginTop") + _getPreciseDimension(element, "marginBottom");
             return element.offsetHeight + margin;
         },
 
@@ -7425,6 +7694,9 @@ define('WinJS/Utilities/_ElementUtilities',[
         },
 
         convertToPixels: convertToPixels,
+        _convertToPrecisePixels: _convertToPrecisePixels,
+        _getPreciseMargins: _getPreciseMargins,
+
 
         eventWithinElement: function (element, event) {
             /// <signature helpKeyword="WinJS.Utilities.eventWithinElement">
@@ -7610,6 +7882,31 @@ define('WinJS/Utilities/_ElementUtilities',[
             return highestTabIndex;
         },
 
+        _hasCursorKeysBehaviors: function Utilities_hasCursorKeysBehaviors(element) {
+            if (element.tagName === "SELECT" ||
+                element.tagName === "TEXTAREA") {
+                return true;
+            }
+            if (element.tagName === "INPUT") {
+                return element.type === "" ||
+                    element.type === "date" ||
+                    element.type === "datetime" ||
+                    element.type === "datetime-local" ||
+                    element.type === "email" ||
+                    element.type === "month" ||
+                    element.type === "number" ||
+                    element.type === "password" ||
+                    element.type === "range" ||
+                    element.type === "search" ||
+                    element.type === "tel" ||
+                    element.type === "text" ||
+                    element.type === "time" ||
+                    element.type === "url" ||
+                    element.type === "week";
+            }
+            return false;
+        },
+
         _reparentChildren: function (originalParent, destinationParent) {
             var child = originalParent.firstChild;
             while (child) {
@@ -7617,6 +7914,16 @@ define('WinJS/Utilities/_ElementUtilities',[
                 destinationParent.appendChild(child);
                 child = sibling;
             }
+        },
+
+        // Ensures that the same element has focus before and after *callback* is
+        // called. Useful if moving focus is an unintentional side effect of *callback*.
+        // For example, this could happen if *callback* removes and reinserts elements
+        // to the DOM.
+        _maintainFocus: function ElementUtilities_maintainFocus(callback) {
+            var focusedElement = _Global.document.activeElement;
+            callback();
+            exports._trySetActive(focusedElement);
         },
 
         _trySetActive: function Utilities_trySetActive(elem, scroller) {
@@ -7753,7 +8060,7 @@ define('WinJS/Utilities/_ElementUtilities',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Dispose',[
     'exports',
     '../Core/_Base',
@@ -7860,7 +8167,7 @@ define('WinJS/Utilities/_Dispose',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/ControlProcessor/_OptionsLexer',[
     'exports',
     '../Core/_Base'
@@ -8496,7 +8803,7 @@ StringLiteral       7.8.4
         })
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/ControlProcessor/_OptionsParser',[
     'exports',
     '../Core/_Base',
@@ -9125,7 +9432,7 @@ define('WinJS/ControlProcessor/_OptionsParser',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/ControlProcessor',[
     'exports',
     './Core/_Global',
@@ -9375,7 +9682,7 @@ define('WinJS/ControlProcessor',[
         process: process
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_ElementListUtilities',[
     'exports',
     '../Core/_Global',
@@ -9813,7 +10120,7 @@ define('WinJS/Utilities/_ElementListUtilities',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Hoverable',[
     'exports',
     '../Core/_Global'
@@ -9841,7 +10148,7 @@ define('WinJS/Utilities/_Hoverable',[
     }
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_ParallelWorkQueue',[
     'exports',
     '../Core/_Base',
@@ -9946,7 +10253,7 @@ define('WinJS/Utilities/_ParallelWorkQueue',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_VersionManager',[
     'exports',
     '../Core/_Base',
@@ -10040,7 +10347,7 @@ define('WinJS/Utilities/_VersionManager',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // Items Manager
 
 define('WinJS/Utilities/_ItemsManager',[
@@ -10997,7 +11304,7 @@ define('WinJS/Utilities/_ItemsManager',[
 });
 
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_TabContainer',[
     'exports',
     '../Core/_Global',
@@ -11313,7 +11620,7 @@ define('WinJS/Utilities/_TabContainer',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_KeyboardBehavior',[
     'exports',
     '../Core/_Global',
@@ -11328,30 +11635,56 @@ define('WinJS/Utilities/_KeyboardBehavior',[
     if (!_Global.document) {
         return;
     }
+    
+    var InputTypes = {
+        touch: "touch",
+        pen: "pen",
+        mouse: "mouse",
+        keyboard: "keyboard"
+    };
+    var _lastInputType = InputTypes.mouse;
+    
+    // Keys should be the same as the values for a PointerEvent's pointerType.
+    var pointerTypeToInputType = {
+        // IE 10 uses numbers for its pointerType
+        2: InputTypes.touch,
+        3: InputTypes.pen,
+        4: InputTypes.mouse,
+        
+        // Others use strings for their pointerTypes
+        touch: InputTypes.touch,
+        pen: InputTypes.pen,
+        mouse: InputTypes.mouse
+    };
 
-    var _keyboardSeenLast = false;
-
-    _ElementUtilities._addEventListener(_Global, "pointerdown", function () {
-        if (_keyboardSeenLast) {
-            _keyboardSeenLast = false;
-        }
+    _ElementUtilities._addEventListener(_Global, "pointerdown", function (eventObject) {
+        _lastInputType = pointerTypeToInputType[eventObject.pointerType] || InputTypes.mouse;
     }, true);
 
     _Global.addEventListener("keydown", function () {
-        if (!_keyboardSeenLast) {
-            _keyboardSeenLast = true;
-        }
+        _lastInputType = InputTypes.keyboard;
     }, true);
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
         _keyboardSeenLast: {
             get: function _keyboardSeenLast_get() {
-                return _keyboardSeenLast;
+                return _lastInputType === InputTypes.keyboard;
             },
             set: function _keyboardSeenLast_set(value) {
-                _keyboardSeenLast = value;
+                _lastInputType = (value ? InputTypes.keyboard : InputTypes.mouse);
             }
         },
+        _lastInputType: {
+            get: function _lastInputType_get() {
+                return _lastInputType;
+            },
+            set: function _lastInputType_set(value) {
+                if (InputTypes[value]) {
+                    _lastInputType = value;
+                }
+            }
+        },
+        _InputTypes: InputTypes,
         _WinKeyboard: function (element) {
             // Win Keyboard behavior is a solution that would be similar to -ms-keyboard-focus.
             // It monitors the last input (keyboard/mouse) and adds/removes a win-keyboard class
@@ -11642,14 +11975,15 @@ define('WinJS/Utilities/_KeyboardBehavior',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_SafeHtml',[
     'exports',
+    '../Core/_WinJS',
     '../Core/_Global',
     '../Core/_Base',
     '../Core/_ErrorFromName',
     '../Core/_Resources'
-    ], function safeHTMLInit(exports, _Global, _Base, _ErrorFromName, _Resources) {
+    ], function safeHTMLInit(exports, _WinJS, _Global, _Base, _ErrorFromName, _Resources) {
     "use strict";
 
 
@@ -11725,7 +12059,12 @@ define('WinJS/Utilities/_SafeHtml',[
             /// </param>
             /// </signature>
             msApp.execUnsafeLocalFunction(function () {
-                element.innerHTML = text;
+                try {
+                    _WinJS._execUnsafe = true;
+                    element.innerHTML = text;
+                } finally {
+                    _WinJS._execUnsafe = false;
+                }
             });
         };
         setOuterHTMLUnsafe = function (element, text) {
@@ -11742,7 +12081,12 @@ define('WinJS/Utilities/_SafeHtml',[
             /// </param>
             /// </signature>
             msApp.execUnsafeLocalFunction(function () {
-                element.outerHTML = text;
+                try {
+                    _WinJS._execUnsafe = true;
+                    element.outerHTML = text;
+                } finally {
+                    _WinJS._execUnsafe = false;
+                }
             });
         };
         insertAdjacentHTMLUnsafe = function (element, position, text) {
@@ -11762,7 +12106,12 @@ define('WinJS/Utilities/_SafeHtml',[
             /// </param>
             /// </signature>
             msApp.execUnsafeLocalFunction(function () {
-                element.insertAdjacentHTML(position, text);
+                try {
+                    _WinJS._execUnsafe = true;
+                    element.insertAdjacentHTML(position, text);
+                } finally {
+                    _WinJS._execUnsafe = false;
+                }
             });
         };
     } else if (_Global.msIsStaticHTML) {
@@ -11838,7 +12187,7 @@ define('WinJS/Utilities/_SafeHtml',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Select',[
     'exports',
     '../Core/_Base',
@@ -11976,7 +12325,7 @@ define('WinJS/Utilities/_Select',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Telemetry',[
     'exports'
     ], function telemetryInit(exports) {
@@ -11984,7 +12333,7 @@ define('WinJS/Utilities/_Telemetry',[
 
     /// NOTE: This file should be included when NOT building
     /// Microsoft WinJS Framework Package which will be available in Windows Store.
-    
+
     exports.send = function (name, params) {
     /// <signature helpKeyword="WinJS._Telemetry.send">
     /// <summary locid="WinJS._Telemetry.send">
@@ -12000,7 +12349,7 @@ define('WinJS/Utilities/_Telemetry',[
     };
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_UI',[
     'exports',
     '../Core/_BaseCoreUtils',
@@ -12075,14 +12424,14 @@ define('WinJS/Utilities/_UI',[
             /// This value represents a ListView group header.
             /// </field>
             groupHeader: "groupHeader",
-            /// <field locid="WinJS.UI.ListView.ObjectType.listHeader" helpKeyword="WinJS.UI.ObjectType.listHeader">
+            /// <field locid="WinJS.UI.ListView.ObjectType.header" helpKeyword="WinJS.UI.ObjectType.header">
             /// This value represents the ListView's header.
             /// </field>
-            listHeader: "listHeader",
-            /// <field locid="WinJS.UI.ListView.ObjectType.listFooter" helpKeyword="WinJS.UI.ObjectType.listFooter">
+            header: "header",
+            /// <field locid="WinJS.UI.ListView.ObjectType.footer" helpKeyword="WinJS.UI.ObjectType.footer">
             /// This value represents the ListView's footer.
             /// </field>
-            listFooter: "listFooter",
+            footer: "footer",
         },
 
         /// <field locid="WinJS.UI.ListView.SelectionMode" helpKeyword="WinJS.UI.SelectionMode">
@@ -12163,7 +12512,7 @@ define('WinJS/Utilities/_UI',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities/_Xhr',[
     '../Core/_Global',
     '../Core/_Base',
@@ -12273,7 +12622,7 @@ define('WinJS/Utilities/_Xhr',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Utilities',[
     './Utilities/_Control',
     './Utilities/_Dispose',
@@ -12293,7 +12642,524 @@ define('WinJS/Utilities',[
 
     //wrapper module
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+define('WinJS/XYFocus',["require", "exports", "./Core/_Global", "./Core/_Base", "./Core/_BaseUtils", "./Utilities/_ElementUtilities", "./Core/_Events", "./ControlProcessor/_OptionsParser"], function (require, exports, _Global, _Base, _BaseUtils, _ElementUtilities, _Events, _OptionsParser) {
+    "use strict";
+    var Keys = _ElementUtilities.Key;
+    var AttributeNames = {
+        focusOverride: "data-win-xyfocus",
+        focusOverrideLegacy: "data-win-focus"
+    };
+    var ClassNames = {
+        focusable: "win-focusable",
+        xboxPlatform: "win-xbox",
+    };
+    var CrossDomainMessageConstants = {
+        messageDataProperty: "msWinJSXYFocusControlMessage",
+        register: "register",
+        unregister: "unregister",
+        dFocusEnter: "dFocusEnter",
+        dFocusExit: "dFocusExit"
+    };
+    var DirectionNames = {
+        left: "left",
+        right: "right",
+        up: "up",
+        down: "down"
+    };
+    var EventNames = {
+        focusChanging: "focuschanging",
+        focusChanged: "focuschanged"
+    };
+    var FocusableTagNames = [
+        "A",
+        "BUTTON",
+        "IFRAME",
+        "INPUT",
+        "SELECT",
+        "TEXTAREA"
+    ];
+    // These factors can be tweaked to adjust which elements are favored by the focus algorithm
+    var ScoringConstants = {
+        primaryAxisDistanceWeight: 30,
+        secondaryAxisDistanceWeight: 20,
+        percentInHistoryShadowWeight: 100000
+    };
+    /**
+     * Gets the mapping object that maps keycodes to XYFocus actions.
+    **/
+    exports.keyCodeMap = {
+        left: [Keys.GamepadLeftThumbstickLeft, Keys.GamepadDPadLeft, Keys.NavigationLeft],
+        right: [Keys.GamepadLeftThumbstickRight, Keys.GamepadDPadRight, Keys.NavigationRight],
+        up: [Keys.GamepadLeftThumbstickUp, Keys.GamepadDPadUp, Keys.NavigationUp],
+        down: [Keys.GamepadLeftThumbstickDown, Keys.GamepadDPadDown, Keys.NavigationDown],
+        accept: [Keys.GamepadA, Keys.NavigationAccept],
+    };
+    /**
+     * Gets or sets the focus root when invoking XYFocus APIs.
+    **/
+    exports.focusRoot;
+    function findNextFocusElement(direction, options) {
+        var result = _findNextFocusElementInternal(direction, options);
+        return result ? result.target : null;
+    }
+    exports.findNextFocusElement = findNextFocusElement;
+    function moveFocus(direction, options) {
+        var result = findNextFocusElement(direction, options);
+        if (result) {
+            var previousFocusElement = _Global.document.activeElement;
+            if (_trySetFocus(result, -1)) {
+                eventSrc.dispatchEvent(EventNames.focusChanged, { previousFocusElement: previousFocusElement, keyCode: -1 });
+                return result;
+            }
+        }
+    }
+    exports.moveFocus = moveFocus;
+    // Privates
+    var _lastTarget;
+    var _cachedLastTargetRect;
+    var _historyRect;
+    var _afEnabledFrames = [];
+    function _xyFocus(direction, keyCode, referenceRect) {
+        // If focus has moved since the last XYFocus movement, scrolling occured, or an explicit
+        // reference rectangle was given to us, then we invalidate the history rectangle.
+        if (referenceRect || _Global.document.activeElement !== _lastTarget) {
+            _historyRect = null;
+            _lastTarget = null;
+            _cachedLastTargetRect = null;
+        }
+        else if (_lastTarget && _cachedLastTargetRect) {
+            var lastTargetRect = _toIRect(_lastTarget.getBoundingClientRect());
+            if (lastTargetRect.left !== _cachedLastTargetRect.left || lastTargetRect.top !== _cachedLastTargetRect.top) {
+                _historyRect = null;
+                _lastTarget = null;
+                _cachedLastTargetRect = null;
+            }
+        }
+        var activeElement = _Global.document.activeElement;
+        var lastTarget = _lastTarget;
+        var result = _findNextFocusElementInternal(direction, {
+            focusRoot: exports.focusRoot,
+            historyRect: _historyRect,
+            referenceElement: _lastTarget,
+            referenceRect: referenceRect
+        });
+        if (result && _trySetFocus(result.target, keyCode)) {
+            // A focus target was found
+            updateHistoryRect(direction, result);
+            _lastTarget = result.target;
+            _cachedLastTargetRect = result.targetRect;
+            if (result.target.tagName === "IFRAME") {
+                var index = _afEnabledFrames.lastIndexOf(result.target.contentWindow);
+                if (index >= 0) {
+                    // If we successfully moved focus and the new focused item is an IFRAME, then we need to notify it
+                    // Note on coordinates: When signaling enter, DO transform the coordinates into the child frame's coordinate system.
+                    var refRect = _toIRect({
+                        left: result.referenceRect.left - result.targetRect.left,
+                        top: result.referenceRect.top - result.targetRect.top,
+                        width: result.referenceRect.width,
+                        height: result.referenceRect.height
+                    });
+                    var message = {};
+                    message[CrossDomainMessageConstants.messageDataProperty] = {
+                        type: CrossDomainMessageConstants.dFocusEnter,
+                        direction: direction,
+                        referenceRect: refRect
+                    };
+                    result.target.contentWindow.postMessage(message, "*");
+                }
+            }
+            eventSrc.dispatchEvent(EventNames.focusChanged, { previousFocusElement: activeElement, keyCode: keyCode });
+            return true;
+        }
+        else {
+            // No focus target was found; if we are inside an IFRAME, notify the parent that focus is exiting this IFRAME
+            // Note on coordinates: When signaling exit, do NOT transform the coordinates into the parent's coordinate system.
+            if (top !== window) {
+                var refRect = referenceRect;
+                if (!refRect) {
+                    refRect = _Global.document.activeElement ? _toIRect(_Global.document.activeElement.getBoundingClientRect()) : _defaultRect();
+                }
+                var message = {};
+                message[CrossDomainMessageConstants.messageDataProperty] = {
+                    type: CrossDomainMessageConstants.dFocusExit,
+                    direction: direction,
+                    referenceRect: refRect
+                };
+                _Global.parent.postMessage(message, "*");
+                return true;
+            }
+        }
+        return false;
+        // Nested Helpers
+        function updateHistoryRect(direction, result) {
+            var newHistoryRect = _defaultRect();
+            // It's possible to get into a situation where the target element has no overlap with the reference edge.
+            //
+            //..╔══════════════╗..........................
+            //..║   reference  ║..........................
+            //..╚══════════════╝..........................
+            //.....................╔═══════════════════╗..
+            //.....................║                   ║..
+            //.....................║       target      ║..
+            //.....................║                   ║..
+            //.....................╚═══════════════════╝..
+            //
+            // If that is the case, we need to reset the coordinates to the edge of the target element.
+            if (direction === DirectionNames.left || direction === DirectionNames.right) {
+                newHistoryRect.top = Math.max(result.targetRect.top, result.referenceRect.top, _historyRect ? _historyRect.top : Number.MIN_VALUE);
+                newHistoryRect.bottom = Math.min(result.targetRect.bottom, result.referenceRect.bottom, _historyRect ? _historyRect.bottom : Number.MAX_VALUE);
+                if (newHistoryRect.bottom <= newHistoryRect.top) {
+                    newHistoryRect.top = result.targetRect.top;
+                    newHistoryRect.bottom = result.targetRect.bottom;
+                }
+                newHistoryRect.height = newHistoryRect.bottom - newHistoryRect.top;
+                newHistoryRect.width = Number.MAX_VALUE;
+                newHistoryRect.left = Number.MIN_VALUE;
+                newHistoryRect.right = Number.MAX_VALUE;
+            }
+            else {
+                newHistoryRect.left = Math.max(result.targetRect.left, result.referenceRect.left, _historyRect ? _historyRect.left : Number.MIN_VALUE);
+                newHistoryRect.right = Math.min(result.targetRect.right, result.referenceRect.right, _historyRect ? _historyRect.right : Number.MAX_VALUE);
+                if (newHistoryRect.right <= newHistoryRect.left) {
+                    newHistoryRect.left = result.targetRect.left;
+                    newHistoryRect.right = result.targetRect.right;
+                }
+                newHistoryRect.width = newHistoryRect.right - newHistoryRect.left;
+                newHistoryRect.height = Number.MAX_VALUE;
+                newHistoryRect.top = Number.MIN_VALUE;
+                newHistoryRect.bottom = Number.MAX_VALUE;
+            }
+            _historyRect = newHistoryRect;
+        }
+    }
+    function _findNextFocusElementInternal(direction, options) {
+        options = options || {};
+        options.focusRoot = options.focusRoot || exports.focusRoot || _Global.document.body;
+        options.historyRect = options.historyRect || _defaultRect();
+        var maxDistance = Math.max(_Global.screen.availHeight, _Global.screen.availWidth);
+        var refObj = getReferenceObject(options.referenceElement, options.referenceRect);
+        // Handle override
+        if (refObj.element) {
+            var manualOverrideOptions = refObj.element.getAttribute(AttributeNames.focusOverride) || refObj.element.getAttribute(AttributeNames.focusOverrideLegacy);
+            if (manualOverrideOptions) {
+                var parsedOptions = _OptionsParser.optionsParser(manualOverrideOptions);
+                // The left-hand side can be cased as either "left" or "Left".
+                var selector = parsedOptions[direction] || parsedOptions[direction[0].toUpperCase() + direction.substr(1)];
+                if (selector) {
+                    var target;
+                    var element = refObj.element;
+                    while (!target && element) {
+                        target = element.querySelector(selector);
+                        element = element.parentElement;
+                    }
+                    if (target) {
+                        if (target === _Global.document.activeElement) {
+                            return null;
+                        }
+                        return { target: target, targetRect: _toIRect(target.getBoundingClientRect()), referenceRect: refObj.rect, usedOverride: true };
+                    }
+                }
+            }
+        }
+        // Calculate scores for each element in the root
+        var bestPotential = {
+            element: null,
+            rect: null,
+            score: 0
+        };
+        var allElements = options.focusRoot.querySelectorAll("*");
+        for (var i = 0, length = allElements.length; i < length; i++) {
+            var potentialElement = allElements[i];
+            if (refObj.element === potentialElement || !isFocusable(potentialElement)) {
+                continue;
+            }
+            var potentialRect = _toIRect(potentialElement.getBoundingClientRect());
+            // Skip elements that have either a width of zero or a height of zero
+            if (potentialRect.width === 0 || potentialRect.height === 0) {
+                continue;
+            }
+            var score = calculateScore(direction, maxDistance, options.historyRect, refObj.rect, potentialRect);
+            if (score > bestPotential.score) {
+                bestPotential.element = potentialElement;
+                bestPotential.rect = potentialRect;
+                bestPotential.score = score;
+            }
+        }
+        return bestPotential.element ? { target: bestPotential.element, targetRect: bestPotential.rect, referenceRect: refObj.rect, usedOverride: false } : null;
+        // Nested Helpers
+        function calculatePercentInShadow(minReferenceCoord, maxReferenceCoord, minPotentialCoord, maxPotentialCoord) {
+            /// Calculates the percentage of the potential element that is in the shadow of the reference element.
+            if ((minReferenceCoord >= maxPotentialCoord) || (maxReferenceCoord <= minPotentialCoord)) {
+                // Potential is not in the reference's shadow.
+                return 0;
+            }
+            var pixelOverlap = Math.min(maxReferenceCoord, maxPotentialCoord) - Math.max(minReferenceCoord, minPotentialCoord);
+            var shortEdge = Math.min(maxPotentialCoord - minPotentialCoord, maxReferenceCoord - minReferenceCoord);
+            return pixelOverlap / shortEdge;
+        }
+        function calculateScore(direction, maxDistance, historyRect, referenceRect, potentialRect) {
+            var score = 0;
+            var percentInShadow;
+            var primaryAxisDistance;
+            var secondaryAxisDistance = 0;
+            var percentInHistoryShadow = 0;
+            switch (direction) {
+                case DirectionNames.left:
+                    // Make sure we don't evaluate any potential elements to the right of the reference element
+                    if (potentialRect.left >= referenceRect.left) {
+                        break;
+                    }
+                    percentInShadow = calculatePercentInShadow(referenceRect.top, referenceRect.bottom, potentialRect.top, potentialRect.bottom);
+                    primaryAxisDistance = referenceRect.left - potentialRect.right;
+                    if (percentInShadow > 0) {
+                        percentInHistoryShadow = calculatePercentInShadow(historyRect.top, historyRect.bottom, potentialRect.top, potentialRect.bottom);
+                    }
+                    else {
+                        // If the potential element is not in the shadow, then we calculate secondary axis distance
+                        secondaryAxisDistance = (referenceRect.bottom <= potentialRect.top) ? (potentialRect.top - referenceRect.bottom) : referenceRect.top - potentialRect.bottom;
+                    }
+                    break;
+                case DirectionNames.right:
+                    // Make sure we don't evaluate any potential elements to the left of the reference element
+                    if (potentialRect.right <= referenceRect.right) {
+                        break;
+                    }
+                    percentInShadow = calculatePercentInShadow(referenceRect.top, referenceRect.bottom, potentialRect.top, potentialRect.bottom);
+                    primaryAxisDistance = potentialRect.left - referenceRect.right;
+                    if (percentInShadow > 0) {
+                        percentInHistoryShadow = calculatePercentInShadow(historyRect.top, historyRect.bottom, potentialRect.top, potentialRect.bottom);
+                    }
+                    else {
+                        // If the potential element is not in the shadow, then we calculate secondary axis distance
+                        secondaryAxisDistance = (referenceRect.bottom <= potentialRect.top) ? (potentialRect.top - referenceRect.bottom) : referenceRect.top - potentialRect.bottom;
+                    }
+                    break;
+                case DirectionNames.up:
+                    // Make sure we don't evaluate any potential elements below the reference element
+                    if (potentialRect.top >= referenceRect.top) {
+                        break;
+                    }
+                    percentInShadow = calculatePercentInShadow(referenceRect.left, referenceRect.right, potentialRect.left, potentialRect.right);
+                    primaryAxisDistance = referenceRect.top - potentialRect.bottom;
+                    if (percentInShadow > 0) {
+                        percentInHistoryShadow = calculatePercentInShadow(historyRect.left, historyRect.right, potentialRect.left, potentialRect.right);
+                    }
+                    else {
+                        // If the potential element is not in the shadow, then we calculate secondary axis distance
+                        secondaryAxisDistance = (referenceRect.right <= potentialRect.left) ? (potentialRect.left - referenceRect.right) : referenceRect.left - potentialRect.right;
+                    }
+                    break;
+                case DirectionNames.down:
+                    // Make sure we don't evaluate any potential elements above the reference element
+                    if (potentialRect.bottom <= referenceRect.bottom) {
+                        break;
+                    }
+                    percentInShadow = calculatePercentInShadow(referenceRect.left, referenceRect.right, potentialRect.left, potentialRect.right);
+                    primaryAxisDistance = potentialRect.top - referenceRect.bottom;
+                    if (percentInShadow > 0) {
+                        percentInHistoryShadow = calculatePercentInShadow(historyRect.left, historyRect.right, potentialRect.left, potentialRect.right);
+                    }
+                    else {
+                        // If the potential element is not in the shadow, then we calculate secondary axis distance
+                        secondaryAxisDistance = (referenceRect.right <= potentialRect.left) ? (potentialRect.left - referenceRect.right) : referenceRect.left - potentialRect.right;
+                    }
+                    break;
+            }
+            if (primaryAxisDistance >= 0) {
+                // The score needs to be a positive number so we make these distances positive numbers
+                primaryAxisDistance = maxDistance - primaryAxisDistance;
+                secondaryAxisDistance = maxDistance - secondaryAxisDistance;
+                if (primaryAxisDistance >= 0 && secondaryAxisDistance >= 0) {
+                    // Potential elements in the shadow get a multiplier to their final score
+                    primaryAxisDistance += primaryAxisDistance * percentInShadow;
+                    score = primaryAxisDistance * ScoringConstants.primaryAxisDistanceWeight + secondaryAxisDistance * ScoringConstants.secondaryAxisDistanceWeight + percentInHistoryShadow * ScoringConstants.percentInHistoryShadowWeight;
+                }
+            }
+            return score;
+        }
+        function getReferenceObject(referenceElement, referenceRect) {
+            var refElement;
+            var refRect;
+            if ((!referenceElement && !referenceRect) || (referenceElement && !referenceElement.parentNode)) {
+                // Note: We need to check to make sure 'parentNode' is not null otherwise there is a case
+                // where _lastTarget is defined, but calling getBoundingClientRect will throw a native exception.
+                // This case happens if the innerHTML of the parent of the _lastTarget is set to "".
+                // If no valid reference is supplied, we'll use _Global.document.activeElement unless it's the body
+                if (_Global.document.activeElement !== _Global.document.body) {
+                    referenceElement = _Global.document.activeElement;
+                }
+            }
+            if (referenceElement) {
+                refElement = referenceElement;
+                refRect = _toIRect(refElement.getBoundingClientRect());
+            }
+            else if (referenceRect) {
+                refRect = _toIRect(referenceRect);
+            }
+            else {
+                refRect = _defaultRect();
+            }
+            return {
+                element: refElement,
+                rect: refRect
+            };
+        }
+        function isFocusable(element) {
+            var elementTagName = element.tagName;
+            if (!element.hasAttribute("tabindex") && FocusableTagNames.indexOf(elementTagName) === -1 && !_ElementUtilities.hasClass(element, ClassNames.focusable)) {
+                // If the current potential element is not one of the tags we consider to be focusable, then exit
+                return false;
+            }
+            if (elementTagName === "IFRAME" && _afEnabledFrames.indexOf(element.contentWindow) === -1) {
+                // Skip IFRAMEs without compatible XYFocus implementation
+                return false;
+            }
+            if (elementTagName === "DIV" && element["winControl"] && element["winControl"].disabled) {
+                // Skip disabled WinJS controls
+                return false;
+            }
+            var style = getComputedStyle(element);
+            if (element.getAttribute("tabIndex") === "-1" || style.display === "none" || style.visibility === "hidden" || element.disabled) {
+                // Skip elements that are hidden
+                // Note: We don't check for opacity === 0, because the browser cannot tell us this value accurately.
+                return false;
+            }
+            return true;
+        }
+    }
+    function _defaultRect() {
+        // We set the top, left, bottom and right properties of the referenceBoundingRectangle to '-1'
+        // (as opposed to '0') because we want to make sure that even elements that are up to the edge
+        // of the screen can receive focus.
+        return {
+            top: -1,
+            bottom: -1,
+            right: -1,
+            left: -1,
+            height: 0,
+            width: 0
+        };
+    }
+    function _toIRect(rect) {
+        return {
+            top: Math.floor(rect.top),
+            bottom: Math.floor(rect.top + rect.height),
+            right: Math.floor(rect.left + rect.width),
+            left: Math.floor(rect.left),
+            height: Math.floor(rect.height),
+            width: Math.floor(rect.width),
+        };
+    }
+    function _trySetFocus(element, keyCode) {
+        // We raise an event on the focusRoot before focus changes to give listeners
+        // a chance to prevent the next focus target from receiving focus if they want.
+        var canceled = eventSrc.dispatchEvent(EventNames.focusChanging, { nextFocusElement: element, keyCode: keyCode });
+        if (!canceled) {
+            element.focus();
+        }
+        return _Global.document.activeElement === element;
+    }
+    function _getIFrameFromWindow(win) {
+        var iframes = _Global.document.querySelectorAll("IFRAME");
+        var found = Array.prototype.filter.call(iframes, function (x) { return x.contentWindow === win; });
+        return found.length ? found[0] : null;
+    }
+    function _handleKeyEvent(e) {
+        if (e.defaultPrevented) {
+            return;
+        }
+        var keys = Object.keys(exports.keyCodeMap);
+        for (var i = 0; i < keys.length; i++) {
+            // Note: key is 'left', 'right', 'up', 'down', or 'accept'
+            var key = keys[i];
+            var keyMappings = exports.keyCodeMap[key];
+            if (keyMappings.indexOf(e.keyCode) >= 0) {
+                if (keyMappings === exports.keyCodeMap.accept) {
+                    _Global.document.activeElement && _Global.document.activeElement["click"] && _Global.document.activeElement["click"]();
+                }
+                else {
+                    if (_xyFocus(key, e.keyCode)) {
+                        e.preventDefault();
+                    }
+                }
+                return;
+            }
+        }
+    }
+    _Global.addEventListener("message", function (e) {
+        if (!e.data || !e.data[CrossDomainMessageConstants.messageDataProperty]) {
+            return;
+        }
+        var data = e.data[CrossDomainMessageConstants.messageDataProperty];
+        switch (data.type) {
+            case CrossDomainMessageConstants.register:
+                _afEnabledFrames.push(e.source);
+                break;
+            case CrossDomainMessageConstants.unregister:
+                var index = _afEnabledFrames.indexOf(e.source);
+                if (index >= 0) {
+                    _afEnabledFrames.splice(index, 1);
+                }
+                break;
+            case CrossDomainMessageConstants.dFocusEnter:
+                // The coordinates stored in data.refRect are already in this frame's coordinate system.
+                // When we get this message we will force-enable XYFocus to support scenarios where
+                // websites running WinJS are put into an IFRAME and the parent frame has XYFocus enabled.
+                _xyFocus(data.direction, -1, data.referenceRect);
+                break;
+            case CrossDomainMessageConstants.dFocusExit:
+                var iframe = _getIFrameFromWindow(e.source);
+                if (_Global.document.activeElement !== iframe) {
+                    break;
+                }
+                // The coordinates stored in data.refRect are in the IFRAME's coordinate system,
+                // so we must first transform them into this frame's coordinate system.
+                var refRect = data.referenceRect;
+                refRect.left += iframe.offsetLeft;
+                refRect.top += iframe.offsetTop;
+                _xyFocus(data.direction, -1, refRect);
+                break;
+        }
+    });
+    _BaseUtils.ready().then(function () {
+        if (_ElementUtilities.hasWinRT && _Global["Windows"] && _Global["Windows"]["Xbox"]) {
+            _ElementUtilities.addClass(_Global.document.body, ClassNames.xboxPlatform);
+        }
+        _Global.document.addEventListener("keydown", _handleKeyEvent);
+        // If we are running within an iframe, we send a registration message to the parent window
+        if (_Global.top !== _Global.window) {
+            var message = {};
+            message[CrossDomainMessageConstants.messageDataProperty] = {
+                type: CrossDomainMessageConstants.register,
+                version: 1.0
+            };
+            _Global.parent.postMessage(message, "*");
+        }
+    });
+    // Publish to WinJS namespace
+    var toPublish = {
+        focusRoot: {
+            get: function () {
+                return exports.focusRoot;
+            },
+            set: function (value) {
+                exports.focusRoot = value;
+            }
+        },
+        findNextFocusElement: findNextFocusElement,
+        keyCodeMap: exports.keyCodeMap,
+        moveFocus: moveFocus,
+        onfocuschanged: _Events._createEventProperty(EventNames.focusChanged),
+        onfocuschanging: _Events._createEventProperty(EventNames.focusChanging),
+        _xyFocus: _xyFocus
+    };
+    toPublish = _BaseUtils._merge(toPublish, _Events.eventMixin);
+    toPublish["_listeners"] = {};
+    var eventSrc = toPublish;
+    _Base.Namespace.define("WinJS.UI.XYFocus", toPublish);
+});
+
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Fragments',[
     'exports',
     './Core/_Global',
@@ -12309,10 +13175,6 @@ define('WinJS/Fragments',[
     './Utilities/_Xhr'
 ], function fragmentLoaderInit(exports, _Global, _WinRT, _Base, _BaseUtils, _ErrorFromName, _Resources, _WriteProfilerMark, Promise, _ElementUtilities, _SafeHtml, _Xhr) {
     "use strict";
-
-    var strings = {
-        get invalidFragmentUri() { return "Unsupported uri for fragment loading. Fragments in the local context can only load from package content or local sources. To load fragments from other sources, use a web context."; },
-    };
 
     // not supported in WebWorker
     if (!_Global.document) {
@@ -12671,40 +13533,7 @@ define('WinJS/Fragments',[
         }
     }
 
-    function _forceLocal(uri) {
-        if (_BaseUtils.hasWinRT) {
-            // we force the URI to be cannonicalized and made absolute by IE
-            //
-            var a = _Global.document.createElement("a");
-            a.href = uri;
-
-            var absolute = a.href;
-
-            // WinRT Uri class doesn't provide URI construction, but can crack the URI
-            // appart to let us reliably discover the scheme.
-            //
-            var wuri = new _WinRT.Windows.Foundation.Uri(absolute);
-
-            // Only "ms-appx" (local package content) are allowed when running in the local
-            // context. Both strings are known to be safe to compare in any culture (including Turkish).
-            //
-            var scheme = wuri.schemeName;
-            if (scheme !== "ms-appx") {
-
-                throw new _ErrorFromName("WinJS.UI.Fragments.InvalidUri", strings.invalidFragmentUri);
-            }
-
-            return absolute;
-        }
-        return uri;
-    }
-
     function populateDocument(state, href) {
-        // Because we later use "setInnerHTMLUnsafe" ("Unsafe" is the magic word here), we
-        // want to force the href to only support local package content when running
-        // in the local context. When running in the web context, this will be a no-op.
-        //
-        href = forceLocal(href);
 
         var htmlDoc = _Global.document.implementation.createHTMLDocument("frag");
         var base = htmlDoc.createElement("base");
@@ -12723,7 +13552,6 @@ define('WinJS/Fragments',[
     }
 
     var writeProfilerMark = _WriteProfilerMark;
-    var forceLocal = _forceLocal;
 
     var getFragmentContents = getFragmentContentsXHR;
     function getFragmentContentsXHR(href) {
@@ -12738,14 +13566,6 @@ define('WinJS/Fragments',[
         cache: cache,
         clearCache: clearCache,
         _cacheStore: { get: function () { return cacheStore; } },
-        _forceLocal: {
-            get: function () {
-                return forceLocal;
-            },
-            set: function (value) {
-                forceLocal = value;
-            }
-        },
         _getFragmentContents: {
             get: function () {
                 return getFragmentContents;
@@ -12764,7 +13584,7 @@ define('WinJS/Fragments',[
         }
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Application/_State',[
     'exports',
     '../Core/_Global',
@@ -13069,7 +13889,7 @@ define('WinJS/Application/_State',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Navigation',[
     'exports',
     './Core/_Base',
@@ -13372,7 +14192,7 @@ define('WinJS/Navigation',[
         onbeforenavigate: createEvent(beforenavigateEventName)
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Application',[
     'exports',
     './Core/_Global',
@@ -13387,7 +14207,7 @@ define('WinJS/Application',[
     './_Signal',
     './Scheduler',
     './Utilities/_ElementUtilities'
-    ], function applicationInit(exports, _Global, _WinRT, _Base, _Events, _Log, _WriteProfilerMark, _State, Navigation, Promise, _Signal, Scheduler, _ElementUtilities) {
+], function applicationInit(exports, _Global, _WinRT, _Base, _Events, _Log, _WriteProfilerMark, _State, Navigation, Promise, _Signal, Scheduler, _ElementUtilities) {
     "use strict";
 
     _Global.Debug && (_Global.Debug.setNonUserCodeExceptions = true);
@@ -13419,43 +14239,32 @@ define('WinJS/Application',[
     var pendingDeferrals = {};
     var pendingDeferralID = 0;
     var TypeToSearch = {
-        _suggestionManager: null,
         _registered: false,
-        
+
         updateRegistration: function Application_TypeToSearch_updateRegistration() {
             var ls = listeners._listeners && listeners._listeners[requestingFocusOnKeyboardInputET] || [];
             if (!TypeToSearch._registered && ls.length > 0) {
-                if (_WinRT.Windows.ApplicationModel.Search.Core.SearchSuggestionManager) {
-                    TypeToSearch._suggestionManager = new _WinRT.Windows.ApplicationModel.Search.Core.SearchSuggestionManager();
-                    TypeToSearch._suggestionManager.addEventListener("requestingfocusonkeyboardinput", requestingFocusOnKeyboardInput);
-                } else {
-                    TypeToSearch._updateKeydownCaptureListeners(_Global.top, true /*add*/);
-                }
+                TypeToSearch._updateKeydownCaptureListeners(_Global.top, true /*add*/);
                 TypeToSearch._registered = true;
             }
             if (TypeToSearch._registered && ls.length === 0) {
-                if (_WinRT.Windows.ApplicationModel.Search.Core.SearchSuggestionManager) {
-                    TypeToSearch._suggestionManager && TypeToSearch._suggestionManager.removeEventListener("requestingfocusonkeyboardinput", requestingFocusOnKeyboardInput);
-                    TypeToSearch._suggestionManager = null;
-                } else {
-                    TypeToSearch._updateKeydownCaptureListeners(_Global.top, false /*add*/);
-                }
+                TypeToSearch._updateKeydownCaptureListeners(_Global.top, false /*add*/);
                 TypeToSearch._registered = false;
             }
         },
-        
+
         _keydownCaptureHandler: function Application_TypeToSearch_keydownCaptureHandler(event) {
             if (TypeToSearch._registered && TypeToSearch._shouldKeyTriggerTypeToSearch(event)) {
                 requestingFocusOnKeyboardInput();
             }
         },
-    
+
         _frameLoadCaptureHandler: function Application_TypeToSearch_frameLoadCaptureHandler(event) {
             if (TypeToSearch._registered) {
                 TypeToSearch._updateKeydownCaptureListeners(event.target.contentWindow, true /*add*/);
             }
         },
-    
+
         _updateKeydownCaptureListeners: function Application_TypeToSearch_updateKeydownCaptureListeners(win, add) {
             // Register for child frame keydown events in order to support FocusOnKeyboardInput
             // when focus is in a child frame.  Also register for child frame load events so
@@ -13470,12 +14279,12 @@ define('WinJS/Application',[
                 }
             } catch (e) { // if the IFrame crosses domains, we'll get a permission denied error
             }
-    
+
             if (win.frames) {
                 for (var i = 0, l = win.frames.length; i < l; i++) {
                     var childWin = win.frames[i];
                     TypeToSearch._updateKeydownCaptureListeners(childWin, add);
-    
+
                     try {
                         if (add) {
                             if (childWin.frameElement) {
@@ -13491,7 +14300,7 @@ define('WinJS/Application',[
                 }
             }
         },
-    
+
         _shouldKeyTriggerTypeToSearch: function Application_TypeToSearch_shouldKeyTriggerTypeToSearch(event) {
             var shouldTrigger = false;
             // First, check if a metaKey is pressed (only applies to MacOS). If so, do nothing here.
@@ -13511,7 +14320,7 @@ define('WinJS/Application',[
                         case 0x37:  //0x37 7 key
                         case 0x38:  //0x38 8 key
                         case 0x39:  //0x39 9 key
-    
+
                         case 0x41:  //0x41 A key
                         case 0x42:  //0x42 B key
                         case 0x43:  //0x43 C key
@@ -13538,7 +14347,7 @@ define('WinJS/Application',[
                         case 0x58:  //0x58 X key
                         case 0x59:  //0x59 Y key
                         case 0x5A:  //0x5A Z key
-    
+
                         case 0x60:  // VK_NUMPAD0,             //0x60 Numeric keypad 0 key
                         case 0x61:  // VK_NUMPAD1,             //0x61 Numeric keypad 1 key
                         case 0x62:  // VK_NUMPAD2,             //0x62 Numeric keypad 2 key
@@ -13555,7 +14364,7 @@ define('WinJS/Application',[
                         case 0x6D:  // VK_SUBTRACT,            //0x6D Subtract key
                         case 0x6E:  // VK_DECIMAL,             //0x6E Decimal key
                         case 0x6F:  // VK_DIVIDE,              //0x6F Divide key
-    
+
                         case 0xBA:  // VK_OEM_1,               //0xBA Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ';:' key
                         case 0xBB:  // VK_OEM_PLUS,            //0xBB For any country/region, the '+' key
                         case 0xBC:  // VK_OEM_COMMA,           //0xBC For any country/region, the ',' key
@@ -13563,17 +14372,17 @@ define('WinJS/Application',[
                         case 0xBE:  // VK_OEM_PERIOD,          //0xBE For any country/region, the '.' key
                         case 0xBF:  // VK_OEM_2,               //0xBF Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '/?' key
                         case 0xC0:  // VK_OEM_3,               //0xC0 Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '`~' key
-    
+
                         case 0xDB:  // VK_OEM_4,               //0xDB Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '[{' key
                         case 0xDC:  // VK_OEM_5,               //0xDC Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '\|' key
                         case 0xDD:  // VK_OEM_6,               //0xDD Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ']}' key
                         case 0xDE:  // VK_OEM_7,               //0xDE Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the 'single-quote/double-quote' key
                         case 0xDF:  // VK_OEM_8,               //0xDF Used for miscellaneous characters; it can vary by keyboard.
-    
+
                         case 0xE2:  // VK_OEM_102,             //0xE2 Either the angle bracket key or the backslash key on the RT 102-key keyboard
-    
+
                         case 0xE5:  // VK_PROCESSKEY,          //0xE5 IME PROCESS key
-    
+
                         case 0xE7:  // VK_PACKET,              //0xE7 Used to pass Unicode characters as if they were keystrokes. The VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods. For more information, see Remark in KEYBDINPUT, SendInput, WM_KEYDOWN, and WM_KEYUP
                             shouldTrigger = true;
                             break;
@@ -13603,7 +14412,7 @@ define('WinJS/Application',[
                         return value;
                     } else {
                         return "[circular]";
-        }
+                    }
                 } else {
                     return value;
                 }
@@ -14016,21 +14825,21 @@ define('WinJS/Application',[
         });
         dispatchEvent(eventRecord);
     }
-    
+
     function requestingFocusOnKeyboardInput() {
         // Built in listener for beforeRequestingFocusOnKeyboardInputET will trigger
         // requestingFocusOnKeyboardInputET if it wasn't handled.
         dispatchEvent({ type: beforeRequestingFocusOnKeyboardInputET });
     }
-    
+
     function edgyStarting(eventObject) {
         dispatchEvent({ type: edgyStartingET, kind: eventObject.kind });
     }
-    
+
     function edgyCompleted(eventObject) {
         dispatchEvent({ type: edgyCompletedET, kind: eventObject.kind });
     }
-    
+
     function edgyCanceled(eventObject) {
         dispatchEvent({ type: edgyCanceledET, kind: eventObject.kind });
     }
@@ -14044,7 +14853,7 @@ define('WinJS/Application',[
             if (_Global.document) {
                 _Global.addEventListener("error", errorHandler, false);
                 if (_WinRT.Windows.UI.WebUI.WebUIApplication) {
-                    
+
                     var wui = _WinRT.Windows.UI.WebUI.WebUIApplication;
                     wui.addEventListener("activated", activatedHandler, false);
                     wui.addEventListener("suspending", suspendingHandler, false);
@@ -14059,7 +14868,7 @@ define('WinJS/Application',[
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {
                     _WinRT.Windows.Phone.UI.Input.HardwareButtons.addEventListener("backpressed", hardwareButtonBackPressed);
                 }
-                
+
                 if (_WinRT.Windows.UI.Input.EdgeGesture) {
                     var edgy = _WinRT.Windows.UI.Input.EdgeGesture.getForCurrentView();
                     edgy.addEventListener("starting", edgyStarting);
@@ -14095,7 +14904,7 @@ define('WinJS/Application',[
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {
                     _WinRT.Windows.Phone.UI.Input.HardwareButtons.removeEventListener("backpressed", hardwareButtonBackPressed);
                 }
-                
+
                 if (_WinRT.Windows.UI.Input.EdgeGesture) {
                     var edgy = _WinRT.Windows.UI.Input.EdgeGesture.getForCurrentView();
                     edgy.removeEventListener("starting", edgyStarting);
@@ -14202,7 +15011,7 @@ define('WinJS/Application',[
         },
 
         queueEvent: queueEvent,
-        
+
         // Like queueEvent but fires the event synchronously. Useful in tests.
         _dispatchEvent: dispatchEvent,
 
@@ -14214,7 +15023,7 @@ define('WinJS/Application',[
                 terminateAppHandler = value;
             }
         },
-        
+
         _applicationListener: _Base.Namespace._lazy(function () {
             // Use _lazy because publicNS can't be referenced in its own definition
             return new _ElementUtilities._GenericListener("Application", publicNS);
@@ -14259,7 +15068,7 @@ define('WinJS/Application',[
 
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Animations/_Constants',[
     'exports',
     '../Core/_Base'
@@ -14291,7 +15100,7 @@ define('WinJS/Animations/_Constants',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Animations/_TransitionAnimation',[
     'exports',
     '../Core/_Global',
@@ -14722,7 +15531,7 @@ define('WinJS/Animations/_TransitionAnimation',[
     var animationTimeAdjustment = function _animationTimeAdjustmentImpl(v) {
         return v * animationFactor;
     };
-    
+
     var animationFactor = 1;
     var libraryDelay = 0;
 
@@ -14849,7 +15658,7 @@ define('WinJS/Animations/_TransitionAnimation',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Animations',[
     'exports',
     './Core/_Global',
@@ -14859,7 +15668,7 @@ define('WinJS/Animations',[
     './Animations/_Constants',
     './Animations/_TransitionAnimation',
     './Promise'
-    ], function animationsInit(exports, _Global, _Base, _BaseUtils, _WriteProfilerMark, _Constants, _TransitionAnimation, Promise) {
+], function animationsInit(exports, _Global, _Base, _BaseUtils, _WriteProfilerMark, _Constants, _TransitionAnimation, Promise) {
     "use strict";
 
     var transformNames = _BaseUtils._browserStyleEquivalents["transform"];
@@ -14925,7 +15734,7 @@ define('WinJS/Animations',[
         return function (i, elem) {
             return _Global.getComputedStyle(elem).direction === "ltr" ? keyframe : keyframeRtl;
         };
-        }
+    }
 
     function makeArray(elements) {
         if (Array.isArray(elements) || elements instanceof _Global.NodeList || elements instanceof _Global.HTMLCollection) {
@@ -15490,7 +16299,7 @@ define('WinJS/Animations',[
     }, { // Static Members
         supportedForProcessing: false,
     });
-    
+
     //
     // Resize animation
     //  The resize animation requires 2 animations to run simultaneously in sync with each other. It's implemented
@@ -15505,7 +16314,7 @@ define('WinJS/Animations',[
         var transitionProperty = _BaseUtils._browserStyleEquivalents["transition"].scriptName;
         element.style[transitionProperty] = duration + "ms " + transformNames.cssName + " " + transition.timing;
         element.style[transformNames.scriptName] = transition.to;
-    
+
         var finish;
         return new Promise(function (c) {
             var onTransitionEnd = function (eventObject) {
@@ -15513,7 +16322,7 @@ define('WinJS/Animations',[
                     finish();
                 }
             };
-            
+
             var didFinish = false;
             finish = function () {
                 if (!didFinish) {
@@ -15524,68 +16333,69 @@ define('WinJS/Animations',[
                 }
                 c();
             };
-    
+
             // Watch dog timeout
             var timeoutId = _Global.setTimeout(function () {
                 timeoutId = _Global.setTimeout(finish, duration);
             }, 50);
-    
+
             element.addEventListener(_BaseUtils._browserEventEquivalents["transitionEnd"], onTransitionEnd);
         }, function () {
             finish(); // On cancelation, complete the promise successfully to match PVL
         });
     }
-    // See _resizeTransition's comment for documentation on *args*.
-    function growTransition(elementClipper, element, args) {
-        var diff = args.anchorTrailingEdge ? args.to.total - args.from.total : args.from.total - args.to.total;
-        var translate = args.dimension === "width" ? "translateX" : "translateY";
-        var size = args.dimension;
-    
-        // Set up
-        elementClipper.style[size] = args.to.total + "px";
-        elementClipper.style[transformNames.scriptName] = translate + "(" + diff + "px)";
-        element.style[size] = args.to.content + "px";
-        element.style[transformNames.scriptName] = translate + "(" + -diff + "px)";
-    
-        // Resolve styles
-        _Global.getComputedStyle(elementClipper).opacity;
-        _Global.getComputedStyle(element).opacity;
-        
-        // Animate
-        var transition = {
-            duration: 367,
-            timing: "cubic-bezier(0.1, 0.9, 0.2, 1)",
-            to: ""
+
+    function getResizeDefaultTransitions() {
+        return {
+            defaultResizeGrowTransition: {
+                duration: 350,
+                timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
+            },
+
+            defaultResizeShrinkTransition: {
+                duration: 120,
+                timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
+            }
         };
-        return Promise.join([
-            transformWithTransition(elementClipper,  transition),
-            transformWithTransition(element, transition)
-        ]);
     }
+
     // See _resizeTransition's comment for documentation on *args*.
-    function shrinkTransition(elementClipper, element, args) {
-        var diff = args.anchorTrailingEdge ? args.from.total - args.to.total : args.to.total - args.from.total;
+    function resizeTransition(elementClipper, element, args) {
+        var defaultTransition = getResizeDefaultTransitions()[(args.to > args.from ? "defaultResizeGrowTransition" : "defaultResizeShrinkTransition")];
+        args = _BaseUtils._merge(args, {
+            duration: args.duration === undefined ? defaultTransition.duration : args.duration,
+            timing: args.timing === undefined ? defaultTransition.timing : args.timing
+        });
+
+        var start = args.actualSize - args.from;
+        var end = args.actualSize - args.to;
+        if (!args.anchorTrailingEdge) {
+            start = -start;
+            end = -end;
+        }
         var translate = args.dimension === "width" ? "translateX" : "translateY";
-    
+        var transition = {
+            duration: args.duration,
+            timing: args.timing
+        };
+
         // Set up
-        elementClipper.style[transformNames.scriptName] = "";
-        element.style[transformNames.scriptName] = "";
-    
+        elementClipper.style[transformNames.scriptName] = translate + "(" + start + "px)";
+        element.style[transformNames.scriptName] = translate + "(" + -start + "px)";
+
         // Resolve styles
         _Global.getComputedStyle(elementClipper).opacity;
         _Global.getComputedStyle(element).opacity;
-    
-        // Animate
-        var transition = {
-            duration: 367,
-            timing: "cubic-bezier(0.1, 0.9, 0.2, 1)"
-        };
-        var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + diff + "px)" });
-        var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -diff + "px)" });
-        return Promise.join([
-            transformWithTransition(elementClipper, clipperTransition),
-            transformWithTransition(element, elementTransition)
-        ]);
+
+        // Merge the transitions, but don't animate yet
+        var clipperTransition = _BaseUtils._merge(transition, { to: translate + "(" + end + "px)" });
+        var elementTransition = _BaseUtils._merge(transition, { to: translate + "(" + -end + "px)" });
+
+        // Return an array so that we can prepare any other animations before beginning everything (used by commanding surface open/close animations)
+        return [
+            { element: elementClipper, transition: clipperTransition },
+            { element: element, transition: elementTransition }
+        ];
     }
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI.Animation", {
@@ -15843,7 +16653,7 @@ define('WinJS/Animations',[
             /// </returns>
             /// </signature>
             writeAnimationProfilerMark("showEdgeUI,StartTM");
-            
+
             var isTransition = options && options.mechanism === "transition";
             var offsetArray = new OffsetArray(offset, "WinJS-showEdgeUI", [{ top: "-70px", left: "0px" }]);
             return _TransitionAnimation[(isTransition ? "executeTransition" : "executeAnimation")](
@@ -15928,7 +16738,7 @@ define('WinJS/Animations',[
             /// </returns>
             /// </signature>
             writeAnimationProfilerMark("hideEdgeUI,StartTM");
-            
+
             var isTransition = options && options.mechanism === "transition";
             var offsetArray = new OffsetArray(offset, "WinJS-hideEdgeUI", [{ top: "-70px", left: "0px" }]);
             return _TransitionAnimation[(isTransition ? "executeTransition" : "executeAnimation")](
@@ -16277,7 +17087,7 @@ define('WinJS/Animations',[
             writeAnimationProfilerMark("enterContent,StartTM");
 
             var animationPromise;
-            var offsetArray = new OffsetArray(offset, "WinJS-enterContent", [{ top: "0px", left: "40px", rtlflip: true }]);
+            var offsetArray = new OffsetArray(offset, "WinJS-enterContent", [{ top: "28px", left: "0px", rtlflip: false }]);
             if (options && options.mechanism === "transition") {
                 animationPromise = _TransitionAnimation.executeTransition(
                     incoming,
@@ -16600,7 +17410,7 @@ define('WinJS/Animations',[
             /// </signature>
             writeAnimationProfilerMark("enterPage,StartTM");
 
-            var offsetArray = new OffsetArray(offset, "WinJS-enterPage", [{ top: "0px", left: "100px", rtlflip: true }]);
+            var offsetArray = new OffsetArray(offset, "WinJS-enterPage", [{ top: "28px", left: "0px", rtlflip: false }]);
             var promise1 = _TransitionAnimation.executeAnimation(
                 element,
                 {
@@ -17307,7 +18117,7 @@ define('WinJS/Animations',[
         continuumBackwardOut: function (outgoingPage) {
             /// <signature helpKeyword="WinJS.UI.Animation.continuumBackwardOut">
             /// <summary locid="WinJS.UI.Animation.continuumBackwardOut">
-            /// Execute a continuum animation, scaling down the outgoing page while.
+            /// Execute a continuum animation, scaling down the outgoing page while fading it out.
             /// </summary>
             /// <param name="outgoingPage" locid="WinJS.UI.Animation.continuumBackwardOut_p:outgoingPage">
             /// Single element to be scaled down that is the page root.
@@ -17338,6 +18148,146 @@ define('WinJS/Animations',[
             .then(function () { writeAnimationProfilerMark("continuumBackwardOut,StopTM"); });
         },
 
+        drillInIncoming: function (incomingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillInIncoming">
+            /// <summary locid="WinJS.UI.Animation.drillInIncoming">
+            /// Execute the incoming phase of the drill in animation, scaling up the incoming page while fading it in.
+            /// </summary>
+            /// <param name="incomingPage" locid="WinJS.UI.Animation.drillInIncoming_p:incomingPage">
+            /// Element to be scaled up and faded in.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillInIncoming_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillInIncoming,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                incomingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(0.84)",
+                    to: "scale(1.0)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 0,
+                    to: 1,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillInIncoming,StopTM"); });
+        },
+
+        drillInOutgoing: function (outgoingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillInOutgoing">
+            /// <summary locid="WinJS.UI.Animation.drillInOutgoing">
+            /// Execute the outgoing phase of the drill in animation, scaling up the outgoing page while fading it out.
+            /// </summary>
+            /// <param name="outgoingPage" locid="WinJS.UI.Animation.drillInOutgoing_p:outgoingPage">
+            /// Element to be scaled up and faded out.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillInOutgoing_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillInOutgoing,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                outgoingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(1.0)",
+                    to: "scale(1.29)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 1,
+                    to: 0,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillInOutgoing,StopTM"); });
+        },
+
+        drillOutIncoming: function (incomingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillOutIncoming">
+            /// <summary locid="WinJS.UI.Animation.drillOutIncoming">
+            /// Execute the incoming phase of the drill out animation, scaling down the incoming page while fading it in.
+            /// </summary>
+            /// <param name="incomingPage" locid="WinJS.UI.Animation.drillOutIncoming_p:incomingPage">
+            /// Element to be scaled up and faded in.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillOutIncoming_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillOutIncoming,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                incomingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(1.29)",
+                    to: "scale(1.0)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 500,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 0,
+                    to: 1,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillOutIncoming,StopTM"); });
+        },
+
+        drillOutOutgoing: function (outgoingPage) {
+            /// <signature helpKeyword="WinJS.UI.Animation.drillOutOutgoing">
+            /// <summary locid="WinJS.UI.Animation.drillOutOutgoing">
+            /// Execute the outgoing phase of the drill out animation, scaling down the outgoing page while fading it out.
+            /// </summary>
+            /// <param name="outgoingPage" locid="WinJS.UI.Animation.drillOutOutgoing_p:outgoingPage">
+            /// Element to be scaled down and faded out.
+            /// </param>
+            /// <returns type="WinJS.Promise" locid="WinJS.UI.Animation.drillOutOutgoing_returnValue">
+            /// Promise object that completes when the animation is complete.
+            /// </returns>
+            /// </signature>
+            writeAnimationProfilerMark("drillOutOutgoing,StartTM");
+
+            return _TransitionAnimation.executeTransition(
+                outgoingPage,
+                [{
+                    property: transformNames.cssName,
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: "scale(1.0)",
+                    to: "scale(0.84)"
+                },
+                {
+                    property: "opacity",
+                    delay: 0,
+                    duration: 233,
+                    timing: "cubic-bezier(0.1,0.9,0.2,1)",
+                    from: 1,
+                    to: 0,
+                }])
+                .then(function () { writeAnimationProfilerMark("drillOutOutgoing,StopTM"); });
+        },
+
         createPageNavigationAnimations: function (currentPreferredAnimation, nextPreferredAnimation, movingBackwards) {
             /// <signature helpKeyword="WinJS.UI.Animation.createPageNavigationAnimations" >
             /// <summary locid="WinJS.UI.Animation.createPageNavigationAnimations">
@@ -17360,41 +18310,153 @@ define('WinJS/Animations',[
             function emptyAnimationFunction() {
                 return Promise.wrap();
             }
-            
+
             return {
                 exit: emptyAnimationFunction,
                 entrance: exports.enterPage
             };
         },
-        
+
         // Plays an animation which makes an element look like it is resizing in 1 dimension. Arguments:
         // - elementClipper: The parent of *element*. It shouldn't have any margin, border, or padding and its
         //   size should match element's size. Its purpose is to clip *element* during the animation to give
         //   it the illusion that it is resizing.
         // - element: The element that should look like it's resizing.
-        // - args: An object with the following required properties: 
-        //   - from: An object representing the old width/height of the element.
-        //   - to: An object representing the new width/height of the element.
-        //     from/to are objects of the form { content: number; total: number; }. "content" is the
-        //     width/height of *element*'s content box (e.g. getContentWidth). "total" is the width/height
-        //     of *element*'s margin box (e.g. getTotalWidth).
+        // - args: An object with the following properties (each is required unless noted otherwise):
+        //   - from: A number representing the old total width/height of the element.
+        //   - to: A number representing the new total width/height of the element.
+        //   - actualSize: A number representing the actual total width/height of the element (should be at least
+        //     as big as from and to). The element should be at *actualSize* when this function is called.
+        //     from/to/actualSize represent the width/height of *element*'s margin box (e.g. getTotalWidth).
         //   - dimension: The dimension on which *element* is resizing. Either "width" or "height".
-        //   - anchorTrailingEdge: During the resize animation, one edge will move and the other edge will
-        //     remain where it is. This flag specifies which edge is anchored (i.e. won't move).
+        //   - anchorTrailingEdge (optional): During the resize animation, one edge will move and the other
+        //     edge will remain where it is. This flag specifies which edge is anchored (i.e. won't move).
+        //   - duration (optional): Number representing the duration of the animation in milliseconds.
+        //   - timing (optional): String representing the CSS timing function that controls the progress of the animation.
         //
         _resizeTransition: function Utilities_resizeTransition(elementClipper, element, args) {
-            if (args.to.total > args.from.total) {
-                return growTransition(elementClipper, element, args);
-            } else if (args.to.total < args.from.total) {
-                return shrinkTransition(elementClipper, element, args);
-            } else {
+            if (args.to === args.from) {
                 return Promise.as();
+            } else {
+                var animationsToPlay = resizeTransition(elementClipper, element, args);
+                var animationPromises = [];
+                for (var i = 0, len = animationsToPlay.length; i < len; i++) {
+                    animationPromises.push(transformWithTransition(animationsToPlay[i].element, animationsToPlay[i].transition));
+                }
+                return Promise.join(animationPromises);
             }
+        },
+
+        _commandingSurfaceOpenAnimation: function Utilities_commandingSurfaceOpenAnimation(args) {
+            var actionAreaClipper = args.actionAreaClipper,
+                actionArea = args.actionArea,
+                overflowAreaClipper = args.overflowAreaClipper,
+                overflowArea = args.overflowArea,
+                closedHeight = args.oldHeight,
+                openedHeight = args.newHeight,
+                overflowAreaHeight = args.overflowAreaHeight,
+                menuPositionedAbove = args.menuPositionedAbove;
+            var deltaHeight = openedHeight - closedHeight;
+            var actionAreaAnimations = [];
+            var transitionToUse = getResizeDefaultTransitions().defaultResizeGrowTransition;
+
+            // The commanding surface open animation is a combination of animations. We need to animate the actionArea and overflowArea
+            // elements expanding and appearing. The first animation we prepare is the animation on the actionArea. This animation changes depending
+            // on whether the overflow menu will appear above or below the commanding surface.
+            // When the menu is positioned above, we can do a simple translation to get the animation we want.
+            // When the menu is positioned below, we have to do a resize transition using the actionArea's clipper in order to animate the surface expanding.
+            // In either case, we don't want to play the animation immediately because the overflowArea's animation still needs to be set up,
+            // The animations that need to be played on the actionArea elements will be stored in actionAreaAnimations until after the overflowArea
+            // animations are prepared, so that we can begin every animation at once. We do this to avoid a small 1-2px gap appearing between the overflowArea
+            // and the actionArea that would appear were we to start these animations at separate times
+            if (menuPositionedAbove) {
+                actionArea.style[transformNames.scriptName] = "translateY(" + deltaHeight + "px)";
+                _Global.getComputedStyle(actionArea).opacity;
+                var transition = _BaseUtils._merge(transitionToUse, { to: "translateY(0px)" });
+                actionAreaAnimations.push({ element: actionArea, transition: transition });
+            } else {
+                actionAreaAnimations = resizeTransition(actionAreaClipper, actionArea, {
+                    from: closedHeight,
+                    to: openedHeight,
+                    actualSize: openedHeight,
+                    dimension: "height",
+                    anchorTrailingEdge: false
+                });
+            }
+
+            // Now we set up the overflowArea animations. The overflowArea animation has two parts:
+            // The first animation is played on the overflowAreaClipper. This animation is a translation animation that we play that makes it look like the
+            // overflow menu is moving up along with the actionArea as it expands.
+            // The next animation is played on the overflowArea itself, which we animate up/down by the full size of the overflowArea. 
+            // When combined, it makes it look like the overflowArea is sliding in its content while it slides up with the actionArea.
+            // Since the overflowArea and its clipper are in their final positions when this animation function is called, we apply an opposite translation
+            // to move them both to where they would have been just before the surface opened, then animate them going to translateY(0).
+            overflowAreaClipper.style[transformNames.scriptName] = "translateY(" + (menuPositionedAbove ? deltaHeight : -deltaHeight) + "px)";
+            overflowArea.style[transformNames.scriptName] = "translateY(" + (menuPositionedAbove ? overflowAreaHeight : -overflowAreaHeight) + "px)";
+
+            // Resolve styles on the overflowArea and overflowAreaClipper to prepare them for animation
+            _Global.getComputedStyle(overflowAreaClipper).opacity;
+            _Global.getComputedStyle(overflowArea).opacity;
+
+            var animationPromises = [];
+            for (var i = 0, len = actionAreaAnimations.length; i < len; i++) {
+                animationPromises.push(transformWithTransition(actionAreaAnimations[i].element, actionAreaAnimations[i].transition));
+            }
+            var overflowAreaTransition = _BaseUtils._merge(transitionToUse, { to: "translateY(0px)" });
+            animationPromises.push(transformWithTransition(overflowAreaClipper, overflowAreaTransition));
+            animationPromises.push(transformWithTransition(overflowArea, overflowAreaTransition));
+            return Promise.join(animationPromises);
+        },
+
+        _commandingSurfaceCloseAnimation: function Utilities_commandingSurfaceCloseAnimation(args) {
+            var actionAreaClipper = args.actionAreaClipper,
+                actionArea = args.actionArea,
+                overflowAreaClipper = args.overflowAreaClipper,
+                overflowArea = args.overflowArea,
+                openedHeight = args.oldHeight,
+                closedHeight = args.newHeight,
+                overflowAreaHeight = args.overflowAreaHeight,
+                menuPositionedAbove = args.menuPositionedAbove;
+            var deltaHeight = closedHeight - openedHeight;
+            var actionAreaAnimations = [];
+            var transitionToUse = getResizeDefaultTransitions().defaultResizeShrinkTransition;
+            if (menuPositionedAbove) {
+                actionArea.style[transformNames.scriptName] = "translateY(0px)";
+                _Global.getComputedStyle(actionArea).opacity;
+                var transition = _BaseUtils._merge(transitionToUse, { to: "translateY(" + -deltaHeight + "px)" });
+                actionAreaAnimations.push({ element: actionArea, transition: transition });
+            } else {
+                actionAreaAnimations = resizeTransition(actionAreaClipper, actionArea, {
+                    from: openedHeight,
+                    to: closedHeight,
+                    actualSize: openedHeight,
+                    dimension: "height",
+                    anchorTrailingEdge: false
+                });
+            }
+            // Set up
+            overflowAreaClipper.style[transformNames.scriptName] = "translateY(0px)";
+            overflowArea.style[transformNames.scriptName] = "translateY(0px)";
+
+            // Resolve styles on the overflowArea and overflowAreaClipper to prepare them for animation
+            _Global.getComputedStyle(overflowAreaClipper).opacity;
+            _Global.getComputedStyle(overflowArea).opacity;
+
+            // Now that everything's set up, we can kick off all the animations in unision
+            var animationPromises = [];
+            for (var i = 0, len = actionAreaAnimations.length; i < len; i++) {
+                animationPromises.push(transformWithTransition(actionAreaAnimations[i].element, actionAreaAnimations[i].transition));
+            }
+            var overflowAreaClipperTransition = _BaseUtils._merge(transitionToUse, { to: "translateY(" + (menuPositionedAbove ? -deltaHeight : deltaHeight) + "px)" });
+            var overflowAreaTransition = _BaseUtils._merge(transitionToUse, { to: "translateY(" + (menuPositionedAbove ? overflowAreaHeight : -overflowAreaHeight) + "px)" });
+            animationPromises.push(transformWithTransition(overflowAreaClipper, overflowAreaClipperTransition));
+            animationPromises.push(transformWithTransition(overflowArea, overflowAreaTransition));
+            return Promise.join(animationPromises);
         }
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_BindingParser',[
     'exports',
     '../Core/_Base',
@@ -17596,7 +18658,7 @@ define('WinJS/Binding/_BindingParser',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_DomWeakRefTable',[
     'exports',
     '../Core/_Global',
@@ -17757,7 +18819,7 @@ define('WinJS/Binding/_DomWeakRefTable',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_Data',[
     'exports',
     '../Core/_WinRT',
@@ -18405,7 +19467,7 @@ define('WinJS/Binding/_Data',[
     });
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Binding/_Declarative',[
     'exports',
     '../Core/_Global',
@@ -19093,7 +20155,7 @@ define('WinJS/Binding',[
     './Binding/_DomWeakRefTable'], function () {
     //Wrapper module
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/BindingTemplate/_DataTemplateCompiler',[
     'exports',
     '../Core/_Global',
@@ -21378,7 +22440,7 @@ define('WinJS/BindingTemplate/_DataTemplateCompiler',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/BindingTemplate',[
     'exports',
     './Core/_Global',
@@ -21415,7 +22477,7 @@ define('WinJS/BindingTemplate',[
         /// <htmlSnippet supportsContent="true"><![CDATA[<div data-win-control="WinJS.Binding.Template"><div>Place content here</div></div>]]></htmlSnippet>
         /// <icon src="base_winjs.ui.template.12x12.png" width="12" height="12" />
         /// <icon src="base_winjs.ui.template.16x16.png" width="16" height="16" />
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         Template: _Base.Namespace._lazy(function () {
             function interpretedRender(template, dataContext, container) {
@@ -21860,7 +22922,7 @@ define('WinJS/BindingTemplate',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 // WinJS.Binding.ListDataSource
 //
 define('WinJS/BindingList/_BindingListDataSource',[
@@ -22620,7 +23682,7 @@ define('WinJS/BindingList/_BindingListDataSource',[
 
 });
 
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
 // WinJS.Binding.List
 //
@@ -24711,7 +25773,7 @@ define('WinJS/BindingList',[
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Res',[
     'exports',
     './Core/_Global',
@@ -24877,7 +25939,7 @@ define('WinJS/Res',[
         processAll: processAll
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Pages/_BasePage',[
     'exports',
     '../Core/_Global',
@@ -25153,11 +26215,12 @@ define('WinJS/Pages/_BasePage',[
         abs: abs,
         define: Pages_define,
         get: get,
-        remove: remove
+        remove: remove,
+        viewMap: viewMap
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Pages',[
     'exports',
     './Core/_Global',
@@ -25334,11 +26397,12 @@ define('WinJS/Pages',[
         define: Pages_define,
         get: get,
         _remove: _remove,
-        render: render
+        render: render,
+        _viewMap: _BasePage.viewMap
     });
 
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/HtmlControl',[
     'exports',
     '../Core/_Global',
@@ -25362,7 +26426,7 @@ define('WinJS/Controls/HtmlControl',[
         /// <icon src="base_winjs.ui.htmlcontrol.12x12.png" width="12" height="12" />
         /// <icon src="base_winjs.ui.htmlcontrol.16x16.png" width="16" height="16" />
         /// <htmlSnippet><![CDATA[<div data-win-control="WinJS.UI.HtmlControl" data-win-options="{ uri: 'somePage.html' }"></div>]]></htmlSnippet>
-        /// <resource type="javascript" src="//WinJS.4.0/js/base.js" shared="true" />
+        /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
         /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
         HtmlControl: _Base.Class.define(function HtmlControl_ctor(element, options, complete) {
             /// <signature helpKeyword="WinJS.UI.HtmlControl.HtmlControl">
@@ -25382,7 +26446,7 @@ define('WinJS/Controls/HtmlControl',[
         })
     });
 });
-// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('base',[
     'WinJS/Core/_WinJS',
     'WinJS/Core',
@@ -25390,6 +26454,7 @@ define('base',[
     'WinJS/_Signal',
     'WinJS/Scheduler',
     'WinJS/Utilities',
+    'WinJS/XYFocus',
     'WinJS/Fragments',
     'WinJS/Application',
     'WinJS/Navigation',
@@ -25400,7 +26465,7 @@ define('base',[
     'WinJS/Res',
     'WinJS/Pages',
     'WinJS/ControlProcessor',
-    'WinJS/Controls/HtmlControl'
+    'WinJS/Controls/HtmlControl',
     ], function (_WinJS) {
     "use strict";
 
@@ -25413,9 +26478,9 @@ define('base',[
 });
 
         require(['WinJS/Core/_WinJS', 'base'], function (_WinJS) {
-            global.WinJS = _WinJS;
+            globalObject.WinJS = _WinJS;
         });
-        return global.WinJS;
+        return globalObject.WinJS;
     }));
-}(this));
+}());
 
