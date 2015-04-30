@@ -93,30 +93,21 @@ window.addEventListener('load', function()
   //
   function addJavascript(version, iframe)
   {
-    // Test if single file version exists
+    // Load base file
     var mainJSFile = iframe.contentDocument.createElement('script');
-    var xhr = new XMLHttpRequest();
-    xhr.open('HEAD', versions[version].replace('../', '') + 'js/WinJS.js', true);
-    xhr.onload = function()
-    {
-      if (xhr.status !== 404)
-      {
-        mainJSFile.src = versions[version] + 'js/WinJS.js';
-      }
-      else
-      {
-        mainJSFile.src = versions[version] + 'js/ui.js';
-        
-        // Add base.js if main file is ui.js
-        var base = iframe.contentDocument.createElement('script');
-        base.src = versions[version] + 'js/base.js';
-        iframe.contentDocument.head.appendChild(base);
-      }
-    };
-    xhr.send();
+    mainJSFile.src = versions[version] + 'js/base.js';
+
+    // Add additional ui file
+    var ui = iframe.contentDocument.createElement('script');
+    ui.src = versions[version] + 'js/ui.js';
 
     // Initialize WinJS when the main script loads
     mainJSFile.onload = function()
+    {
+      iframe.contentDocument.head.appendChild(ui);
+    };
+
+    ui.onload = function()
     {
       if (!iframe.contentWindow.WinJS)
       {
@@ -133,7 +124,6 @@ window.addEventListener('load', function()
       if (iframe.contentWindow.initialize)
         iframe.contentWindow.initialize();
     };
-
 
     iframe.contentDocument.head.appendChild(mainJSFile);
   }
