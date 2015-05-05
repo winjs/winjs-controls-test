@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.30 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.5 ui.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.4.30 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.5 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -11790,6 +11790,7 @@ define('WinJS/Controls/ListView/_Layouts',[
                         _ElementUtilities.removeClass(this._site.surface, _Constants._headerPositionLeftClass);
                         _ElementUtilities.removeClass(this._site.surface, _Constants._structuralNodesClass);
                         _ElementUtilities.removeClass(this._site.surface, _Constants._singleItemsBlockClass);
+                        _ElementUtilities.removeClass(this._site.surface, _Constants._noCSSGrid);
                         this._site.surface.style.cssText = "";
                         if (this._groups) {
                             cleanGroups(this._groups);
@@ -11802,7 +11803,8 @@ define('WinJS/Controls/ListView/_Layouts',[
                         }
                         this._resetMeasurements();
                         this._oldGroupHeaderPosition = null;
-                        this._usingStructuralNodes = null;
+                        this._usingStructuralNodes = false;
+                        this._envInfo = null;
                         // The properties given to us by the app (_groupInfo, _itemInfo,
                         // _groupHeaderPosition) are not cleaned up so that the values are
                         // remembered if the layout is reused.
