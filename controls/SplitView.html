@@ -6,7 +6,7 @@
   <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
 </head>
 
-<body id='app' class='win-fonts'>
+<body id='app' class='win-type-body'>
   <script>
     var splitView;
 
@@ -17,10 +17,10 @@
 
     function togglePane()
     {
-      if (splitView.paneHidden)
-        splitView.showPane();
+      if (splitView.paneHidden || splitView.paneOpened)
+        splitView.showPane ? splitview.showPane() : splitview.openPane();
       else
-        splitView.hidePane();
+        splitView.hidePane ? splitview.hidePane() : splitview.closePane();
     }
   </script>
 

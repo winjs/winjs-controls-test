@@ -6,7 +6,7 @@
   <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
 </head>
 
-<body class='win-fonts'>
+<body class='win-type-body'>
   <script>
     function scriptLoaded()
     {
@@ -22,7 +22,16 @@
         {title: 'Item 8', text: 'Item 8 description', picture: 'http://lorempixel.com/60/60/nature/8'},
       ];
       var bindingList = new WinJS.Binding.List(data);
-      var ns = WinJS.Namespace.define('Sample.ListView', {data: bindingList});
+      var grouped = bindingList.createGrouped(function (item) {
+        return item.title.charAt(5);
+      }, function (item) {
+        return {
+          title: item.title.charAt(5)
+        };
+      }, function (left, right) {
+        return left.charCodeAt(5) - right.charCodeAt(5);
+      });
+      WinJS.Namespace.define('Sample.ListView', {data: bindingList, groupedData: grouped});
     }
   </script>
 
@@ -62,15 +71,32 @@
     <div class='smallListIconTextItem'>
       <img src='#' class='smallListIconTextItem-Image' data-win-bind='src: picture' />
       <div class='smallListIconTextItem-Detail'>
-        <h4 data-win-bind='textContent: title'></h4>
-        <h6 data-win-bind='textContent: text'></h6>
+        <h4 class='win-type-subtitle' data-win-bind='textContent: title'></h4>
+        <h6 class='win-type-body' data-win-bind='textContent: text'></h6>
       </div>
+    </div>
+  </div>
+  <div class="listLayoutTopHeaderTemplate" data-win-control="WinJS.Binding.Template">
+    <div class="listLayoutTopHeaderTemplateRoot">
+      <div data-win-bind="innerHTML: title"></div>
     </div>
   </div>
 
   <!-- Listview -->
   <div data-win-control='WinJS.UI.ListView'
        data-win-options='{itemDataSource: Sample.ListView.data.dataSource, itemTemplate: select(".smallListIconTextTemplate")}'>
+  </div>
+
+  <div data-win-control="WinJS.UI.ListView"
+       data-win-options="{
+              itemDataSource: Sample.ListView.groupedData.dataSource,
+              itemTemplate: select('.smallListIconTextTemplate'),
+              groupDataSource: Sample.ListView.groupedData.groups.dataSource,
+              groupHeaderTemplate: select('.listLayoutTopHeaderTemplate'),
+              selectionMode: 'none',
+              tapBehavior: 'none',
+              layout: { type: WinJS.UI.ListLayout, groupHeaderPosition: 'top'}
+          }">
   </div>
 </body>
 

@@ -5,18 +5,19 @@
   <meta content='IE=EDGE' http-equiv='X-UA-Compatible' />
 
   <script>
-    function initialize()
+    function showFlyout()
     {
       document.querySelector('#confirmFlyout').winControl.show(document.body);
-      document.querySelector('#confirmFlyout').winControl._sticky = true;
     }
   </script>
 </head>
-<body class='win-fonts'>
+<body class='win-type-body'>
+
+  <button onclick='showFlyout()'>Show flyout</button>
 
   <div id='confirmFlyout' data-win-control='WinJS.UI.Flyout'>
     <div>Your account will be charged $252.</div>
-    <button id='confirmButton'>Complete Order</button>
+    <button class='win-button win-button-primary' id='confirmButton'>Complete Order</button>
   </div>
 
 </body>

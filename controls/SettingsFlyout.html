@@ -6,7 +6,6 @@
 
     <script>
         function initialize() {
-            document.querySelector('#settingsFlyout').winControl.show(document.body);
             toggleSticky();
         }
     </script>
@@ -20,7 +19,7 @@
     </script>
 
 </head>
-<body class='win-fonts'>
+<body class='win-type-body'>
     <button onclick="document.querySelector('.win-settingsflyout').winControl.show()">Show Settings Flyout</button>
     <input id="togglestickybox" type="checkbox" onclick="toggleSticky();" checked="checked" /><label for="togglestickybox">_sticky settings</label>
 
