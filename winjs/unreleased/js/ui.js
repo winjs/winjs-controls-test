@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.5 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.8 ui.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.5 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.8 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -20891,6 +20891,7 @@ define('WinJS/Controls/ListView',[
 
                     this._progressBar = _Global.document.createElement("progress");
                     _ElementUtilities.addClass(this._progressBar, _Constants._progressClass);
+                    _ElementUtilities.addClass(this._progressBar, "win-progress-ring");
                     this._progressBar.style.position = "absolute";
                     this._progressBar.max = 100;
                 },
@@ -28711,11 +28712,11 @@ define('WinJS/Controls/DatePicker',[
 
                 _createControlElements: function () {
                     this._monthElement = _Global.document.createElement("select");
-                    this._monthElement.className = "win-datepicker-month";
+                    this._monthElement.className = "win-datepicker-month win-dropdown";
                     this._dateElement = _Global.document.createElement("select");
-                    this._dateElement.className = "win-datepicker-date";
+                    this._dateElement.className = "win-datepicker-date win-dropdown";
                     this._yearElement = _Global.document.createElement("select");
-                    this._yearElement.className = "win-datepicker-year";
+                    this._yearElement.className = "win-datepicker-year win-dropdown";
                 },
 
                 _createControls: function () {
@@ -29588,15 +29589,15 @@ define('WinJS/Controls/TimePicker',[
                     _ElementUtilities.addClass(this._domElement, "win-timepicker");
 
                     this._hourElement = _Global.document.createElement("select");
-                    _ElementUtilities.addClass(this._hourElement, "win-timepicker-hour");
+                    _ElementUtilities.addClass(this._hourElement, "win-timepicker-hour win-dropdown");
 
                     this._minuteElement = _Global.document.createElement("select");
-                    _ElementUtilities.addClass(this._minuteElement, "win-timepicker-minute");
+                    _ElementUtilities.addClass(this._minuteElement, "win-timepicker-minute win-dropdown");
 
                     this._ampmElement = null;
                     if (info.clock === "12HourClock") {
                         this._ampmElement = _Global.document.createElement("select");
-                        _ElementUtilities.addClass(this._ampmElement, "win-timepicker-period");
+                        _ElementUtilities.addClass(this._ampmElement, "win-timepicker-period win-dropdown");
                     }
 
                     this._addControlsInOrder(info);
@@ -33111,7 +33112,7 @@ define('WinJS/Controls/SemanticZoom',[
                 _createSemanticZoomButton: function () {
                     this._sezoButton = _Global.document.createElement("button");
                     this._sezoButton.setAttribute("type", "button");
-                    this._sezoButton.className = sezoButtonClass + " " + sezoButtonLocationClass;
+                    this._sezoButton.className = sezoButtonClass + " " + sezoButtonLocationClass + " win-button";
                     this._sezoButton.tabIndex = -1;
                     this._sezoButton.style.visibility = "hidden";
                     this._sezoButton.setAttribute("aria-hidden", true);
@@ -36229,8 +36230,8 @@ define('WinJS/Controls/Hub/_Section',[
                 this._headerElement.innerHTML =
                     '<button type="button" role="link" class="' + HubSection._ClassName.hubSectionInteractive + ' ' + HubSection._ClassName.hubSectionHeaderTabStop + '">' +
                         '<div class="' +  HubSection._ClassName.hubSectionHeaderWrapper + '" tabindex="-1">' +
-                            '<h2 class="' + HubSection._ClassName.hubSectionHeaderContent + '"></h2>' +
-                            '<span class="' + HubSection._ClassName.hubSectionHeaderChevron + '">' + strings.seeMore + '</span>' +
+                            '<h2 class="win-type-subheader ' + HubSection._ClassName.hubSectionHeaderContent + '"></h2>' +
+                            '<span class="' + HubSection._ClassName.hubSectionHeaderChevron + ' win-type-body">' + strings.seeMore + '</span>' +
                         '</div>' +
                     '</button>';
                 this._headerTabStopElement = this._headerElement.firstElementChild;
@@ -55572,6 +55573,7 @@ define('WinJS/Controls/AutoSuggestBox',[
                     this._inputElement.autocorrect = "off";
                     this._inputElement.type = "search";
                     this._inputElement.classList.add(ClassNames.asbInput);
+                    this._inputElement.classList.add("win-textbox");
                     this._inputElement.setAttribute("role", "textbox");
                     this._inputElement.addEventListener("keydown", this._keyDownHandler.bind(this));
                     this._inputElement.addEventListener("keypress", this._keyPressHandler.bind(this));
@@ -60552,9 +60554,9 @@ define('WinJS/Controls/ContentDialog',[
                             '<div class="' + ClassNames.title + '"></div>' +
                             '<div class="' + ClassNames._scroller + '"></div>' +
                             '<div class="' + ClassNames.commands + '">' +
-                                '<button type="button" class="' + ClassNames._commandSpacer + '"></button>' +
-                                '<button type="button" class="' + ClassNames.primaryCommand + '"></button>' +
-                                '<button type="button" class="' + ClassNames.secondaryCommand + '"></button>' +
+                                '<button type="button" class="' + ClassNames._commandSpacer + ' win-button"></button>' +
+                                '<button type="button" class="' + ClassNames.primaryCommand + ' win-button"></button>' +
+                                '<button type="button" class="' + ClassNames.secondaryCommand + ' win-button"></button>' +
                             '</div>' +
                         '</div>' +
                         '<div class="' + ClassNames._tabStop + '"></div>' +
