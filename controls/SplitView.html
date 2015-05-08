@@ -17,10 +17,10 @@
 
     function togglePane()
     {
-      if (splitView.paneHidden || splitView.paneOpened)
-        splitView.showPane ? splitview.showPane() : splitview.openPane();
+      if (splitView.paneHidden === true || splitView.paneOpened === false)
+        splitView.showPane ? splitView.showPane() : splitView.openPane();
       else
-        splitView.hidePane ? splitview.hidePane() : splitview.closePane();
+        splitView.hidePane ? splitView.hidePane() : splitView.closePane();
     }
   </script>
 
