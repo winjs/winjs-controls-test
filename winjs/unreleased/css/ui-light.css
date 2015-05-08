@@ -3682,7 +3682,8 @@ button.win-navigation-backbutton:enabled:hover:active {
   -webkit-flex-direction: row;
   flex-direction: row;
 }
-.win-pivot .win-pivot-header-customcontent {
+.win-pivot .win-pivot-header-leftcustom,
+.win-pivot .win-pivot-header-rightcustom {
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
