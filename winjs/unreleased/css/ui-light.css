@@ -2898,7 +2898,6 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   padding: 0px 19px;
-  width: calc(100% - 28px);
 }
 /*
     Modified styles for when the Pivot is in nosnap mode
