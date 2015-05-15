@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.14 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.15 ui.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.14 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.15 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -9437,7 +9437,8 @@ define('WinJS/Controls/ListView/_BrowseMode',[
                             fireInvokeEventImpl(this.site.groupDataSource, true);
                         }
                     } else {
-                        if (this.site._tap !== _UI.TapBehavior.none && entity.index !== _Constants._INVALID_INDEX) {
+                        // We don't want to raise an iteminvoked event when the ListView's tapBehavior is none, or if it's in selection mode.
+                        if (this.site._tap !== _UI.TapBehavior.none && entity.index !== _Constants._INVALID_INDEX && !(this.site._isInSelectionMode())) {
                             fireInvokeEventImpl(this.site.itemDataSource, false);
                         }
                     }
@@ -20549,7 +20550,7 @@ define('WinJS/Controls/ListView',[
                 _configureSelectionMode: function () {
                     var selectionModeClass = _Constants._selectionModeClass,
                         hidingSelectionModeClass = _Constants._hidingSelectionMode;
-                    if (this.tapBehavior === _UI.TapBehavior.toggleSelect && this.selectionMode === _UI.SelectionMode.multi) {
+                    if (this._isInSelectionMode()) {
                         _ElementUtilities.addClass(this._canvas, selectionModeClass);
                         _ElementUtilities.removeClass(this._canvas, hidingSelectionModeClass);
                     } else {
@@ -23009,6 +23010,10 @@ define('WinJS/Controls/ListView',[
 
                 _multiSelection: function ListView_multiSelection() {
                     return this._selectionMode === _UI.SelectionMode.multi;
+                },
+
+                _isInSelectionMode: function ListView_isInSelectionMode() {
+                    return (this.tapBehavior === _UI.TapBehavior.toggleSelect && this.selectionMode === _UI.SelectionMode.multi);
                 },
 
                 _selectOnTap: function ListView_selectOnTap() {
