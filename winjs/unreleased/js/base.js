@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define([], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.15 base.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.20 base.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.15 base.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.20 base.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -18335,7 +18335,7 @@ define('WinJS/Animations',[
         //   - timing (optional): String representing the CSS timing function that controls the progress of the animation.
         //
         _resizeTransition: function Utilities_resizeTransition(elementClipper, element, args) {
-            if (args.to === args.from) {
+            if (args.to === args.from || !_TransitionAnimation.isAnimationEnabled()) {
                 return Promise.as();
             } else {
                 var animationsToPlay = resizeTransition(elementClipper, element, args);
@@ -18348,6 +18348,10 @@ define('WinJS/Animations',[
         },
 
         _commandingSurfaceOpenAnimation: function Utilities_commandingSurfaceOpenAnimation(args) {
+            if (!_TransitionAnimation.isAnimationEnabled()) {
+                return Promise.as();
+            }
+
             var actionAreaClipper = args.actionAreaClipper,
                 actionArea = args.actionArea,
                 overflowAreaClipper = args.overflowAreaClipper,
@@ -18409,6 +18413,10 @@ define('WinJS/Animations',[
         },
 
         _commandingSurfaceCloseAnimation: function Utilities_commandingSurfaceCloseAnimation(args) {
+            if (!_TransitionAnimation.isAnimationEnabled()) {
+                return Promise.as();
+            }
+
             var actionAreaClipper = args.actionAreaClipper,
                 actionArea = args.actionArea,
                 overflowAreaClipper = args.overflowAreaClipper,
