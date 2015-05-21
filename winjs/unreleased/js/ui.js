@@ -11,9 +11,9 @@
         if (typeof define === 'function' && define.amd) {
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.20 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.21 ui.js,StartTM');
             factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.20 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.21 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -38478,15 +38478,26 @@ define('WinJS/Utilities/_KeyboardInfo',["require", "exports", '../Core/_Global',
         },
         // Get total length of the IHM showPanel animation
         get _animationShowLength() {
-            if (_WinRT.Windows.UI.Core.AnimationMetrics) {
-                var a = _WinRT.Windows.UI.Core.AnimationMetrics, animationDescription = new a.AnimationDescription(a.AnimationEffect.showPanel, a.AnimationEffectTarget.primary);
-                var animations = animationDescription.animations;
-                var max = 0;
-                for (var i = 0; i < animations.size; i++) {
-                    var animation = animations[i];
-                    max = Math.max(max, animation.delay + animation.duration);
+            if (_WinRT) {
+                if (_WinRT.Windows.UI.Core.AnimationMetrics) {
+                    // Desktop exposes the AnimationMetrics API that allows us to look up the relevant IHM animation metrics.
+                    var a = _WinRT.Windows.UI.Core.AnimationMetrics, animationDescription = new a.AnimationDescription(a.AnimationEffect.showPanel, a.AnimationEffectTarget.primary);
+                    var animations = animationDescription.animations;
+                    var max = 0;
+                    for (var i = 0; i < animations.size; i++) {
+                        var animation = animations[i];
+                        max = Math.max(max, animation.delay + animation.duration);
+                    }
+                    return max;
                 }
-                return max;
+                else {
+                    // Phone platform does not yet expose the Animation Metrics API. 
+                    // Hard code the correct values for the time being.
+                    // https://github.com/winjs/winjs/issues/1060
+                    var animationDuration = 300;
+                    var animationDelay = 50;
+                    return animationDelay + animationDuration;
+                }
             }
             else {
                 return 0;
