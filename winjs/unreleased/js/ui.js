@@ -1,6 +1,6 @@
 ﻿
 /*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
-(function () {
+(function (globalObject) {
 
     var globalObject = 
         typeof window !== 'undefined' ? window :
@@ -9,17 +9,10 @@
         {};
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
-            // amd
             define(["./base"], factory);
         } else {
             globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StartTM');
-            if (typeof module !== 'undefined') {
-                // CommonJS
-                factory(require("./base"));
-            } else {
-                // No module system
-                factory(globalObject.WinJS);
-            }
+            factory(globalObject.WinJS);
             globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StopTM');
         }
     }(function (WinJS) {
@@ -62189,12 +62182,7 @@ define('ui',[
 });
 
         require(['WinJS/Core/_WinJS', 'ui'], function (_WinJS) {
-            // WinJS always publishes itself to global
             globalObject.WinJS = _WinJS;
-            if (typeof module !== 'undefined') {
-                // This is a CommonJS context so publish to exports
-                module.exports = _WinJS;
-            }
         });
         return globalObject.WinJS;
     }));
