@@ -1,6 +1,6 @@
 ﻿
 /*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
-(function (globalObject) {
+(function () {
 
     var globalObject = 
         typeof window !== 'undefined' ? window :
@@ -9,10 +9,17 @@
         {};
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
+            // amd
             define(["./base"], factory);
         } else {
             globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StartTM');
-            factory(globalObject.WinJS);
+            if (typeof module !== 'undefined') {
+                // CommonJS
+                factory(require("./base"));
+            } else {
+                // No module system
+                factory(globalObject.WinJS);
+            }
             globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StopTM');
         }
     }(function (WinJS) {
@@ -38510,7 +38517,7 @@ define('WinJS/Controls/_LegacyAppBar/_Constants',[
 });
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 /// <reference path="../../../../typings/require.d.ts" />
-define('WinJS/Utilities/_KeyboardInfo',["require", "exports", '../Core/_Global', '../Core/_WinRT'], function (require, exports, _Global, _WinRT) {
+define('WinJS/Utilities/_KeyboardInfo',["require", "exports", '../Core/_BaseCoreUtils', '../Core/_Global', '../Core/_WinRT'], function (require, exports, _BaseCoreUtils, _Global, _WinRT) {
     "use strict";
     var _Constants = {
         visualViewportClass: "win-visualviewport-space",
@@ -38596,7 +38603,7 @@ define('WinJS/Utilities/_KeyboardInfo',["require", "exports", '../Core/_Global',
         },
         // Get total length of the IHM showPanel animation
         get _animationShowLength() {
-            if (_WinRT) {
+            if (_BaseCoreUtils.hasWinRT) {
                 if (_WinRT.Windows.UI.Core.AnimationMetrics) {
                     // Desktop exposes the AnimationMetrics API that allows us to look up the relevant IHM animation metrics.
                     var a = _WinRT.Windows.UI.Core.AnimationMetrics, animationDescription = new a.AnimationDescription(a.AnimationEffect.showPanel, a.AnimationEffectTarget.primary);
@@ -62182,7 +62189,12 @@ define('ui',[
 });
 
         require(['WinJS/Core/_WinJS', 'ui'], function (_WinJS) {
+            // WinJS always publishes itself to global
             globalObject.WinJS = _WinJS;
+            if (typeof module !== 'undefined') {
+                // This is a CommonJS context so publish to exports
+                module.exports = _WinJS;
+            }
         });
         return globalObject.WinJS;
     }));
