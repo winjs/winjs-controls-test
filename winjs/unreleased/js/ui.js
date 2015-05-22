@@ -1,6 +1,6 @@
 ﻿
 /*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
-(function (globalObject) {
+(function () {
 
     var globalObject = 
         typeof window !== 'undefined' ? window :
@@ -9,11 +9,18 @@
         {};
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
+            // amd
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.21 ui.js,StartTM');
-            factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.21 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StartTM');
+            if (typeof module !== 'undefined') {
+                // CommonJS
+                factory(require("./base"));
+            } else {
+                // No module system
+                factory(globalObject.WinJS);
+            }
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -37839,11 +37846,16 @@ define('WinJS/Controls/Hub',[
 
 define('require-style!less/styles-lightdismissservice',[],function(){});
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 define('WinJS/_LightDismissService',["require", "exports", './Application', './Core/_Base', './Core/_BaseUtils', './Utilities/_ElementUtilities', './Core/_Global', './Utilities/_KeyboardBehavior', './Core/_Log', './Core/_Resources'], function (require, exports, Application, _Base, _BaseUtils, _ElementUtilities, _Global, _KeyboardBehavior, _Log, _Resources) {
     require(["require-style!less/styles-lightdismissservice"]);
     "use strict";
     var baseZIndex = 1000;
-    var rightButton = 2;
     var Strings = {
         get closeOverlay() {
             return _Resources._getWinJSString("ui/closeOverlay").value;
@@ -37853,10 +37865,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         _clickEater: "win-clickeater"
     };
     var EventNames = {
-        requestingFocusOnKeyboardInput: "requestingfocusonkeyboardinput",
-        edgyStarting: "edgystarting",
-        edgyCompleted: "edgycompleted",
-        edgyCanceled: "edgycanceled"
+        requestingFocusOnKeyboardInput: "requestingfocusonkeyboardinput"
     };
     exports.LightDismissalReasons = {
         tap: "tap",
@@ -37864,8 +37873,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         escape: "escape",
         hardwareBackButton: "hardwareBackButton",
         windowResize: "windowResize",
-        windowBlur: "windowBlur",
-        edgy: "edgy"
+        windowBlur: "windowBlur"
     };
     // Built-in implementations of ILightDismissable's onShouldLightDismiss.
     exports.DismissalPolicies = {
@@ -37894,8 +37902,26 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
                 case exports.LightDismissalReasons.lostFocus:
                 case exports.LightDismissalReasons.windowResize:
                 case exports.LightDismissalReasons.windowBlur:
-                case exports.LightDismissalReasons.edgy:
                     return true;
+            }
+        },
+        modal: function LightDismissalPolicies_modal_onShouldLightDismiss(info) {
+            // Light dismiss cues should not be seen by dismissables behind the modal
+            info.stopPropagation();
+            switch (info.reason) {
+                case exports.LightDismissalReasons.tap:
+                case exports.LightDismissalReasons.lostFocus:
+                case exports.LightDismissalReasons.windowResize:
+                case exports.LightDismissalReasons.windowBlur:
+                    return false;
+                    break;
+                case exports.LightDismissalReasons.escape:
+                    return info.active;
+                    break;
+                case exports.LightDismissalReasons.hardwareBackButton:
+                    info.preventDefault(); // prevent backwards navigation in the app
+                    return info.active;
+                    break;
             }
         },
         sticky: function LightDismissalPolicies_sticky_onShouldLightDismiss(info) {
@@ -37903,47 +37929,28 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
             return false;
         }
     };
-    //
-    // ILightDismissable implementations
-    //
-    function tryFocus(element, useSetActive) {
-        var previousActiveElement = _Global.document.activeElement;
-        if (element === previousActiveElement) {
-            return true;
-        }
-        if (useSetActive) {
-            _ElementUtilities._setActive(element);
-        }
-        else {
-            element.focus();
-        }
-        return previousActiveElement !== _Global.document.activeElement;
-    }
-    var LightDismissableElement = (function () {
-        function LightDismissableElement(args) {
+    var KeyboardInfoType = {
+        keyDown: "keyDown",
+        keyUp: "keyUp",
+        keyPress: "keyPress"
+    };
+    var AbstractDismissableElement = (function () {
+        function AbstractDismissableElement(args) {
             this.element = args.element;
             this.element.tabIndex = args.tabIndex;
             this.onLightDismiss = args.onLightDismiss;
             // Allow the caller to override the default implementations of our ILightDismissable methods.
-            if (args.setZIndex) {
-                this.setZIndex = args.setZIndex;
+            if (args.onTakeFocus) {
+                this.onTakeFocus = args.onTakeFocus;
             }
-            if (args.getZIndexCount) {
-                this.getZIndexCount = args.getZIndexCount;
-            }
-            if (args.containsElement) {
-                this.containsElement = args.containsElement;
-            }
-            if (args.onActivate) {
-                this.onActivate = args.onActivate;
-            }
-            this._customOnFocus = args.onFocus;
-            this._customOnHide = args.onHide;
             if (args.onShouldLightDismiss) {
                 this.onShouldLightDismiss = args.onShouldLightDismiss;
             }
+            this._ldeOnKeyDownBound = this._ldeOnKeyDown.bind(this);
+            this._ldeOnKeyUpBound = this._ldeOnKeyUp.bind(this);
+            this._ldeOnKeyPressBound = this._ldeOnKeyPress.bind(this);
         }
-        LightDismissableElement.prototype.restoreFocus = function () {
+        AbstractDismissableElement.prototype.restoreFocus = function () {
             var activeElement = _Global.document.activeElement;
             if (activeElement && this.containsElement(activeElement)) {
                 this._ldeCurrentFocus = activeElement;
@@ -37953,39 +37960,89 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
                 // If the last input type was keyboard, use focus() so a keyboard focus visual is drawn.
                 // Otherwise, use setActive() so no focus visual is drawn.
                 var useSetActive = !_KeyboardBehavior._keyboardSeenLast;
-                return this._ldeCurrentFocus && this.containsElement(this._ldeCurrentFocus) && tryFocus(this._ldeCurrentFocus, useSetActive);
+                return this._ldeCurrentFocus && this.containsElement(this._ldeCurrentFocus) && _ElementUtilities._tryFocusOnAnyElement(this._ldeCurrentFocus, useSetActive);
             }
+        };
+        AbstractDismissableElement.prototype._ldeOnKeyDown = function (eventObject) {
+            this._ldeService.keyDown(this, eventObject);
+        };
+        AbstractDismissableElement.prototype._ldeOnKeyUp = function (eventObject) {
+            this._ldeService.keyUp(this, eventObject);
+        };
+        AbstractDismissableElement.prototype._ldeOnKeyPress = function (eventObject) {
+            this._ldeService.keyPress(this, eventObject);
         };
         // ILightDismissable
         //
-        LightDismissableElement.prototype.setZIndex = function (zIndex) {
+        AbstractDismissableElement.prototype.setZIndex = function (zIndex) {
             this.element.style.zIndex = zIndex;
         };
-        LightDismissableElement.prototype.getZIndexCount = function () {
+        AbstractDismissableElement.prototype.getZIndexCount = function () {
             return 1;
         };
-        LightDismissableElement.prototype.containsElement = function (element) {
+        AbstractDismissableElement.prototype.containsElement = function (element) {
             return this.element.contains(element);
         };
-        LightDismissableElement.prototype.onActivate = function (useSetActive) {
-            this.restoreFocus() || _ElementUtilities._focusFirstFocusableElement(this.element, useSetActive) || tryFocus(this.element, useSetActive);
+        AbstractDismissableElement.prototype.onTakeFocus = function (useSetActive) {
+            this.restoreFocus() || _ElementUtilities._focusFirstFocusableElement(this.element, useSetActive) || _ElementUtilities._tryFocusOnAnyElement(this.element, useSetActive);
         };
-        LightDismissableElement.prototype.onFocus = function (element) {
+        AbstractDismissableElement.prototype.onFocus = function (element) {
             this._ldeCurrentFocus = element;
-            this._customOnFocus && this._customOnFocus(element);
         };
-        LightDismissableElement.prototype.onHide = function () {
+        AbstractDismissableElement.prototype.onShow = function (service) {
+            this._ldeService = service;
+            this.element.addEventListener("keydown", this._ldeOnKeyDownBound);
+            this.element.addEventListener("keyup", this._ldeOnKeyUpBound);
+            this.element.addEventListener("keypress", this._ldeOnKeyPressBound);
+        };
+        AbstractDismissableElement.prototype.onHide = function () {
             this._ldeCurrentFocus = null;
-            this._customOnHide && this._customOnHide();
+            this._ldeService = null;
+            this.element.removeEventListener("keydown", this._ldeOnKeyDownBound);
+            this.element.removeEventListener("keyup", this._ldeOnKeyUpBound);
+            this.element.removeEventListener("keypress", this._ldeOnKeyPressBound);
+        };
+        // Concrete subclasses are expected to implement these.
+        AbstractDismissableElement.prototype.onKeyInStack = function (info) {
+        };
+        AbstractDismissableElement.prototype.onShouldLightDismiss = function (info) {
+            return false;
+        };
+        // Consumers of concrete subclasses of AbstractDismissableElement are expected to
+        // provide these as parameters to the constructor.
+        AbstractDismissableElement.prototype.onLightDismiss = function (info) {
+        };
+        return AbstractDismissableElement;
+    })();
+    var LightDismissableElement = (function (_super) {
+        __extends(LightDismissableElement, _super);
+        function LightDismissableElement() {
+            _super.apply(this, arguments);
+        }
+        LightDismissableElement.prototype.onKeyInStack = function (info) {
         };
         LightDismissableElement.prototype.onShouldLightDismiss = function (info) {
             return exports.DismissalPolicies.light(info);
         };
-        LightDismissableElement.prototype.onLightDismiss = function (info) {
-        };
         return LightDismissableElement;
-    })();
+    })(AbstractDismissableElement);
     exports.LightDismissableElement = LightDismissableElement;
+    var ModalElement = (function (_super) {
+        __extends(ModalElement, _super);
+        function ModalElement() {
+            _super.apply(this, arguments);
+        }
+        ModalElement.prototype.onKeyInStack = function (info) {
+            // stopPropagation so that none of the app's other event handlers will see the event.
+            // Don't preventDefault so that the browser's hotkeys will still work.
+            info.stopPropagation();
+        };
+        ModalElement.prototype.onShouldLightDismiss = function (info) {
+            return exports.DismissalPolicies.modal(info);
+        };
+        return ModalElement;
+    })(AbstractDismissableElement);
+    exports.ModalElement = ModalElement;
     // An implementation of ILightDismissable that represents the HTML body element. It can never be dismissed. The
     // service should instantiate one of these to act as the bottommost light dismissable at all times (it isn't expected
     // for anybody else to instantiate one). It takes care of restoring focus when the last dismissable is dismissed.
@@ -38000,14 +38057,18 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         LightDismissableBody.prototype.containsElement = function (element) {
             return _Global.document.body.contains(element);
         };
-        LightDismissableBody.prototype.onActivate = function (useSetActive) {
-            (this.currentFocus && this.containsElement(this.currentFocus) && tryFocus(this.currentFocus, useSetActive)) || _Global.document.body && _ElementUtilities._focusFirstFocusableElement(_Global.document.body, useSetActive) || _Global.document.body && tryFocus(_Global.document.body, useSetActive);
+        LightDismissableBody.prototype.onTakeFocus = function (useSetActive) {
+            this.currentFocus && this.containsElement(this.currentFocus) && _ElementUtilities._tryFocusOnAnyElement(this.currentFocus, useSetActive);
         };
         LightDismissableBody.prototype.onFocus = function (element) {
             this.currentFocus = element;
         };
+        LightDismissableBody.prototype.onShow = function (service) {
+        };
         LightDismissableBody.prototype.onHide = function () {
             this.currentFocus = null;
+        };
+        LightDismissableBody.prototype.onKeyInStack = function (info) {
         };
         LightDismissableBody.prototype.onShouldLightDismiss = function (info) {
             return false;
@@ -38016,9 +38077,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         };
         return LightDismissableBody;
     })();
-    //
-    // Light dismiss service
-    //
+    ;
     var LightDismissService = (function () {
         function LightDismissService() {
             this._debug = false; // Disables dismiss due to window blur. Useful during debugging.
@@ -38030,6 +38089,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
                 serviceActive: false
             };
             this._clickEaterEl = this._createClickEater();
+            this._onBeforeRequestingFocusOnKeyboardInputBound = this._onBeforeRequestingFocusOnKeyboardInput.bind(this);
             this._onFocusInBound = this._onFocusIn.bind(this);
             this._onKeyDownBound = this._onKeyDown.bind(this);
             this._onWindowResizeBound = this._onWindowResize.bind(this);
@@ -38050,6 +38110,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
             var index = this._clients.indexOf(client);
             if (index === -1) {
                 this._clients.push(client);
+                client.onShow(this);
                 this._updateDom();
             }
         };
@@ -38070,6 +38131,20 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         LightDismissService.prototype.updated = function (client) {
             this._updateDom();
         };
+        LightDismissService.prototype.keyDown = function (client, eventObject) {
+            if (eventObject.keyCode === _ElementUtilities.Key.escape) {
+                this._escapePressed(eventObject);
+            }
+            else {
+                this._dispatchKeyboardEvent(client, KeyboardInfoType.keyDown, eventObject);
+            }
+        };
+        LightDismissService.prototype.keyUp = function (client, eventObject) {
+            this._dispatchKeyboardEvent(client, KeyboardInfoType.keyUp, eventObject);
+        };
+        LightDismissService.prototype.keyPress = function (client, eventObject) {
+            this._dispatchKeyboardEvent(client, KeyboardInfoType.keyPress, eventObject);
+        };
         LightDismissService.prototype.isShown = function (client) {
             return this._clients.indexOf(client) !== -1;
         };
@@ -38080,7 +38155,9 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         LightDismissService.prototype._setDebug = function (debug) {
             this._debug = debug;
         };
-        LightDismissService.prototype._updateDom = function () {
+        LightDismissService.prototype._updateDom = function (options) {
+            options = options || {};
+            var activeDismissableNeedsFocus = !!options.activeDismissableNeedsFocus;
             var rendered = this._updateDom_rendered;
             if (this._notifying) {
                 return;
@@ -38089,6 +38166,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
             if (serviceActive !== rendered.serviceActive) {
                 // Unregister/register for events that occur frequently.
                 if (serviceActive) {
+                    Application.addEventListener("beforerequestingfocusonkeyboardinput", this._onBeforeRequestingFocusOnKeyboardInputBound);
                     _ElementUtilities._addEventListener(_Global.document.documentElement, "focusin", this._onFocusInBound);
                     _Global.document.documentElement.addEventListener("keydown", this._onKeyDownBound);
                     _Global.window.addEventListener("resize", this._onWindowResizeBound);
@@ -38096,6 +38174,7 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
                     _Global.document.body.appendChild(this._clickEaterEl);
                 }
                 else {
+                    Application.removeEventListener("beforerequestingfocusonkeyboardinput", this._onBeforeRequestingFocusOnKeyboardInputBound);
                     _ElementUtilities._removeEventListener(_Global.document.documentElement, "focusin", this._onFocusInBound);
                     _Global.document.documentElement.removeEventListener("keydown", this._onKeyDownBound);
                     _Global.window.removeEventListener("resize", this._onWindowResizeBound);
@@ -38120,13 +38199,34 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
             var activeDismissable = this._clients.length > 0 ? this._clients[this._clients.length - 1] : null;
             if (this._activeDismissable !== activeDismissable) {
                 this._activeDismissable = activeDismissable;
+                activeDismissableNeedsFocus = true;
+            }
+            if (activeDismissableNeedsFocus) {
                 // If the last input type was keyboard, use focus() so a keyboard focus visual is drawn.
                 // Otherwise, use setActive() so no focus visual is drawn.
                 var useSetActive = !_KeyboardBehavior._keyboardSeenLast;
-                this._activeDismissable && this._activeDismissable.onActivate(useSetActive);
+                this._activeDismissable && this._activeDismissable.onTakeFocus(useSetActive);
             }
         };
-        LightDismissService.prototype._dispatchLightDismiss = function (reason, clients) {
+        LightDismissService.prototype._dispatchKeyboardEvent = function (client, keyboardInfoType, eventObject) {
+            var index = this._clients.indexOf(client);
+            if (index !== -1) {
+                var info = {
+                    type: keyboardInfoType,
+                    keyCode: eventObject.keyCode,
+                    propagationStopped: false,
+                    stopPropagation: function () {
+                        this.propagationStopped = true;
+                        eventObject.stopPropagation();
+                    }
+                };
+                var clients = this._clients.slice(0, index + 1);
+                for (var i = clients.length - 1; i >= 0 && !info.propagationStopped; i--) {
+                    clients[i].onKeyInStack(info);
+                }
+            }
+        };
+        LightDismissService.prototype._dispatchLightDismiss = function (reason, clients, options) {
             if (this._notifying) {
                 _Log.log && _Log.log('_LightDismissService ignored dismiss trigger to avoid re-entrancy: "' + reason + '"', "winjs _LightDismissService", "warning");
                 return;
@@ -38157,8 +38257,12 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
                 }
             }
             this._notifying = false;
-            this._updateDom();
+            this._updateDom(options);
             return lightDismissInfo._doDefault;
+        };
+        LightDismissService.prototype._onBeforeRequestingFocusOnKeyboardInput = function (eventObject) {
+            // Suppress the requestingFocusOnKeyboardInput event.
+            return true;
         };
         //
         // Light dismiss triggers
@@ -38177,14 +38281,21 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
             if (i !== -1) {
                 this._clients[i].onFocus(target);
             }
-            this._dispatchLightDismiss(exports.LightDismissalReasons.lostFocus, this._clients.slice(i + 1, this._clients.length));
+            if (i + 1 < this._clients.length) {
+                this._dispatchLightDismiss(exports.LightDismissalReasons.lostFocus, this._clients.slice(i + 1), {
+                    activeDismissableNeedsFocus: true
+                });
+            }
         };
         LightDismissService.prototype._onKeyDown = function (eventObject) {
             if (eventObject.keyCode === _ElementUtilities.Key.escape) {
-                eventObject.preventDefault();
-                eventObject.stopPropagation();
-                this._dispatchLightDismiss(exports.LightDismissalReasons.escape);
+                this._escapePressed(eventObject);
             }
+        };
+        LightDismissService.prototype._escapePressed = function (eventObject) {
+            eventObject.preventDefault();
+            eventObject.stopPropagation();
+            this._dispatchLightDismiss(exports.LightDismissalReasons.escape);
         };
         // Called by tests.
         LightDismissService.prototype._onBackClick = function (eventObject) {
@@ -38235,13 +38346,11 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         LightDismissService.prototype._onClickEaterPointerDown = function (eventObject) {
             eventObject.stopPropagation();
             eventObject.preventDefault();
-            if (eventObject.button !== rightButton) {
-                this._clickEaterPointerId = eventObject.pointerId;
-                if (!this._registeredClickEaterCleanUp) {
-                    _ElementUtilities._addEventListener(_Global.window, "pointerup", this._onClickEaterPointerUpBound);
-                    _ElementUtilities._addEventListener(_Global.window, "pointercancel", this._onClickEaterPointerCancelBound);
-                    this._registeredClickEaterCleanUp = true;
-                }
+            this._clickEaterPointerId = eventObject.pointerId;
+            if (!this._registeredClickEaterCleanUp) {
+                _ElementUtilities._addEventListener(_Global.window, "pointerup", this._onClickEaterPointerUpBound);
+                _ElementUtilities._addEventListener(_Global.window, "pointercancel", this._onClickEaterPointerCancelBound);
+                this._registeredClickEaterCleanUp = true;
             }
         };
         LightDismissService.prototype._onClickEaterPointerUp = function (eventObject) {
@@ -38291,6 +38400,9 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
     exports.updated = service.updated.bind(service);
     exports.isShown = service.isShown.bind(service);
     exports.isTopmost = service.isTopmost.bind(service);
+    exports.keyDown = service.keyDown.bind(service);
+    exports.keyUp = service.keyUp.bind(service);
+    exports.keyPress = service.keyPress.bind(service);
     exports._clickEaterTapped = service._clickEaterTapped.bind(service);
     exports._onBackClick = service._onBackClick.bind(service);
     exports._setDebug = service._setDebug.bind(service);
@@ -38300,6 +38412,9 @@ define('WinJS/_LightDismissService',["require", "exports", './Application', './C
         updated: exports.updated,
         isShown: exports.isShown,
         isTopmost: exports.isTopmost,
+        keyDown: exports.keyDown,
+        keyUp: exports.keyUp,
+        keyPress: exports.keyPress,
         _clickEaterTapped: exports._clickEaterTapped,
         _onBackClick: exports._onBackClick,
         _setDebug: exports._setDebug,
@@ -39730,6 +39845,7 @@ define('WinJS/Controls/Flyout',[
                     var index = this._clients.indexOf(client);
                     if (index === -1) {
                         this._clients.push(client);
+                        client.onShow(this);
                         if (!_LightDismissService.isShown(this)) {
                             _LightDismissService.shown(this);
                         } else {
@@ -39764,6 +39880,16 @@ define('WinJS/Controls/Flyout',[
                             this._activateTopFocusableClientIfNeeded();
                         }
                     }
+                },
+                
+                keyDown: function _LightDismissableLayer_keyDown(client /*: ILightDismissable */, eventObject) {
+                    _LightDismissService.keyDown(this, eventObject);
+                },
+                keyUp: function _LightDismissableLayer_keyUp(client /*: ILightDismissable */, eventObject) {
+                    _LightDismissService.keyUp(this, eventObject);
+                },
+                keyPress: function _LightDismissableLayer_keyPress(client /*: ILightDismissable */, eventObject) {
+                    _LightDismissService.keyPress(this, eventObject);
                 },
 
                 // Used by tests.
@@ -39807,7 +39933,7 @@ define('WinJS/Controls/Flyout',[
                         // If the last input type was keyboard, use focus() so a keyboard focus visual is drawn.
                         // Otherwise, use setActive() so no focus visual is drawn.
                         var useSetActive = !_KeyboardBehavior._keyboardSeenLast;
-                        topClient.onActivate(useSetActive);
+                        topClient.onTakeFocus(useSetActive);
                     }
                 },
 
@@ -39825,7 +39951,7 @@ define('WinJS/Controls/Flyout',[
                 containsElement: function _LightDismissableLayer_containsElement(element) {
                     return !!this._clientForElement(element);
                 },
-                onActivate: function _LightDismissableLayer_onActivate(useSetActive) {
+                onTakeFocus: function _LightDismissableLayer_onTakeFocus(useSetActive) {
                     // Prefer the client that has focus
                     var client = this._focusableClientForElement(_Global.document.activeElement);
 
@@ -39840,14 +39966,28 @@ define('WinJS/Controls/Flyout',[
                     }
 
                     this._currentlyFocusedClient = client;
-                    client && client.onActivate(useSetActive);
+                    client && client.onTakeFocus(useSetActive);
                 },
                 onFocus: function _LightDismissableLayer_onFocus(element) {
                     this._currentlyFocusedClient = this._clientForElement(element);
                     this._currentlyFocusedClient && this._currentlyFocusedClient.onFocus(element);
                 },
+                onShow: function _LightDismissableLayer_onShow(service /*: ILightDismissService */) { },
                 onHide: function _LightDismissableLayer_onHide() {
                     this._currentlyFocusedClient = null;
+                },
+                onKeyInStack: function _LightDismissableLayer_onKeyInStack(info /*: IKeyboardInfo*/) {
+                    // A keyboard event occurred in the light dismiss stack. Notify the flyouts to
+                    // give them the opportunity to handle this evnet.
+                    var index = this._clients.indexOf(this._currentlyFocusedClient);
+                    if (index !== -1) {
+                        var clients = this._clients.slice(0, index + 1);
+                        for (var i = clients.length - 1; i >= 0 && !info.propagationStopped; i--) {
+                            if (clients[i]._focusable) {
+                                clients[i].onKeyInStack(info);
+                            }
+                        }
+                    }
                 },
                 onShouldLightDismiss: function _LightDismissableLayer_onShouldLightDismiss(info) {
                     return _LightDismissService.DismissalPolicies.light(info);
@@ -40068,7 +40208,7 @@ define('WinJS/Controls/Flyout',[
                         onLightDismiss: function () {
                             that.hide();
                         },
-                        onActivate: function (useSetActive) {
+                        onTakeFocus: function (useSetActive) {
                             if (!that._dismissable.restoreFocus()) {
                                 if (!_ElementUtilities.hasClass(that.element, _Constants.menuClass)) {
                                     // Put focus on the first child in the Flyout
@@ -45553,7 +45693,7 @@ define('WinJS/Controls/_LegacyAppBar',[
                     onLightDismiss: function () {
                         that.close();
                     },
-                    onActivate: function (useSetActive) {
+                    onTakeFocus: function (useSetActive) {
                         if (!that._dismissable.restoreFocus()) {
                             that._layoutImpl.setFocusOnShow();
                         }
@@ -57063,7 +57203,7 @@ define('WinJS/Controls/SettingsFlyout',[
                     onLightDismiss: function () {
                         that.hide();
                     },
-                    onActivate: function (useSetActive) {
+                    onTakeFocus: function (useSetActive) {
                         if (!that._dismissable.restoreFocus()) {
                             var firstDiv = that.element.querySelector("." + _Constants.firstDivClass);
                             if (firstDiv) {
@@ -59861,6 +60001,7 @@ define('WinJS/Controls/ContentDialog',[
     '../Utilities/_Dispose',
     '../Promise',
     '../_Signal',
+    '../_LightDismissService',
     '../Core/_BaseUtils',
     '../Core/_Global',
     '../Core/_WinRT',
@@ -59874,28 +60015,8 @@ define('WinJS/Controls/ContentDialog',[
     '../Animations',
     'require-style!less/styles-contentdialog',
     'require-style!less/colors-contentdialog'
-    ], function contentDialogInit(Application, _Dispose, Promise, _Signal, _BaseUtils, _Global, _WinRT, _Base, _Events, _ErrorFromName, _Resources, _Control, _ElementUtilities, _Hoverable, _Animations) {
+    ], function contentDialogInit(Application, _Dispose, Promise, _Signal, _LightDismissService, _BaseUtils, _Global, _WinRT, _Base, _Events, _ErrorFromName, _Resources, _Control, _ElementUtilities, _Hoverable, _Animations) {
     "use strict";
-
-    var ContentDialogManager;
-
-    // Need to be the first one to register these events so that they can be
-    // canceled before any other listener sees them.
-    var eventsToBlock = [
-        "edgystarting",
-        "edgycompleted",
-        "edgycanceled"
-    ];
-
-    function blockEventIfDialogIsShowing(eventObject) {
-        if (ContentDialogManager && ContentDialogManager.aDialogIsShowing()) {
-            eventObject.stopImmediatePropagation();
-        }
-    }
-
-    eventsToBlock.forEach(function (eventName) {
-        Application.addEventListener(eventName, blockEventIfDialogIsShowing);
-    });
 
     _Base.Namespace.define("WinJS.UI", {
         /// <field>
@@ -59965,72 +60086,6 @@ define('WinJS/Controls/ContentDialog',[
                 afterHide: "afterhide",
             };
             var minContentHeightWithInputPane = 96;
-
-            ContentDialogManager = new (_Base.Class.define(function () {
-                this._dialogs = [];
-                this._prevFocus = null;
-            }, {
-                willShow: function ContentDialogManager_willShow(dialog) {
-                    var startLength = this._dialogs.length;
-                    this._pruneDialogsMissingFromDom();
-
-                    if (this._dialogs.indexOf(dialog) === -1) {
-                        this._dialogs.push(dialog);
-                    }
-
-                    if (startLength === 0 && this._dialogs.length === 1) {
-                        this._firstDialogWillShow(dialog);
-                    }
-                },
-
-                didHide: function ContentDialogManager_didHide(dialog) {
-                    var startLength = this._dialogs.length;
-                    this._pruneDialogsMissingFromDom();
-
-                    var index = this._dialogs.indexOf(dialog);
-                    if (index !== -1) {
-                        this._dialogs.splice(index, 1);
-                    }
-
-                    if (startLength > 0 && this._dialogs.length === 0) {
-                        this._lastDialogDidHide();
-                    }
-                },
-
-                aDialogIsShowing: function ContentDialogManager_aDialogIsShowing() {
-                    return this._dialogs.some(function (dialog) {
-                        return !dialog.hidden;
-                    });
-                },
-
-                // Filter out any ContentDialogs that may have been ripped
-                // out of the DOM without getting hidden or disposed.
-                _pruneDialogsMissingFromDom: function ContentDialogManager_pruneDialogsMissingFromDom() {
-                    this._dialogs = this._dialogs.filter(function (dialog) {
-                        return !_Global.document.body.contains(dialog.element);
-                    });
-                },
-
-                _firstDialogWillShow: function ContentDialogManager_firstDialogWillShow(dialog) {
-                    this._prevFocus = _Global.document.activeElement;
-                },
-
-                _lastDialogDidHide: function ContentDialogManager_lastDialogDidHide() {
-                    var prevFocus = this._prevFocus;
-                    this._prevFocus = null;
-                    prevFocus && prevFocus.focus();
-                }
-            }))();
-
-            function elementInFlyout(element) {
-                while (element) {
-                    if (_ElementUtilities.hasClass(element, "win-flyout")) {
-                        return true;
-                    }
-                    element = element.parentNode;
-                }
-                return false;
-            }
 
             // WinJS animation promises always complete successfully. This
             // helper allows an animation promise to complete in the canceled state
@@ -60136,6 +60191,19 @@ define('WinJS/Controls/ContentDialog',[
                     name: "Init",
                     hidden: true,
                     enter: function ContentDialog_InitState_enter() {
+                        var dialog = this.dialog;
+                        dialog._dismissable = new _LightDismissService.ModalElement({
+                            element: dialog._dom.root,
+                            tabIndex: dialog._dom.root.hasAttribute("tabIndex") ? dialog._dom.root.tabIndex : -1,
+                            onLightDismiss: function () {
+                                dialog.hide(DismissalResult.none);
+                            },
+                            onTakeFocus: function (useSetActive) {
+                                dialog._dismissable.restoreFocus() ||
+                                    _ElementUtilities._focusFirstFocusableElement(dialog._dom.content) ||
+                                    _ElementUtilities._tryFocusOnAnyElement(dialog._dom.dialog, useSetActive);
+                            }
+                        });
                         this.dialog._dismissedSignal = null; // The signal will be created on demand when show() is called
                         this.dialog._setState(States.Hidden, false);
                     },
@@ -60155,19 +60223,13 @@ define('WinJS/Controls/ContentDialog',[
                     enter: function ContentDialog_HiddenState_enter(showIsPending) {
                         if (showIsPending) {
                             this.show();
-                        } else {
-                            ContentDialogManager.didHide(this.dialog);
                         }
                     },
                     exit: _,
                     show: function ContentDialog_HiddenState_show() {
-                        if (ContentDialogManager.aDialogIsShowing()) {
-                            return Promise.wrapError(new _ErrorFromName("WinJS.UI.ContentDialog.ContentDialogAlreadyShowing", Strings.contentDialogAlreadyShowing));
-                        } else {
-                            var dismissedSignal = this.dialog._dismissedSignal = new _Signal(); // save the signal in case it changes when switching states
-                            this.dialog._setState(States.BeforeShow);
-                            return dismissedSignal.promise;
-                        }
+                        var dismissedSignal = this.dialog._dismissedSignal = new _Signal(); // save the signal in case it changes when switching states
+                        this.dialog._setState(States.BeforeShow);
+                        return dismissedSignal.promise;
                     },
                     hide: _,
                     onCommandClicked: _,
@@ -60225,8 +60287,7 @@ define('WinJS/Controls/ContentDialog',[
                                         that.dialog._renderForInputPane(inputPaneHeight);
                                     }
                                 }
-                                ContentDialogManager.willShow(that.dialog);
-                                that.dialog._focusInitialElement();
+                                _LightDismissService.shown(that.dialog._dismissable);
                                 return that.dialog._playEntranceAnimation();
                             }).then(function () {
                                 that.dialog._fireEvent(EventNames.afterShow); // Give opportunity for chain to be canceled when calling into app code
@@ -60317,6 +60378,7 @@ define('WinJS/Controls/ContentDialog',[
                                 return that.dialog._playExitAnimation();
                             }).then(function () {
                                 that.dialog._removeExternalListeners();
+                                _LightDismissService.hidden(that.dialog._dismissable);
                                 _ElementUtilities.removeClass(that.dialog._dom.root, ClassNames._visible);
                                 that.dialog._clearInputPaneRendering();
                                 that.dialog._fireAfterHide(dismissalResult); // Give opportunity for chain to be canceled when calling into app code
@@ -60349,7 +60411,7 @@ define('WinJS/Controls/ContentDialog',[
                     name: "Disposed",
                     hidden: true,
                     enter: function ContentDialog_DisposedState_enter() {
-                        ContentDialogManager.didHide(this.dialog);
+                        _LightDismissService.hidden(this.dialog._dismissable);
                         this.dialog._removeExternalListeners();
                         if (this.dialog._dismissedSignal) {
                             this.dialog._dismissedSignal.error(new _ErrorFromName("WinJS.UI.ContentDialog.ControlDisposed", Strings.controlDisposed));
@@ -60390,14 +60452,9 @@ define('WinJS/Controls/ContentDialog',[
                     throw new _ErrorFromName("WinJS.UI.ContentDialog.DuplicateConstruction", Strings.duplicateConstruction);
                 }
                 options = options || {};
-
-                this._onBackClickBound = this._onBackClick.bind(this);
-                this._onBeforeRequestingFocusOnKeyboardInputBound = this._onBeforeRequestingFocusOnKeyboardInput.bind(this);
+                
                 this._onInputPaneShownBound = this._onInputPaneShown.bind(this);
                 this._onInputPaneHiddenBound = this._onInputPaneHidden.bind(this);
-                this._onFocusInBound = this._onFocusIn.bind(this);
-                this._onKeyDownEnteringDocumentBound = this._onKeyDownEnteringDocument.bind(this);
-                this._onKeyEnteringDocumentBound = this._onKeyEnteringDocument.bind(this);
 
                 this._disposed = false;
                 this._resizedForInputPane = false;
@@ -60612,11 +60669,8 @@ define('WinJS/Controls/ContentDialog',[
                     dom.startBodyTab.setAttribute("x-ms-aria-flowfrom", dom.endBodyTab.id);
                     dom.endBodyTab.setAttribute("aria-flowto", dom.startBodyTab.id);
                     this._updateTabIndices();
-
-                    var onKeyLeavingElementBound = this._onKeyLeavingElement.bind(this);
-                    dom.root.addEventListener("keydown", onKeyLeavingElementBound);
-                    dom.root.addEventListener("keyup", onKeyLeavingElementBound);
-                    dom.root.addEventListener("keypress", onKeyLeavingElementBound);
+                    
+                    dom.root.addEventListener("keydown", this._onKeyDownEnteringElement.bind(this), true);
                     _ElementUtilities._addEventListener(dom.root, "pointerdown", this._onPointerDown.bind(this));
                     _ElementUtilities._addEventListener(dom.root, "pointerup", this._onPointerUp.bind(this));
                     dom.root.addEventListener("click", this._onClick.bind(this));
@@ -60662,18 +60716,6 @@ define('WinJS/Controls/ContentDialog',[
                     return this._dom.dialog.contains(element) || element === this._dom.startBodyTab || element === this._dom.endBodyTab;
                 },
 
-                _retakeFocus: function ContentDialog_retakeFocus(element) {
-                    if (!(this._currentFocus && this._elementInDialog(this._currentFocus) && _ElementUtilities._tryFocus(this._currentFocus))) {
-                        this._focusInitialElement();
-                    }
-                },
-
-                _isTopLevel: {
-                    get: function ContentDialog_isTopLevel_get() {
-                        return !elementInFlyout(_Global.document.activeElement);
-                    }
-                },
-
                 _onCommandClicked: function ContentDialog_onCommandClicked(dismissalResult) {
                     this._state.onCommandClicked(dismissalResult);
                 },
@@ -60698,61 +60740,10 @@ define('WinJS/Controls/ContentDialog',[
                         eventObject.preventDefault();
                     }
                 },
-
-                _onFocusIn: function ContentDialog_onFocusIn(eventObject) {
-                    eventObject = eventObject.detail.originalEvent;
-                    if (this._isTopLevel) {
-                        if (this._elementInDialog(eventObject.target)) {
-                            this._currentFocus = eventObject.target;
-                        } else {
-                            this._retakeFocus();
-                        }
-                    }
-                },
-
-                _onKeyDownEnteringDocument: function ContentDialog_onKeyDownEnteringDocument(eventObject) {
-                    eventObject = eventObject.detail.originalEvent;
-                    if (this._isTopLevel) {
-                        if (eventObject.keyCode === _ElementUtilities.Key.tab) {
-                            this._updateTabIndices();
-                        } else if (eventObject.keyCode === _ElementUtilities.Key.escape) {
-                            this.hide(DismissalResult.none);
-                            eventObject.preventDefault();
-                            eventObject.stopImmediatePropagation();
-                        } else if (!this._elementInDialog(_Global.document.activeElement)) {
-                            // When focus has escaped the dialog, eat all other keys.
-                            eventObject.preventDefault();
-                            eventObject.stopImmediatePropagation();
-                        }
-                    }
-                },
-
-                _onKeyEnteringDocument: function ContentDialog_onKeyEnteringDocument(eventObject) {
-                    eventObject = eventObject.detail.originalEvent;
-                    if (this._isTopLevel && !this._elementInDialog(_Global.document.activeElement) && eventObject.keyCode !== _ElementUtilities.Key.tab) {
-                        // When focus has escaped the dialog, eat all other keys.
-                        eventObject.preventDefault();
-                        eventObject.stopImmediatePropagation();
-                    }
-                },
-
-                _onKeyLeavingElement: function ContentDialog_onKeyLeavingElement(eventObject) {
-                    if (this._isTopLevel) {
-                        // stopImmediatePropagation so that none of the app's other event handlers will see the event.
-                        // Don't preventDefault so that the browser's hotkeys will still work.
-                        eventObject.stopImmediatePropagation();
-                    }
-                },
-
-                _onBeforeRequestingFocusOnKeyboardInput: function ContentDialog_onBeforeRequestingFocusOnKeyboardInput(eventObject) {
-                    // Suppress the requestingFocusOnKeyboardInput event.
-                    eventObject.preventDefault();
-                },
-
-                _onBackClick: function ContentDialog_onBackClick(eventObject) {
-                    if (this._isTopLevel) {
-                        this.hide(DismissalResult.none);
-                        eventObject.preventDefault();
+                
+                _onKeyDownEnteringElement: function ContentDialog_onKeyDownEnteringElement(eventObject) {
+                    if (eventObject.keyCode === _ElementUtilities.Key.tab) {
+                        this._updateTabIndices();
                     }
                 },
 
@@ -60845,27 +60836,11 @@ define('WinJS/Controls/ContentDialog',[
                 _addExternalListeners: function ContentDialog_addExternalListeners() {
                     _ElementUtilities._inputPaneListener.addEventListener(this._dom.root, "showing", this._onInputPaneShownBound);
                     _ElementUtilities._inputPaneListener.addEventListener(this._dom.root, "hiding", this._onInputPaneShownBound);
-
-                    _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "keydown", this._onKeyDownEnteringDocumentBound, true);
-                    _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "keyup", this._onKeyEnteringDocumentBound, true);
-                    _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "keypress", this._onKeyEnteringDocumentBound, true);
-                    _ElementUtilities._documentElementListener.addEventListener(this._dom.root, "focusin", this._onFocusInBound);
-
-                    Application._applicationListener.addEventListener(this._dom.root, "backclick", this._onBackClickBound);
-                    Application._applicationListener.addEventListener(this._dom.root, "beforerequestingfocusonkeyboardinput", this._onBeforeRequestingFocusOnKeyboardInputBound);
                 },
 
                 _removeExternalListeners: function ContentDialog_removeExternalListeners() {
                     _ElementUtilities._inputPaneListener.removeEventListener(this._dom.root, "showing", this._onInputPaneShownBound);
                     _ElementUtilities._inputPaneListener.removeEventListener(this._dom.root, "hiding", this._onInputPaneShownBound);
-
-                    _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "keydown", this._onKeyDownEnteringDocumentBound, true);
-                    _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "keyup", this._onKeyEnteringDocumentBound, true);
-                    _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "keypress", this._onKeyEnteringDocumentBound, true);
-                    _ElementUtilities._documentElementListener.removeEventListener(this._dom.root, "focusin", this._onFocusInBound);
-
-                    Application._applicationListener.removeEventListener(this._dom.root, "backclick", this._onBackClickBound);
-                    Application._applicationListener.removeEventListener(this._dom.root, "beforerequestingfocusonkeyboardinput", this._onBeforeRequestingFocusOnKeyboardInputBound);
                 },
 
                 _renderForInputPane: function ContentDialog_renderForInputPane(inputPaneHeight) {
@@ -60916,10 +60891,6 @@ define('WinJS/Controls/ContentDialog',[
                         style.minHeight = "";
                         this._resizedForInputPane = false;
                     }
-                },
-
-                _focusInitialElement: function ContentDialog_focusInitialElement() {
-                    _ElementUtilities._focusFirstFocusableElement(this._dom.content) || this._dom.dialog.focus();
                 }
             }, {
                 /// <field locid="WinJS.UI.ContentDialog.DismissalResult" helpKeyword="WinJS.UI.ContentDialog.DismissalResult">
@@ -62218,7 +62189,12 @@ define('ui',[
 });
 
         require(['WinJS/Core/_WinJS', 'ui'], function (_WinJS) {
+            // WinJS always publishes itself to global
             globalObject.WinJS = _WinJS;
+            if (typeof module !== 'undefined') {
+                // This is a CommonJS context so publish to exports
+                module.exports = _WinJS;
+            }
         });
         return globalObject.WinJS;
     }));

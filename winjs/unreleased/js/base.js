@@ -1,6 +1,6 @@
 ﻿
 /*! Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
-(function (globalObject) {
+(function () {
 
     var globalObject = 
         typeof window !== 'undefined' ? window :
@@ -9,11 +9,18 @@
         {};
     (function (factory) {
         if (typeof define === 'function' && define.amd) {
+            // amd
             define([], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.21 base.js,StartTM');
-            factory(globalObject.WinJS);
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.21 base.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 base.js,StartTM');
+            if (typeof module !== 'undefined') {
+                // CommonJS
+                factory();
+            } else {
+                // No module system
+                factory(globalObject.WinJS);
+            }
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 base.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -7913,13 +7920,38 @@ define('WinJS/Utilities/_ElementUtilities',[
         _maintainFocus: function ElementUtilities_maintainFocus(callback) {
             var focusedElement = _Global.document.activeElement;
             callback();
-            exports._trySetActive(focusedElement);
+            exports._trySetActiveOnAnyElement(focusedElement);
         },
+        
+        // Tries to give focus to an element (even if its tabIndex is -1) via setActive.
+        _trySetActiveOnAnyElement: function Utilities_trySetActiveOnAnyElement(element, scroller) {
+            return exports._tryFocusOnAnyElement(element, true, scroller);
+        },
+        
+        // Tries to give focus to an element (even if its tabIndex is -1).
+        _tryFocusOnAnyElement: function Utilities_tryFocusOnAnyElement(element, useSetActive, scroller) {
+            var previousActiveElement = _Global.document.activeElement;
 
+            if (element === previousActiveElement) {
+                return true;
+            }
+            
+            if (useSetActive) {
+                exports._setActive(element, scroller);
+            } else {
+                element.focus();
+            }
+            
+            return previousActiveElement !== _Global.document.activeElement;
+        },
+        
+        // Tries to give focus to an element which is a tabstop (i.e. tabIndex >= 0)
+        // via setActive.
         _trySetActive: function Utilities_trySetActive(elem, scroller) {
             return this._tryFocus(elem, true, scroller);
         },
-
+        
+        // Tries to give focus to an element which is a tabstop (i.e. tabIndex >= 0).
         _tryFocus: function Utilities_tryFocus(elem, useSetActive, scroller) {
             var previousActiveElement = _Global.document.activeElement;
 
@@ -26470,7 +26502,12 @@ define('base',[
 });
 
         require(['WinJS/Core/_WinJS', 'base'], function (_WinJS) {
+            // WinJS always publishes itself to global
             globalObject.WinJS = _WinJS;
+            if (typeof module !== 'undefined') {
+                // This is a CommonJS context so publish to exports
+                module.exports = _WinJS;
+            }
         });
         return globalObject.WinJS;
     }));
