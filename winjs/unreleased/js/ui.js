@@ -40773,7 +40773,6 @@ define('WinJS/Controls/Flyout',[
                             if (!fitBottom(anchor.top - flyout.marginTop, flyout) && !fitTop(anchor.bottom + flyout.marginBottom, flyout)) {
                                 centerVertically(anchor, flyout);
                             }
-
                             // Determine horizontal direction
                             // PREFERRED: When there is enough room to fit a subMenu on either side of the anchor,
                             // the subMenu prefers to go on the right hand side.
