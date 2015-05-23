@@ -5634,6 +5634,26 @@ Hide clear button in search box control.
 .win-splitview.win-splitview-openeddisplayinline .win-splitview-paneplaceholder {
   display: none;
 }
+button.win-splitviewpanetoggle {
+  touch-action: manipulation;
+  box-sizing: border-box;
+  height: 48px;
+  width: 48px;
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+  border: 1px dotted transparent;
+  margin: 0;
+  outline: none;
+  background-color: transparent;
+}
+button.win-splitviewpanetoggle:after {
+  font-size: 24px;
+  font-family: 'Segoe MDL2 Assets', 'Symbols';
+  font-weight: 400;
+  line-height: 1.333;
+  content: "\E700";
+}
 .win-appbar {
   width: 100%;
   min-width: 32px;
@@ -6430,6 +6450,16 @@ progress.win-mediaplayer-busy {
 .win-splitview-pane {
   background-color: #f2f2f2;
 }
+button.win-splitviewpanetoggle {
+  color: #000000;
+}
+button.win-splitviewpanetoggle:active,
+button.win-splitviewpanetoggle.win-splitviewpanetoggle:active:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+button.win-splitviewpanetoggle.win-keyboard:focus {
+  border-color: #000000;
+}
 html.win-hoverable {
   /* LegacyAppBar control colors */
 }
@@ -6545,6 +6575,9 @@ html.win-hoverable .win-navbarcommand-splitbutton:hover {
 html.win-hoverable .win-navbarcommand-button:hover.win-pressed,
 html.win-hoverable .win-navbarcommand-splitbutton:hover.win-pressed {
   background-color: rgba(0, 0, 0, 0.28);
+}
+html.win-hoverable button.win-splitviewpanetoggle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .win-ui-dark {
   /* The MediaPlayer uses the same colors in light and dark themes which is why we don't use
@@ -7331,6 +7364,16 @@ html.win-hoverable .win-navbarcommand-splitbutton:hover.win-pressed {
 .win-ui-dark .win-splitview-pane {
   background-color: #171717;
 }
+.win-ui-dark button.win-splitviewpanetoggle {
+  color: #ffffff;
+}
+.win-ui-dark button.win-splitviewpanetoggle:active,
+.win-ui-dark button.win-splitviewpanetoggle.win-splitviewpanetoggle:active:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark button.win-splitviewpanetoggle.win-keyboard:focus {
+  border-color: #ffffff;
+}
 html.win-hoverable .win-ui-dark {
   /* LegacyAppBar control colors */
 }
@@ -7446,6 +7489,9 @@ html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton:hover {
 html.win-hoverable .win-ui-dark .win-navbarcommand-button:hover.win-pressed,
 html.win-hoverable .win-ui-dark .win-navbarcommand-splitbutton:hover.win-pressed {
   background-color: rgba(0, 0, 0, 0.28);
+}
+html.win-hoverable .win-ui-dark button.win-splitviewpanetoggle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 @media (-ms-high-contrast) {
   .win-overlay {

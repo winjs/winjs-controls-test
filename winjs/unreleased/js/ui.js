@@ -61942,6 +61942,167 @@ define('WinJS/Controls/SplitView',["require", "exports", '../Core/_Base'], funct
     });
 });
 
+
+define('require-style!less/styles-splitviewpanetoggle',[],function(){});
+
+define('require-style!less/colors-splitviewpanetoggle',[],function(){});
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
+/// <reference path="../../../../../typings/require.d.ts" />
+define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "exports", '../../Core/_Base', '../../Utilities/_Control', '../../Utilities/_ElementUtilities', '../../Core/_ErrorFromName', '../../Core/_Events', '../../Core/_Global', '../../Utilities/_KeyboardBehavior', '../../Utilities/_Hoverable'], function (require, exports, _Base, _Control, _ElementUtilities, _ErrorFromName, _Events, _Global, _KeyboardBehavior, _Hoverable) {
+    _Hoverable.isHoverable; // Force dependency on the hoverable module
+    require(["require-style!less/styles-splitviewpanetoggle"]);
+    require(["require-style!less/colors-splitviewpanetoggle"]);
+    "use strict";
+    var ClassNames = {
+        splitViewPaneToggle: "win-splitviewpanetoggle"
+    };
+    var EventNames = {
+        invoked: "invoked"
+    };
+    var Strings = {
+        get duplicateConstruction() {
+            return "Invalid argument: Controls may only be instantiated one time for each DOM element";
+        },
+        get badButtonElement() {
+            return "Invalid argument: The SplitViewPaneToggle's element must be a button element";
+        }
+    };
+    /// <field>
+    /// <summary locid="WinJS.UI.SplitViewPaneToggle">
+    /// Displays a button which is used for opening and closing a SplitView's pane.
+    /// </summary>
+    /// </field>
+    /// <icon src="ui_winjs.ui.splitviewpanetoggle.12x12.png" width="12" height="12" />
+    /// <icon src="ui_winjs.ui.splitviewpanetoggle.16x16.png" width="16" height="16" />
+    /// <htmlSnippet><![CDATA[<button data-win-control="WinJS.UI.SplitViewPaneToggle"></button>]]></htmlSnippet>
+    /// <part name="splitviewpanetoggle" class="win-splitviewpanetoggle" locid="WinJS.UI.SplitViewPaneToggle_part:splitviewpanetoggle">The SplitViewPaneToggle control itself.</part>
+    /// <resource type="javascript" src="//WinJS.4.0/js/WinJS.js" shared="true" />
+    /// <resource type="css" src="//WinJS.4.0/css/ui-dark.css" shared="true" />
+    var SplitViewPaneToggle = (function () {
+        function SplitViewPaneToggle(element, options) {
+            /// <signature helpKeyword="WinJS.UI.SplitViewPaneToggle.SplitViewPaneToggle">
+            /// <summary locid="WinJS.UI.SplitViewPaneToggle.constructor">
+            /// Creates a new SplitViewPaneToggle control.
+            /// </summary>
+            /// <param name="element" type="HTMLElement" domElement="true" isOptional="true" locid="WinJS.UI.SplitViewPaneToggle.constructor_p:element">
+            /// The DOM element that hosts the SplitViewPaneToggle control.
+            /// </param>
+            /// <param name="options" type="Object" isOptional="true" locid="WinJS.UI.SplitViewPaneToggle.constructor_p:options">
+            /// An object that contains one or more property/value pairs to apply to the new control.
+            /// Each property of the options object corresponds to one of the control's properties or events.
+            /// Event names must begin with "on". For example, to provide a handler for the invoked event,
+            /// add a property named "oninvoked" to the options object and set its value to the event handler.
+            /// </param>
+            /// <returns type="WinJS.UI.SplitViewPaneToggle" locid="WinJS.UI.SplitViewPaneToggle.constructor_returnValue">
+            /// The new SplitViewPaneToggle.
+            /// </returns>
+            /// </signature>
+            if (options === void 0) { options = {}; }
+            // Check to make sure we weren't duplicated
+            if (element && element["winControl"]) {
+                throw new _ErrorFromName("WinJS.UI.SplitViewPaneToggle.DuplicateConstruction", Strings.duplicateConstruction);
+            }
+            this._initializeDom(element || _Global.document.createElement("button"));
+            this._disposed = false;
+            _Control.setOptions(this, options);
+        }
+        Object.defineProperty(SplitViewPaneToggle.prototype, "element", {
+            /// <field type="HTMLElement" domElement="true" readonly="true" hidden="true" locid="WinJS.UI.SplitViewPaneToggle.element" helpKeyword="WinJS.UI.SplitViewPaneToggle.element">
+            /// Gets the DOM element that hosts the SplitViewPaneToggle control.
+            /// </field>
+            get: function () {
+                return this._dom.root;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SplitViewPaneToggle.prototype, "splitView", {
+            /// <field type="HTMLElement" domElement="true" hidden="true" locid="WinJS.UI.SplitViewPaneToggle.splitView" helpKeyword="WinJS.UI.SplitViewPaneToggle.splitView">
+            /// Gets or sets the DOM element of the SplitView that is associated with the SplitViewPaneToggle control.
+            /// When the SplitViewPaneToggle is invoked, it'll toggle this SplitView's pane.
+            /// </field>
+            get: function () {
+                return this._splitView;
+            },
+            set: function (splitView) {
+                this._splitView = splitView;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SplitViewPaneToggle.prototype.dispose = function () {
+            /// <signature helpKeyword="WinJS.UI.SplitViewPaneToggle.dispose">
+            /// <summary locid="WinJS.UI.SplitViewPaneToggle.dispose">
+            /// Disposes this control.
+            /// </summary>
+            /// </signature>
+            if (this._disposed) {
+                return;
+            }
+            this._disposed = true;
+        };
+        SplitViewPaneToggle.prototype._initializeDom = function (root) {
+            if (root.tagName !== "BUTTON") {
+                throw new _ErrorFromName("WinJS.UI.SplitViewPaneToggle.BadButtonElement", Strings.badButtonElement);
+            }
+            root["winControl"] = this;
+            _ElementUtilities.addClass(root, ClassNames.splitViewPaneToggle);
+            _ElementUtilities.addClass(root, "win-disposable");
+            if (!root.hasAttribute("type")) {
+                root.type = "button";
+            }
+            new _KeyboardBehavior._WinKeyboard(root);
+            root.addEventListener("click", this._onClick.bind(this));
+            this._dom = {
+                root: root
+            };
+        };
+        SplitViewPaneToggle.prototype._onClick = function (eventObject) {
+            this._invoked();
+        };
+        // Called by tests.
+        SplitViewPaneToggle.prototype._invoked = function () {
+            if (this._disposed) {
+                return;
+            }
+            var splitViewControl = (this.splitView && this.splitView["winControl"]);
+            if (splitViewControl) {
+                splitViewControl.paneOpened = !splitViewControl.paneOpened;
+            }
+            this._fireEvent(EventNames.invoked);
+        };
+        SplitViewPaneToggle.prototype._fireEvent = function (eventName) {
+            var eventObject = _Global.document.createEvent("CustomEvent");
+            eventObject.initCustomEvent(eventName, true, false, null);
+            return this._dom.root.dispatchEvent(eventObject);
+        };
+        SplitViewPaneToggle._ClassNames = ClassNames;
+        SplitViewPaneToggle.supportedForProcessing = true;
+        return SplitViewPaneToggle;
+    })();
+    exports.SplitViewPaneToggle = SplitViewPaneToggle;
+    _Base.Class.mix(SplitViewPaneToggle, _Events.createEventProperties(EventNames.invoked));
+    _Base.Class.mix(SplitViewPaneToggle, _Control.DOMEventMixin);
+});
+
+// Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
+/// <reference path="../../../../typings/require.d.ts" />
+define('WinJS/Controls/SplitViewPaneToggle',["require", "exports", '../Core/_Base'], function (require, exports, _Base) {
+    var module = null;
+    _Base.Namespace.define("WinJS.UI", {
+        SplitViewPaneToggle: {
+            get: function () {
+                if (!module) {
+                    require(["./SplitViewPaneToggle/_SplitViewPaneToggle"], function (m) {
+                        module = m;
+                    });
+                }
+                return module.SplitViewPaneToggle;
+            }
+        }
+    });
+});
+
 define('WinJS/Controls/AppBar/_Constants',["require", "exports", "../CommandingSurface/_Constants"], function (require, exports, _CommandingSurfaceConstants) {
     // appbar class names
     exports.ClassNames = {
@@ -62533,6 +62694,7 @@ define('ui',[
     'WinJS/Controls/ViewBox',
     'WinJS/Controls/ContentDialog',
     'WinJS/Controls/SplitView',
+    'WinJS/Controls/SplitViewPaneToggle',
     'WinJS/Controls/ToolBar',
     'WinJS/Controls/AppBar',
     ], function (_WinJS) {
