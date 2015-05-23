@@ -39171,12 +39171,20 @@ define('WinJS/Controls/Flyout/_Overlay',[
                 },
 
                 // Is the overlay "hidden"?
-                /// <field type="Boolean" hidden="true" locid="WinJS.UI._Overlay.hidden" helpKeyword="WinJS.UI._Overlay.hidden">Read only, true if an overlay is currently not visible.</field>
+                /// <field type="Boolean" hidden="true" locid="WinJS.UI._Overlay.hidden" helpKeyword="WinJS.UI._Overlay.hidden">Gets or sets Overlay's visibility.</field>
                 hidden: {
                     get: function () {
                         return (this._element.style.visibility === "hidden" ||
                                 this._element.winAnimating === "hiding" ||
                                 this._doNext === "hide");
+                    },
+                    set: function (hidden) {
+                        var currentlyHidden = this.hidden;
+                        if (!hidden && currentlyHidden) {
+                            this._show();
+                        } else if (hidden && !currentlyHidden) {
+                            this._hide();
+                        }
                     }
                 },
 
@@ -46281,9 +46289,7 @@ define('WinJS/Controls/_LegacyAppBar',[
                     },
                 },
 
-
-
-                /// <field type="Boolean" hidden="true" locid="WinJS.UI._LegacyAppBar.opened" helpKeyword="WinJS.UI._LegacyAppBar.opened">Read only, true if an _LegacyAppBar is 'hidden'.</field>
+                /// <field type="Boolean" hidden="true" locid="WinJS.UI._LegacyAppBar.opened" helpKeyword="WinJS.UI._LegacyAppBar.opened">Gets or sets _LegacyAppBar's visibility.</field>
                 opened: {
                     get: function () {
                         // Returns true if _LegacyAppBar is not 'hidden'.
@@ -46293,6 +46299,14 @@ define('WinJS/Controls/_LegacyAppBar',[
                             this._doNext !== displayModeVisiblePositions.compact &&
                             this._doNext !== displayModeVisiblePositions.none;
                     },
+                    set: function (opened) {
+                        var currentlyOpen = this.opened;
+                        if (opened && !currentlyOpen) {
+                            this._show();
+                        } else if (!opened && currentlyOpen) {
+                            this._hide();
+                        }
+                    }
                 },
 
                 /// <field type="Function" locid="WinJS.UI._LegacyAppBar.onbeforeopen" helpKeyword="WinJS.UI._LegacyAppBar.onbeforeopen">
@@ -60917,11 +60931,23 @@ define('WinJS/Controls/ContentDialog',[
                 },
 
                 /// <field type="Boolean" readonly="true" hidden="true" locid="WinJS.UI.ContentDialog.hidden" helpKeyword="WinJS.UI.ContentDialog.hidden">
-                /// Read only. True if the dialog is currently not visible.
+                /// Gets or sets ContentDialog's visibility.
                 /// </field>
                 hidden: {
                     get: function ContentDialog_hidden_get() {
                         return this._state.hidden;
+                    },
+                    set: function ContentDialog_hidden_set(hidden) {
+                        if (!hidden && this._state.hidden) {
+                            var nop = function () {
+                            };
+                            // Show returns a promise. If hidden is set while the ContentDialog is disposed, show will return a promise
+                            // error which will be impossible to handle and it'll cause the app to terminate. We'll eat the promise returned by show 
+                            // to stop that from happening.
+                            this.show().done(nop, nop); 
+                        } else if (hidden && !this._state.hidden) {
+                            this.hide(DismissalResult.none);
+                        }
                     }
                 },
 
