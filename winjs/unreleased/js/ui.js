@@ -7478,6 +7478,138 @@ define('WinJS/VirtualizedDataSource',[
 
     //wrapper module
 });
+define('WinJS/_Accents',["require", "exports", "./Core/_Global", "./Core/_WinRT", "./Core/_Base", "./Core/_BaseUtils"], function (require, exports, _Global, _WinRT, _Base, _BaseUtils) {
+    var Constants = {
+        accentStyleId: "WinJSAccentsStyle",
+        themeDetectionTag: "winjs-themedetection-tag",
+        hoverSelector: "html.win-hoverable",
+        lightThemeSelector: ".win-ui-light",
+        darkThemeSelector: ".win-ui-dark"
+    };
+    var CSSSelectorTokens = [".", "#", ":"];
+    var UISettings = null;
+    var colors = [];
+    var isDarkTheme = false;
+    var rules = [];
+    var writeRulesTOHandle = -1;
+    // Enum values align with the colors array indices
+    (function (ColorTypes) {
+        ColorTypes[ColorTypes["accent"] = 0] = "accent";
+        ColorTypes[ColorTypes["listSelectRest"] = 1] = "listSelectRest";
+        ColorTypes[ColorTypes["listSelectHover"] = 2] = "listSelectHover";
+        ColorTypes[ColorTypes["listSelectPress"] = 3] = "listSelectPress";
+        ColorTypes[ColorTypes["_listSelectRestInverse"] = 4] = "_listSelectRestInverse";
+        ColorTypes[ColorTypes["_listSelectHoverInverse"] = 5] = "_listSelectHoverInverse";
+        ColorTypes[ColorTypes["_listSelectPressInverse"] = 6] = "_listSelectPressInverse";
+    })(exports.ColorTypes || (exports.ColorTypes = {}));
+    var ColorTypes = exports.ColorTypes;
+    function createAccentRule(selector, props) {
+        rules.push({ selector: selector, props: props });
+        scheduleWriteRules();
+    }
+    exports.createAccentRule = createAccentRule;
+    function scheduleWriteRules() {
+        if (rules.length === 0 || writeRulesTOHandle !== -1) {
+            return;
+        }
+        writeRulesTOHandle = _BaseUtils._setImmediate(function () {
+            writeRulesTOHandle = -1;
+            cleanup();
+            var inverseThemeSelector = isDarkTheme ? Constants.lightThemeSelector : Constants.darkThemeSelector;
+            var inverseThemeHoverSelector = Constants.hoverSelector + " " + inverseThemeSelector;
+            var style = _Global.document.createElement("style");
+            style.id = Constants.accentStyleId;
+            style.textContent = rules.map(function (rule) {
+                // example rule: { selector: "  .foo,   html.win-hoverable   .bar:hover ,  div:hover  ", props: [{ name: "color", value: 0 }, { name: "background-color", value: 1 } }
+                var body = "  " + rule.props.map(function (prop) { return prop.name + ": " + colors[prop.value] + ";"; }).join("\n  ");
+                // body = color: *accent*; background-color: *listSelectHover*
+                var selectorSplit = rule.selector.split(",").map(function (str) { return sanitizeSpaces(str); }); // [".foo", ".bar:hover", "div"]
+                var selector = selectorSplit.join(",\n"); // ".foo, html.win-hoverable .bar:hover, div:hover"
+                var css = selector + " {\n" + body + "\n}";
+                // css = .foo, html.win-hoverable .bar:hover, div:hover { *body* }
+                // Inverse Theme Selectors
+                var isThemedColor = rule.props.some(function (prop) { return prop.value !== 0 /* accent */; });
+                if (isThemedColor) {
+                    var inverseBody = "  " + rule.props.map(function (prop) { return prop.name + ": " + colors[(prop.value ? (prop.value + 3) : prop.value)] + ";"; }).join("\n  ");
+                    // inverseBody = "color: *accent*; background-color: *listSelectHoverInverse"
+                    var themedSelectors = [];
+                    selectorSplit.forEach(function (sel) {
+                        if (sel.indexOf(Constants.hoverSelector) !== -1 && sel.indexOf(inverseThemeHoverSelector) === -1) {
+                            themedSelectors.push(sel.replace(Constants.hoverSelector, inverseThemeHoverSelector));
+                            var selWithoutHover = sel.replace(Constants.hoverSelector, "").trim();
+                            if (CSSSelectorTokens.indexOf(selWithoutHover[0]) !== -1) {
+                                themedSelectors.push(sel.replace(Constants.hoverSelector + " ", inverseThemeHoverSelector));
+                            }
+                        }
+                        else {
+                            themedSelectors.push(inverseThemeSelector + " " + sel);
+                            if (CSSSelectorTokens.indexOf(sel[0]) !== -1) {
+                                themedSelectors.push(inverseThemeSelector + sel);
+                            }
+                        }
+                        css += "\n" + themedSelectors.join(",\n") + " {\n" + inverseBody + "\n}";
+                    });
+                }
+                return css;
+            }).join("\n");
+            _Global.document.head.insertBefore(style, _Global.document.head.firstChild);
+        });
+    }
+    function handleColorsChanged() {
+        var UIColorType = _WinRT.Windows.UI.ViewManagement.UIColorType;
+        var uiColor = UISettings.getColorValue(_WinRT.Windows.UI.ViewManagement.UIColorType.accent);
+        var accent = colorToString(uiColor, 1);
+        if (colors[0] === accent) {
+            return;
+        }
+        // Establish colors
+        // The order of the colors align with the ColorTypes enum values
+        colors.length = 0;
+        colors.push(accent, colorToString(uiColor, (isDarkTheme ? 0.6 : 0.4)), colorToString(uiColor, (isDarkTheme ? 0.8 : 0.6)), colorToString(uiColor, (isDarkTheme ? 0.9 : 0.7)), colorToString(uiColor, (isDarkTheme ? 0.4 : 0.6)), colorToString(uiColor, (isDarkTheme ? 0.6 : 0.8)), colorToString(uiColor, (isDarkTheme ? 0.7 : 0.9)));
+        scheduleWriteRules();
+    }
+    function colorToString(color, alpha) {
+        return "rgba(" + color.r + "," + color.g + "," + color.b + "," + alpha + ")";
+    }
+    function sanitizeSpaces(str) {
+        return str.replace(/  /g, " ").replace(/  /g, " ").trim();
+    }
+    function cleanup() {
+        var style = _Global.document.head.querySelector("#" + Constants.accentStyleId);
+        style && style.parentNode.removeChild(style);
+    }
+    function _reset() {
+        rules.length = 0;
+        cleanup();
+    }
+    _BaseUtils.ready().then(function () {
+        // Figure out color theme
+        var tag = _Global.document.createElement(Constants.themeDetectionTag);
+        _Global.document.body.appendChild(tag);
+        var theme = _Global.getComputedStyle(tag).opacity;
+        isDarkTheme = theme === "0";
+        tag.parentElement.removeChild(tag);
+        if (_WinRT.Windows.UI.ViewManagement.UISettings) {
+            UISettings = new _WinRT.Windows.UI.ViewManagement.UISettings();
+            UISettings.addEventListener("colorvalueschanged", handleColorsChanged);
+            handleColorsChanged();
+        }
+        else {
+            // No WinRT - use hardcoded blue accent color
+            // The order of the colors align with the ColorTypes enum values
+            colors.push("rgb(0, 120, 215)", "rgba(0, 120, 215, " + (isDarkTheme ? "0.6" : "0.4") + ")", "rgba(0, 120, 215, " + (isDarkTheme ? "0.8" : "0.6") + ")", "rgba(0, 120, 215, " + (isDarkTheme ? "0.9" : "0.7") + ")", "rgba(0, 120, 215, " + (isDarkTheme ? "0.4" : "0.6") + ")", "rgba(0, 120, 215, " + (isDarkTheme ? "0.6" : "0.8") + ")", "rgba(0, 120, 215, " + (isDarkTheme ? "0.7" : "0.9") + ")");
+        }
+    });
+    // Publish to WinJS namespace
+    var toPublish = {
+        ColorTypes: ColorTypes,
+        createAccentRule: createAccentRule,
+        _colors: colors,
+        _reset: _reset
+    };
+    _Base.Namespace.define("WinJS.UI._Accents", toPublish);
+});
+
 define('require-style',{load: function(id){throw new Error("Dynamic load not allowed: " + id);}});
 
 define('require-style!less/styles-intrinsic',[],function(){});
@@ -7486,9 +7618,85 @@ define('require-style!less/colors-intrinsic',[],function(){});
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/IntrinsicControls',[
     '../Utilities/_Hoverable',
+    '../_Accents',
     'require-style!less/styles-intrinsic',
     'require-style!less/colors-intrinsic'
-    ], function (_Hoverable) {
+], function (_Hoverable, _Accents) {
+    "use strict";
+
+    // Shared color rule 
+    _Accents.createAccentRule(
+        ".win-link,\
+         .win-progress-bar,\
+         .win-progress-ring,\
+         .win-ring",
+        [{ name: "color", value: _Accents.ColorTypes.accent }]);
+
+    // Shared background-color rule
+    _Accents.createAccentRule(
+        "::selection,\
+         .win-button.win-button-primary,\
+         .win-dropdown option:checked,\
+         select[multiple].win-dropdown option:checked",
+        [{ name: "background-color", value: _Accents.ColorTypes.accent }]);
+
+    // Shared border-color rule
+    _Accents.createAccentRule(
+        ".win-textbox:focus,\
+         .win-textarea:focus,\
+         .win-textbox:focus:hover,\
+         .win-textarea:focus:hover",
+        [{ name: "border-color", value: _Accents.ColorTypes.accent }]);
+
+    // Edge-specific color rule
+    _Accents.createAccentRule(
+        ".win-textbox::-ms-clear:hover,\
+         .win-textbox::-ms-reveal:hover",
+        [{ name: "color", value: _Accents.ColorTypes.accent }], true);
+
+    // Edge-specific background-color rule
+    _Accents.createAccentRule(
+        ".win-checkbox:checked::-ms-check,\
+         .win-textbox::-ms-clear:active,\
+         .win-textbox::-ms-reveal:active",
+        [{ name: "background-color", value: _Accents.ColorTypes.accent }]);
+
+    // Webkit-specific background-color rule
+    _Accents.createAccentRule(
+        ".win-progress-bar::-webkit-progress-value,\
+         .win-progress-ring::-webkit-progress-value,\
+         .win-ring::-webkit-progress-value",
+        [{ name: "background-color", value: _Accents.ColorTypes.accent }]);
+
+    // Mozilla-specific background-color rule
+    _Accents.createAccentRule(
+        ".win-progress-bar:not(:indeterminate)::-moz-progress-bar,\
+         .win-progress-ring:not(:indeterminate)::-moz-progress-bar,\
+         .win-ring:not(:indeterminate)::-moz-progress-bar",
+        [{ name: "background-color", value: _Accents.ColorTypes.accent }]);
+
+    // Edge-specific border-color rule
+    _Accents.createAccentRule(
+        ".win-checkbox:indeterminate::-ms-check,\
+         .win-checkbox:hover:indeterminate::-ms-check,\
+         .win-radio:checked::-ms-check",
+        [{ name: "border-color", value: _Accents.ColorTypes.accent }], true);
+
+    // Note the use of background instead of background-color
+    // FF slider styling doesn't work with background-color
+    // so using background for everything here for consistency
+    _Accents.createAccentRule(
+        ".win-slider::-ms-thumb,\
+         .win-slider::-ms-fill-lower", /* Fill-Lower only supported in IE */
+        [{ name: "background", value: _Accents.ColorTypes.accent }]);
+
+    _Accents.createAccentRule(
+        ".win-slider::-webkit-slider-thumb",
+        [{ name: "background", value: _Accents.ColorTypes.accent }]);
+
+    _Accents.createAccentRule(
+        ".win-slider::-moz-range-thumb",
+        [{ name: "background", value: _Accents.ColorTypes.accent }]);
 });
 // Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 define('WinJS/Controls/ItemContainer/_Constants',[
@@ -19382,6 +19590,7 @@ define('WinJS/Controls/ListView',[
     '../Core/_Log',
     '../Core/_Resources',
     '../Core/_WriteProfilerMark',
+    '../_Accents',
     '../Animations',
     '../Animations/_TransitionAnimation',
     '../BindingList',
@@ -19410,8 +19619,27 @@ define('WinJS/Controls/ListView',[
     './ListView/_VirtualizeContentsView',
     'require-style!less/styles-listview',
     'require-style!less/colors-listview'
-], function listViewImplInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Signal, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _SafeHtml, _TabContainer, _UI, _VersionManager, _Constants, _ItemEventsHandler, _BrowseMode, _ErrorMessages, _GroupFocusCache, _GroupsContainer, _Helpers, _ItemsContainer, _Layouts, _SelectionManager, _VirtualizeContentsView) {
+], function listViewImplInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, _Accents, Animations, _TransitionAnimation, BindingList, Promise, Scheduler, _Signal, _Control, _Dispose, _ElementUtilities, _Hoverable, _ItemsManager, _SafeHtml, _TabContainer, _UI, _VersionManager, _Constants, _ItemEventsHandler, _BrowseMode, _ErrorMessages, _GroupFocusCache, _GroupsContainer, _Helpers, _ItemsContainer, _Layouts, _SelectionManager, _VirtualizeContentsView) {
     "use strict";
+
+    _Accents.createAccentRule(
+        ".win-listview:not(.win-selectionstylefilled) .win-selectioncheckmarkbackground,\
+         .win-itemcontainer:not(.win-selectionstylefilled) .win-selectioncheckmarkbackground", [
+             { name: "border-color", value: _Accents.ColorTypes.accent },
+             { name: "background-color", value: _Accents.ColorTypes.accent },
+         ]);
+
+    _Accents.createAccentRule(
+        ".win-listview:not(.win-selectionstylefilled) .win-container.win-selected .win-selectionborder,\
+         .win-itemcontainer:not(.win-selectionstylefilled).win-container.win-selected .win-selectionborder", [
+            { name: "border-color", value: _Accents.ColorTypes.accent },
+         ]);
+
+    _Accents.createAccentRule(
+        ".win-listview.win-selectionstylefilled .win-selected .win-selectionbackground,\
+         .win-itemcontainer.win-selectionstylefilled.win-selected .win-selectionbackground", [
+             { name: "background-color", value: _Accents.ColorTypes.accent }
+         ]);
 
     var transformNames = _BaseUtils._browserStyleEquivalents["transform"];
     var DISPOSE_TIMEOUT = 1000;
@@ -23464,7 +23692,7 @@ define('WinJS/Controls/ListView',[
                                 footerMargins: calculateMargins(_Constants._listFooterContainerClass)
                             };
                         }
-                        return this._headerFooterMargins[(type === _UI.ObjectType.header? "headerMargins" : "footerMargins")];
+                        return this._headerFooterMargins[(type === _UI.ObjectType.header ? "headerMargins" : "footerMargins")];
                     }
                 },
 
@@ -31091,6 +31319,7 @@ define('WinJS/Controls/Rating',[
     '../Core/_ErrorFromName',
     '../Core/_Events',
     '../Core/_Resources',
+    '../_Accents',
     '../Utilities/_Control',
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
@@ -31098,8 +31327,10 @@ define('WinJS/Controls/Rating',[
     './Tooltip',
     'require-style!less/styles-rating',
     'require-style!less/colors-rating'
-    ], function ratingInit(_Global,_Base, _ErrorFromName, _Events, _Resources, _Control, _ElementUtilities, _Hoverable, _SafeHtml, Tooltip) {
+], function ratingInit(_Global, _Base, _ErrorFromName, _Events, _Resources, _Accents, _Control, _ElementUtilities, _Hoverable, _SafeHtml, Tooltip) {
     "use strict";
+
+    _Accents.createAccentRule(".win-rating .win-star.win-user.win-full, .win-rating .win-star.win-user.win-full.win-disabled", [{ name: "color", value: _Accents.ColorTypes.accent }]);
 
     // Rating control implementation
     _Base.Namespace.define("WinJS.UI", {
@@ -31965,7 +32196,7 @@ define('WinJS/Controls/Rating',[
 
                 _resetNextElement: function (prevState) {
                     if (this._averageRatingElement.nextSibling !== null) {
-                        _ElementUtilities._setFlexStyle(this._averageRatingElement.nextSibling, {grow: 1, shrink: 1});
+                        _ElementUtilities._setFlexStyle(this._averageRatingElement.nextSibling, { grow: 1, shrink: 1 });
                         var style = this._averageRatingElement.nextSibling.style;
                         var direction = _Global.getComputedStyle(this._element).direction;
                         if (prevState) {
@@ -32068,12 +32299,12 @@ define('WinJS/Controls/Rating',[
                         nextStyle.borderLeft = "0px";
                         nextStyle.direction = "rtl";
                     }
-                    _ElementUtilities._setFlexStyle(this._averageRatingElement, {grow: this._floatingValue, shrink: this._floatingValue});
+                    _ElementUtilities._setFlexStyle(this._averageRatingElement, { grow: this._floatingValue, shrink: this._floatingValue });
                     style.width = this._resizeStringValue(this._elementWidth, this._floatingValue, style.width);
                     style.backgroundSize = (100 / this._floatingValue) + "% 100%";
                     style.display = _Global.getComputedStyle(this._averageRatingElement.nextSibling).display;
                     this._averageRatingHidden = false;
-                    _ElementUtilities._setFlexStyle(this._averageRatingElement.nextSibling, {grow: 1 - this._floatingValue, shrink: 1 - this._floatingValue});
+                    _ElementUtilities._setFlexStyle(this._averageRatingElement.nextSibling, { grow: 1 - this._floatingValue, shrink: 1 - this._floatingValue });
                     nextStyle.width = this._resizeStringValue(this._elementWidth, 1 - this._floatingValue, nextStyle.width);
                     nextStyle.backgroundSize = (100 / (1 - this._floatingValue)) + "% 100%";
                 },
@@ -32257,13 +32488,16 @@ define('WinJS/Controls/ToggleSwitch',[
     '../Core/_BaseUtils',
     '../Core/_Events',
     '../Core/_Resources',
+    '../_Accents',
     '../Utilities/_Control',
     '../Utilities/_ElementUtilities',
     'require-style!less/styles-toggleswitch',
     'require-style!less/colors-toggleswitch'
     ],
-    function toggleInit(_Global, _Base, _BaseUtils, _Events, _Resources, _Control, _ElementUtilities) {
+    function toggleInit(_Global, _Base, _BaseUtils, _Events, _Resources, _Accents, _Control, _ElementUtilities) {
         "use strict";
+
+        _Accents.createAccentRule(".win-toggleswitch-on .win-toggleswitch-track", [{ name: "border-color", value: _Accents.ColorTypes.accent }]);
 
         _Base.Namespace.define("WinJS.UI", {
             /// <field>
@@ -36408,6 +36642,7 @@ define('WinJS/Controls/Hub',[
     '../Core/_Log',
     '../Core/_Resources',
     '../Core/_WriteProfilerMark',
+    '../_Accents',
     '../Animations',
     '../Animations/_TransitionAnimation',
     '../BindingList',
@@ -36422,8 +36657,13 @@ define('WinJS/Controls/Hub',[
     './Hub/_Section',
     'require-style!less/styles-hub',
     'require-style!less/colors-hub'
-], function hubInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, Animations, _TransitionAnimation, BindingList, ControlProcessor, Promise, _Signal, Scheduler, _Control, _ElementUtilities, _Hoverable, _UI, _Section) {
+], function hubInit(_Global, _Base, _BaseUtils, _ErrorFromName, _Events, _Log, _Resources, _WriteProfilerMark, _Accents, Animations, _TransitionAnimation, BindingList, ControlProcessor, Promise, _Signal, Scheduler, _Control, _ElementUtilities, _Hoverable, _UI, _Section) {
     "use strict";
+
+    _Accents.createAccentRule(
+            ".win-semanticzoom-zoomedoutview .win-hub-section-header-interactive .win-hub-section-header-content,\
+             .win-hub-section-header-interactive .win-hub-section-header-chevron",
+        [{ name: "color", value: _Accents.ColorTypes.accent }]);
 
     _Base.Namespace.define("WinJS.UI", {
         /// <field>
@@ -38653,6 +38893,7 @@ define('WinJS/Controls/Flyout/_Overlay',[
     '../../Core/_Events',
     '../../Core/_Resources',
     '../../Core/_WriteProfilerMark',
+    '../../_Accents',
     '../../Animations',
     '../../Application',
     '../../ControlProcessor',
@@ -38664,8 +38905,17 @@ define('WinJS/Controls/Flyout/_Overlay',[
     '../_LegacyAppBar/_Constants',
     'require-style!less/styles-overlay',
     'require-style!less/colors-overlay'
-], function overlayInit(exports, _Global, _WinRT, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, Animations, Application, ControlProcessor, Promise, Scheduler, _Control, _ElementUtilities, _KeyboardInfo, _Constants) {
+], function overlayInit(exports, _Global, _WinRT, _Base, _BaseUtils, _ErrorFromName, _Events, _Resources, _WriteProfilerMark, _Accents, Animations, Application, ControlProcessor, Promise, Scheduler, _Control, _ElementUtilities, _KeyboardInfo, _Constants) {
     "use strict";
+
+    _Accents.createAccentRule(
+        "button[aria-checked=true].win-command:before,\
+         .win-menu-containsflyoutcommand button.win-command-flyout-activated:before", [
+        { name: "background-color", value: _Accents.ColorTypes.accent },
+        { name: "border-color", value: _Accents.ColorTypes.accent },
+    ]);
+
+    _Accents.createAccentRule(".win-flyout, .win-settingsflyout", [{ name: "border-color", value: _Accents.ColorTypes.accent }]);
 
     _Base.Namespace._moduleDefine(exports, "WinJS.UI", {
         _Overlay: _Base.Namespace._lazy(function () {
@@ -38694,7 +38944,7 @@ define('WinJS/Controls/Flyout/_Overlay',[
             // _Overlay Global Events Listener Class. We hang a singleton instance of this class off of a static _Overlay property.
             var _GlobalListener = _Base.Class.define(function _GlobalListener_ctor() {
                 this._currentState = _GlobalListener.states.off;
-                
+
                 this._inputPaneShowing = this._inputPaneShowing.bind(this);
                 this._inputPaneHiding = this._inputPaneHiding.bind(this);
                 this._documentScroll = this._documentScroll.bind(this);
@@ -39110,7 +39360,7 @@ define('WinJS/Controls/Flyout/_Overlay',[
                     // have something to do in beforeShow that requires afterHide first.
                     Scheduler.schedule(this._checkDoNext, Scheduler.Priority.normal, this, "WinJS.UI._Overlay._checkDoNext");
                 },
-                
+
                 // Called after the animation but while the Overlay is still visible. It's
                 // important that this runs while the Overlay is visible because hiding
                 // a DOM element (e.g. visibility="hidden", display="none") while it contains
@@ -47360,6 +47610,7 @@ define('WinJS/Controls/MediaPlayer', [
     '../Scheduler',
     '../Application',
     '../BindingList',
+    '../_Accents',
     '../Animations',
     '../Animations/_TransitionAnimation',
     '../Navigation',
@@ -47376,9 +47627,11 @@ define('WinJS/Controls/MediaPlayer', [
     '../Controls/MediaPlayer/_MediaUI',
     'require-style!less/styles-mediaplayer',
     'require-style!less/colors-mediaplayer'
-], function mediaPlayerInit(exports, _Global, _WinRT, _Base, _Events, _ErrorFromName, _Res, _Resources, _WriteProfilerMark, Promise, _Signal, Scheduler, Application, BindingList, Animations, _TransitionAnimation, Navigation, _Dispose, _Control, _ControlProcessor, _Command, _Icon, MediaElementAdapter, BackButton, _Flyout, _ToolBar, _ElementUtilities, _MediaUI) {
-
+], function mediaPlayerInit(exports, _Global, _WinRT, _Base, _Events, _ErrorFromName, _Res, _Resources, _WriteProfilerMark, Promise, _Signal, Scheduler, Application, BindingList, _Accents, Animations, _TransitionAnimation, Navigation, _Dispose, _Control, _ControlProcessor, _Command, _Icon, MediaElementAdapter, BackButton, _Flyout, _ToolBar, _ElementUtilities, _MediaUI) {
     "use strict";
+
+    _Accents.createAccentRule(".win-mediaplayer-seekprogress, .win-mediaplayer-scrubbing .win-mediaplayer-seek-mark", [{ name: "background-color", value: _Accents.ColorTypes.accent }]);
+    _Accents.createAccentRule(".win-mediaplayer-seek-mark, html.win-hoverable .win-mediaplayer-scrubbing .win-mediaplayer-seek-mark:hover", [{ name: "border-color", value: _Accents.ColorTypes.accent }]);
 
     var app = Application;
     var nav = Navigation;
@@ -55508,6 +55761,7 @@ define('WinJS/Controls/AutoSuggestBox',[
     "../Utilities/_ElementListUtilities",
     "../Utilities/_ElementUtilities",
     '../Utilities/_Hoverable',
+    "../_Accents",
     "../Animations",
     "../BindingList",
     "../Promise",
@@ -55515,8 +55769,12 @@ define('WinJS/Controls/AutoSuggestBox',[
     "./AutoSuggestBox/_SearchSuggestionManagerShim",
     "require-style!less/styles-autosuggestbox",
     "require-style!less/colors-autosuggestbox"
-], function autoSuggestBoxInit(exports, _Global, _WinRT, _Base, _ErrorFromName, _Events, _Resources, _Control, _ElementListUtilities, _ElementUtilities, _Hoverable, Animations, BindingList, Promise, Repeater, _SuggestionManagerShim) {
+], function autoSuggestBoxInit(exports, _Global, _WinRT, _Base, _ErrorFromName, _Events, _Resources, _Control, _ElementListUtilities, _ElementUtilities, _Hoverable, _Accents, Animations, BindingList, Promise, Repeater, _SuggestionManagerShim) {
     "use strict";
+
+    _Accents.createAccentRule("html.win-hoverable .win-autosuggestbox .win-autosuggestbox-suggestion-selected:hover", [{ name: "background-color", value: _Accents.ColorTypes.listSelectHover }]);
+    _Accents.createAccentRule(".win-autosuggestbox .win-autosuggestbox-suggestion-selected", [{ name: "background-color", value: _Accents.ColorTypes.listSelectRest }]);
+    _Accents.createAccentRule(".win-autosuggestbox .win-autosuggestbox-suggestion-selected.win-autosuggestbox-suggestion-selected:hover:active", [{ name: "background-color", value: _Accents.ColorTypes.listSelectPress }]);
 
     var ClassNames = {
         asb: "win-autosuggestbox",
@@ -56838,14 +57096,18 @@ define('WinJS/Controls/SearchBox',[
     '../Core/_Events',
     '../Core/_Resources',
     './AutoSuggestBox',
+    '../_Accents',
     '../Utilities/_Control',
     '../Utilities/_ElementUtilities',
     './AutoSuggestBox/_SearchSuggestionManagerShim',
     '../Application',
     'require-style!less/styles-searchbox',
     'require-style!less/colors-searchbox'
-], function searchboxInit(_Global, _WinRT, _Base, _ErrorFromName, _Events, _Resources, AutoSuggestBox, _Control, _ElementUtilities, _SuggestionManagerShim, Application) {
+], function searchboxInit(_Global, _WinRT, _Base, _ErrorFromName, _Events, _Resources, AutoSuggestBox, _Accents, _Control, _ElementUtilities, _SuggestionManagerShim, Application) {
     "use strict";
+
+    _Accents.createAccentRule("html.win-hoverable .win-searchbox-button:not(.win-searchbox-button-disabled):hover", [{ name: "color", value: _Accents.ColorTypes.accent }, ]);
+    _Accents.createAccentRule(".win-searchbox-button.win-searchbox-button:not(.win-searchbox-button-disabled):hover:active", [{ name: "background-color", value: _Accents.ColorTypes.accent }, ]);
 
     _Base.Namespace.define("WinJS.UI", {
         /// <field>
@@ -59691,13 +59953,19 @@ define('WinJS/Controls/NavBar',[
     '../Scheduler',
     '../Utilities/_ElementUtilities',
     '../Utilities/_Hoverable',
+    "../_Accents",
     './_LegacyAppBar',
     './NavBar/_Command',
     './NavBar/_Container',
     'require-style!less/styles-navbar',
     'require-style!less/colors-navbar'
-], function NavBarInit(_Global,_WinRT, _Base, _BaseUtils, _Events, _WriteProfilerMark, Promise, Scheduler, _ElementUtilities, _Hoverable, _LegacyAppBar, _Command, _Container) {
+], function NavBarInit(_Global,_WinRT, _Base, _BaseUtils, _Events, _WriteProfilerMark, Promise, Scheduler, _ElementUtilities, _Hoverable, _Accents, _LegacyAppBar, _Command, _Container) {
     "use strict";
+
+    _Accents.createAccentRule("html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover", [{ name: "background-color", value: _Accents.ColorTypes.listSelectHover }]);
+    _Accents.createAccentRule("html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened:hover.win-pressed", [{ name: "background-color", value: _Accents.ColorTypes.listSelectPress }]);
+    _Accents.createAccentRule(".win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened", [{ name: "background-color", value: _Accents.ColorTypes.listSelectRest }]);
+    _Accents.createAccentRule(".win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-opened.win-pressed", [{ name: "background-color", value: _Accents.ColorTypes.listSelectPress }]);
 
     var customLayout = "custom";
 
@@ -60074,6 +60342,7 @@ define('require-style!less/colors-contentdialog',[],function(){});
 define('WinJS/Controls/ContentDialog',[
     '../Application',
     '../Utilities/_Dispose',
+    '../_Accents',
     '../Promise',
     '../_Signal',
     '../_LightDismissService',
@@ -60090,8 +60359,10 @@ define('WinJS/Controls/ContentDialog',[
     '../Animations',
     'require-style!less/styles-contentdialog',
     'require-style!less/colors-contentdialog'
-    ], function contentDialogInit(Application, _Dispose, Promise, _Signal, _LightDismissService, _BaseUtils, _Global, _WinRT, _Base, _Events, _ErrorFromName, _Resources, _Control, _ElementUtilities, _Hoverable, _Animations) {
+], function contentDialogInit(Application, _Dispose, _Accents, Promise, _Signal, _LightDismissService, _BaseUtils, _Global, _WinRT, _Base, _Events, _ErrorFromName, _Resources, _Control, _ElementUtilities, _Hoverable, _Animations) {
     "use strict";
+
+    _Accents.createAccentRule(".win-contentdialog-dialog", [{ name: "outline-color", value: _Accents.ColorTypes.accent }]);
 
     _Base.Namespace.define("WinJS.UI", {
         /// <field>
