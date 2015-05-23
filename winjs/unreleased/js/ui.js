@@ -40645,8 +40645,8 @@ define('WinJS/Controls/Flyout',[
                 },
 
                 _baseFlyoutShow: function Flyout_baseFlyoutShow(anchor, placement, alignment) {
-                    // Don't do anything if disabled
-                    if (this.disabled) {
+                    if (this.disabled || this._disposed) {
+                        // Don't do anything.
                         return;
                     }
 
@@ -44312,8 +44312,13 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             //
             // Project overflowing and secondary commands into the overflowArea as MenuCommands
             //
+            // Clean up previous MenuCommand projections
             _ElementUtilities.empty(this._dom.overflowArea);
             this._menuCommandProjections.map(function (menuCommand) {
+                if (_this._contentFlyout && menuCommand.flyout === _this._contentFlyout) {
+                    // Prevent our _contentFlyout from being disposed with the MenuCommand.
+                    menuCommand.flyout = null;
+                }
                 menuCommand.dispose();
             });
             var hasToggleCommands = false, menuCommandProjections = [];
