@@ -3222,6 +3222,10 @@ button[aria-checked=true]:disabled:active .win-commandimage {
 Command button labels.
 */
 button.win-command .win-label {
+  font-family: "Segoe UI", sans-serif, "Segoe MDL2 Assets", "Symbols";
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.167;
   position: relative;
   line-height: 16px;
   display: block;
@@ -6154,6 +6158,9 @@ button:disabled .win-commandimage,
 button:disabled:active .win-commandimage {
   color: rgba(255, 255, 255, 0.2);
 }
+button .win-label {
+  color: #ffffff;
+}
 button[aria-checked=true]:enabled .win-label,
 button[aria-checked=true]:enabled .win-commandimage,
 button[aria-checked=true]:enabled:hover:active .win-commandimage.win-commandimage {
@@ -7067,6 +7074,9 @@ html.win-hoverable button.win-splitviewpanetoggle:hover {
 .win-ui-light button:disabled:active .win-commandimage {
   color: rgba(0, 0, 0, 0.2);
 }
+.win-ui-light button .win-label {
+  color: #000000;
+}
 .win-ui-light button[aria-checked=true]:enabled .win-label,
 .win-ui-light button[aria-checked=true]:enabled .win-commandimage,
 .win-ui-light button[aria-checked=true]:enabled:hover:active .win-commandimage.win-commandimage {
@@ -7530,6 +7540,9 @@ html.win-hoverable .win-ui-light button.win-splitviewpanetoggle:hover {
   button:disabled .win-commandimage,
   button:disabled:active .win-commandimage {
     color: GrayText;
+  }
+  button .win-label {
+    color: #ffffff;
   }
   button[aria-checked=true]:enabled .win-label,
   button[aria-checked=true]:enabled .win-commandimage,
