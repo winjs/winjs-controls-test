@@ -2737,10 +2737,11 @@ button.win-navigation-backbutton:enabled:hover:active {
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
-  font-size: 14px;
-  font-weight: 600;
+  font-family: "Segoe UI", sans-serif, "Segoe MDL2 Assets", "Symbols";
+  font-size: 15px;
+  font-weight: bold;
   white-space: nowrap;
-  margin: 12px 0 -8px 18px;
+  margin: 14px 0 13px 24px;
 }
 .win-pivot .win-pivot-title:lang(ar),
 .win-pivot .win-pivot-title:lang(dv),
@@ -2755,7 +2756,7 @@ button.win-navigation-backbutton:enabled:hover:active {
 .win-pivot .win-pivot-title:lang(ug),
 .win-pivot .win-pivot-title:lang(ur),
 .win-pivot .win-pivot-title:lang(qps-plocm) {
-  margin: 12px 18px -8px 0;
+  margin: 14px 24px 13px 0;
 }
 .win-pivot > .win-pivot-item {
   /*
@@ -2787,6 +2788,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   -webkit-flex: 1 1 0%;
   flex: 1 1 0%;
   overflow-x: hidden;
+  padding: 1px;
 }
 .win-pivot .win-pivot-headers {
   white-space: nowrap;
@@ -2797,10 +2799,15 @@ button.win-navigation-backbutton:enabled:hover:active {
   -ms-touch-action: none;
   outline: 0;
 }
-.win-pivot .win-pivot-header {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.333;
+.win-pivot .win-pivot-headers.win-keyboard:focus {
+  outline-style: dotted;
+  outline-width: 1px;
+}
+.win-pivot .win-pivot-header,
+.win-pivot .win-pivot-header.win-pivot-header:hover:active {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.167;
   display: inline-block;
   transition: opacity linear 167ms;
   -webkit-transition: opacity linear 167ms;
@@ -2809,21 +2816,9 @@ button.win-navigation-backbutton:enabled:hover:active {
   border: 0;
   padding: 0;
   outline: 0;
-  margin: 13px 12px 0px 12px;
-}
-.win-pivot button.win-pivot-header,
-.win-pivot button.win-pivot-header:hover:active {
-  background-color: transparent;
-  border: 0;
-  padding: 0;
-  letter-spacing: 0px;
-  margin: 13px 12px 0px 12px;
+  margin: 12px 12px 0px 12px;
   min-height: 0;
   min-width: 0;
-}
-.win-pivot button.win-pivot-header.win-keyboard:focus {
-  outline-style: dotted;
-  outline-width: 1px;
 }
 .win-pivot.win-pivot-locked .win-pivot-header {
   opacity: 0;
@@ -2831,11 +2826,6 @@ button.win-navigation-backbutton:enabled:hover:active {
 }
 .win-pivot .win-pivot-header.win-pivot-header-selected,
 .win-pivot.win-pivot-locked .win-pivot-header.win-pivot-header-selected {
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.333;
-  font-weight: 600;
-  /* Font-weight 500 provided by ._win-type-base() is indistinguishable from the default 400 in some fonts */
   opacity: 1.0;
   visibility: inherit;
 }
@@ -2872,7 +2862,7 @@ html.win-hoverable .win-pivot button.win-pivot-header:hover {
   border: 0;
   padding: 0;
   letter-spacing: 0px;
-  margin: 13px 12px 0px 12px;
+  margin: 12px 12px 0px 12px;
   min-height: 0;
   min-width: 0;
 }
@@ -2897,7 +2887,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   height: 100%;
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
-  padding: 0px 19px;
+  padding: 0px 24px;
 }
 /*
     Modified styles for when the Pivot is in nosnap mode
@@ -6120,6 +6110,9 @@ button.win-semanticzoom-button.win-semanticzoom-button:active,
 button.win-semanticzoom-button.win-semanticzoom-button:hover:active {
   background-color: #000000;
 }
+.win-pivot .win-pivot-title {
+  color: #000000;
+}
 .win-pivot .win-pivot-navbutton {
   background-color: rgba(0, 0, 0, 0.4);
   color: rgba(255, 255, 255, 0.8);
@@ -6127,10 +6120,19 @@ button.win-semanticzoom-button.win-semanticzoom-button:hover:active {
 .win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
   color: rgba(0, 0, 0, 0.8);
 }
-.win-pivot button.win-pivot-header,
+.win-pivot button.win-pivot-header {
+  color: rgba(0, 0, 0, 0.6);
+  background-color: transparent;
+}
 .win-pivot button.win-pivot-header:focus,
 .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
+  color: rgba(0, 0, 0, 0.8);
+}
+.win-pivot button.win-pivot-header.win-pivot-header-selected {
   color: #000000;
+}
+.win-pivot-header[disabled] {
+  color: rgba(0, 0, 0, 0.4);
 }
 button.win-hub-section-header-tabstop,
 button.win-hub-section-header-tabstop:hover:active {
@@ -6546,7 +6548,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
   color: rgba(0, 0, 0, 0.6);
 }
 html.win-hoverable .win-pivot button.win-pivot-header:hover {
-  color: #000000;
+  color: rgba(0, 0, 0, 0.8);
 }
 html.win-hoverable button.win-hub-section-header-tabstop:hover {
   color: #000000;
@@ -7119,6 +7121,9 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark button.win-semanticzoom-button.win-semanticzoom-button:hover:active {
   background-color: #ffffff;
 }
+.win-ui-dark .win-pivot .win-pivot-title {
+  color: #ffffff;
+}
 .win-ui-dark .win-pivot .win-pivot-navbutton {
   background-color: rgba(255, 255, 255, 0.4);
   color: rgba(0, 0, 0, 0.8);
@@ -7126,10 +7131,19 @@ html.win-hoverable .win-navbarcommand-splitbutton.win-navbarcommand-splitbutton-
 .win-ui-dark .win-pivot .win-pivot-navbutton.win-pivot-navbutton:hover:active {
   color: rgba(255, 255, 255, 0.8);
 }
-.win-ui-dark .win-pivot button.win-pivot-header,
+.win-ui-dark .win-pivot button.win-pivot-header {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: transparent;
+}
 .win-ui-dark .win-pivot button.win-pivot-header:focus,
 .win-ui-dark .win-pivot button.win-pivot-header.win-pivot-header:hover:active {
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-ui-dark .win-pivot button.win-pivot-header.win-pivot-header-selected {
   color: #ffffff;
+}
+.win-ui-dark .win-pivot-header[disabled] {
+  color: rgba(255, 255, 255, 0.4);
 }
 .win-ui-dark button.win-hub-section-header-tabstop,
 .win-ui-dark button.win-hub-section-header-tabstop:hover:active {
@@ -7543,7 +7557,7 @@ html.win-hoverable .win-ui-dark .win-pivot .win-pivot-navbutton:hover {
   color: rgba(255, 255, 255, 0.6);
 }
 html.win-hoverable .win-ui-dark .win-pivot button.win-pivot-header:hover {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.8);
 }
 html.win-hoverable .win-ui-dark button.win-hub-section-header-tabstop:hover {
   color: #ffffff;

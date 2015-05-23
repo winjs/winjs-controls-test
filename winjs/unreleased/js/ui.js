@@ -12,7 +12,7 @@
             // amd
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.23 ui.js,StartTM');
             if (typeof module !== 'undefined') {
                 // CommonJS
                 factory(require("./base"));
@@ -20,7 +20,7 @@
                 // No module system
                 factory(globalObject.WinJS);
             }
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.23 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -7958,15 +7958,13 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
                 // contextmenu events. It does this only when selection is enabled, the event occurred on or within an item, and
                 // the event did not occur on an interactive element.
                 onContextMenu: function ItemEventsHandler_onContextMenu(eventObject) {
-                    var containerElement = this._site.containerFromElement(eventObject.target);
-
-                    if (this._selectionAllowed() && containerElement && !this._isInteractive(eventObject.target)) {
+                    if (this._shouldSuppressContextMenu(eventObject.target)) {
                         eventObject.preventDefault();
                     }
                 },
 
                 onMSHoldVisual: function ItemEventsHandler_onMSHoldVisual(eventObject) {
-                    if (!this._isInteractive(eventObject.target)) {
+                    if (this._shouldSuppressContextMenu(eventObject.target)) {
                         eventObject.preventDefault();
                     }
                 },
@@ -8045,6 +8043,12 @@ define('WinJS/Controls/ItemContainer/_ItemEventsHandler',[
 
                 _isInteractive: function ItemEventsHandler_isInteractive(element) {
                     return this._containedInElementWithClass(element, "win-interactive");
+                },
+
+                _shouldSuppressContextMenu: function ItemEventsHandler_shouldSuppressContextMenu(element) {
+                    var containerElement = this._site.containerFromElement(element);
+
+                    return (this._selectionAllowed() && containerElement && !this._isInteractive(element));
                 },
 
                 _togglePressed: function ItemEventsHandler_togglePressed(add, synchronous, eventObject) {
@@ -34518,7 +34522,6 @@ define('WinJS/Controls/Pivot',[
 
                     headersContainerLeadingMargin: 12,
 
-                    headerPadding: 6,
                     headerHorizontalMargin: 12,
 
                     getCumulativeHeaderWidth: function headersState_getCumulativeHeaderWidth(pivot, index) {
@@ -34537,7 +34540,6 @@ define('WinJS/Controls/Pivot',[
                         var leftElement = pivot._rtl ? pivot._headersContainerElement.lastElementChild : pivot._headersContainerElement.children[originalLength];
                         var rightElement = pivot._rtl ? pivot._headersContainerElement.children[originalLength] : pivot._headersContainerElement.lastElementChild;
                         width = (rightElement.offsetLeft + rightElement.offsetWidth) - leftElement.offsetLeft;
-                        width += index * headersStates.common.headerPadding;
                         width += 2 * headersStates.common.headerHorizontalMargin;
 
                         for (var i = 0; i < index; i++) {
@@ -34599,14 +34601,6 @@ define('WinJS/Controls/Pivot',[
                         return headerContainerEl;
                     },
 
-                    freezeHeaderWidth: function headersState_freezeHeaderWidth(headerElement) {
-                        // Depending on whether a header is selected or not, its size grows and shrinks slightly due to different type ramps.
-                        // To prevent that from happening we freeze the header's size to its size at creation as if it was selected. We also
-                        // add a few pixels of padding to the computed size so that when it grows, it won't run into clipping issues.
-                        headerElement.style.width = "";
-                        headerElement.style.width = (headerElement.offsetWidth + headersStates.common.headerPadding) + "px";
-                    },
-
                     updateHeader: function headersState_updateHeader(pivot, item) {
                         // Updates the label of a header
                         var index = pivot.items.indexOf(item);
@@ -34615,22 +34609,20 @@ define('WinJS/Controls/Pivot',[
 
                         var template = _ElementUtilities._syncRenderer(pivotDefaultHeaderTemplate);
                         template(item, headerElement);
-
-                        this.freezeHeaderWidth(headerElement);
                     },
 
-                    setActiveHeader: function headersState_setActiveHeader(newSelectedHeader, currentSelectedHeader) {
+                    setActiveHeader: function headersState_setActiveHeader(pivot, newSelectedHeader, currentSelectedHeader) {
                         // Updates the selected header and clears the previously selected header if applicable
-                        var focusSelectedHeader = false;
+                        var focusWasInHeaders = false;
                         if (currentSelectedHeader) {
                             currentSelectedHeader.classList.remove(Pivot._ClassName.pivotHeaderSelected);
                             currentSelectedHeader.setAttribute("aria-selected", false);
-                            focusSelectedHeader = _Global.document.activeElement === currentSelectedHeader;
+                            focusWasInHeaders = pivot._headersContainerElement.contains(_Global.document.activeElement);
                         }
 
                         newSelectedHeader.classList.add(Pivot._ClassName.pivotHeaderSelected);
                         newSelectedHeader.setAttribute("aria-selected", true);
-                        focusSelectedHeader && newSelectedHeader.focus();
+                        focusWasInHeaders && pivot._headersContainerElement.focus();
                     }
                 },
 
@@ -34707,7 +34699,6 @@ define('WinJS/Controls/Pivot',[
                             for (var i = 0; i < pivot.items.length; i++) {
                                 var header = headersStates.common.renderHeader(pivot, i, true);
                                 pivot._headersContainerElement.appendChild(header);
-                                headersStates.common.freezeHeaderWidth(header);
 
                                 if (i === pivot.selectedIndex) {
                                     header.classList.add(Pivot._ClassName.pivotHeaderSelected);
@@ -34721,7 +34712,7 @@ define('WinJS/Controls/Pivot',[
 
                     activateHeader: function staticState_activateHeader(headerElement) {
                         var currentActiveHeader = this.pivot._headersContainerElement.children[this.pivot.selectedIndex];
-                        headersStates.common.setActiveHeader(headerElement, currentActiveHeader);
+                        headersStates.common.setActiveHeader(this.pivot, headerElement, currentActiveHeader);
                         this.pivot._animateToPrevious = headerElement._pivotItemIndex < this.pivot.selectedIndex;
                         this.pivot.selectedIndex = headerElement._pivotItemIndex;
                     },
@@ -34730,7 +34721,7 @@ define('WinJS/Controls/Pivot',[
                         if (this._firstRender) {
                             this.render();
                         }
-                        headersStates.common.setActiveHeader(this.pivot._headersContainerElement.children[index], this.pivot._headersContainerElement.children[oldIndex]);
+                        headersStates.common.setActiveHeader(this.pivot, this.pivot._headersContainerElement.children[index], this.pivot._headersContainerElement.children[oldIndex]);
                         this.pivot._tabContainer.childFocus = this.pivot._headersContainerElement.children[index];
                     },
 
@@ -34820,7 +34811,6 @@ define('WinJS/Controls/Pivot',[
                             var header = headersStates.common.renderHeader(pivot, 0, true);
                             header.classList.add(Pivot._ClassName.pivotHeaderSelected);
                             pivot._headersContainerElement.appendChild(header);
-                            headersStates.common.freezeHeaderWidth(header);
 
                             pivot._viewportElement.style.overflow = "hidden";
                             pivot._headersContainerElement.style.marginLeft = "0px";
@@ -34850,8 +34840,6 @@ define('WinJS/Controls/Pivot',[
                                 if (header.offsetWidth > maxHeaderWidth) {
                                     header.style.textOverflow = "ellipsis";
                                     header.style.width = maxHeaderWidth + "px";
-                                } else {
-                                    headersStates.common.freezeHeaderWidth(header);
                                 }
 
                                 if (indexToRender === pivot.selectedIndex) {
@@ -34920,7 +34908,7 @@ define('WinJS/Controls/Pivot',[
                         var firstHeaderIndex = pivot._headersContainerElement.children.length > 1 ? 1 : 0;
                         pivot._tabContainer.childFocus = pivot._headersContainerElement.children[firstHeaderIndex];
                         if (restoreFocus) {
-                            pivot._headersContainerElement.children[firstHeaderIndex].focus();
+                            pivot._headersContainerElement.focus();
                         }
                         this._firstRender = false;
                     },
@@ -35082,6 +35070,7 @@ define('WinJS/Controls/Pivot',[
 
                 // Headers Container
                 this._headersContainerElement = _Global.document.createElement("DIV");
+                this._headersContainerElement.tabindex = 0;
                 _ElementUtilities.addClass(this._headersContainerElement, Pivot._ClassName.pivotHeaders);
                 this._headersContainerElement.addEventListener("keydown", this._headersKeyDown.bind(this));
                 this._headerItemsElement.appendChild(this._headersContainerElement);
@@ -38501,6 +38490,8 @@ define('WinJS/Controls/_LegacyAppBar/_Constants',[
         flyoutLightClass: "win-ui-light",
         settingsFlyoutClass: "win-settingsflyout",
         scrollsClass: "win-scrolls",
+        pinToRightEdge: -1,
+        pinToBottomEdge: -1,
 
         // Constants for AppBarCommand full-size widths.
         separatorWidth: 34,
@@ -39817,7 +39808,7 @@ define('WinJS/Controls/Flyout',[
             var Key = _ElementUtilities.Key;
 
             function getDimension(element, property) {
-                return parseFloat(element, _Global.getComputedStyle(element, null)[property]);
+                return _ElementUtilities.convertToPixels(element, _Global.getComputedStyle(element, null)[property]);
             }
 
             var strings = {
@@ -39894,7 +39885,7 @@ define('WinJS/Controls/Flyout',[
 
                 // Used by tests.
                 clients: {
-                    get: function _LightDismissableLayer_clients_get () {
+                    get: function _LightDismissableLayer_clients_get() {
                         return this._clients;
                     }
                 },
@@ -40049,7 +40040,7 @@ define('WinJS/Controls/Flyout',[
                             subFlyout.element.removeEventListener("keydown", this._handleKeyDownInCascade_bound, false);
                             subFlyout._hide(); // We use the reentrancyLock to prevent reentrancy here.
                         }
-                        
+
                         if (this._cascadingStack.length === 0) {
                             // The cascade is empty so clear the input type. This gives us the opportunity
                             // to recalculate the input type when the next cascade starts.
@@ -40119,7 +40110,7 @@ define('WinJS/Controls/Flyout',[
                 },
                 // Used by tests.
                 dismissableLayer: {
-                    get: function _CascadeManager_dismissableLayer_get () {
+                    get: function _CascadeManager_dismissableLayer_get() {
                         return this._dismissableLayer;
                     }
                 },
@@ -40142,6 +40133,13 @@ define('WinJS/Controls/Flyout',[
                     }
                 }
             });
+
+            var AnimationOffsets = {
+                top: { top: "50px", left: "0px", keyframe: "WinJS-showFlyoutTop" },
+                bottom: { top: "-50px", left: "0px", keyframe: "WinJS-showFlyoutBottom" },
+                left: { top: "0px", left: "50px", keyframe: "WinJS-showFlyoutLeft" },
+                right: { top: "0px", left: "-50px", keyframe: "WinJS-showFlyoutRight" },
+            };
 
             var Flyout = _Base.Class.derive(_Overlay._Overlay, function Flyout_ctor(element, options) {
                 /// <signature helpKeyword="WinJS.UI.Flyout.Flyout">
@@ -40198,7 +40196,7 @@ define('WinJS/Controls/Flyout',[
 
                     // Attach our css class
                     _ElementUtilities.addClass(this._element, _Constants.flyoutClass);
-                    
+
                     var that = this;
                     // Each flyout has an ILightDismissable that is managed through the
                     // CascasdeManager rather than by the _LightDismissService directly.
@@ -40354,7 +40352,6 @@ define('WinJS/Controls/Flyout',[
                     /// <compatibleWith platform="Windows" minVersion="8.0"/>
                     /// </signature>
                     this._writeProfilerMark("show,StartTM"); // The corresponding "stop" profiler mark is handled in _Overlay._baseEndShow().
-                    // Just call private version to make appbar flags happy
                     this._show(anchor, placement, alignment);
                 },
 
@@ -40386,7 +40383,7 @@ define('WinJS/Controls/Flyout',[
                 },
 
                 _beforeEndHide: function Flyout_beforeEndHide() {
-                   Flyout._cascadeManager.flyoutHidden(this);
+                    Flyout._cascadeManager.flyoutHidden(this);
                 },
 
                 _baseFlyoutShow: function Flyout_baseFlyoutShow(anchor, placement, alignment) {
@@ -40485,31 +40482,32 @@ define('WinJS/Controls/Flyout',[
 
                 // Find our new flyout position.
                 _findPosition: function Flyout_findPosition() {
-                    this._nextHeight = null;
+                    this._adjustedHeight = 0;
+                    this._nextTop = 0;
+                    this._nextLeft = 0;
                     this._keyboardMovedUs = false;
-                    this._hasScrolls = false;
-                    this._keyboardSquishedUs = 0;
+                    this._doesScroll = false;
 
                     // Make sure menu commands display correctly
                     if (this._checkMenuCommands) {
                         this._checkMenuCommands();
                     }
 
-                    // Update margins for this alignment and remove old scrolling
-                    this._updateAdjustments(this._currentAlignment);
+                    // Remove old height restrictions and scrolling.
+                    this._clearAdjustedStyles();
 
-                    // Set up the new position, and prep the offset for showPopup
+                    this._setAlignment(this._currentAlignment);
+
+                    // Set up the new position, and prep the offset for showPopup.
                     this._getTopLeft();
-                    // Panning top offset is calculated top
-                    this._scrollTop = this._nextTop - _Overlay._Overlay._keyboardInfo._visibleDocTop;
 
                     // Adjust position
                     if (this._nextTop < 0) {
-                        // Need to attach to bottom
-                        this._element.style.bottom = "0px";
+                        // Overran bottom, attach to bottom.
+                        this._element.style.bottom = _Overlay._Overlay._keyboardInfo._visibleDocBottomOffset + "px";
                         this._element.style.top = "auto";
                     } else {
-                        // Normal, attach to top
+                        // Normal, set top
                         this._element.style.top = this._nextTop + "px";
                         this._element.style.bottom = "auto";
                     }
@@ -40518,18 +40516,16 @@ define('WinJS/Controls/Flyout',[
                         this._element.style.right = "0px";
                         this._element.style.left = "auto";
                     } else {
-                        // Normal, attach to left
+                        // Normal, set left
                         this._element.style.left = this._nextLeft + "px";
                         this._element.style.right = "auto";
                     }
 
                     // Adjust height/scrollbar
-                    if (this._nextHeight !== null) {
+                    if (this._doesScroll) {
                         _ElementUtilities.addClass(this._element, _Constants.scrollsClass);
                         this._lastMaxHeight = this._element.style.maxHeight;
-                        this._element.style.maxHeight = this._nextHeight + "px";
-                        this._nextBottom = this._nextTop + this._nextHeight;
-                        this._hasScrolls = true;
+                        this._element.style.maxHeight = this._adjustedHeight + "px";
                     }
 
                     // May need to adjust if the IHM is showing.
@@ -40543,7 +40539,7 @@ define('WinJS/Controls/Flyout',[
                     }
                 },
 
-                // This determines our positioning.  We have 7 modes, the 1st four are explicit, the last three are automatic:
+                // This determines our positioning.  We have 8 modes, the 1st four are explicit, the last 4 are automatic:
                 // * top - position explicitly on the top of the anchor, shrinking and adding scrollbar as needed.
                 // * bottom - position explicitly below the anchor, shrinking and adding scrollbar as needed.
                 // * left - position left of the anchor, shrinking and adding a vertical scrollbar as needed.
@@ -40551,6 +40547,7 @@ define('WinJS/Controls/Flyout',[
                 // * auto - Automatic placement.
                 // * autohorizontal - Automatic placement (only left or right).
                 // * autovertical - Automatic placement (only top or bottom).
+                // * _cascasde - Private placement used by MenuCommand._activateFlyoutCommand
                 // Auto tests the height of the anchor and the flyout.  For consistency in orientation, we imagine
                 // that the anchor is placed in the vertical center of the display.  If the flyout would fit above
                 // that centered anchor, then we will place the flyout vertically in relation to the anchor, otherwise
@@ -40560,7 +40557,103 @@ define('WinJS/Controls/Flyout',[
                 // Horizontal auto or autohorizontal placement will be positioned to the left of the anchor if room, otherwise to the right.
                 //   - this is because right handed users would be more likely to obscure a flyout on the right of the anchor.
                 // All three auto placements will add a vertical scrollbar if necessary.
+                // 
                 _getTopLeft: function Flyout_getTopLeft() {
+
+                    var that = this;
+
+                    function configureVerticalWithScroll(anchor) {
+                        // Won't fit top or bottom. Pick the one with the most space and add a scrollbar.
+                        if (topHasMoreRoom(anchor)) {
+                            // Top
+                            that._adjustedHeight = spaceAbove(anchor) - that._verticalMarginBorderPadding;
+                            that._nextTop = _Overlay._Overlay._keyboardInfo._visibleDocTop;
+                            that._nextAnimOffset = AnimationOffsets.top;
+                        } else {
+                            // Bottom
+                            that._adjustedHeight = spaceBelow(anchor) - that._verticalMarginBorderPadding;
+                            that._nextTop = _Constants.pinToBottomEdge;
+                            that._nextAnimOffset = AnimationOffsets.bottom;
+                        }
+                        that._doesScroll = true;
+                    }
+
+                    // If the anchor is centered vertically, would the flyout fit above it?
+                    function fitsVerticallyWithCenteredAnchor(anchor, flyout) {
+                        // Returns true if the flyout would always fit at least top 
+                        // or bottom of its anchor, regardless of the position of the anchor, 
+                        // as long as the anchor never changed its height, nor did the height of 
+                        // the visualViewport change.
+                        return ((_Overlay._Overlay._keyboardInfo._visibleDocHeight - anchor.height) / 2) >= flyout.totalHeight;
+                    }
+
+                    function spaceAbove(anchor) {
+                        return anchor.top - _Overlay._Overlay._keyboardInfo._visibleDocTop;
+                    }
+
+                    function spaceBelow(anchor) {
+                        return _Overlay._Overlay._keyboardInfo._visibleDocBottom - anchor.bottom;
+                    }
+
+                    function topHasMoreRoom(anchor) {
+                        return spaceAbove(anchor) > spaceBelow(anchor);
+                    }
+
+                    // See if we can fit in various places, fitting in the main view,
+                    // ignoring viewport changes, like for the IHM.
+                    function fitTop(bottomConstraint, flyout) {
+                        that._nextTop = bottomConstraint - flyout.totalHeight;
+                        that._nextAnimOffset = AnimationOffsets.top;
+                        return (that._nextTop >= _Overlay._Overlay._keyboardInfo._visibleDocTop &&
+                                that._nextTop + flyout.totalHeight <= _Overlay._Overlay._keyboardInfo._visibleDocBottom);
+                    }
+
+                    function fitBottom(topConstraint, flyout) {
+                        that._nextTop = topConstraint;
+                        that._nextAnimOffset = AnimationOffsets.bottom;
+                        return (that._nextTop >= _Overlay._Overlay._keyboardInfo._visibleDocTop &&
+                                that._nextTop + flyout.totalHeight <= _Overlay._Overlay._keyboardInfo._visibleDocBottom);
+                    }
+
+                    function fitLeft(leftConstraint, flyout) {
+                        that._nextLeft = leftConstraint - flyout.totalWidth;
+                        that._nextAnimOffset = AnimationOffsets.left;
+                        return (that._nextLeft >= 0 && that._nextLeft + flyout.totalWidth <= _Overlay._Overlay._keyboardInfo._visualViewportWidth);
+                    }
+
+                    function fitRight(rightConstraint, flyout) {
+                        that._nextLeft = rightConstraint;
+                        that._nextAnimOffset = AnimationOffsets.right;
+                        return (that._nextLeft >= 0 && that._nextLeft + flyout.totalWidth <= _Overlay._Overlay._keyboardInfo._visualViewportWidth);
+                    }
+
+                    function centerVertically(anchor, flyout) {
+                        that._nextTop = anchor.top + anchor.height / 2 - flyout.totalHeight / 2;
+                        if (that._nextTop < _Overlay._Overlay._keyboardInfo._visibleDocTop) {
+                            that._nextTop = _Overlay._Overlay._keyboardInfo._visibleDocTop;
+                        } else if (that._nextTop + flyout.totalHeight >= _Overlay._Overlay._keyboardInfo._visibleDocBottom) {
+                            // Flag to pin to bottom edge of visual document.
+                            that._nextTop = _Constants.pinToBottomEdge;
+                        }
+                    }
+
+                    function alignHorizontally(anchor, flyout, alignment) {
+                        if (alignment === "center") {
+                            that._nextLeft = anchor.left + anchor.width / 2 - flyout.totalWidth / 2;
+                        } else if (alignment === "left") {
+                            that._nextLeft = anchor.left;
+                        } else if (alignment === "right") {
+                            that._nextLeft = anchor.right - flyout.totalWidth;
+                        } else {
+                            throw new _ErrorFromName("WinJS.UI.Flyout.BadAlignment", strings.badAlignment);
+                        }
+                        if (that._nextLeft < 0) {
+                            that._nextLeft = 0;
+                        } else if (that._nextLeft + flyout.totalWidth >= _Overlay._Overlay._keyboardInfo._visualViewportWidth) {
+                            // Flag to pin to right edge of visible document.
+                            that._nextLeft = _Constants.pinToRightEdge;
+                        }
+                    }
 
                     var anchorRawRectangle,
                         flyout = {},
@@ -40587,194 +40680,171 @@ define('WinJS/Controls/Flyout',[
                     flyout.marginBottom = getDimension(this._element, "marginBottom");
                     flyout.marginLeft = getDimension(this._element, "marginLeft");
                     flyout.marginRight = getDimension(this._element, "marginRight");
-                    flyout.width = _ElementUtilities.getTotalWidth(this._element);
-                    flyout.height = _ElementUtilities.getTotalHeight(this._element);
-                    flyout.innerWidth = _ElementUtilities.getContentWidth(this._element);
-                    flyout.innerHeight = _ElementUtilities.getContentHeight(this._element);
-                    this._nextMarginPadding = (flyout.height - flyout.innerHeight);
+                    flyout.totalWidth = _ElementUtilities.getTotalWidth(this._element);
+                    flyout.totalHeight = _ElementUtilities.getTotalHeight(this._element);
+                    flyout.contentWidth = _ElementUtilities.getContentWidth(this._element);
+                    flyout.contentHeight = _ElementUtilities.getContentHeight(this._element);
+                    this._verticalMarginBorderPadding = (flyout.totalHeight - flyout.contentHeight);
+                    this._adjustedHeight = flyout.contentHeight;
 
                     // Check fit for requested this._currentPlacement, doing fallback if necessary
                     switch (this._currentPlacement) {
                         case "top":
-                            if (!this._fitTop(anchor, flyout)) {
+                            if (!fitTop(anchor.top, flyout)) {
                                 // Didn't fit, needs scrollbar
                                 this._nextTop = _Overlay._Overlay._keyboardInfo._visibleDocTop;
-                                this._nextHeight = anchor.top - _Overlay._Overlay._keyboardInfo._visibleDocTop - this._nextMarginPadding;
+                                this._doesScroll = true;
+                                this._adjustedHeight = spaceAbove(anchor) - this._verticalMarginBorderPadding;
                             }
-                            this._centerHorizontally(anchor, flyout, this._currentAlignment);
+                            alignHorizontally(anchor, flyout, this._currentAlignment);
                             break;
                         case "bottom":
-                            if (!this._fitBottom(anchor, flyout)) {
+                            if (!fitBottom(anchor.bottom, flyout)) {
                                 // Didn't fit, needs scrollbar
-                                this._nextTop = -1;
-                                this._nextHeight = _Overlay._Overlay._keyboardInfo._visibleDocHeight - (anchor.bottom - _Overlay._Overlay._keyboardInfo._visibleDocTop) - this._nextMarginPadding;
+                                this._nextTop = _Constants.pinToBottomEdge;
+                                this._doesScroll = true;
+                                this._adjustedHeight = spaceBelow(anchor) - this._verticalMarginBorderPadding;
                             }
-                            this._centerHorizontally(anchor, flyout, this._currentAlignment);
+                            alignHorizontally(anchor, flyout, this._currentAlignment);
                             break;
                         case "left":
-                            if (!this._fitLeft(anchor, flyout)) {
+                            if (!fitLeft(anchor.left, flyout)) {
                                 // Didn't fit, just shove it to edge
                                 this._nextLeft = 0;
                             }
-                            this._centerVertically(anchor, flyout);
+                            centerVertically(anchor, flyout);
                             break;
                         case "right":
-                            if (!this._fitRight(anchor, flyout)) {
-                                // Didn't fit,just shove it to edge
-                                this._nextLeft = -1;
+                            if (!fitRight(anchor.right, flyout)) {
+                                // Didn't fit, just shove it to edge
+                                this._nextLeft = _Constants.pinToRightEdge;
                             }
-                            this._centerVertically(anchor, flyout);
+                            centerVertically(anchor, flyout);
                             break;
                         case "autovertical":
-                            if (!this._fitTop(anchor, flyout)) {
+                            if (!fitTop(anchor.top, flyout)) {
                                 // Didn't fit above (preferred), so go below.
-                                if (!this._fitBottom(anchor, flyout)) {
+                                if (!fitBottom(anchor.bottom, flyout)) {
                                     // Didn't fit, needs scrollbar
-                                    this._configureVerticalWithScroll(anchor);
+                                    configureVerticalWithScroll(anchor);
                                 }
                             }
-                            this._centerHorizontally(anchor, flyout, this._currentAlignment);
+                            alignHorizontally(anchor, flyout, this._currentAlignment);
                             break;
                         case "autohorizontal":
-                            if (!this._fitLeft(anchor, flyout)) {
+                            if (!fitLeft(anchor.left, flyout)) {
                                 // Didn't fit left (preferred), so go right.
-                                if (!this._fitRight(anchor, flyout)) {
+                                if (!fitRight(anchor.right, flyout)) {
                                     // Didn't fit,just shove it to edge
-                                    this._nextLeft = -1;
+                                    this._nextLeft = _Constants.pinToRightEdge;
                                 }
                             }
-                            this._centerVertically(anchor, flyout);
+                            centerVertically(anchor, flyout);
                             break;
                         case "auto":
                             // Auto, if the anchor was in the vertical center of the display would we fit above it?
-                            if (this._sometimesFitsAbove(anchor, flyout)) {
+                            if (fitsVerticallyWithCenteredAnchor(anchor, flyout)) {
                                 // It will fit above or below the anchor
-                                if (!this._fitTop(anchor, flyout)) {
+                                if (!fitTop(anchor.top, flyout)) {
                                     // Didn't fit above (preferred), so go below.
-                                    this._fitBottom(anchor, flyout);
+                                    fitBottom(anchor.bottom, flyout);
                                 }
-                                this._centerHorizontally(anchor, flyout, this._currentAlignment);
+                                alignHorizontally(anchor, flyout, this._currentAlignment);
                             } else {
                                 // Won't fit above or below, try a side
-                                if (!this._fitLeft(anchor, flyout) &&
-                                    !this._fitRight(anchor, flyout)) {
+                                if (!fitLeft(anchor.left, flyout) &&
+                                    !fitRight(anchor.right, flyout)) {
                                     // Didn't fit left or right either
-                                    this._configureVerticalWithScroll(anchor);
-                                    this._centerHorizontally(anchor, flyout, this._currentAlignment);
+                                    configureVerticalWithScroll(anchor);
+                                    alignHorizontally(anchor, flyout, this._currentAlignment);
                                 } else {
-                                    this._centerVertically(anchor, flyout);
+                                    centerVertically(anchor, flyout);
                                 }
                             }
+                            break;
+                        case "_cascade": 
+                            // Align vertically
+                            // PREFERRED: When there is enough room to align a subMenu to either the top or the bottom of its
+                            // anchor element, the subMenu prefers to be top aligned.
+                            // FALLBACK: When there is enough room to bottom align a subMenu but not enough room to top align it, 
+                            // then the subMenu will align to the bottom of its anchor element.
+                            // LASTRESORT: When there is not enough room to top align or bottom align the subMenu to its anchor,
+                            // then the subMenu will be center aligned to it's anchor's vertical midpoint.
+                            if (!fitBottom(anchor.top - flyout.marginTop, flyout) && !fitTop(anchor.bottom + flyout.marginBottom, flyout)) {
+                                centerVertically(anchor, flyout);
+                            }
+
+                            // Determine horizontal direction
+                            // PREFERRED: When there is enough room to fit a subMenu on either side of the anchor,
+                            // the subMenu prefers to go on the right hand side.
+                            // FALLBACK: When there is only enough room to fit a subMenu on the left side of the anchor,
+                            // the subMenu is placed to the left of the parent menu.
+                            // LASTRESORT: When there is not enough room to fit a subMenu on either side of the anchor,
+                            // the subMenu is pinned to the right edge of the window.
+                            var rtl = _Global.getComputedStyle(this._element).direction === "rtl";
+
+                            // Cascading Menus should overlap their ancestor menu by 4 pixels and we have a unit test to 
+                            // verify that behavior. Because we don't have access to the ancestor flyout we need to specify
+                            // the overlap in terms of our anchor element. There is a 1px border around the menu that 
+                            // contains our anchor we need to overlap our anchor by 3px to ensure that we overlap the containing 
+                            // Menu by 4px.
+                            var pixelsToOverlapAnchor = 3;
+
+                            var beginRight = anchor.right - flyout.marginLeft - pixelsToOverlapAnchor;
+                            var beginLeft = anchor.left + flyout.marginRight + pixelsToOverlapAnchor;
+
+                            if (rtl) {
+                                if (!fitLeft(beginLeft, flyout) && !fitRight(beginRight, flyout)) {
+                                    // Doesn't fit on either side, pin to the left edge.
+                                    that._nextLeft = 0;
+                                    that._nextAnimOffset = AnimationOffsets.left;
+                                }
+                            } else {
+                                if (!fitRight(beginRight, flyout) && !fitLeft(beginLeft, flyout)) {
+                                    // Doesn't fit on either side, pin to the right edge of the visible document.
+                                    that._nextLeft = _Constants.pinToRightEdge;
+                                    that._nextAnimOffset = AnimationOffsets.right;
+                                }
+                            }
+
                             break;
                         default:
                             // Not a legal this._currentPlacement value
                             throw new _ErrorFromName("WinJS.UI.Flyout.BadPlacement", strings.badPlacement);
                     }
-
-                    // Remember "bottom" in case we need to consider keyboard later, only tested for top-pinned bars
-                    this._nextBottom = this._nextTop + flyout.height;
                 },
 
-                _configureVerticalWithScroll: function (anchor) {
-                    if (this._topHasMoreRoom(anchor)) {
-                        // Top, won't fit, needs scrollbar
-                        this._nextTop = _Overlay._Overlay._keyboardInfo._visibleDocTop;
-                        this._nextHeight = anchor.top - _Overlay._Overlay._keyboardInfo._visibleDocTop - this._nextMarginPadding;
-                    } else {
-                        // Bottom, won't fit, needs scrollbar
-                        this._nextTop = -1;
-                        this._nextHeight = _Overlay._Overlay._keyboardInfo._visibleDocHeight - (anchor.bottom - _Overlay._Overlay._keyboardInfo._visibleDocTop) - this._nextMarginPadding;
-                    }
-                },
-
-                // If the anchor is centered vertically, would the flyout fit above it?
-                _sometimesFitsAbove: function Flyout_sometimesFitsAbove(anchor, flyout) {
-                    return ((_Overlay._Overlay._keyboardInfo._visibleDocHeight - anchor.height) / 2) >= flyout.height;
-                },
-
-                _topHasMoreRoom: function Flyout_topHasMoreRoom(anchor) {
-                    return anchor.top > _Overlay._Overlay._keyboardInfo._visibleDocHeight - anchor.bottom;
-                },
-
-                // See if we can fit in various places, fitting in the main view,
-                // ignoring viewport changes, like for the IHM.
-                _fitTop: function Flyout_fitTop(anchor, flyout) {
-                    this._nextTop = anchor.top - flyout.height;
-                    this._nextAnimOffset = { top: "50px", left: "0px", keyframe: "WinJS-showFlyoutTop" };
-                    return (this._nextTop >= _Overlay._Overlay._keyboardInfo._visibleDocTop &&
-                            this._nextTop + flyout.height <= _Overlay._Overlay._keyboardInfo._visibleDocBottom);
-                },
-
-                _fitBottom: function Flyout_fitBottom(anchor, flyout) {
-                    this._nextTop = anchor.bottom;
-                    this._nextAnimOffset = { top: "-50px", left: "0px", keyframe: "WinJS-showFlyoutBottom" };
-                    return (this._nextTop >= _Overlay._Overlay._keyboardInfo._visibleDocTop &&
-                            this._nextTop + flyout.height <= _Overlay._Overlay._keyboardInfo._visibleDocBottom);
-                },
-
-                _fitLeft: function Flyout_fitLeft(anchor, flyout) {
-                    this._nextLeft = anchor.left - flyout.width;
-                    this._nextAnimOffset = { top: "0px", left: "50px", keyframe: "WinJS-showFlyoutLeft" };
-                    return (this._nextLeft >= 0 && this._nextLeft + flyout.width <= _Overlay._Overlay._keyboardInfo._visualViewportWidth);
-                },
-
-                _fitRight: function Flyout_fitRight(anchor, flyout) {
-                    this._nextLeft = anchor.right;
-                    this._nextAnimOffset = { top: "0px", left: "-50px", keyframe: "WinJS-showFlyoutRight" };
-                    return (this._nextLeft >= 0 && this._nextLeft + flyout.width <= _Overlay._Overlay._keyboardInfo._visualViewportWidth);
-                },
-
-                _centerVertically: function Flyout_centerVertically(anchor, flyout) {
-                    this._nextTop = anchor.top + anchor.height / 2 - flyout.height / 2;
-                    if (this._nextTop < _Overlay._Overlay._keyboardInfo._visibleDocTop) {
-                        this._nextTop = _Overlay._Overlay._keyboardInfo._visibleDocTop;
-                    } else if (this._nextTop + flyout.height >= _Overlay._Overlay._keyboardInfo._visibleDocBottom) {
-                        // Flag to put on bottom
-                        this._nextTop = -1;
-                    }
-                },
-
-                _centerHorizontally: function Flyout_centerHorizontally(anchor, flyout, alignment) {
-                    if (alignment === "center") {
-                        this._nextLeft = anchor.left + anchor.width / 2 - flyout.width / 2;
-                    } else if (alignment === "left") {
-                        this._nextLeft = anchor.left;
-                    } else if (alignment === "right") {
-                        this._nextLeft = anchor.right - flyout.width;
-                    } else {
-                        throw new _ErrorFromName("WinJS.UI.Flyout.BadAlignment", strings.badAlignment);
-                    }
-                    if (this._nextLeft < 0) {
-                        this._nextLeft = 0;
-                    } else if (this._nextLeft + flyout.width >= _Global.document.documentElement.clientWidth) {
-                        // flag to put on right
-                        this._nextLeft = -1;
-                    }
-                },
-
-                _updateAdjustments: function Flyout_updateAdjustments(alignment) {
+                _clearAdjustedStyles: function Flyout_clearAdjustedStyles() {
                     // Move to 0,0 in case it is off screen, so that it lays out at a reasonable size
                     this._element.style.top = "0px";
                     this._element.style.bottom = "auto";
                     this._element.style.left = "0px";
                     this._element.style.right = "auto";
 
-                    // Scrolling may not be necessary
+                    // Clear height restrictons and scrollbar class
                     _ElementUtilities.removeClass(this._element, _Constants.scrollsClass);
                     if (this._lastMaxHeight !== null) {
                         this._element.style.maxHeight = this._lastMaxHeight;
                         this._lastMaxHeight = null;
                     }
+
+                    // Clear Alignment
+                    _ElementUtilities.removeClass(this._element, "win-rightalign");
+                    _ElementUtilities.removeClass(this._element, "win-leftalign");
+                },
+
+                _setAlignment: function Flyout_setAlignment(alignment) {
                     // Alignment
-                    if (alignment === "center") {
-                        _ElementUtilities.removeClass(this._element, "win-leftalign");
-                        _ElementUtilities.removeClass(this._element, "win-rightalign");
-                    } else if (alignment === "left") {
-                        _ElementUtilities.addClass(this._element, "win-leftalign");
-                        _ElementUtilities.removeClass(this._element, "win-rightalign");
-                    } else if (alignment === "right") {
-                        _ElementUtilities.addClass(this._element, "win-rightalign");
-                        _ElementUtilities.removeClass(this._element, "win-leftalign");
+                    switch (alignment) {
+                        case "left":
+                            _ElementUtilities.addClass(this._element, "win-leftalign");
+                            break;
+                        case "right":
+                            _ElementUtilities.addClass(this._element, "win-rightalign");
+                            break;
+                        case "center":
+                        case "none":
+                            break;
                     }
                 },
 
@@ -40819,40 +40889,46 @@ define('WinJS/Controls/Flyout',[
                     }
                 },
 
+                // If you were not pinned to the bottom, you might have to be now.
                 _checkKeyboardFit: function Flyout_checkKeyboardFit() {
-                    // Check for moving to fit keyboard:
+                    // Special Flyout positioning rules to determine if the Flyout needs to adjust its
+                    // position because of the IHM. If the Flyout needs to adjust for the IHM, it will reposition
+                    // itself to be pinned to either the top or bottom edge of the visual viewport.
                     // - Too Tall, above top, or below bottom.
-                    var height = _ElementUtilities.getTotalHeight(this._element);
-                    var viewportHeight = _Overlay._Overlay._keyboardInfo._visibleDocHeight - this._nextMarginPadding;
-                    if (height > viewportHeight) {
-                        // Too Tall, pin to top with max height
-                        this._keyboardMovedUs = true;
-                        this._scrollTop = 0;
-                        this._keyboardSquishedUs = viewportHeight;
-                    } else if (this._nextTop === -1) {
-                        // Pinned to bottom counts as moved
-                        this._keyboardMovedUs = true;
-                    } else if (this._nextTop < _Overlay._Overlay._keyboardInfo._visibleDocTop) {
-                        // Above the top of the viewport
-                        this._scrollTop = 0;
-                        this._keyboardMovedUs = true;
-                    } else if (this._nextBottom > _Overlay._Overlay._keyboardInfo._visibleDocBottom) {
-                        // Below the bottom of the viewport
-                        this._scrollTop = -1;
-                        this._keyboardMovedUs = true;
+
+                    var keyboardMovedUs = false;
+                    var viewportHeight = _Overlay._Overlay._keyboardInfo._visibleDocHeight;
+                    var adjustedMarginBoxHeight = this._adjustedHeight + this._verticalMarginBorderPadding;
+                    if (adjustedMarginBoxHeight > viewportHeight) {
+                        // The Flyout is now too tall to fit in the viewport, pin to top and adjust height.
+                        keyboardMovedUs = true;
+                        this._nextTop = _Constants.pinToBottomEdge;
+                        this._adjustedHeight = viewportHeight - this._verticalMarginBorderPadding;
+                        this._doesScroll = true;
+                    } else if (this._nextTop >= 0 &&
+                        this._nextTop + adjustedMarginBoxHeight > _Overlay._Overlay._keyboardInfo._visibleDocBottom) {
+                        // Flyout clips the bottom of the viewport. Pin to bottom.
+                        this._nextTop = _Constants.pinToBottomEdge;
+                        keyboardMovedUs = true;
+                    } else if (this._nextTop === _Constants.pinToBottomEdge) {
+                        // We were already pinned to the bottom, so our position on screen will change
+                        keyboardMovedUs = true;
                     }
+
+                    // Signals use of basic fadein animation
+                    this._keyboardMovedUs = keyboardMovedUs;
                 },
 
                 _adjustForKeyboard: function Flyout_adjustForKeyboard() {
                     // Keyboard moved us, update our metrics as needed
-                    if (this._keyboardSquishedUs) {
+                    if (this._doesScroll) {
                         // Add scrollbar if we didn't already have scrollsClass
-                        if (!this._hasScrolls) {
+                        if (!this._lastMaxHeight) {
                             _ElementUtilities.addClass(this._element, _Constants.scrollsClass);
                             this._lastMaxHeight = this._element.style.maxHeight;
                         }
                         // Adjust height
-                        this._element.style.maxHeight = this._keyboardSquishedUs + "px";
+                        this._element.style.maxHeight = this._adjustedHeight + "px";
                     }
 
                     // Update top/bottom
@@ -40887,13 +40963,13 @@ define('WinJS/Controls/Flyout',[
                     }
 
                     // May need to adjust top by viewport offset
-                    if (this._scrollTop < 0) {
+                    if (this._nextTop < 0) {
                         // Need to attach to bottom
                         this._element.style.bottom = _Overlay._Overlay._keyboardInfo._visibleDocBottomOffset + "px";
                         this._element.style.top = "auto";
                     } else {
                         // Normal, attach to top
-                        this._element.style.top = _Overlay._Overlay._keyboardInfo._visibleDocTop + "px";
+                        this._element.style.top = this._nextTop + "px";
                         this._element.style.bottom = "auto";
                     }
                 },
@@ -42601,7 +42677,7 @@ define('WinJS/Controls/Menu/_Command',[
                                 c();
                             }, false);
 
-                            subFlyout.show(menuCommand, "right");
+                            subFlyout.show(menuCommand, "_cascade");
                         } else {
                             // Could not change command to activated state.
                             e();
@@ -54950,11 +55026,11 @@ define('WinJS/Controls/Menu',[
                                 _Constants.menuTouchSpacingClass
                         );
                     }
-                    // Call flyout show
+                    // Call flyout show 
                     this._baseFlyoutShow(anchor, placement, alignment);
 
-                    // We need to adjust MenuCommand layouts based on the various types of
-                    // commands visible in our Menu, but only after we send the beforeshow
+                    // Menu will need to adjust MenuCommand layouts based on the various 
+                    // types of commands visible in our Menu, but only after we send the beforeshow
                     // event, so the developer has a chance to show or hide more commands.
                     // Flyout's _findPosition will make that call.
                 },

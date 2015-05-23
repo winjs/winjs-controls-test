@@ -12,7 +12,7 @@
             // amd
             define([], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 base.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.23 base.js,StartTM');
             if (typeof module !== 'undefined') {
                 // CommonJS
                 factory();
@@ -20,7 +20,7 @@
                 // No module system
                 factory(globalObject.WinJS);
             }
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.22 base.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.23 base.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -14454,6 +14454,23 @@ define('WinJS/Application',[
         return str;
     }
 
+    function fatalErrorHandler(e) {
+        _Log.log && _Log.log(safeSerialize(e), "winjs", "error");
+
+        if (_Global.document && exports._terminateApp) {
+            var data = e.detail;
+            var number = data && (data.number || (data.exception && (data.exception.number || data.exception.code)) || (data.error && data.error.number) || data.errorCode || 0);
+            var terminateData = {
+                description: safeSerialize(data),
+                // note: because of how we listen to events, we rarely get a stack
+                stack: data && (data.stack || (data.exception && (data.exception.stack || data.exception.message)) || (data.error && data.error.stack) || null),
+                errorNumber: number,
+                number: number
+            };
+            exports._terminateApp(terminateData, e);
+        }
+    }
+
     function defaultTerminateAppHandler(data, e) {
         /*jshint unused: false*/
         // This is the unhandled exception handler in WinJS. This handler is invoked whenever a promise
@@ -14544,7 +14561,11 @@ define('WinJS/Application',[
             }
         }
         catch (err) {
-            queueEvent({ type: errorET, detail: err });
+            if (eventRecord.type === errorET) {
+                fatalErrorHandler(eventRecord);
+            } else {
+                queueEvent({ type: errorET, detail: err });
+            }
         }
 
 
@@ -14680,21 +14701,7 @@ define('WinJS/Application',[
                 if (handled) {
                     return;
                 }
-
-                _Log.log && _Log.log(safeSerialize(e), "winjs", "error");
-
-                if (_Global.document && exports._terminateApp) {
-                    var data = e.detail;
-                    var number = data && (data.number || (data.exception && (data.exception.number || data.exception.code)) || (data.error && data.error.number) || data.errorCode || 0);
-                    var terminateData = {
-                        description: safeSerialize(data),
-                        // note: because of how we listen to events, we rarely get a stack
-                        stack: data && (data.stack || (data.exception && (data.exception.stack || data.exception.message)) || (data.error && data.error.stack) || null),
-                        errorNumber: number,
-                        number: number
-                    };
-                    exports._terminateApp(terminateData, e);
-                }
+                fatalErrorHandler(e);
             }
         ],
         backclick: [
