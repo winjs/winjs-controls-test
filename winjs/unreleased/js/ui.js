@@ -44275,7 +44275,7 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
             this._primaryCommands.forEach(function (command) {
                 command.element.style.display = (command.hidden ? "none" : "");
             });
-            var primaryCommandsLocation = this._getPrimaryCommandsLocation();
+            var primaryCommandsLocation = this._getVisiblePrimaryCommandsLocation();
             this._hideSeparatorsIfNeeded(primaryCommandsLocation.actionArea);
             // Primary commands that will be mirrored in the overflow area should be hidden so
             // that they are not visible in the actionarea.
@@ -44359,35 +44359,37 @@ define('WinJS/Controls/CommandingSurface/_CommandingSurface',["require", "export
         _CommandingSurface.prototype._commandUniqueId = function (command) {
             return _ElementUtilities._uniqueID(command.element);
         };
-        _CommandingSurface.prototype._getCommandsInfo = function () {
+        _CommandingSurface.prototype._getVisiblePrimaryCommandsInfo = function () {
             var width = 0;
             var commands = [];
             var priority = 0;
             var currentAssignedPriority = 0;
             for (var i = this._primaryCommands.length - 1; i >= 0; i--) {
                 var command = this._primaryCommands[i];
-                if (command.priority === undefined) {
-                    priority = currentAssignedPriority--;
+                if (!command.hidden) {
+                    if (command.priority === undefined) {
+                        priority = currentAssignedPriority--;
+                    }
+                    else {
+                        priority = command.priority;
+                    }
+                    width = (command.element.style.display === "none" ? 0 : this._getCommandWidth(command));
+                    commands.unshift({
+                        command: command,
+                        width: width,
+                        priority: priority
+                    });
                 }
-                else {
-                    priority = command.priority;
-                }
-                width = (command.element.style.display === "none" ? 0 : this._getCommandWidth(command));
-                commands.unshift({
-                    command: command,
-                    width: width,
-                    priority: priority
-                });
             }
             return commands;
         };
-        _CommandingSurface.prototype._getPrimaryCommandsLocation = function () {
-            this._writeProfilerMark("_getCommandsLocation,info");
+        _CommandingSurface.prototype._getVisiblePrimaryCommandsLocation = function () {
+            this._writeProfilerMark("_getVisiblePrimaryCommandsLocation,info");
             var actionAreaCommands = [];
             var overflowAreaCommands = [];
             var overflowButtonSpace = 0;
             var hasSecondaryCommands = this._secondaryCommands.length > 0;
-            var commandsInfo = this._getCommandsInfo();
+            var commandsInfo = this._getVisiblePrimaryCommandsInfo();
             var sortedCommandsInfo = commandsInfo.slice(0).sort(function (commandInfo1, commandInfo2) {
                 return commandInfo1.priority - commandInfo2.priority;
             });
