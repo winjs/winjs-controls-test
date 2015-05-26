@@ -2080,6 +2080,7 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-selected a:ho
   margin-top: -36px;
 }
 .win-flipview .win-navbutton {
+  touch-action: manipulation;
   border: none;
   width: 20px;
   height: 36px;
@@ -2295,6 +2296,7 @@ body > .win-navigation-backbutton {
 .win-backbutton,
 .win-navigation-backbutton,
 .win-back {
+  touch-action: manipulation;
   display: inline-block;
   min-width: 0;
   min-height: 0;
@@ -2712,6 +2714,7 @@ button.win-navigation-backbutton:enabled:hover:active {
   touch-action: manipulation;
 }
 .win-pivot .win-pivot-navbutton {
+  touch-action: manipulation;
   position: absolute;
   width: 20px;
   height: 36px;
@@ -2805,6 +2808,7 @@ button.win-navigation-backbutton:enabled:hover:active {
 }
 .win-pivot .win-pivot-header,
 .win-pivot .win-pivot-header.win-pivot-header:hover:active {
+  touch-action: manipulation;
   font-size: 24px;
   font-weight: 300;
   line-height: 1.167;
@@ -2967,6 +2971,7 @@ html.win-hoverable .win-pivot .win-pivot-navbutton:hover {
 button.win-hub-section-header-tabstop,
 html.win-hoverable button.win-hub-section-header-tabstop:hover,
 button.win-hub-section-header-tabstop:hover:active {
+  touch-action: manipulation;
   width: 100%;
   background-color: transparent;
   border: 0;
@@ -3095,6 +3100,7 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
 Command buttons.
 */
 button.win-command {
+  touch-action: manipulation;
   background: none;
   background-clip: border-box;
   height: auto;
@@ -3331,6 +3337,7 @@ AppBar
   visibility: visible;
 }
 .win-navbar .win-navbar-invokebutton {
+  touch-action: manipulation;
   width: 32px;
   height: 100%;
   min-height: 25px;
@@ -4128,6 +4135,7 @@ Settings Pane
 }
 .win-commandingsurface .win-commandingsurface-actionarea .win-command,
 .win-commandingsurface .win-commandingsurface-actionarea .win-commandingsurface-overflowbutton {
+  touch-action: manipulation;
   -ms-flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -5087,6 +5095,7 @@ Hide clear button in search box control.
   padding: 12px 0;
 }
 .win-navbarcontainer-navarrow {
+  touch-action: manipulation;
   position: absolute;
   z-index: 2;
   top: 24px;
