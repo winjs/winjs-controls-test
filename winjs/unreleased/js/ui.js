@@ -12,7 +12,7 @@
             // amd
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.29 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.30 ui.js,StartTM');
             if (typeof module !== 'undefined') {
                 // CommonJS
                 factory(require("./base"));
@@ -20,7 +20,7 @@
                 // No module system
                 factory(globalObject.WinJS);
             }
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.29 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.30 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -49211,6 +49211,7 @@ define('WinJS/Controls/SearchBox',[
                 get ariaLabel() { return _Resources._getWinJSString("ui/searchBoxAriaLabel").value; },
                 get ariaLabelInputNoPlaceHolder() { return _Resources._getWinJSString("ui/searchBoxAriaLabelInputNoPlaceHolder").value; },
                 get ariaLabelInputPlaceHolder() { return _Resources._getWinJSString("ui/searchBoxAriaLabelInputPlaceHolder").value; },
+                get searchBoxDeprecated() { return "SearchBox is deprecated and may not be available in future releases. Instead use AutoSuggestBox."; }
             };
 
             var SearchBox = _Base.Class.derive(AutoSuggestBox.AutoSuggestBox, function SearchBox_ctor(element, options) {
@@ -49231,8 +49232,14 @@ define('WinJS/Controls/SearchBox',[
                 /// <returns type="WinJS.UI.SearchBox" locid="WinJS.UI.SearchBox.constructor_returnValue">
                 /// The new SearchBox.
                 /// </returns>
+                /// <deprecated type="deprecate">
+                /// SearchBox is deprecated and may not be available in future releases. Instead use AutoSuggestBox.
+                /// </deprecated>
                 /// <compatibleWith platform="Windows" minVersion="8.1"/>
                 /// </signature>
+                
+                _ElementUtilities._deprecated(strings.searchBoxDeprecated);
+                
                 this._requestingFocusOnKeyboardInputHandlerBind = this._requestingFocusOnKeyboardInputHandler.bind(this);
 
                 // Elements
