@@ -12,7 +12,7 @@
             // amd
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.30 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.1 ui.js,StartTM');
             if (typeof module !== 'undefined') {
                 // CommonJS
                 factory(require("./base"));
@@ -20,7 +20,7 @@
                 // No module system
                 factory(globalObject.WinJS);
             }
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.5.30 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.1 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -43085,7 +43085,14 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
         beforeOpen: "beforeopen",
         afterOpen: "afteropen",
         beforeClose: "beforeclose",
-        afterClose: "afterclose"
+        afterClose: "afterclose",
+        // Private events
+        // Indicates that the OpenCloseMachine has settled either into the Opened state
+        // or Closed state. This is more comprehensive than the "afteropen" and "afterclose"
+        // events because it fires even if the machine has reached the state due to:
+        //   - Exiting the Init state
+        //   - The beforeopen/beforeclose events being canceled
+        _openCloseStateSettled: "_openCloseStateSettled"
     };
     //
     // OpenCloseMachine
@@ -43298,6 +43305,7 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
                 if (args.openIsPending) {
                     this.open();
                 }
+                this.machine._fireEvent(EventNames._openCloseStateSettled);
             };
             Closed.prototype.open = function () {
                 this.machine._setState(BeforeOpen);
@@ -43381,6 +43389,7 @@ define('WinJS/Utilities/_OpenCloseMachine',["require", "exports", '../Core/_Glob
                 if (args.closeIsPending) {
                     this.close();
                 }
+                this.machine._fireEvent(EventNames._openCloseStateSettled);
             };
             Opened.prototype.close = function () {
                 this.machine._setState(BeforeClose);
@@ -61508,6 +61517,9 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
                 tabIndex: -1,
                 onLightDismiss: function () {
                     _this.closePane();
+                },
+                onTakeFocus: function (useSetActive) {
+                    _this._dismissable.restoreFocus() || _ElementUtilities._tryFocusOnAnyElement(_this._dom.pane, useSetActive);
                 }
             });
             this._cachedHiddenPaneThickness = null;
@@ -61652,6 +61664,9 @@ define('WinJS/Controls/SplitView/_SplitView',["require", "exports", '../../Anima
             // The first child is the pane
             var paneEl = root.firstElementChild || _Global.document.createElement("div");
             _ElementUtilities.addClass(paneEl, ClassNames.pane);
+            if (!paneEl.hasAttribute("tabIndex")) {
+                paneEl.tabIndex = -1;
+            }
             // All other children are members of the content
             var contentEl = _Global.document.createElement("div");
             _ElementUtilities.addClass(contentEl, ClassNames.content);
@@ -61995,10 +62010,25 @@ define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "ex
     require(["require-style!less/styles-splitviewpanetoggle"]);
     require(["require-style!less/colors-splitviewpanetoggle"]);
     "use strict";
+    // This control has 2 modes depending on whether or not the app has provided a SplitView:
+    //   - SplitView not provided
+    //     SplitViewPaneToggle provides button visuals and fires the invoked event. The app
+    //     intends to do everything else:
+    //       - Handle the invoked event
+    //       - Handle the SplitView opening and closing
+    //       - Handle aria-expanded being mutated by UIA (i.e. screen readers)
+    //       - Keep the aria-controls attribute, aria-expanded attribute, and SplitView in sync
+    //   - SplitView is provided via splitView property
+    //     SplitViewPaneToggle keeps the SplitView, the aria-controls attribute, and the
+    //     aria-expands attribute in sync. In this use case, apps typically won't listen
+    //     to the invoked event (but it's still fired).
     var ClassNames = {
         splitViewPaneToggle: "win-splitviewpanetoggle"
     };
     var EventNames = {
+        // Fires when the user invokes the button with mouse/keyboard/touch. Does not
+        // fire if the SplitViewPaneToggle's state changes due to UIA (i.e. aria-expanded
+        // being set) or due to the SplitView pane opening/closing.
         invoked: "invoked"
     };
     var Strings = {
@@ -62009,6 +62039,17 @@ define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "ex
             return "Invalid argument: The SplitViewPaneToggle's element must be a button element";
         }
     };
+    // The splitViewElement may not have a winControl associated with it yet in the case
+    // that the SplitViewPaneToggle was constructed before the SplitView. This may happen
+    // when WinJS.UI.processAll is used to construct the controls because the order of construction
+    // depends on the order in which the SplitView and SplitViewPaneToggle appear in the DOM.
+    function getSplitViewControl(splitViewElement) {
+        return (splitViewElement && splitViewElement["winControl"]);
+    }
+    function getPaneOpened(splitViewElement) {
+        var splitViewControl = getSplitViewControl(splitViewElement);
+        return splitViewControl ? splitViewControl.paneOpened : false;
+    }
     /// <field>
     /// <summary locid="WinJS.UI.SplitViewPaneToggle">
     /// Displays a button which is used for opening and closing a SplitView's pane.
@@ -62040,13 +62081,28 @@ define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "ex
             /// </returns>
             /// </signature>
             if (options === void 0) { options = {}; }
+            // State private to _updateDom. No other method should make use of it.
+            //
+            // Nothing has been rendered yet so these are all initialized to undefined. Because
+            // they are undefined, the first time _updateDom is called, they will all be
+            // rendered.
+            this._updateDom_rendered = {
+                splitView: undefined
+            };
             // Check to make sure we weren't duplicated
             if (element && element["winControl"]) {
                 throw new _ErrorFromName("WinJS.UI.SplitViewPaneToggle.DuplicateConstruction", Strings.duplicateConstruction);
             }
+            this._onPaneStateSettledBound = this._onPaneStateSettled.bind(this);
+            this._ariaExpandedMutationObserver = new _ElementUtilities._MutationObserver(this._onAriaExpandedPropertyChanged.bind(this));
             this._initializeDom(element || _Global.document.createElement("button"));
+            // Private state
             this._disposed = false;
+            // Default values
+            this.splitView = null;
             _Control.setOptions(this, options);
+            this._initialized = true;
+            this._updateDom();
         }
         Object.defineProperty(SplitViewPaneToggle.prototype, "element", {
             /// <field type="HTMLElement" domElement="true" readonly="true" hidden="true" locid="WinJS.UI.SplitViewPaneToggle.element" helpKeyword="WinJS.UI.SplitViewPaneToggle.element">
@@ -62068,6 +62124,10 @@ define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "ex
             },
             set: function (splitView) {
                 this._splitView = splitView;
+                if (splitView) {
+                    this._opened = getPaneOpened(splitView);
+                }
+                this._updateDom();
             },
             enumerable: true,
             configurable: true
@@ -62082,6 +62142,7 @@ define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "ex
                 return;
             }
             this._disposed = true;
+            this._splitView && this._removeListeners(this._splitView);
         };
         SplitViewPaneToggle.prototype._initializeDom = function (root) {
             if (root.tagName !== "BUTTON") {
@@ -62099,6 +62160,72 @@ define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "ex
                 root: root
             };
         };
+        SplitViewPaneToggle.prototype._updateDom = function () {
+            if (!this._initialized || this._disposed) {
+                return;
+            }
+            var rendered = this._updateDom_rendered;
+            if (this._splitView !== rendered.splitView) {
+                if (rendered.splitView) {
+                    this._dom.root.removeAttribute("aria-controls");
+                    this._removeListeners(rendered.splitView);
+                }
+                if (this._splitView) {
+                    _ElementUtilities._ensureId(this._splitView);
+                    this._dom.root.setAttribute("aria-controls", this._splitView.id);
+                    this._addListeners(this._splitView);
+                }
+                rendered.splitView = this._splitView;
+            }
+            // When no SplitView is provided, it's up to the app to manage aria-expanded.
+            if (this._splitView) {
+                // Always update aria-expanded and don't cache its most recently rendered value
+                // in _updateDom_rendered. The reason is that we're not the only ones that update
+                // aria-expanded. aria-expanded may be changed thru UIA APIs. Consequently, if we
+                // cached the last value we set in _updateDom_rendered, it may not reflect the current
+                // value in the DOM.
+                var expanded = this._opened ? "true" : "false";
+                _ElementUtilities._setAttribute(this._dom.root, "aria-expanded", expanded);
+                // The splitView element may not have a winControl associated with it yet in the case
+                // that the SplitViewPaneToggle was constructed before the SplitView. This may happen
+                // when WinJS.UI.processAll is used to construct the controls because the order of construction
+                // depends on the order in which the SplitView and SplitViewPaneToggle appear in the DOM.
+                var splitViewControl = getSplitViewControl(this._splitView);
+                if (splitViewControl) {
+                    splitViewControl.paneOpened = this._opened;
+                }
+            }
+        };
+        SplitViewPaneToggle.prototype._addListeners = function (splitViewElement) {
+            splitViewElement.addEventListener("_openCloseStateSettled", this._onPaneStateSettledBound);
+            this._ariaExpandedMutationObserver.observe(this._dom.root, {
+                attributes: true,
+                attributeFilter: ["aria-expanded"]
+            });
+        };
+        SplitViewPaneToggle.prototype._removeListeners = function (splitViewElement) {
+            splitViewElement.removeEventListener("_openCloseStateSettled", this._onPaneStateSettledBound);
+            this._ariaExpandedMutationObserver.disconnect();
+        };
+        SplitViewPaneToggle.prototype._fireEvent = function (eventName) {
+            var eventObject = _Global.document.createEvent("CustomEvent");
+            eventObject.initCustomEvent(eventName, true, false, null);
+            return this._dom.root.dispatchEvent(eventObject);
+        };
+        // Inputs that change the SplitViewPaneToggle's state
+        //
+        SplitViewPaneToggle.prototype._onPaneStateSettled = function (eventObject) {
+            if (eventObject.target === this._splitView) {
+                this._opened = getPaneOpened(this._splitView);
+                this._updateDom();
+            }
+        };
+        // Called by tests.
+        SplitViewPaneToggle.prototype._onAriaExpandedPropertyChanged = function (mutations) {
+            var ariaExpanded = this._dom.root.getAttribute("aria-expanded") === "true";
+            this._opened = ariaExpanded;
+            this._updateDom();
+        };
         SplitViewPaneToggle.prototype._onClick = function (eventObject) {
             this._invoked();
         };
@@ -62107,16 +62234,11 @@ define('WinJS/Controls/SplitViewPaneToggle/_SplitViewPaneToggle',["require", "ex
             if (this._disposed) {
                 return;
             }
-            var splitViewControl = (this.splitView && this.splitView["winControl"]);
-            if (splitViewControl) {
-                splitViewControl.paneOpened = !splitViewControl.paneOpened;
+            if (this._splitView) {
+                this._opened = !this._opened;
+                this._updateDom();
             }
             this._fireEvent(EventNames.invoked);
-        };
-        SplitViewPaneToggle.prototype._fireEvent = function (eventName) {
-            var eventObject = _Global.document.createEvent("CustomEvent");
-            eventObject.initCustomEvent(eventName, true, false, null);
-            return this._dom.root.dispatchEvent(eventObject);
         };
         SplitViewPaneToggle._ClassNames = ClassNames;
         SplitViewPaneToggle.supportedForProcessing = true;

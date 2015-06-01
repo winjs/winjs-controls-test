@@ -5538,6 +5538,9 @@ Hide clear button in search box control.
   display: -webkit-flex;
   display: flex;
 }
+.win-splitview .win-splitview-pane {
+  outline: none;
+}
 .win-splitview .win-splitview-pane,
 .win-splitview .win-splitview-paneplaceholder {
   -ms-flex: 0 0 auto;
