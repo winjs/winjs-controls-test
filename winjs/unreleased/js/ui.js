@@ -12,7 +12,7 @@
             // amd
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.1 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.2 ui.js,StartTM');
             if (typeof module !== 'undefined') {
                 // CommonJS
                 factory(require("./base"));
@@ -20,7 +20,7 @@
                 // No module system
                 factory(globalObject.WinJS);
             }
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.1 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.2 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -7589,7 +7589,7 @@ define('WinJS/_Accents',["require", "exports", "./Core/_Global", "./Core/_WinRT"
         var theme = _Global.getComputedStyle(tag).opacity;
         isDarkTheme = theme === "0";
         tag.parentElement.removeChild(tag);
-        if (_WinRT.Windows.UI.ViewManagement.UISettings) {
+        if (_WinRT.Windows.UI.ViewManagement.UISettings && ("oncolorvalueschanged" in _WinRT.Windows.UI.ViewManagement.UISettings.prototype)) {
             UISettings = new _WinRT.Windows.UI.ViewManagement.UISettings();
             UISettings.addEventListener("colorvalueschanged", handleColorsChanged);
             handleColorsChanged();
