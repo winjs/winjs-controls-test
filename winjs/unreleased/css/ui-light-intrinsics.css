@@ -1,0 +1,1244 @@
+﻿/* Copyright (c) Microsoft Corporation.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
+@font-face {
+  font-family: "Segoe UI Command";
+  src: local("Segoe MDL2 Assets");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Symbols";
+  src: url(../fonts/Symbols.ttf);
+}
+.win-type-header,
+.win-h1 {
+  font-size: 46px;
+  font-weight: 200;
+  line-height: 1.216;
+  letter-spacing: 0px;
+}
+.win-type-subheader,
+.win-h2 {
+  font-size: 34px;
+  font-weight: 200;
+  line-height: 1.176;
+}
+.win-type-title,
+.win-h3 {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.167;
+}
+.win-type-subtitle,
+.win-h4 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.win-type-body,
+.win-h6 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+.win-type-base,
+.win-h5 {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.333;
+}
+.win-type-caption {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.167;
+}
+@font-face {
+  font-family: "Segoe UI";
+  font-weight: 200;
+  src: local("Segoe UI Light");
+}
+@font-face {
+  font-family: "Segoe UI";
+  font-weight: 300;
+  src: local("Segoe UI Semilight");
+}
+@font-face {
+  font-family: "Segoe UI";
+  font-weight: 400;
+  src: local("Segoe UI");
+}
+@font-face {
+  font-family: "Segoe UI";
+  font-weight: 500;
+  src: local("Segoe UI Semibold");
+}
+@font-face {
+  font-family: "Segoe UI";
+  font-weight: 600;
+  src: local("Segoe UI Bold");
+}
+@font-face {
+  font-family: "Segoe UI";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Segoe UI Italic");
+}
+@font-face {
+  font-family: "Segoe UI";
+  font-style: italic;
+  font-weight: 700;
+  src: local("Segoe UI Bold Italic");
+}
+html,
+body {
+  -moz-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+}
+body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+body,
+input,
+textarea,
+button,
+select,
+option {
+  font-family: "Segoe UI", sans-serif, "Segoe MDL2 Assets", "Symbols";
+}
+input:not([type]),
+input[type=""],
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=number],
+input[type=tel],
+input[type=url],
+input[type=search],
+textarea,
+.win-textarea {
+  -ms-user-select: element;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 0;
+  margin: 8px 0px;
+  width: 296px;
+  min-width: 64px;
+  min-height: 28px;
+  background-clip: border-box;
+  box-sizing: border-box;
+  padding: 3px 6px 5px 10px;
+  outline: 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+input::-ms-value {
+  margin: 0;
+  padding: 0;
+}
+input::-ms-clear,
+input::-ms-reveal {
+  padding-right: 2px;
+  margin-right: -8px;
+  margin-left: 2px;
+  margin-top: -8px;
+  margin-bottom: -8px;
+  width: 30px;
+  height: 32px;
+}
+input:lang(ar)::-ms-clear,
+input:lang(dv)::-ms-clear,
+input:lang(fa)::-ms-clear,
+input:lang(he)::-ms-clear,
+input:lang(ku-Arab)::-ms-clear,
+input:lang(pa-Arab)::-ms-clear,
+input:lang(prs)::-ms-clear,
+input:lang(ps)::-ms-clear,
+input:lang(sd-Arab)::-ms-clear,
+input:lang(syr)::-ms-clear,
+input:lang(ug)::-ms-clear,
+input:lang(ur)::-ms-clear,
+input:lang(qps-plocm)::-ms-clear,
+input:lang(ar)::-ms-reveal,
+input:lang(dv)::-ms-reveal,
+input:lang(fa)::-ms-reveal,
+input:lang(he)::-ms-reveal,
+input:lang(ku-Arab)::-ms-reveal,
+input:lang(pa-Arab)::-ms-reveal,
+input:lang(prs)::-ms-reveal,
+input:lang(ps)::-ms-reveal,
+input:lang(sd-Arab)::-ms-reveal,
+input:lang(syr)::-ms-reveal,
+input:lang(ug)::-ms-reveal,
+input:lang(ur)::-ms-reveal,
+input:lang(qps-plocm)::-ms-reveal {
+  margin-left: -8px;
+  margin-right: 2px;
+}
+textarea {
+  resize: none;
+  overflow-y: auto;
+}
+input[type=radio],
+input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+input[type=radio]:lang(ar),
+input[type=checkbox]:lang(ar),
+input[type=radio]:lang(dv),
+input[type=checkbox]:lang(dv),
+input[type=radio]:lang(fa),
+input[type=checkbox]:lang(fa),
+input[type=radio]:lang(he),
+input[type=checkbox]:lang(he),
+input[type=radio]:lang(ku-Arab),
+input[type=checkbox]:lang(ku-Arab),
+input[type=radio]:lang(pa-Arab),
+input[type=checkbox]:lang(pa-Arab),
+input[type=radio]:lang(prs),
+input[type=checkbox]:lang(prs),
+input[type=radio]:lang(ps),
+input[type=checkbox]:lang(ps),
+input[type=radio]:lang(sd-Arab),
+input[type=checkbox]:lang(sd-Arab),
+input[type=radio]:lang(syr),
+input[type=checkbox]:lang(syr),
+input[type=radio]:lang(ug),
+input[type=checkbox]:lang(ug),
+input[type=radio]:lang(ur),
+input[type=checkbox]:lang(ur),
+input[type=radio]:lang(qps-plocm),
+input[type=checkbox]:lang(qps-plocm) {
+  margin-left: 8px;
+  margin-right: 0px;
+}
+input::-ms-check {
+  border-style: solid;
+  display: inline-block;
+  border-width: 2px;
+  background-clip: border-box;
+}
+button,
+input[type=button],
+input[type=reset],
+input[type=submit],
+button[type=submit] {
+  border-style: solid;
+  margin: 0px;
+  min-height: 32px;
+  min-width: 120px;
+  padding: 4px 8px;
+  border-width: 2px;
+  background-clip: border-box;
+  border-radius: 0;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+input[type=file] {
+  border: none;
+  min-width: 100px;
+  min-height: 20px;
+  width: 340px;
+  height: 32px;
+  padding: 0px;
+  margin: 7px 8px 21px 8px;
+  background-clip: padding-box;
+}
+input[type=file]::-ms-value {
+  margin: 0;
+  border-width: 2px;
+  border-style: solid;
+  border-right-style: none;
+  border-radius: 0;
+  background-clip: border-box;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+input[type=file]:lang(ar)::-ms-value,
+input[type=file]:lang(dv)::-ms-value,
+input[type=file]:lang(fa)::-ms-value,
+input[type=file]:lang(he)::-ms-value,
+input[type=file]:lang(ku-Arab)::-ms-value,
+input[type=file]:lang(pa-Arab)::-ms-value,
+input[type=file]:lang(prs)::-ms-value,
+input[type=file]:lang(ps)::-ms-value,
+input[type=file]:lang(sd-Arab)::-ms-value,
+input[type=file]:lang(syr)::-ms-value,
+input[type=file]:lang(ug)::-ms-value,
+input[type=file]:lang(ur)::-ms-value,
+input[type=file]:lang(qps-plocm)::-ms-value {
+  border-left-style: none;
+  border-right-style: solid;
+}
+input[type=file]::-ms-browse {
+  margin: 0;
+  padding: 0 18px;
+  border-width: 2px;
+  border-style: solid;
+  background-clip: padding-box;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+select {
+  min-width: 56px;
+  max-width: 368px;
+  min-height: 32px;
+  margin: 8px 0;
+  border-style: solid;
+  border-width: 2px;
+  background-clip: border-box;
+  background-image: none;
+  box-sizing: border-box;
+  border-radius: 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+select::-ms-value {
+  padding: 5px 12px 7px 12px;
+  margin: 0;
+}
+select::-ms-expand {
+  border: none;
+  margin-right: 5px;
+  margin-left: 3px;
+  margin-bottom: -2px;
+  font-size: 20px;
+}
+select[multiple] {
+  padding: 0 0 0 12px;
+  vertical-align: bottom;
+}
+option {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+progress {
+  width: 180px;
+  height: 4px;
+  -webkit-appearance: none;
+}
+progress:not(:indeterminate) {
+  border-style: none;
+}
+progress::-ms-fill {
+  border-style: none;
+}
+progress.win-medium {
+  width: 296px;
+}
+progress.win-large {
+  width: 100%;
+}
+progress:indeterminate::-webkit-progress-value {
+  position: relative;
+  -webkit-animation: win-progress-indeterminate 3s linear infinite;
+}
+progress.win-paused:not(:indeterminate) {
+  animation-name: win-progress-fade-out;
+  animation-duration: 3s;
+  animation-timing-function: cubic-bezier(0.03, 0.76, 0.31, 1);
+  opacity: 0.5;
+}
+progress.win-error::-ms-fill {
+  opacity: 0;
+}
+progress.win-ring {
+  width: 20px;
+  height: 20px;
+}
+progress.win-ring:indeterminate::-ms-fill {
+  animation-name: -ms-ring;
+}
+progress.win-ring.win-medium {
+  width: 40px;
+  height: 40px;
+}
+progress.win-ring.win-large {
+  width: 60px;
+  height: 60px;
+}
+input[type=range] {
+  -webkit-appearance: none;
+  width: 280px;
+  height: 22px;
+  padding-top: 17px;
+  padding-bottom: 32px;
+}
+input[type=range]::-ms-track {
+  height: 2px;
+  border-style: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  height: 2px;
+  border-style: none;
+}
+input[type=range]::-moz-range-track {
+  height: 2px;
+  border-style: none;
+}
+input[type=range]::-ms-thumb {
+  width: 24px;
+  height: 8px;
+  border-radius: 4px;
+  border-style: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  margin-top: -4px;
+  width: 24px;
+  height: 8px;
+  border-radius: 4px;
+  border-style: none;
+}
+input[type=range]::-moz-range-thumb {
+  width: 24px;
+  height: 8px;
+  border-radius: 4px;
+  border-style: none;
+}
+input[type=range].win-vertical {
+  writing-mode: bt-lr;
+  width: 22px;
+  height: 280px;
+}
+input[type=range].win-vertical::-ms-track {
+  width: 2px;
+  height: auto;
+}
+input[type=range].win-vertical::-ms-thumb {
+  width: 8px;
+  height: 24px;
+}
+input[type=range].win-vertical:lang(ar),
+input[type=range].win-vertical:lang(dv),
+input[type=range].win-vertical:lang(fa),
+input[type=range].win-vertical:lang(he),
+input[type=range].win-vertical:lang(ku-Arab),
+input[type=range].win-vertical:lang(pa-Arab),
+input[type=range].win-vertical:lang(prs),
+input[type=range].win-vertical:lang(ps),
+input[type=range].win-vertical:lang(sd-Arab),
+input[type=range].win-vertical:lang(syr),
+input[type=range].win-vertical:lang(ug),
+input[type=range].win-vertical:lang(ur),
+input[type=range].win-vertical:lang(qps-plocm) {
+  writing-mode: bt-rl;
+}
+a {
+  text-decoration: underline;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+img {
+  border-style: none;
+}
+form {
+  margin: 0px;
+  padding: 0px;
+}
+legend {
+  margin: 0px 0px 10px 0px;
+  padding: 0px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+code,
+pre,
+samp {
+  font-family: "Consolas", "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+caption,
+figcaption,
+small {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.167;
+}
+.win-type-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+h1.win-type-ellipsis,
+.win-type-header.win-type-ellipsis {
+  line-height: 1.4286;
+}
+h2.win-type-ellipsis,
+.win-type-subheader.win-type-ellipsis {
+  line-height: 1.5;
+}
+dt,
+th {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3636;
+}
+abbr,
+acronym,
+address,
+blockquote,
+cite,
+dl,
+dd,
+li,
+ol,
+p,
+q,
+td,
+tr {
+  font-weight: 300;
+}
+b,
+strong {
+  font-weight: 700;
+}
+em {
+  font-style: italic;
+}
+.win-scrollview {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 400px;
+  width: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+h1 {
+  font-size: 46px;
+  font-weight: 200;
+  line-height: 1.216;
+  letter-spacing: 0px;
+}
+h2 {
+  font-size: 34px;
+  font-weight: 200;
+  line-height: 1.176;
+}
+h3 {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.167;
+}
+h4 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+h5 {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.333;
+}
+h6 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+}
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+.win-ui-light {
+  background-color: #ffffff;
+  color: #000000;
+}
+.win-ui-dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+::selection {
+  color: #fff;
+}
+a:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+a:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+a[disabled] {
+  color: rgba(0, 0, 0, 0.2);
+}
+input[type=checkbox]::-ms-check {
+  color: #000000;
+  border-color: rgba(0, 0, 0, 0.8);
+  background-color: transparent;
+}
+input[type=checkbox]:indeterminate::-ms-check {
+  color: rgba(0, 0, 0, 0.8);
+}
+input[type=checkbox]:checked::-ms-check {
+  color: #fff;
+  border-color: transparent;
+}
+input[type=checkbox]:hover::-ms-check {
+  border-color: #000000;
+}
+input[type=checkbox]:hover:indeterminate::-ms-check {
+  color: #000000;
+}
+input[type=checkbox]:active::-ms-check {
+  border-color: transparent;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+input[type=checkbox]:indeterminate:active::-ms-check {
+  color: rgba(0, 0, 0, 0.6);
+  border-color: rgba(0, 0, 0, 0.8);
+  background-color: transparent;
+}
+input[type=checkbox]:disabled::-ms-check,
+input[type=checkbox]:indeterminate:disabled::-ms-check {
+  color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+}
+input[type=radio]::-ms-check {
+  color: rgba(0, 0, 0, 0.8);
+  border-color: rgba(0, 0, 0, 0.8);
+  background-color: transparent;
+}
+input[type=radio]:hover::-ms-check {
+  border-color: #000000;
+}
+input[type=radio]:hover::-ms-check {
+  color: #000000;
+}
+input[type=radio]:active::-ms-check {
+  color: rgba(0, 0, 0, 0.6);
+  border-color: rgba(0, 0, 0, 0.6);
+}
+input[type=radio]:disabled::-ms-check {
+  color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+progress:not(:indeterminate) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+progress::-webkit-progress-bar {
+  background-color: transparent;
+}
+progress.win-ring {
+  background-color: transparent;
+}
+button,
+input[type=button],
+input[type=reset],
+input[type=submit],
+button[type=submit] {
+  color: #000000;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: transparent;
+}
+button:hover,
+input[type=button]:hover,
+input[type=reset]:hover,
+input[type=submit]:hover,
+button[type=submit]:hover {
+  border-color: rgba(0, 0, 0, 0.4);
+}
+button:active,
+input[type=button]:active,
+input[type=reset]:active,
+input[type=submit]:active,
+button[type=submit]:active {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+button:disabled,
+input[type=button]:disabled,
+input[type=reset]:disabled,
+input[type=submit]:disabled,
+button[type=submit]:disabled {
+  color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: transparent;
+}
+input[type=submit],
+button[type=submit] {
+  color: #fff;
+}
+select {
+  color: #000000;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.4);
+}
+select::-ms-expand {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: transparent;
+}
+select:hover {
+  background-color: #f2f2f2;
+  border-color: rgba(0, 0, 0, 0.6);
+}
+select:disabled {
+  color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+select:disabled::-ms-expand {
+  color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+option {
+  color: #000000;
+  background-color: #f2f2f2;
+}
+option:checked {
+  color: #ffffff;
+}
+option:hover,
+option:active {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #000000;
+}
+optgroup {
+  color: #000000;
+  background-color: #f2f2f2;
+}
+optgroup:disabled {
+  color: rgba(0, 0, 0, 0.2);
+}
+select[multiple] {
+  border: none;
+  background-color: #f2f2f2;
+}
+select[multiple] option {
+  color: #000000;
+}
+select[multiple] option:hover {
+  color: #000000;
+}
+select[multiple] option:checked {
+  color: #ffffff;
+}
+input[type=range] {
+  background-color: transparent;
+}
+input[type=range]:hover::-ms-thumb {
+  background: #1f1f1f;
+}
+input[type=range]:hover::-webkit-slider-thumb {
+  background: #1f1f1f;
+}
+input[type=range]:hover::-moz-range-thumb {
+  background: #1f1f1f;
+}
+input[type=range]:active::-ms-thumb {
+  background: #cccccc;
+}
+input[type=range]:active::-webkit-slider-thumb {
+  background: #cccccc;
+}
+input[type=range]:active::-moz-range-thumb {
+  background: #cccccc;
+}
+input[type=range]:disabled::-ms-thumb {
+  background: #cccccc;
+}
+input[type=range]:disabled::-webkit-slider-thumb {
+  background: #cccccc;
+}
+input[type=range]:disabled::-moz-range-thumb {
+  background: #cccccc;
+}
+input[type=range]:disabled::-ms-fill-lower {
+  background: rgba(0, 0, 0, 0.2);
+}
+input[type=range]::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.4);
+}
+input[type=range]::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+input[type=range]::-moz-range-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+input[type=range]:hover::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.6);
+}
+input[type=range]:hover::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.6);
+}
+input[type=range]:hover::-moz-range-track {
+  background: rgba(0, 0, 0, 0.6);
+}
+input[type=range]:active::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.4);
+}
+input[type=range]:active::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+input[type=range]:active::-moz-range-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+input[type=range]:disabled::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.2);
+}
+input[type=range]:disabled::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+input[type=range]:disabled::-moz-range-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+input[type=range]::-ms-track {
+  color: transparent;
+  background-color: transparent;
+}
+input[type=range]::-ms-ticks-before,
+input[type=range]::-ms-ticks-after {
+  color: rgba(0, 0, 0, 0.4);
+}
+input:not([type]),
+input[type=""],
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=number],
+input[type=tel],
+input[type=url],
+input[type=search],
+textarea {
+  color: #000000;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.4);
+}
+input:not([type]):-ms-input-placeholder,
+input[type=""]:-ms-input-placeholder,
+input[type=text]:-ms-input-placeholder,
+input[type=password]:-ms-input-placeholder,
+input[type=email]:-ms-input-placeholder,
+input[type=number]:-ms-input-placeholder,
+input[type=tel]:-ms-input-placeholder,
+input[type=url]:-ms-input-placeholder,
+input[type=search]:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+input:not([type])::-webkit-input-placeholder,
+input[type=""]::-webkit-input-placeholder,
+input[type=text]::-webkit-input-placeholder,
+input[type=password]::-webkit-input-placeholder,
+input[type=email]::-webkit-input-placeholder,
+input[type=number]::-webkit-input-placeholder,
+input[type=tel]::-webkit-input-placeholder,
+input[type=url]::-webkit-input-placeholder,
+input[type=search]::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+input:not([type])::-moz-input-placeholder,
+input[type=""]::-moz-input-placeholder,
+input[type=text]::-moz-input-placeholder,
+input[type=password]::-moz-input-placeholder,
+input[type=email]::-moz-input-placeholder,
+input[type=number]::-moz-input-placeholder,
+input[type=tel]::-moz-input-placeholder,
+input[type=url]::-moz-input-placeholder,
+input[type=search]::-moz-input-placeholder,
+textarea::-moz-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+input:not([type]):hover,
+input[type=""]:hover,
+input[type=text]:hover,
+input[type=password]:hover,
+input[type=email]:hover,
+input[type=number]:hover,
+input[type=tel]:hover,
+input[type=url]:hover,
+input[type=search]:hover,
+textarea:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(0, 0, 0, 0.6);
+}
+input:not([type]):focus,
+input[type=""]:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+input[type=tel]:focus,
+input[type=url]:focus,
+input[type=search]:focus,
+textarea:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+input::-ms-clear,
+input::-ms-reveal {
+  display: block;
+  color: rgba(0, 0, 0, 0.6);
+}
+input::-ms-clear:active,
+input::-ms-reveal:active {
+  color: #ffffff;
+}
+.win-xbox :focus {
+  outline: 2px solid white;
+}
+.win-ui-dark body {
+  background-color: #000000;
+  color: #ffffff;
+}
+.win-ui-dark .win-ui-dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+.win-ui-dark .win-ui-light {
+  background-color: #ffffff;
+  color: #000000;
+}
+.win-ui-dark winjs-themedetection-tag {
+  opacity: 0;
+}
+.win-ui-dark ::selection {
+  color: #fff;
+}
+.win-ui-dark a:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark a:active {
+  color: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark a[disabled] {
+  color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark input[type=checkbox]::-ms-check {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.8);
+  background-color: transparent;
+}
+.win-ui-dark input[type=checkbox]:indeterminate::-ms-check {
+  color: rgba(255, 255, 255, 0.8);
+}
+.win-ui-dark input[type=checkbox]:checked::-ms-check {
+  color: #fff;
+  border-color: transparent;
+}
+.win-ui-dark input[type=checkbox]:hover::-ms-check {
+  border-color: #ffffff;
+}
+.win-ui-dark input[type=checkbox]:hover:indeterminate::-ms-check {
+  color: #ffffff;
+}
+.win-ui-dark input[type=checkbox]:active::-ms-check {
+  border-color: transparent;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input[type=checkbox]:indeterminate:active::-ms-check {
+  color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
+  background-color: transparent;
+}
+.win-ui-dark input[type=checkbox]:disabled::-ms-check,
+.win-ui-dark input[type=checkbox]:indeterminate:disabled::-ms-check {
+  color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+}
+.win-ui-dark input[type=radio]::-ms-check {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.8);
+  background-color: transparent;
+}
+.win-ui-dark input[type=radio]:hover::-ms-check {
+  border-color: #ffffff;
+}
+.win-ui-dark input[type=radio]:hover::-ms-check {
+  color: #ffffff;
+}
+.win-ui-dark input[type=radio]:active::-ms-check {
+  color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input[type=radio]:disabled::-ms-check {
+  color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark progress:not(:indeterminate) {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark progress::-webkit-progress-bar {
+  background-color: transparent;
+}
+.win-ui-dark progress.win-ring {
+  background-color: transparent;
+}
+.win-ui-dark button,
+.win-ui-dark input[type=button],
+.win-ui-dark input[type=reset],
+.win-ui-dark input[type=submit],
+.win-ui-dark button[type=submit] {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: transparent;
+}
+.win-ui-dark button:hover,
+.win-ui-dark input[type=button]:hover,
+.win-ui-dark input[type=reset]:hover,
+.win-ui-dark input[type=submit]:hover,
+.win-ui-dark button[type=submit]:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark button:active,
+.win-ui-dark input[type=button]:active,
+.win-ui-dark input[type=reset]:active,
+.win-ui-dark input[type=submit]:active,
+.win-ui-dark button[type=submit]:active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark button:disabled,
+.win-ui-dark input[type=button]:disabled,
+.win-ui-dark input[type=reset]:disabled,
+.win-ui-dark input[type=submit]:disabled,
+.win-ui-dark button[type=submit]:disabled {
+  color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: transparent;
+}
+.win-ui-dark input[type=submit],
+.win-ui-dark button[type=submit] {
+  color: #fff;
+}
+.win-ui-dark select {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark select::-ms-expand {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: transparent;
+}
+.win-ui-dark select:hover {
+  background-color: #2b2b2b;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark select:disabled {
+  color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark select:disabled::-ms-expand {
+  color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark option {
+  color: #ffffff;
+  background-color: #2b2b2b;
+}
+.win-ui-dark option:checked {
+  color: #ffffff;
+}
+.win-ui-dark option:hover,
+.win-ui-dark option:active {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+.win-ui-dark optgroup {
+  color: #ffffff;
+  background-color: #2b2b2b;
+}
+.win-ui-dark optgroup:disabled {
+  color: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark select[multiple] {
+  border: none;
+  background-color: #2b2b2b;
+}
+.win-ui-dark select[multiple] option {
+  color: #ffffff;
+}
+.win-ui-dark select[multiple] option:hover {
+  color: #ffffff;
+}
+.win-ui-dark select[multiple] option:checked {
+  color: #ffffff;
+}
+.win-ui-dark input[type=range] {
+  background-color: transparent;
+}
+.win-ui-dark input[type=range]:hover::-ms-thumb {
+  background: #f9f9f9;
+}
+.win-ui-dark input[type=range]:hover::-webkit-slider-thumb {
+  background: #f9f9f9;
+}
+.win-ui-dark input[type=range]:hover::-moz-range-thumb {
+  background: #f9f9f9;
+}
+.win-ui-dark input[type=range]:active::-ms-thumb {
+  background: #767676;
+}
+.win-ui-dark input[type=range]:active::-webkit-slider-thumb {
+  background: #767676;
+}
+.win-ui-dark input[type=range]:active::-moz-range-thumb {
+  background: #767676;
+}
+.win-ui-dark input[type=range]:disabled::-ms-thumb {
+  background: #333333;
+}
+.win-ui-dark input[type=range]:disabled::-webkit-slider-thumb {
+  background: #333333;
+}
+.win-ui-dark input[type=range]:disabled::-moz-range-thumb {
+  background: #333333;
+}
+.win-ui-dark input[type=range]:disabled::-ms-fill-lower {
+  background: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark input[type=range]::-ms-fill-upper {
+  background: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input[type=range]::-webkit-slider-runnable-track {
+  background: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input[type=range]::-moz-range-track {
+  background: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input[type=range]:hover::-ms-fill-upper {
+  background: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input[type=range]:hover::-webkit-slider-runnable-track {
+  background: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input[type=range]:hover::-moz-range-track {
+  background: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input[type=range]:active::-ms-fill-upper {
+  background: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input[type=range]:active::-webkit-slider-runnable-track {
+  background: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input[type=range]:active::-moz-range-track {
+  background: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input[type=range]:disabled::-ms-fill-upper {
+  background: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark input[type=range]:disabled::-webkit-slider-runnable-track {
+  background: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark input[type=range]:disabled::-moz-range-track {
+  background: rgba(255, 255, 255, 0.2);
+}
+.win-ui-dark input[type=range]::-ms-track {
+  color: transparent;
+  background-color: transparent;
+}
+.win-ui-dark input[type=range]::-ms-ticks-before,
+.win-ui-dark input[type=range]::-ms-ticks-after {
+  color: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input:not([type]),
+.win-ui-dark input[type=""],
+.win-ui-dark input[type=text],
+.win-ui-dark input[type=password],
+.win-ui-dark input[type=email],
+.win-ui-dark input[type=number],
+.win-ui-dark input[type=tel],
+.win-ui-dark input[type=url],
+.win-ui-dark input[type=search],
+.win-ui-dark textarea {
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.win-ui-dark input:not([type]):-ms-input-placeholder,
+.win-ui-dark input[type=""]:-ms-input-placeholder,
+.win-ui-dark input[type=text]:-ms-input-placeholder,
+.win-ui-dark input[type=password]:-ms-input-placeholder,
+.win-ui-dark input[type=email]:-ms-input-placeholder,
+.win-ui-dark input[type=number]:-ms-input-placeholder,
+.win-ui-dark input[type=tel]:-ms-input-placeholder,
+.win-ui-dark input[type=url]:-ms-input-placeholder,
+.win-ui-dark input[type=search]:-ms-input-placeholder,
+.win-ui-dark textarea:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input:not([type])::-webkit-input-placeholder,
+.win-ui-dark input[type=""]::-webkit-input-placeholder,
+.win-ui-dark input[type=text]::-webkit-input-placeholder,
+.win-ui-dark input[type=password]::-webkit-input-placeholder,
+.win-ui-dark input[type=email]::-webkit-input-placeholder,
+.win-ui-dark input[type=number]::-webkit-input-placeholder,
+.win-ui-dark input[type=tel]::-webkit-input-placeholder,
+.win-ui-dark input[type=url]::-webkit-input-placeholder,
+.win-ui-dark input[type=search]::-webkit-input-placeholder,
+.win-ui-dark textarea::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input:not([type])::-moz-input-placeholder,
+.win-ui-dark input[type=""]::-moz-input-placeholder,
+.win-ui-dark input[type=text]::-moz-input-placeholder,
+.win-ui-dark input[type=password]::-moz-input-placeholder,
+.win-ui-dark input[type=email]::-moz-input-placeholder,
+.win-ui-dark input[type=number]::-moz-input-placeholder,
+.win-ui-dark input[type=tel]::-moz-input-placeholder,
+.win-ui-dark input[type=url]::-moz-input-placeholder,
+.win-ui-dark input[type=search]::-moz-input-placeholder,
+.win-ui-dark textarea::-moz-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input:not([type]):hover,
+.win-ui-dark input[type=""]:hover,
+.win-ui-dark input[type=text]:hover,
+.win-ui-dark input[type=password]:hover,
+.win-ui-dark input[type=email]:hover,
+.win-ui-dark input[type=number]:hover,
+.win-ui-dark input[type=tel]:hover,
+.win-ui-dark input[type=url]:hover,
+.win-ui-dark input[type=search]:hover,
+.win-ui-dark textarea:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.win-ui-dark input:not([type]):focus,
+.win-ui-dark input[type=""]:focus,
+.win-ui-dark input[type=text]:focus,
+.win-ui-dark input[type=password]:focus,
+.win-ui-dark input[type=email]:focus,
+.win-ui-dark input[type=number]:focus,
+.win-ui-dark input[type=tel]:focus,
+.win-ui-dark input[type=url]:focus,
+.win-ui-dark input[type=search]:focus,
+.win-ui-dark textarea:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+.win-ui-dark input::-ms-clear,
+.win-ui-dark input::-ms-reveal {
+  display: block;
+  color: rgba(0, 0, 0, 0.6);
+}
+.win-ui-dark input::-ms-clear:active,
+.win-ui-dark input::-ms-reveal:active {
+  color: #ffffff;
+}
+.win-ui-dark .win-xbox :focus {
+  outline: 2px solid white;
+}

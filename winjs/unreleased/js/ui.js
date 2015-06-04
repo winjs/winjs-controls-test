@@ -12,7 +12,7 @@
             // amd
             define(["./base"], factory);
         } else {
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.2 ui.js,StartTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.4 ui.js,StartTM');
             if (typeof module !== 'undefined') {
                 // CommonJS
                 factory(require("./base"));
@@ -20,7 +20,7 @@
                 // No module system
                 factory(globalObject.WinJS);
             }
-            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.2 ui.js,StopTM');
+            globalObject.msWriteProfilerMark && msWriteProfilerMark('WinJS.4.0 4.0.0.winjs.2015.6.4 ui.js,StopTM');
         }
     }(function (WinJS) {
 
@@ -7552,7 +7552,7 @@ define('WinJS/_Accents',["require", "exports", "./Core/_Global", "./Core/_WinRT"
                 }
                 return css;
             }).join("\n");
-            _Global.document.head.insertBefore(style, _Global.document.head.firstChild);
+            _Global.document.head.appendChild(style);
         });
     }
     function handleColorsChanged() {
@@ -7650,9 +7650,9 @@ define('WinJS/Controls/IntrinsicControls',[
 
     // Edge-specific color rule
     _Accents.createAccentRule(
-        ".win-textbox::-ms-clear:hover,\
-         .win-textbox::-ms-reveal:hover",
-        [{ name: "color", value: _Accents.ColorTypes.accent }], true);
+        ".win-textbox::-ms-clear:hover:not(:active),\
+         .win-textbox::-ms-reveal:hover:not(:active)",
+        [{ name: "color", value: _Accents.ColorTypes.accent }]);
 
     // Edge-specific background-color rule
     _Accents.createAccentRule(
@@ -7680,20 +7680,25 @@ define('WinJS/Controls/IntrinsicControls',[
         ".win-checkbox:indeterminate::-ms-check,\
          .win-checkbox:hover:indeterminate::-ms-check,\
          .win-radio:checked::-ms-check",
-        [{ name: "border-color", value: _Accents.ColorTypes.accent }], true);
+        [{ name: "border-color", value: _Accents.ColorTypes.accent }]);
+
 
     // Note the use of background instead of background-color
     // FF slider styling doesn't work with background-color
     // so using background for everything here for consistency
+
+    // Edge-specific background rule
     _Accents.createAccentRule(
         ".win-slider::-ms-thumb,\
          .win-slider::-ms-fill-lower", /* Fill-Lower only supported in IE */
         [{ name: "background", value: _Accents.ColorTypes.accent }]);
 
+    // Webkit-specific background rule
     _Accents.createAccentRule(
         ".win-slider::-webkit-slider-thumb",
         [{ name: "background", value: _Accents.ColorTypes.accent }]);
 
+    // Mozilla-specific background rule
     _Accents.createAccentRule(
         ".win-slider::-moz-range-thumb",
         [{ name: "background", value: _Accents.ColorTypes.accent }]);
